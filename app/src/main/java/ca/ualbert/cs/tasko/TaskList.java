@@ -15,22 +15,12 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.test.ActivityInstrumentationTestCase2;
-
 /**
- * Created by Chase on 2/23/2018.
+ * Created by Thomas on 2018-02-23.
+ * Represents a TaskList object that contains an array of tasks.
+ *
+ * @author tlafranc
  */
+public class TaskList {
 
-
-public class BidTest extends ActivityInstrumentationTestCase2 {
-    public BidTest(){
-        super(MainActivity.class);
-    }
-
-    public void testCreateBid(){
-        Bid bid = new Bid("name", 13.57f);
-
-        assertEquals(bid.getUsername(), "name");
-        assertEquals(bid.getValue(), 13.57f);
-    }
 }
