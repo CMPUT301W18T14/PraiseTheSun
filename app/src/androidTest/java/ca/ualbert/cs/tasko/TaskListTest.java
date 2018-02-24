@@ -21,6 +21,9 @@ import java.util.ArrayList;
 
 /**
  * Created by Thomas on 2018-02-23.
+ * Testing class for the class TaskList.
+ *
+ * @author tlafranc
  */
 
 public class TaskListTest extends ActivityInstrumentationTestCase2 {
@@ -79,6 +82,6 @@ public class TaskListTest extends ActivityInstrumentationTestCase2 {
 
         ArrayList<Task> returnedTasks = tasks.getTasks();
         assertEquals(returnedTasks.get(0), task);
-        assertEquals(returnedTasks.get(0), task2);
+        assertEquals(returnedTasks.get(1), task2);
     }
 }
