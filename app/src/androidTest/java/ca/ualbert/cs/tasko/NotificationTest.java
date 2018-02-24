@@ -18,19 +18,18 @@ package ca.ualbert.cs.tasko;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
- * Created by Chase on 2/23/2018.
+ * Created by spack on 2018-02-23.
  */
 
-
-public class BidTest extends ActivityInstrumentationTestCase2 {
-    public BidTest(){
+public class NotificationTest extends ActivityInstrumentationTestCase2 {
+    public NotificationTest(){
         super(MainActivity.class);
     }
 
-    public void testCreateBid(){
-        Bid bid = new Bid("name", 13.57f);
+    public void testCreate() {
+        String message = "This is a Test Case";
+        Notification notification = new Notification(message);
 
-        assertEquals(bid.getUsername(), "name");
-        assertEquals(bid.getValue(), 13.57f);
+        assertEquals(notification.getMessage(), message);
     }
 }
