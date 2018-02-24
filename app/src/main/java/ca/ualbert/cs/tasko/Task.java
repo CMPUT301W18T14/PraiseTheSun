@@ -15,9 +15,94 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.location.Location;
+import android.media.Image;
+
+import java.util.ArrayList;
+
 /**
  * Created by Chase on 2/23/2018.
+ *
  */
 
 public class Task {
+
+    private String taskName;
+    private String description;
+    private ArrayList<Image> photos;
+    private Location geolocation;
+    private User taskRequester;
+    private BidList bidList;
+    private Status status;
+
+    public Task(User taskRequester, String taskName, String description){
+        this(taskRequester, taskName, description, null, null);
+    }
+
+    public Task(User taskRequester, String taskName, String description,
+                ArrayList<Image> photos){
+        this(taskRequester, taskName, description, photos, null);
+    }
+
+    public Task(User taskRequester, String taskName, String description,
+                Location location){
+        this(taskRequester, taskName, description, null, location);
+    }
+
+    public Task(User taskRequester, String taskName, String description,
+                ArrayList<Image> photos, Location location){
+
+    }
+
+    public void acceptBid(Bid bid){
+
+    }
+
+    public BidList getBids(){
+        return bidList;
+    }
+
+    public void addPhoto(Image photo){
+
+    }
+
+    public void removePhoto(int index){
+
+    }
+
+    public void addLocation(Location location){
+
+    }
+
+    public void removeLocation(){
+
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Location getGeolocation() {
+        return geolocation;
+    }
+
+    public User getTaskRequester() {
+        return taskRequester;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 }

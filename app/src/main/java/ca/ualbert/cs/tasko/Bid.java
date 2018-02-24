@@ -18,27 +18,28 @@ package ca.ualbert.cs.tasko;
 
 /**
  * Created by Chase on 2/23/2018.
- * Represents a bid Object containing the name of the bidder and the value they bidded.
+ * Represents a bid Object containing the name of the bidder and the value they
+ * bidded.
  *
  * @author Chase Buhler
  * @see Task
  */
 public class Bid {
 
-    private String username;
+    private User taskProvider;
     private float value;
 
-    public Bid(String username, float value){
-        this.username = username;
+    public Bid(User taskProvider, float value){
+        this.taskProvider = taskProvider;
         this.value = value;
     }
 
-    public String getUsername() {
-        return username;
+    public User getTaskProvider() {
+        return taskProvider;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setTaskProvider(User taskProvider) {
+        this.taskProvider = taskProvider;
     }
 
     public float getValue() {
@@ -48,5 +49,13 @@ public class Bid {
 
     public void setValue(float value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Bid)){
+            return false;
+        }
+        return false;
     }
 }
