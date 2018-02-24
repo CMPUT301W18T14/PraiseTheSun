@@ -15,23 +15,21 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.test.ActivityInstrumentationTestCase2;
+
 /**
  * Created by spack on 2018-02-23.
  */
 
-public class Notifications {
-
-    String message;
-
-    Notifications(String message){
-        this.message = message;
+public class NotificationTest extends ActivityInstrumentationTestCase2 {
+    public NotificationTest(){
+        super(MainActivity.class);
     }
 
-    public String getMessage() {
-        return message;
-    }
+    public void testCreate() {
+        String message = "This is a Test Case";
+        Notification notification = new Notification(message);
 
-    public void setMessage(String message) {
-        this.message = message;
+        assertEquals(notification.getMessage(), message);
     }
 }
