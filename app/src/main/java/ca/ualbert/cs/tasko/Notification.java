@@ -34,9 +34,12 @@ public class Notification {
 
         Status status = task.getStatus();
         switch (status){
+            case REQUESTED:
+                this.message = "Default Message for Testing";
+                break;
             case BIDDED:
                 this.recipient = task.getTaskRequester();
-                this.message = "You have recieved a new Bid on" + taskname;
+                this.message = "You have received a new Bid on" + taskname;
                 break;
             case ASSIGNED:
                 // this.recipient = task.getTaskProvider();
@@ -53,6 +56,8 @@ public class Notification {
     public String getMessage() {
         return message;
     }
+
+    public String getTaskname() {return taskname; }
 
     public void sendNotification(Notification notification){
         //send to recipient
