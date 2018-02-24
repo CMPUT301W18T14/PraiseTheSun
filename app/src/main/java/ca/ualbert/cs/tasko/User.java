@@ -17,12 +17,32 @@ package ca.ualbert.cs.tasko;
 
 /**
  * Created by chase on 2/23/2018.
+ * Represents a user (which can be both a task requester and task provider). Contains info such
+ * as name, username, number, email, tasks bidded on, tasks that you have requested, tasks that
+ * you are assigned and their rating.
+ *
  *
  */
 
 public class User {
 
+    private String username;
+    private String name;
+    private String number;
+    private String email;
+    private TaskList bids;
+    private TaskList myTasks;
+    private TaskList assignments;
+    private Float rating;
+
     public User(){
 
+    }
+
+    public User(String username, String name, String number, String email){
+        this.username = username;
+        this.name = name;
+        this.number = number;
+        this.email = email;
     }
 }
