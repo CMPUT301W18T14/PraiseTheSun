@@ -26,7 +26,4 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
-
-
-    public void test
 }

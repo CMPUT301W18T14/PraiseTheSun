@@ -28,9 +28,10 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testCreateBid(){
-        Bid bid = new Bid("name", 13.57f);
+        User user = new User();
+        Bid bid = new Bid(user, 13.57f);
 
-        assertEquals(bid.getUsername(), "name");
+        assertEquals(bid.getTaskProvider(), user);
         assertEquals(bid.getValue(), 13.57f);
     }
 }
