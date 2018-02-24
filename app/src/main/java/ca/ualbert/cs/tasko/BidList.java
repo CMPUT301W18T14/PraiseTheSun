@@ -15,18 +15,41 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.test.ActivityInstrumentationTestCase2;
+import java.util.ArrayList;
 
 /**
- * Created by Chase on 2/23/2018.
+ * Created by chase on 2/23/2018.
  */
 
-public class TaskTest extends ActivityInstrumentationTestCase2 {
-    public TaskTest(){
-        super(MainActivity.class);
+public class BidList {
+
+    private ArrayList<Bid> bids;
+
+    public BidList(){
+        bids = new ArrayList<>();
     }
 
+    public void addBid(Bid bid){
 
+    }
 
-    public void test
+    public Bid getBid(User provider){
+        return null;
+    }
+
+    public Bid getMinBid(){
+        return null;
+    }
+
+    public boolean hasBid(Bid bid){
+        return false;
+    }
+
+    public void removeBid(Bid bid){
+
+    }
+
+    public ArrayList<Bid> getBids(){
+        return bids;
+    }
 }

@@ -15,18 +15,14 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.test.ActivityInstrumentationTestCase2;
-
 /**
- * Created by Chase on 2/23/2018.
+ * Created by chase on 2/23/2018.
+ *
  */
 
-public class TaskTest extends ActivityInstrumentationTestCase2 {
-    public TaskTest(){
-        super(MainActivity.class);
+public class User {
+
+    public User(){
+
     }
-
-
-
-    public void test
 }
