@@ -28,7 +28,7 @@ public class User {
 
     private String username;
     private String name;
-    private String number;
+    private String phoneNumber;
     private String email;
     private TaskList bids;
     private TaskList myTasks;
@@ -39,10 +39,83 @@ public class User {
 
     }
 
-    public User(String username, String name, String number, String email){
+    public User(String username, String name, String phoneNumber, String email){
         this.username = username;
         this.name = name;
-        this.number = number;
+        this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername (String name) {
+        this.name = name;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
+
+    public String getPhoneNumber() {
+        return phoneNumber ;
+    }
+
+    public void setPhoneNumber (String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail (String email) {
+        this.email = email;
+    }
+
+
+    public TaskList getBids() {
+        return bids;
+    }
+
+    public void setBids (TaskList bids) {
+        this.bids = bids;
+    }
+
+
+    public TaskList getMyTasks() {
+        return myTasks;
+    }
+
+    public void setMyTasks (TaskList myTasks) {
+        this.myTasks = myTasks;
+    }
+
+
+    public TaskList getAssignements () {
+        return assignments;
+    }
+
+    public void setAssignments (TaskList assignments) {
+        this.assignments = assignments;
+    }
+
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating (Float rating) {
+        this.rating = rating;
+    }
+
+
 }
