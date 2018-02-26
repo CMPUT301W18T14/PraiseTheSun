@@ -18,11 +18,45 @@ package ca.ualbert.cs.tasko;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
- * Created by ryand on 2018-02-24.
+ * Created by ryan on 2018-02-24.
  */
 
 public class UserTest extends ActivityInstrumentationTestCase2 {
     public UserTest(){
         super(MainActivity.class);
     }
+
+    public void testCreateUser() {
+        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+
+        assertEquals(user.getUsername(), "rromano");
+
+        assertEquals(user.getName(), "Ryan");
+
+        assertEquals(user.getPhoneNumber(), "111-222-3333");
+
+        assertEquals(user.getEmail(), "rromano@ualberta.ca");
+    }
+
+    public void testGetUserBids() {
+
+    }
+
+    public void testGetMyTasks() {
+
+    }
+
+    public void testGetAssignments() {
+
+    }
+
+    public void testGetNotifcations() {
+
+    }
+
+    public void testGetRating() {
+
+    }
+
 }
+
