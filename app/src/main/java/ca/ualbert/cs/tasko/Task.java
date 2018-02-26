@@ -51,7 +51,12 @@ public class Task {
 
     public Task(User taskRequester, String taskName, String description,
                 ArrayList<Image> photos, Location location){
-
+        this.taskRequester = taskRequester;
+        this.taskName = taskName;
+        this.description = description;
+        this.photos = photos;
+        this.geolocation = location;
+        this.status = Status.REQUESTED;
     }
 
     public void acceptBid(Bid bid){

@@ -23,9 +23,9 @@ import static ca.ualbert.cs.tasko.Status.BIDDED;
 
 public class Notification {
 
-    User recipient; //Maybe an ArrayList of users to handle multiple recipients...
-    String taskname;
-    String message;
+    private User recipient; //Maybe an ArrayList of users to handle multiple recipients...
+    private String taskname;
+    private String message;
 
     Notification(Task task){
 
