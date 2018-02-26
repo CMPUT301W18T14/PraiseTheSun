@@ -47,6 +47,7 @@ public class User {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.userBids = null;
     }
 
     public String getUsername() {
