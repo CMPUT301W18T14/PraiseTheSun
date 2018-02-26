@@ -27,7 +27,7 @@ public class Notification {
     private String taskname;
     private String message;
 
-    Notification(Task task){
+    public Notification(Task task){
 
         this.taskname = task.getTaskName();
         this.recipient = task.getTaskRequester(); //Default
