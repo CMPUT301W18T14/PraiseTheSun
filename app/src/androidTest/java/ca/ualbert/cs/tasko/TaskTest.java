@@ -26,4 +26,12 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
+    public void testacceptBid(){
+        User user = new User();
+        User secondUser = new User();
+        Task task = new Task(user, "atask", "test");
+        Bid bid = new Bid(secondUser, 2.56f);
+        task.acceptBid(bid);
+        assertEquals(task.getStatus(),Status.ASSIGNED);
+    }
 }
