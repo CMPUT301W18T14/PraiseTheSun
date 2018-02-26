@@ -27,9 +27,14 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testCreate() {
-        String message = "This is a Test Case";
-        Notification notification = new Notification(message);
+        User user = new User("StevieP", "Steve", "911", "spacker");
+        Task task = new Task(user,  "TestTask1", "Help me test software");
+        Notification notification = new Notification(task);
 
-        assertEquals(notification.getMessage(), message);
+        //Test to see if notification is being created and can get info from the passed in task.
+        assertEquals(notification.getTaskname(), "TestTask1");
+
+        //Test to see if notification switch block is working properly.
+        assertEquals(notification.getMessage(), "Default Message for Testing");
     }
 }
