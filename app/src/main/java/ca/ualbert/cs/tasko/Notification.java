@@ -15,23 +15,52 @@
 
 package ca.ualbert.cs.tasko;
 
+import static ca.ualbert.cs.tasko.Status.BIDDED;
+
 /**
  * Created by spack on 2018-02-23.
  */
 
 public class Notification {
 
+    User recipient; //Maybe an ArrayList of users to handle multiple recipients...
+    String taskname;
     String message;
 
-    Notification(String message){
-        this.message = message;
+    Notification(Task task){
+
+        this.taskname = task.getTaskName();
+        this.recipient = task.getTaskRequester(); //Default
+
+        Status status = task.getStatus();
+        switch (status){
+            case REQUESTED:
+                this.message = "Default Message for Testing";
+                break;
+            case BIDDED:
+                this.recipient = task.getTaskRequester();
+                this.message = "You have received a new Bid on" + taskname;
+                break;
+            case ASSIGNED:
+                // this.recipient = task.getTaskProvider();
+                this.message = "You have been assigned to complete" + taskname;
+                break;
+            case DONE:
+                // This would be a special case because we want to send a "rating notification" to
+                // both the task requestor and provider
+                this.message = "Please rate ..."; //No idea how to implement this....
+
+        }
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public String getTaskname() {return taskname; }
+
+    public void sendNotification(Notification notification){
+        //send to recipient
     }
+
 }

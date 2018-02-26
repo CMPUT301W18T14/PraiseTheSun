@@ -24,13 +24,21 @@ import java.util.ArrayList;
  */
 
 public class BidListTest extends ActivityInstrumentationTestCase2 {
+    private User provider;
+    private User provider2;
+
     public BidListTest(){
         super(MainActivity.class);
     }
 
+    @Override
+    protected void setUp() {
+        provider = new User("Bob1234", "Bob", "123-456-7890", "bobby9@cooldomain.com");
+        provider2 = new User("JohnDoe", "John Doe", "999-123-4567", "jdoe@example.com");
+    }
+
     public void testHasBid(){
         BidList bids = new BidList();
-        User provider = new User();
         Bid bid = new Bid(provider, 10.99f);
 
 
@@ -41,7 +49,6 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
 
     public void testAddBid(){
         BidList bids = new BidList();
-        User provider = new User();
         Bid bid = new Bid(provider, 10.99f);
 
         bids.addBid(bid);
@@ -50,7 +57,6 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
 
     public void testRemoveBid(){
         BidList bids = new BidList();
-        User provider = new User();
         Bid bid = new Bid(provider, 10.99f);
 
         bids.addBid(bid);
@@ -61,8 +67,6 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
 
     public void testGetBids(){
         BidList bids = new BidList();
-        User provider = new User();
-        Bid bid = new Bid(provider, 10.99f);
 
         ArrayList<Bid> theBids = bids.getBids();
         assertTrue(theBids != null);
@@ -70,8 +74,6 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
 
     public void testGetMinBid(){
         BidList bids = new BidList();
-        User provider = new User();
-        User provider2 = new User();
         Bid bid = new Bid(provider, 10.99f);
         Bid bid2 = new Bid(provider2, 9.00f);
 
@@ -84,7 +86,6 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
 
     public void testGetBid(){
         BidList bids = new BidList();
-        User provider = new User();
         Bid bid = new Bid(provider, 10.99f);
 
         Bid returned = bids.getBid(provider);

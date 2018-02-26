@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko;
 
+import java.util.ArrayList;
+
 /**
  * Created by chase on 2/23/2018.
  * Represents a user (which can be both a task requester and task provider). Contains info such
@@ -28,21 +30,84 @@ public class User {
 
     private String username;
     private String name;
-    private String number;
+    private String phoneNumber;
     private String email;
-    private TaskList bids;
+    private BidList userBids;
     private TaskList myTasks;
     private TaskList assignments;
+    private ArrayList<Notification> notifications;
     private Float rating;
 
     public User(){
 
     }
 
-    public User(String username, String name, String number, String email){
+    public User(String username, String name, String phoneNumber, String email){
         this.username = username;
         this.name = name;
-        this.number = number;
+        this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername (String name) {
+        this.name = name;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
+
+    public String getPhoneNumber() {
+        return phoneNumber ;
+    }
+
+    public void setPhoneNumber (String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail (String email) {
+        this.email = email;
+    }
+
+
+    public BidList getBids() {
+        return userBids;
+    }
+
+    public TaskList getMyTasks() {
+        return myTasks;
+    }
+
+    public TaskList getAssignements () {
+        return assignments;
+    }
+
+    public ArrayList<Notification> getNotifications () {
+        return notifications;
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating (Float rating) {
+        this.rating = rating;
+    }
+
+
 }
