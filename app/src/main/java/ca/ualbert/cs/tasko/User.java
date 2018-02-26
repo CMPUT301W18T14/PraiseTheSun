@@ -48,6 +48,10 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.userBids = null;
+        this.myTasks = null;
+        this.assignments = null;
+        this.notifications = null;
+        this.rating = null;
     }
 
     public String getUsername() {
@@ -85,17 +89,31 @@ public class User {
         this.email = email;
     }
 
+    public void addBid(Bid bid) {
+        userBids.addBid(bid);
+    }
 
     public BidList getBids() {
         return userBids;
+    }
+
+    public void addMyTasks(Task task) {
+        myTasks.addTask(task);
     }
 
     public TaskList getMyTasks() {
         return myTasks;
     }
 
-    public TaskList getAssignements () {
+    public void addAssignments(Task task) {
+        assignments.addTask(task);
+    }
+    public TaskList getAssignments () {
         return assignments;
+    }
+
+    public void addNotification(Notification notification) {
+        notifications.add(notification);
     }
 
     public ArrayList<Notification> getNotifications () {

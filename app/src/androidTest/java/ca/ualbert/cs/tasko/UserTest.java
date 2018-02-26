@@ -40,37 +40,30 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
     public void testGetUserBids() {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        BidList bids = new BidList();
 
-        assertTrue(user.getBids() == null);
+        assertNull(user.getBids());
         Bid bid = new Bid(user, 59.99f);
-        bids.addBid(bid);
-        assertTrue(user.getBids() == bids);
-
+        user.addBid(bid);
+        assertTrue(user.getBids().hasBid(bid));
     }
 
     public void testGetMyTasks() {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        TaskList tasks = new TaskList();
 
-        assertTrue(user.getMyTasks() == null);
+        assertNull(user.getMyTasks());
         Task task = new Task(user, "Good Task Name", "Better description.");
-        tasks.addTask(task);
-        assertTrue(user.getMyTasks() == tasks);
+        user.addMyTasks(task);
+        assertTrue(user.getMyTasks().getTasks().contains(task));
     }
-
-
 
     public void testGetAssignments() {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
         User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
-        TaskList assignedTasks = new TaskList();
 
-        assertTrue(user.getAssignements() == null);
+        assertNull(user.getAssignments());
         Task task = new Task(user2, "Good Task Name", "Better description.");
-
-        assignedTasks.addTask(task);
-        assertTrue(user.getAssignements() == assignedTask);
+        user.addAssignments(task);
+        assertTrue(user.getAssignments().getTasks().contains(task));
     }
 
 
@@ -78,13 +71,11 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
         User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
         Task task = new Task(user2, "Good Task Name", "Better description.");
-        ArrayList<Notification> notifications = new ArrayList<>();
         Notification notification = new Notification(task);
 
-        assertTrue(user.getNotifications() == null);
-        notifications.add(notification);
-
-        assertTrue(user.getNotifications() == notification);
+        assertNull(user.getNotifications());
+        user.addNotification(notification);
+        assertTrue(user.getNotifications().contains(notification));
     }
 
     public void testGetRating() {
