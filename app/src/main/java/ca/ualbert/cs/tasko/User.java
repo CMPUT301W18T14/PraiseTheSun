@@ -36,7 +36,7 @@ public class User {
     private TaskList myTasks;
     private TaskList assignments;
     private ArrayList<Notification> notifications;
-    private Float rating;
+    private float rating;
 
     public User(){
 

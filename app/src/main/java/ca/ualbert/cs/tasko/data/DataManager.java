@@ -13,23 +13,23 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko;
-
-import android.test.ActivityInstrumentationTestCase2;
+package ca.ualbert.cs.tasko.data;
 
 /**
- * Created by Chase on 2/23/2018.
+ * The DataManager class is built to provide an abstraction to elastic search
+ * functionality. This class provides a singleton interface with various
+ * methods to provide a simple way to store and retrieve data from the
+ * elastic search index.
  */
-public class BidTest extends ActivityInstrumentationTestCase2 {
-    public BidTest(){
-        super(MainActivity.class);
+public class DataManager {
+
+    public static DataManager instance = new DataManager();
+
+    private DataManager(){
+
     }
 
-    public void testCreateBid(){
-        User user = new User();
-        Bid bid = new Bid(user, 13.57f);
-
-        assertEquals(bid.getTaskProvider(), user);
-        assertEquals(bid.getValue(), 13.57f);
+    public static DataManager getInstance(){
+        return instance;
     }
 }
