@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko;
 
+import java.util.ArrayList;
+
 /**
  * Created by chase on 2/23/2018.
  * Represents a user (which can be both a task requester and task provider). Contains info such
@@ -34,9 +36,9 @@ public class User {
     private TaskList myTasks;
     private TaskList assignments;
     private Float rating;
+    private ArrayList<Notification> notifications;
 
     public User(){
-
     }
 
     public User(String username, String name, String number, String email){
@@ -44,5 +46,9 @@ public class User {
         this.name = name;
         this.number = number;
         this.email = email;
+    }
+
+    public void addNotification(Notification notification){
+        notifications.add(notification);
     }
 }

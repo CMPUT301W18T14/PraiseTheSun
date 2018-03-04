@@ -27,7 +27,7 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testCreate() {
-        User user = new User("StevieP", "Steve", "911", "spacker");
+        User user = new User("StevieP", "Steve", "780-450-1000", "spacker@ualberta.ca");
         Task task = new Task(user,  "TestTask1", "Help me test software");
         Notification notification = new Notification(task);
 

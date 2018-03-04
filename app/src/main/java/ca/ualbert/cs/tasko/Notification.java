@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko;
 
+import java.util.ArrayList;
+
 import static ca.ualbert.cs.tasko.Status.BIDDED;
 
 /**
@@ -23,31 +25,27 @@ import static ca.ualbert.cs.tasko.Status.BIDDED;
 
 public class Notification {
 
-    User recipient; //Maybe an ArrayList of users to handle multiple recipients...
+    ArrayList<User> recipients; //Maybe an ArrayList of users to handle multiple recipients...
     String taskname;
     String message;
 
     Notification(Task task){
 
         this.taskname = task.getTaskName();
-        this.recipient = task.getTaskRequester(); //Default
 
         Status status = task.getStatus();
         switch (status){
-            case REQUESTED:
-                this.message = "Default Message for Testing";
-                break;
             case BIDDED:
-                this.recipient = task.getTaskRequester();
+                recipients.add(task.getTaskRequester());
                 this.message = "You have received a new Bid on" + taskname;
                 break;
             case ASSIGNED:
-                // this.recipient = task.getTaskProvider();
+                recipients.add(task.getTaskProvider());
                 this.message = "You have been assigned to complete" + taskname;
                 break;
             case DONE:
-                // This would be a special case because we want to send a "rating notification" to
-                // both the task requestor and provider
+                recipients.add(task.getTaskRequester());
+                recipients.add(task.getTaskProvider());
                 this.message = "Please rate ..."; //No idea how to implement this....
 
         }
@@ -59,8 +57,10 @@ public class Notification {
 
     public String getTaskname() {return taskname; }
 
-    public void sendNotification(Notification notification){
-        //send to recipient
+    public void sendNotification(){
+        for (int i = 0; i < recipients.size(); i++){
+            recipients.get(i).addNotification(this);
+        }
     }
 
 }
