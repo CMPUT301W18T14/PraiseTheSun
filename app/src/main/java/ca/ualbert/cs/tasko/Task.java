@@ -19,6 +19,7 @@ import android.location.Location;
 import android.media.Image;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by Chase on 2/23/2018.
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 public class Task {
 
     private String taskName;
+    private UUID id;
     private String description;
     private ArrayList<Image> photos;
     private Location geolocation;
@@ -111,5 +113,13 @@ public class Task {
 
     public Status getStatus() {
         return status;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

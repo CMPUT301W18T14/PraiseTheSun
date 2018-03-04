@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko.data;
 
+import ca.ualbert.cs.tasko.User;
+
 /**
  * The DataManager class is built to provide an abstraction to elastic search
  * functionality. This class provides a singleton interface with various
@@ -31,5 +33,10 @@ public class DataManager {
 
     public static DataManager getInstance(){
         return instance;
+    }
+
+    public boolean putUser(User user){
+
+        return true;
     }
 }

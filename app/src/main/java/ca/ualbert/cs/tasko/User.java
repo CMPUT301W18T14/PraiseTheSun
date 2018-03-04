@@ -51,7 +51,7 @@ public class User {
         this.myTasks = null;
         this.assignments = null;
         this.notifications = null;
-        this.rating = null;
+        this.rating = 0;
     }
 
     public String getUsername() {
@@ -120,11 +120,11 @@ public class User {
         return notifications;
     }
 
-    public Float getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating (Float rating) {
+    public void setRating (float rating) {
         this.rating = rating;
     }
 
