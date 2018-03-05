@@ -19,16 +19,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.ualbert.cs.tasko.CreateAccountActivity">
+    tools:context="ca.ualbert.cs.tasko.AddTaskActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <TextView
-        android:id="@+id/createAccountTitle"
+        android:id="@+id/addTaskTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:text="@string/create_account"
+        android:text="@string/add_task"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="28sp"
@@ -37,73 +38,70 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/createAccountUsername"
+        android:id="@+id/addTaskName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="28dp"
-        android:hint="@string/username"
-        android:inputType="text"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createAccountTitle"/>
-
-    <EditText
-        android:id="@+id/createAccountName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="28dp"
-        android:hint="@string/full_name"
+        android:hint="@string/task_title"
         android:inputType="textCapWords"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createAccountUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/addTaskTitle" />
 
     <EditText
-        android:id="@+id/createAccountEmail"
+        android:id="@+id/addTaskDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="28dp"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
+        android:hint="@string/description"
+        android:inputType="textCapWords"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createAccountName" />
-
-    <EditText
-        android:id="@+id/createAccountPhone"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="28dp"
-        android:hint="@string/phone_number"
-        android:inputType="phone"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createAccountEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/addTaskName" />
 
     <Button
-        android:id="@+id/CreateAccountButton"
+        android:id="@+id/addTaskPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="84dp"
+        android:onClick="onAddPhotoClick"
+        android:text="@string/add_photo"
+        app:layout_constraintEnd_toStartOf="@+id/addTaskLocation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addTaskDescription" />
+
+    <Button
+        android:id="@+id/addTaskLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="84dp"
+        android:onClick="onAddLocationClick"
+        android:text="@string/add_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addTaskPhoto"
+        app:layout_constraintTop_toBottomOf="@+id/addTaskDescription" />
+
+    <Button
+        android:id="@+id/addTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="28dp"
-        android:onClick="onCreateClick"
-        android:text="@string/create"
+        android:onClick="onAddTaskClick"
+        android:text="@string/post_task"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createAccountPhone" />
-
+        app:layout_constraintTop_toBottomOf="@+id/addTaskPhoto" />
 
 </android.support.constraint.ConstraintLayout>

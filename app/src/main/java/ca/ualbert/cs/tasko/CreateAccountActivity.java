@@ -48,12 +48,11 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     public void onCreateClick(View view) {
-        User newUser = new User(username, name, email, phone);
         boolean valid = checkFieldsForEmptyValues();
-
         if (valid) {
+            User newUser = new User(username, name, email, phone);
             // This relies on Chases DataManager class. Subject to change in future.
-            //DataManager.getInstance().putUser(newUser);
+            // DataManager.getInstance().putUser(newUser);
         }
     }
 
