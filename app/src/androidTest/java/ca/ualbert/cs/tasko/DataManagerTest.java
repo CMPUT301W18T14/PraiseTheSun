@@ -43,7 +43,9 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
 
         boolean ret = dm.putUser(user1, getActivity().getApplicationContext());
         assertTrue(ret);
-        User returnedUser = dm.getUser(user1.getUsername(), getActivity().getApplicationContext());
+        User returnedUser = dm.getUserByUsername(user1.getUsername(), getActivity()
+                .getApplicationContext
+                ());
         assertEquals(returnedUser, user1);
 
     }
@@ -52,7 +54,8 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
 
         boolean ret = dm.putUser(user1, getActivity().getApplicationContext());
         assertTrue(ret);
-        User returnedUser = dm.getUser(user1.getUsername(), getActivity().getApplicationContext());
+        User returnedUser = dm.getUserByUsername(user1.getUsername(), getActivity()
+                .getApplicationContext());
         assertEquals(returnedUser, user1);
 
     }

@@ -57,7 +57,11 @@ public class DataManager {
         return true;
     }
 
-    public User getUser(String id, Context context){
+    public User getUserById(String id, Context context){
+        return new User();
+    }
+
+    public User getUserByUsername(String username, Context context){
         return new User();
     }
 
@@ -82,5 +86,7 @@ public class DataManager {
         }
         return false;
     }
+
+
 
 }
