@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.ualbert.cs.tasko">
 
-<<<<<<< HEAD
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -28,7 +28,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateAccountActivity" />
-<<<<<<< HEAD
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".AddTaskActivity"></activity>
     </application>
