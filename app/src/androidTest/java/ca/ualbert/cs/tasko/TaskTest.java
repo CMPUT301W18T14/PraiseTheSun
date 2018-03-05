@@ -15,6 +15,9 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.location.Location;
+import android.media.Image;
+import android.support.test.espresso.proto.action.ViewActions;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
@@ -25,5 +28,100 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
     public TaskTest(){
         super(MainActivity.class);
     }
+
+    public void testGetTaskName(){
+        User user = new User();
+        Task task = new Task(user, "atask", "test");
+        assertEquals("atask", task.getTaskName());
+    }
+
+    public void testGetDescription(){
+        User user = new User();
+        Task task = new Task(user, "atask", "test");
+        assertEquals("test", task.getDescription());
+    }
+
+    public void testSetDescription(){
+        User user = new User();
+        Task task = new Task(user, "atask", "");
+        task.setDescription("new description");
+        assertEquals("new description", task.getDescription());
+    }
+
+    public void testGetGeolocation(){
+        Location location = new Location("");
+        location.setLatitude(0.0d);//your coords of course
+        location.setLongitude(0.0d);
+        User user = new User();
+        Task task = new Task(user, "atask", "test", location);
+        assertEquals(location, task.getGeolocation());
+    }
+
+    public void testGetTaskRequester(){
+
+        User user = new User();
+        Task task = new Task(user, "atask", "test");
+        assertEquals(user, task.getTaskRequester());
+    }
+
+    public void testGetStatus(){
+
+        User user = new User();
+        Task task = new Task(user, "atask", "test");
+        assertNull(task.getStatus());
+    }
+
+    public void testSetStatus(){
+
+        User user = new User();
+        Task task = new Task(user, "atask", "test");
+        task.setStatus(Status.BIDDED);
+        assertEquals(Status.BIDDED,task.getStatus());
+    }
+
+
+
+    public void testAcceptBid(){
+        User user = new User();
+        User secondUser = new User();
+        Task task = new Task(user, "atask", "test");
+        Bid bid = new Bid(secondUser, 2.56f);
+        task.acceptBid(bid);
+        assertEquals(task.getStatus(),Status.ASSIGNED);
+    }
+
+    public void testAddPhoto() {
+        //TODO
+        //we may not be able to use Image class for android studio
+        Image photo;
+        User user = new User();
+        //Task task = new Task(user, "atask", "test", photo);
+    }
+
+    public void testRemovePhoto(){
+        //TODO
+        //we may not be able to use the image class for android
+    }
+
+    public void testAddLocation(){
+        Location location = new Location("");
+        location.setLatitude(0.0d);//your coords of course
+        location.setLongitude(0.0d);
+        User user = new User();
+        Task task = new Task(user, "atask", "test");
+        task.addLocation(location);
+        assertEquals(location, task.getGeolocation());
+    }
+
+    public void testRemoveLocation(){
+        Location location = new Location("");
+        location.setLatitude(0.0d);//your coords of course
+        location.setLongitude(0.0d);
+        User user = new User();
+        Task task = new Task(user, "atask", "test", location);
+        task.removeLocation();
+        assertNull(task.getGeolocation());
+    }
+
 
 }

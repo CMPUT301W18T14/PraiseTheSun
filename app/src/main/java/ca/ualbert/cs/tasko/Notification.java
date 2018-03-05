@@ -25,11 +25,17 @@ import static ca.ualbert.cs.tasko.Status.BIDDED;
 
 public class Notification {
 
+
     ArrayList<User> recipients; //Maybe an ArrayList of users to handle multiple recipients...
     String taskname;
     String message;
 
-    Notification(Task task){
+    private User recipient; //Maybe an ArrayList of users to handle multiple recipients...
+    private String taskname;
+    private String message;
+
+
+    public Notification(Task task){
 
         this.taskname = task.getTaskName();
 

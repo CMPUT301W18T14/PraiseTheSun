@@ -30,25 +30,106 @@ public class User {
 
     private String username;
     private String name;
-    private String number;
+    private String phoneNumber;
     private String email;
-    private TaskList bids;
+    private BidList userBids;
     private TaskList myTasks;
     private TaskList assignments;
+    private ArrayList<Notification> notifications;
     private Float rating;
     private ArrayList<Notification> notifications;
 
     public User(){
     }
 
-    public User(String username, String name, String number, String email){
+    public User(String username, String name, String phoneNumber, String email){
         this.username = username;
         this.name = name;
-        this.number = number;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.userBids = null;
+        this.myTasks = null;
+        this.assignments = null;
+        this.notifications = null;
+        this.rating = null;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername (String name) {
+        this.name = name;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
+
+    public String getPhoneNumber() {
+        return phoneNumber ;
+    }
+
+    public void setPhoneNumber (String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail (String email) {
         this.email = email;
     }
 
     public void addNotification(Notification notification){
         notifications.add(notification);
     }
+	
+    public void addBid(Bid bid) {
+        userBids.addBid(bid);
+    }
+
+    public BidList getBids() {
+        return userBids;
+    }
+
+    public void addMyTasks(Task task) {
+        myTasks.addTask(task);
+    }
+
+    public TaskList getMyTasks() {
+        return myTasks;
+    }
+
+    public void addAssignments(Task task) {
+        assignments.addTask(task);
+    }
+    public TaskList getAssignments () {
+        return assignments;
+    }
+
+    public void addNotification(Notification notification) {
+        notifications.add(notification);
+    }
+
+    public ArrayList<Notification> getNotifications () {
+        return notifications;
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating (Float rating) {
+        this.rating = rating;
+    }
+
 }
