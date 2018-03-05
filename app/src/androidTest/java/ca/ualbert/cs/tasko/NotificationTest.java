@@ -55,10 +55,15 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
 
         Notification notification = new Notification(task);
 
-        ArrayList<Notification> testNotifications;
-        testNotifications = requestor.getNotifications();
+        //Test the task requestor gets notification in hypothetical rating scenario
+        ArrayList<Notification> testNotifications1;
+        testNotifications1 = requestor.getNotifications();
+        assertEquals(testNotifications1.get(0).getMessage(), "Please rate ..."  );
 
-        assertEquals(testNotifications.get(0).getMessage(), "Please rate ..."  );
+        //Test the task provider gets notification in hypothetical rating scenario
+        ArrayList<Notification> testNotifications2;
+        testNotifications2 = provider.getNotifications();
+        assertEquals(testNotifications2.get(0).getMessage(), "Please rate ..."  );
 
     }
 }

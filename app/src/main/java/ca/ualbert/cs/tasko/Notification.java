@@ -21,6 +21,14 @@ import static ca.ualbert.cs.tasko.Status.BIDDED;
 
 /**
  * Created by spack on 2018-02-23.
+ * Anytime something happens to a Task i.e a status change or a bid is made a called will be made to
+ * Create a notification object, this way, we will always have a Task object to pass into the
+ * notifications class in order to get necessary info. The body of the notification will change
+ * depending on the status of the task. These notifications get auto stored to the respective user,
+ * Im not sure if this will work with online connectivity, its something to discuss on monday. I was
+ * thinking about something like facebook where on the home page UI there is a little icon indicating,
+ * unread notifications that when clicked on expands into a listview of notifications. I am
+ * also unsure exactly how the rating notification will work.
  */
 
 public class Notification {
