@@ -41,6 +41,8 @@ public class AddTaskActivity extends AppCompatActivity {
 
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
+
+        // INCOMPLETE: Need to receive taskRequester from previous activity
     }
 
     public void onAddPhotoClick(View view){
