@@ -91,4 +91,19 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
         Bid returned = bids.getBid(provider);
         assertTrue(returned.equals(bid));
     }
+
+    public void testSortBids(){
+        BidList bids = new BidList();
+        Bid bid = new Bid(provider, 10.99f);
+        Bid bid2 = new Bid(provider2, 9.00f);
+
+        bids.addBid(bid);
+        bids.addBid(bid2);
+
+        ArrayList<Bid> sortedBids = bids.sortBids();
+
+        assertEquals(sortedBids.get(0), bid2);
+
+    }
+
 }

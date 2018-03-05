@@ -16,12 +16,15 @@
 package ca.ualbert.cs.tasko;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
+import static org.apache.commons.lang3.ObjectUtils.min;
 
 /**
  * Created by chase on 2/23/2018.
  */
 
-public class BidList {
+public class BidList{
 
     private ArrayList<Bid> bids;
 
@@ -30,7 +33,7 @@ public class BidList {
     }
 
     public void addBid(Bid bid){
-
+        bids.add(bid);
     }
 
     public Bid getBid(User provider){
@@ -41,15 +44,26 @@ public class BidList {
         return null;
     }
 
+
     public boolean hasBid(Bid bid){
-        return false;
+        boolean contains;
+        contains = (bids.contains(bid) ? true : false);
+        return contains;
     }
 
+    // Does Not need any Exception Handling, Trying to remove an Object That Does not exists does
+    // not cause an error.
     public void removeBid(Bid bid){
-
+        bids.remove(bid);
     }
 
     public ArrayList<Bid> getBids(){
         return bids;
     }
+
+    public ArrayList<Bid> sortBids() {
+        Collections.sort(bids);
+        return bids;
+    }
+
 }

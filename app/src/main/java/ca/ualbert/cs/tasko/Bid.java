@@ -24,7 +24,7 @@ package ca.ualbert.cs.tasko;
  * @author Chase Buhler
  * @see Task
  */
-public class Bid {
+public class Bid implements Comparable<Bid>{
 
     private User taskProvider;
     private float value;
@@ -57,5 +57,11 @@ public class Bid {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public int compareTo(Bid bid){
+        return Float.compare(this.value, bid.getValue());
+        // return this.value.compareTo(bid.getValue());
     }
 }
