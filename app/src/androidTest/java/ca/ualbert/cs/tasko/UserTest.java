@@ -81,7 +81,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
     public void testGetRating() {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
-        assertTrue(user.getRating() == null);
+        assertTrue(user.getRating() == 0);
         user.setRating(3.25f);
         assertFalse(user.getRating() == 4.25f);
         assertFalse(user.getRating() == -1.0f);

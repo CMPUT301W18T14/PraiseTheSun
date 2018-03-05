@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">Tasko</string>
     <string name="action_settings">Settings</string>
+    <string name="username">Username</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="create_account">Create an Account</string>
+    <string name="create">Create</string>
+    <string name="add_task">Add a task</string>
+    <string name="task_title">Give your task a title</string>
+    <string name="description">Description</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="add_location">Add Location</string>
+    <string name="post_task">Post your task!</string>
 </resources>
+
