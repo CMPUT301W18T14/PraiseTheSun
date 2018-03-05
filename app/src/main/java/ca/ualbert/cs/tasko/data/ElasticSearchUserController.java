@@ -22,7 +22,10 @@ import java.io.IOException;
 
 import ca.ualbert.cs.tasko.User;
 import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
 
 /**
  * Created by chase on 3/4/2018.
@@ -44,7 +47,9 @@ public class ElasticSearchUserController {
                 try{
                     DocumentResult result = JestWrapper.getClient().execute(index);
                     if(result.isSucceeded()){
+                        Log.i("Result ID:", result.getId());
                         user.setId(result.getId());
+                        Log.i("Result USER ID:", user.getId());
                     }
                 } catch (IOException e){
                     Log.i("Error", "The application failed to build and send the users");
@@ -52,6 +57,37 @@ public class ElasticSearchUserController {
             }
 
             return null;
+        }
+    }
+
+    /**
+     * This Task will request to find a user by the JestID provided and will return the user as a
+     * User Object if it is found otherwise it will return null
+     */
+    public static class GetUserByIdTask extends AsyncTask<String, Void, User> {
+        @Override
+        protected User doInBackground(String... ids){
+            User user;
+            JestWrapper.verifySettings();
+
+            //Build the get query
+            Get get = new Get.Builder(JestWrapper.getIndex(), ids[0]).build();
+
+            //Get the results
+            try{
+                DocumentResult result = JestWrapper.getClient().execute(get);
+                if(result.isSucceeded()){
+                    user = result.getSourceAsObject(User.class);
+                    Log.i("User ID:", user.getId());
+                    return user;
+                }
+
+            } catch (IOException e){
+                Log.i("Error", "Failed to get user by ID from ElasticSearch");
+            }
+
+            return null;
+
         }
     }
 

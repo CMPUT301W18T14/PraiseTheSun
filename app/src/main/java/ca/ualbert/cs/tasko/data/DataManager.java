@@ -18,6 +18,8 @@ package ca.ualbert.cs.tasko.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+
 import ca.ualbert.cs.tasko.User;
 
 /**
@@ -45,20 +47,36 @@ public class DataManager {
      * @param context Application Context Object
      * @return boolean indicating success or not
      */
-    public boolean putUser(User user, Context context){
+    public void putUser(User user, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         if(isOnline(context)){
             ElasticSearchUserController.AddUserTask addUserTask =
                     new ElasticSearchUserController.AddUserTask();
             addUserTask.execute(user);
-            return true;
-        }
 
-        return true;
+            Log.i("Result USER ID MANAGER", user.getId());
+        } else {
+            throw new NoInternetException();
+        }
     }
 
-    public User getUserById(String id, Context context){
-        return new User();
+    public User getUserById(String id, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        if(isOnline(context)){
+            ElasticSearchUserController.GetUserByIdTask getUserTask =
+                    new ElasticSearchUserController.GetUserByIdTask();
+            getUserTask.execute(id);
+
+            try {
+                User user = getUserTask.get();
+                return user;
+            } catch (Exception e){
+                Log.i("Error", "Failed to get user from the async object");
+            }
+        } else {
+            throw new NoInternetException();
+        }
+        return null;
     }
 
     public User getUserByUsername(String username, Context context){
