@@ -1,0 +1,67 @@
+/*
+ * Copyright © 2018 Chase Buhler, Imtihan Ahmed, Thomas Lafrance, Ryan Romano, Stephen Packer,
+ * Alden Emerson Ern Tan
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package ca.ualbert.cs.tasko;
+
+import android.app.Activity;
+import android.test.ActivityInstrumentationTestCase2;
+import android.widget.EditText;
+
+import com.robotium.solo.Solo;
+
+/**
+ * Created by spack on 2018-03-04.
+ */
+
+public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
+    private Solo solo;
+
+    public LoginActivityTest() {super (LoginActivity.class);}
+
+    @Override
+    public void setUp() throws Exception {
+        solo = new Solo(getInstrumentation(), getActivity());
+    }
+
+    public void testStart() throws Exception {
+        Activity activity = getActivity();
+    }
+
+    public void testLoginVALIDCredentials(){
+        // Right now the validity check is just if the username edit text contains any values,
+        // will be updated to check if the username exists in the database
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.usernameEditText), "username1");
+        solo.clickOnButton("LOGIN");
+
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+    }
+
+    public void testLoginINVALIDCredentials(){
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.clickOnButton("LOGIN");
+
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+    }
+
+    public void testCreateAccountButton(){
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.clickOnButton("Create Account");
+
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+
+
+    }
+}
