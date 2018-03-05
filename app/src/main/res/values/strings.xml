@@ -24,4 +24,13 @@
     <string name="usernameEditText">UserName</string>
     <string name="loginButton">LOGIN</string>
     <string name="createaccountButton">Create Account</string>
+
+    <string name="add_task">Add a task</string>
+    <string name="task_title">Give your task a title</string>
+    <string name="description">Description</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="add_location">Add Location</string>
+    <string name="post_task">Post your task!</string>
+
 </resources>
+
