@@ -27,7 +27,7 @@ class JestWrapper {
 
     private static JestDroidClient client;
 
-    private final static String index = "/cmput301w18t14";
+    private final static String index = "cmput301w18t14";
 
     private final static String database = "http://cmput301.softwareprocess.es:8080";
 

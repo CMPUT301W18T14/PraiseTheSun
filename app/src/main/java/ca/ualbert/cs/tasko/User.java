@@ -129,7 +129,10 @@ public class User {
         return rating;
     }
 
-    public void setRating (float rating) {
+    public void setRating (float rating) throws IllegalArgumentException{
+        if(rating < 0 || rating > 10){
+            throw new IllegalArgumentException("Argument must be between 0 and 10 inclusive.");
+        }
         this.rating = rating;
     }
 
