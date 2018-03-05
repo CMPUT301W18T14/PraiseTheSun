@@ -15,6 +15,9 @@
 
 package ca.ualbert.cs.tasko.data;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import ca.ualbert.cs.tasko.User;
 
 /**
@@ -35,8 +38,49 @@ public class DataManager {
         return instance;
     }
 
-    public boolean putUser(User user){
+    /**
+     * putUser will attempt to add a user to the elastic search database.
+     * context is used to check for network connectivity.
+     * @param user user to be inserted
+     * @param context Application Context Object
+     * @return boolean indicating success or not
+     */
+    public boolean putUser(User user, Context context){
+        context = context.getApplicationContext();
+        if(isOnline(context)){
+            ElasticSearchUserController.AddUserTask addUserTask =
+                    new ElasticSearchUserController.AddUserTask();
+            addUserTask.execute(user);
+            return true;
+        }
 
         return true;
     }
+
+    public User getUser(String id, Context context){
+        return new User();
+    }
+
+    /**
+     * isOnline will check the netWork info and verify that we are not only connected to a
+     * network but that we are connected via wifi.
+     * @param context Application Context
+     * @return true when connected to wifi, false otherwise.
+     */
+    private boolean isOnline(Context context){
+        /*
+        Retrieved on 04-03-2018
+        https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#DetermineType
+         */
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(isConnected){
+            return activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+        }
+        return false;
+    }
+
 }
