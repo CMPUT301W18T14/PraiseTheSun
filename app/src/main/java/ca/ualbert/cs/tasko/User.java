@@ -17,6 +17,8 @@ package ca.ualbert.cs.tasko;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by chase on 2/23/2018.
  * Represents a user (which can be both a task requester and task provider). Contains info such
@@ -37,6 +39,9 @@ public class User {
     private TaskList assignments;
     private ArrayList<Notification> notifications;
     private float rating;
+
+    @JestId
+    private String id;
 
     public User(){
 
@@ -128,5 +133,11 @@ public class User {
         this.rating = rating;
     }
 
+    public String getId(){
+        return id;
+    }
 
+    public void setId(String id){
+        this.id = id;
+    }
 }
