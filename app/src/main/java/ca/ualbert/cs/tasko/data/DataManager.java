@@ -53,8 +53,12 @@ public class DataManager {
             ElasticSearchUserController.AddUserTask addUserTask =
                     new ElasticSearchUserController.AddUserTask();
             addUserTask.execute(user);
+            try{
+                user.setId(addUserTask.get());
+            } catch (Exception e){
+                Log.i("Error", "Failed to obtain the user ID from the async object");
+            }
 
-            Log.i("Result USER ID MANAGER", user.getId());
         } else {
             throw new NoInternetException();
         }

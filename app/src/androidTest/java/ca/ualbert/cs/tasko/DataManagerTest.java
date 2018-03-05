@@ -45,20 +45,17 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         User returnedUser = null;
         try {
             dm.putUser(user1, getActivity().getApplicationContext());
-
         } catch (NoInternetException e) {
-            Log.i("Test", "I am Tesing");
+            Log.i("Error", "No internet connection. Can not add a new user at the moment");
         }
-        assertTrue(returnedUser == null);
-        /*try {
+        try {
             returnedUser = dm.getUserById(user1.getId(), getActivity()
                     .getApplicationContext());
         } catch (NoInternetException e){
             Log.i("Error", "The phone has no internet so this test will fail");
         }
-        assertEquals(returnedUser.getId(), user1.getId());*/
-        Log.i("THIS USER ID:", user1.getId());
-
+        assertFalse(returnedUser == null);
+        assertEquals(returnedUser.getId(), user1.getId());
     }
 
     /*public void testGetUser(){

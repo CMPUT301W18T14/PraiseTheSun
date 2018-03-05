@@ -35,9 +35,11 @@ public class ElasticSearchUserController {
     /*
     Create a task that will add a user to our elastic search database
      */
-    public static class AddUserTask extends AsyncTask<User, Void, Void> {
+    public static class AddUserTask extends AsyncTask<User, Void, String> {
+
+
         @Override
-        protected Void doInBackground(User... users){
+        protected String doInBackground(User... users){
             JestWrapper.verifySettings();
 
             for(User user : users){
@@ -47,15 +49,12 @@ public class ElasticSearchUserController {
                 try{
                     DocumentResult result = JestWrapper.getClient().execute(index);
                     if(result.isSucceeded()){
-                        Log.i("Result ID:", result.getId());
-                        user.setId(result.getId());
-                        Log.i("Result USER ID:", user.getId());
+                        return result.getId();
                     }
                 } catch (IOException e){
                     Log.i("Error", "The application failed to build and send the users");
                 }
             }
-
             return null;
         }
     }
@@ -78,7 +77,6 @@ public class ElasticSearchUserController {
                 DocumentResult result = JestWrapper.getClient().execute(get);
                 if(result.isSucceeded()){
                     user = result.getSourceAsObject(User.class);
-                    Log.i("User ID:", user.getId());
                     return user;
                 }
 
