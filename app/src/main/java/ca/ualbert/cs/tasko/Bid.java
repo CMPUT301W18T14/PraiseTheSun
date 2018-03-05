@@ -51,13 +51,15 @@ public class Bid implements Comparable<Bid>{
         this.value = value;
     }
 
-    @Override
-    public boolean equals(Object o){
-        if(!(o instanceof Bid)){
-            return false;
-        }
-        return false;
-    }
+//    I dont know exactly what this method does but I do know that it is fucking up my testing lol
+//    @Override
+//    public boolean equals(Object o){
+//        if(!(o instanceof Bid)){
+//            return false;
+//        }
+//        //Chase you wrote this as return false aswell... I assume that was a mistake?
+//        return true;
+//    }
 
     @Override
     public int compareTo(Bid bid){

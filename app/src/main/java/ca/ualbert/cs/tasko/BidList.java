@@ -37,18 +37,23 @@ public class BidList{
     }
 
     public Bid getBid(User provider){
-        return null;
+        for (int i = 0; i < bids.size(); i++){
+            if (bids.get(i).getTaskProvider() == provider){
+                return bids.get(i);
+            }
+        }
+
+    //Throw exception maybe?
+    return null;
     }
 
     public Bid getMinBid(){
-        return null;
+        Collections.sort(bids);
+        return bids.get(0);
     }
 
-
-    public boolean hasBid(Bid bid){
-        boolean contains;
-        contains = (bids.contains(bid) ? true : false);
-        return contains;
+    public Boolean hasBid(Bid bid){
+        return bids.contains(bid);
     }
 
     // Does Not need any Exception Handling, Trying to remove an Object That Does not exists does
@@ -64,6 +69,15 @@ public class BidList{
     public ArrayList<Bid> sortBids() {
         Collections.sort(bids);
         return bids;
+    }
+
+    //Mainly for testing below this point
+    public Bid get(int index){
+        return bids.get(index);
+    }
+
+    public int size(){
+        return bids.size();
     }
 
 }

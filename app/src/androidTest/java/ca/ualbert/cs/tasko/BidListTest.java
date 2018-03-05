@@ -40,19 +40,23 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
     public void testHasBid(){
         BidList bids = new BidList();
         Bid bid = new Bid(provider, 10.99f);
-
+        Bid bid2 = new Bid(provider2, 9.00f);
 
         assertFalse(bids.hasBid(bid));
         bids.addBid(bid);
         assertTrue(bids.hasBid(bid));
+        assertFalse(bids.hasBid(bid2));
     }
 
     public void testAddBid(){
         BidList bids = new BidList();
         Bid bid = new Bid(provider, 10.99f);
 
+        assertEquals(0, bids.size());
+
         bids.addBid(bid);
         assertTrue(bids.hasBid(bid));
+        assertEquals(1, bids.size());
     }
 
     public void testRemoveBid(){
@@ -88,6 +92,8 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
         BidList bids = new BidList();
         Bid bid = new Bid(provider, 10.99f);
 
+        bids.addBid(bid);
+
         Bid returned = bids.getBid(provider);
         assertTrue(returned.equals(bid));
     }
@@ -100,9 +106,11 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
         bids.addBid(bid);
         bids.addBid(bid2);
 
+        assertNotSame(bids.get(0).getValue(), 9.00f);
+
         ArrayList<Bid> sortedBids = bids.sortBids();
 
-        assertEquals(sortedBids.get(0), bid2);
+        assertEquals(sortedBids.get(0).getValue(), 9.00f);
 
     }
 
