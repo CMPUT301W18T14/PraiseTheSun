@@ -32,6 +32,7 @@ public class Task {
     private ArrayList<Image> photos;
     private Location geolocation;
     private User taskRequester;
+    private User taskProvider;
     private BidList bidList;
     private Status status;
 
@@ -112,4 +113,9 @@ public class Task {
     public Status getStatus() {
         return status;
     }
+
+    public User getTaskProvider() { return taskProvider; }
+
+    public void setTaskProvider (User taskProvider) { this.taskProvider = taskProvider; }
+
 }

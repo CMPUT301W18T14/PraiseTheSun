@@ -35,7 +35,6 @@ public class User {
     private BidList userBids;
     private TaskList myTasks;
     private TaskList assignments;
-    private ArrayList<Notification> notifications;
     private Float rating;
     private ArrayList<Notification> notifications;
 
@@ -50,7 +49,7 @@ public class User {
         this.userBids = null;
         this.myTasks = null;
         this.assignments = null;
-        this.notifications = null;
+        this.notifications = new ArrayList<>();
         this.rating = null;
     }
 
@@ -89,10 +88,6 @@ public class User {
         this.email = email;
     }
 
-    public void addNotification(Notification notification){
-        notifications.add(notification);
-    }
-	
     public void addBid(Bid bid) {
         userBids.addBid(bid);
     }
@@ -112,6 +107,7 @@ public class User {
     public void addAssignments(Task task) {
         assignments.addTask(task);
     }
+
     public TaskList getAssignments () {
         return assignments;
     }

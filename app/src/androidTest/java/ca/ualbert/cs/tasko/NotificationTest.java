@@ -17,6 +17,8 @@ package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import java.util.ArrayList;
+
 /**
  * Created by spack on 2018-02-23.
  */
@@ -27,8 +29,9 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testCreate() {
-        User user = new User("StevieP", "Steve", "780-450-1000", "spacker@ualberta.ca");
-        Task task = new Task(user,  "TestTask1", "Help me test software");
+        User user = new User("StevieP", "Steve", "780-450-1000",
+                "spacker@ualberta.ca");
+        Task task = new Task(user,"TestTask1", "Help me test software");
         Notification notification = new Notification(task);
 
         //Test to see if notification is being created and can get info from the passed in task.
@@ -36,5 +39,26 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
 
         //Test to see if notification switch block is working properly.
         assertEquals("Default Message for Testing", notification.getMessage());
+
+
+    }
+
+    // Test to see if notifications are properly "sent" to users
+    public void testSend(){
+        User requestor = new User("StevieP", "Steve", "780-450-1000",
+                "spacker@ualberta.ca");
+        User provider = new User("Stevoo", "Stephen", "780-454-1054",
+                "stevooo@ualberta.ca");
+        Task task = new Task(requestor,  "TestTask2", "Help me test software");
+        task.setTaskProvider(provider);
+        task.setStatus(Status.DONE);
+
+        Notification notification = new Notification(task);
+
+        ArrayList<Notification> testNotifications;
+        testNotifications = requestor.getNotifications();
+
+        assertEquals(testNotifications.get(0).getMessage(), "Please rate ..."  );
+
     }
 }

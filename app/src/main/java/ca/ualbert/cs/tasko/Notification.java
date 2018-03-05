@@ -25,36 +25,41 @@ import static ca.ualbert.cs.tasko.Status.BIDDED;
 
 public class Notification {
 
-
-    ArrayList<User> recipients; //Maybe an ArrayList of users to handle multiple recipients...
-    String taskname;
-    String message;
-
-    private User recipient; //Maybe an ArrayList of users to handle multiple recipients...
+    private ArrayList<User> recipients;
     private String taskname;
     private String message;
 
-
     public Notification(Task task){
+
+        this.recipients = new ArrayList<User>();
 
         this.taskname = task.getTaskName();
 
         Status status = task.getStatus();
+        // Creates the appropriate message given a tasks status
         switch (status){
+            case REQUESTED:
+                this.recipients.add(task.getTaskRequester());
+                this.message = "Default Message for Testing";
+                break;
             case BIDDED:
-                recipients.add(task.getTaskRequester());
+                this.recipients.add(task.getTaskRequester());
                 this.message = "You have received a new Bid on" + taskname;
                 break;
             case ASSIGNED:
-                recipients.add(task.getTaskProvider());
+                this.recipients.add(task.getTaskProvider());
                 this.message = "You have been assigned to complete" + taskname;
                 break;
             case DONE:
-                recipients.add(task.getTaskRequester());
-                recipients.add(task.getTaskProvider());
-                this.message = "Please rate ..."; //No idea how to implement this....
+                this.recipients.add(task.getTaskRequester());
+                this.recipients.add(task.getTaskProvider());
+                this.message = "Please rate ..."; // No idea how to implement this, embedded in this
+                //message should be something that when opened directs the user to a rating activity
 
         }
+
+         sendNotification();
+
     }
 
     public String getMessage() {
@@ -63,7 +68,7 @@ public class Notification {
 
     public String getTaskname() {return taskname; }
 
-    public void sendNotification(){
+    private void sendNotification(){
         for (int i = 0; i < recipients.size(); i++){
             recipients.get(i).addNotification(this);
         }
