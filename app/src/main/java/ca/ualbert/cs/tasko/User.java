@@ -90,19 +90,18 @@ public class User {
         this.email = email;
     }
 
-    //TODO: Do we need this method? If so it must be implemented
-    /*public void addBid(Bid bid) {
-        userBids.addBid(bid);
-    }*/
+    public void addBid(Bid bid) {
+        /*TODO: Add bid to server through DataManager*/
+    }
 
     public BidList getBids() {
         return new BidList();
     }
 
-    /*TODO: Again, do we need this?
-    public void addMyTasks(Task task) {
-        myTasks.addTask(task);
-    }*/
+
+    public void addMyTask(Task task) {
+        /*TODO: Implement this*/
+    }
 
     public TaskList getMyTasks() {
         return new TaskList();
