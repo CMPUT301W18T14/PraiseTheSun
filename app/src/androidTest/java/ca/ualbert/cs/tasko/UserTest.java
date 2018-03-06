@@ -44,9 +44,10 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         user.setId("userid2");
 
         task = new Task(provider, "Test Task", "This is a simple test!");
+        task.setId("taskid");
 
         /*TODO: Implememnt using new bid*/
-        bid = new Bid(provider, 4.99f);
+        bid = new Bid(provider.getId(), 4.99f, task.getId());
     }
 
     public void testCreateUser() {
