@@ -34,10 +34,10 @@ public class User {
     private String name;
     private String phoneNumber;
     private String email;
-    private BidList userBids;
-    private TaskList myTasks;
-    private TaskList assignments;
-    private ArrayList<Notification> notifications;
+    //private BidList userBids;
+    //private TaskList myTasks;
+    //private TaskList assignments;
+    //private ArrayList<Notification> notifications;
     private float rating;
 
     @JestId
@@ -52,11 +52,7 @@ public class User {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.userBids = null;
-        this.myTasks = null;
-        this.assignments = null;
-        this.notifications = null;
-        this.rating = 0;
+        this.rating = 5;
     }
 
     public String getUsername() {
@@ -94,35 +90,39 @@ public class User {
         this.email = email;
     }
 
-    public void addBid(Bid bid) {
+    //TODO: Do we need this method? If so it must be implemented
+    /*public void addBid(Bid bid) {
         userBids.addBid(bid);
-    }
+    }*/
 
     public BidList getBids() {
-        return userBids;
+        return new BidList();
     }
 
+    /*TODO: Again, do we need this?
     public void addMyTasks(Task task) {
         myTasks.addTask(task);
-    }
+    }*/
 
     public TaskList getMyTasks() {
-        return myTasks;
+        return new TaskList();
     }
 
+    /*TODO: I Think all these add methods will be accounted for when they are created????
     public void addAssignments(Task task) {
         assignments.addTask(task);
-    }
+    }*/
     public TaskList getAssignments () {
-        return assignments;
+        return new TaskList();
     }
 
+    /*
     public void addNotification(Notification notification) {
         notifications.add(notification);
-    }
+    }*/
 
     public ArrayList<Notification> getNotifications () {
-        return notifications;
+        return new ArrayList<>();
     }
 
     public float getRating() {
