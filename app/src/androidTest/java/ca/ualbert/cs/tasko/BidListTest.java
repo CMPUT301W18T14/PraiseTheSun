@@ -84,8 +84,8 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
 
         bids.addBid(bid);
 
-        BidList returned = bids.getBidsMatchingUserID("User1");
-        assertTrue(returned.hasBid(bid));
+        Bid returned = bids.getBid("User1");
+        assertTrue(returned.equals(bid));
     }
 
     public void testSortBids(){

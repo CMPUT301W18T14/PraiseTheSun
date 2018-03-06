@@ -30,8 +30,6 @@ import io.searchbox.annotations.JestId;
  */
 public class Bid implements Comparable<Bid>{
 
-    private DataManager DM = DataManager.getInstance();
-
     private String TaskID;
     private String UserID;
     private float value;
@@ -75,7 +73,6 @@ public class Bid implements Comparable<Bid>{
     public void setValue(float value) {
         this.value = value;
     }
-
 
     /**
      * Implementing Comparable in a way that allows bids to be sorted in order of increasing value

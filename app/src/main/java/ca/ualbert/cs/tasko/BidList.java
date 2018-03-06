@@ -42,15 +42,11 @@ public class BidList{
      * @return Returns a BidList that Contains all Bids made by a given user in a BidList.
      */
 
-    public BidList getBidsMatchingUserID(String UserID){
-        BidList matchingBids = new BidList();
+    public Bid getBid(String UserID){
         for (int i = 0; i < bids.size(); i++){
-            if (bids.get(i).getUserID().equals(UserID)){
-                matchingBids.addBid(bids.get(i));
-            }
+            return bids.get(i);
         }
-
-    return matchingBids;
+        return null;
     }
 
     /**
