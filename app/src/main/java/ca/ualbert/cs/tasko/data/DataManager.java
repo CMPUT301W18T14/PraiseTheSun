@@ -20,6 +20,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import java.util.ArrayList;
+
+import ca.ualbert.cs.tasko.Bid;
+import ca.ualbert.cs.tasko.BidList;
+import ca.ualbert.cs.tasko.Notification;
+import ca.ualbert.cs.tasko.Task;
+import ca.ualbert.cs.tasko.TaskList;
 import ca.ualbert.cs.tasko.User;
 
 /**
@@ -83,8 +90,69 @@ public class DataManager {
         return null;
     }
 
+    //TODO
     public User getUserByUsername(String username, Context context){
         return new User();
+    }
+
+    //TODO part 5
+    public void deleteUser(String userId, Context context){
+
+    }
+
+    //TODO
+    public void putTask(Task task, Context context){
+
+    }
+
+    //TODO
+    public Task getTask(String taskId, Context context){
+        return new Task(null, null, null);
+    }
+
+    //TODO
+    public TaskList searchTasks(String[] searchParameters, Context context ){
+        return new TaskList();
+    }
+
+    //TODO
+    public TaskList getUserTasks(String userId, Context context){
+        return new TaskList();
+    }
+
+    //TODO
+    public void addBid(Bid bid, Context context){
+
+    }
+
+    //TODO
+    public BidList getUserBids(String userId, Context context){
+        return new BidList();
+    }
+
+    //TODO
+    public BidList getTaskBids(String taskId, Context context){
+        return new BidList();
+    }
+
+    //TODO Part 5
+    public void deleteBid(String bidId, Context context){
+
+    }
+
+    //TODO
+    public void putNotification(Notification notification, Context context){
+
+    }
+
+    //TODO
+    public ArrayList<Notification> getNotifications(String userId, Context context){
+        return new ArrayList<>();
+    }
+
+    //TODO
+    public void deleteNotification(String userId, Context context){
+
     }
 
     /**
