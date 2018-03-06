@@ -18,10 +18,10 @@ package ca.ualbert.cs.tasko;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.apache.commons.lang3.ObjectUtils.min;
-
 /**
  * Created by chase on 2/23/2018.
+ * Represents a List of Bid Objects, Has functionality to return minimum Bid, return a bid
+ * associated with a UserID, along with typical ArrayList functionality.
  */
 
 public class BidList{
@@ -36,17 +36,27 @@ public class BidList{
         bids.add(bid);
     }
 
-    public Bid getBid(User provider){
+    /**
+     * Returns a BidList that contains all Bids from a Given UserID
+     * @param UserID The UserID is used to search the BidList and find all matching values
+     * @return Returns a BidList that Contains all Bids made by a given user in a BidList.
+     */
+
+    public BidList getBidsMatchingUserID(String UserID){
+        BidList matchingBids = new BidList();
         for (int i = 0; i < bids.size(); i++){
-            if (bids.get(i).getTaskProvider() == provider){
-                return bids.get(i);
+            if (bids.get(i).getUserID().equals(UserID)){
+                matchingBids.addBid(bids.get(i));
             }
         }
 
-    //Throw exception maybe?
-    return null;
+    return matchingBids;
     }
 
+    /**
+     * Sorts the BidList in Ascending Order Based Upon Value and Returns the first Bid.
+     * @return The Bid in BidList with the lowest monetary value
+     */
     public Bid getMinBid(){
         Collections.sort(bids);
         return bids.get(0);
@@ -56,8 +66,6 @@ public class BidList{
         return bids.contains(bid);
     }
 
-    // Does Not need any Exception Handling, Trying to remove an Object That Does not exists does
-    // not cause an error.
     public void removeBid(Bid bid){
         bids.remove(bid);
     }
@@ -66,18 +74,17 @@ public class BidList{
         return bids;
     }
 
+    /**
+     * Sorts Bids in a Bid List based on value of Bid, The lower Bids get out first.
+     * @return returns a Sorted BidList in Ascending Order(In terms of Bid Value)
+     */
     public ArrayList<Bid> sortBids() {
         Collections.sort(bids);
         return bids;
     }
 
-    //Mainly for testing below this point
     public Bid get(int index){
         return bids.get(index);
-    }
-
-    public int size(){
-        return bids.size();
     }
 
 }

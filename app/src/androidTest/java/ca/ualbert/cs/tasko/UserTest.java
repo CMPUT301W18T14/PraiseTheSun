@@ -42,7 +42,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
         assertNull(user.getBids());
-        Bid bid = new Bid(user, 59.99f);
+        Bid bid = new Bid("user", 59.99f, "TestTask1");
         user.addBid(bid);
         assertTrue(user.getBids().hasBid(bid));
     }

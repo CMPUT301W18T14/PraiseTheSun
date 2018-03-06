@@ -24,23 +24,16 @@ import java.util.ArrayList;
  */
 
 public class BidListTest extends ActivityInstrumentationTestCase2 {
-    private User provider;
-    private User provider2;
 
     public BidListTest(){
         super(MainActivity.class);
     }
 
-    @Override
-    protected void setUp() {
-        provider = new User("Bob1234", "Bob", "123-456-7890", "bobby9@cooldomain.com");
-        provider2 = new User("JohnDoe", "John Doe", "999-123-4567", "jdoe@example.com");
-    }
-
     public void testHasBid(){
         BidList bids = new BidList();
-        Bid bid = new Bid(provider, 10.99f);
-        Bid bid2 = new Bid(provider2, 9.00f);
+        Bid bid = new Bid("User1", 10.99f, "TestTask1");
+        Bid bid2 = new Bid("User2", 9.00f, "TestTask2");
+
 
         assertFalse(bids.hasBid(bid));
         bids.addBid(bid);
@@ -50,18 +43,15 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
 
     public void testAddBid(){
         BidList bids = new BidList();
-        Bid bid = new Bid(provider, 10.99f);
-
-        assertEquals(0, bids.size());
+        Bid bid = new Bid("User1", 10.99f, "TestTask1");
 
         bids.addBid(bid);
         assertTrue(bids.hasBid(bid));
-        assertEquals(1, bids.size());
     }
 
     public void testRemoveBid(){
         BidList bids = new BidList();
-        Bid bid = new Bid(provider, 10.99f);
+        Bid bid = new Bid("User1", 10.99f, "TestTask1");
 
         bids.addBid(bid);
         assertTrue(bids.hasBid(bid));
@@ -78,8 +68,8 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
 
     public void testGetMinBid(){
         BidList bids = new BidList();
-        Bid bid = new Bid(provider, 10.99f);
-        Bid bid2 = new Bid(provider2, 9.00f);
+        Bid bid = new Bid("User1", 10.99f, "TestTask1");
+        Bid bid2 = new Bid("User2", 9.00f, "TestTask2");
 
         bids.addBid(bid);
         bids.addBid(bid2);
@@ -88,20 +78,20 @@ public class BidListTest extends ActivityInstrumentationTestCase2 {
         assertTrue(minBid.equals(bid2));
     }
 
-    public void testGetBid(){
+    public void testGetBidsMatchingUserID(){
         BidList bids = new BidList();
-        Bid bid = new Bid(provider, 10.99f);
+        Bid bid = new Bid("User1", 10.99f, "TestTask1");
 
         bids.addBid(bid);
 
-        Bid returned = bids.getBid(provider);
-        assertTrue(returned.equals(bid));
+        BidList returned = bids.getBidsMatchingUserID("User1");
+        assertTrue(returned.hasBid(bid));
     }
 
     public void testSortBids(){
         BidList bids = new BidList();
-        Bid bid = new Bid(provider, 10.99f);
-        Bid bid2 = new Bid(provider2, 9.00f);
+        Bid bid = new Bid("User1", 10.99f, "TestTask1");
+        Bid bid2 = new Bid("User2", 9.00f, "TestTask2");
 
         bids.addBid(bid);
         bids.addBid(bid2);
