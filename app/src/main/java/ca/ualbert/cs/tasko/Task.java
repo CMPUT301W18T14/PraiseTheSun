@@ -19,7 +19,8 @@ import android.location.Location;
 import android.media.Image;
 
 import java.util.ArrayList;
-import java.util.UUID;
+
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by Chase on 2/23/2018.
@@ -29,13 +30,16 @@ import java.util.UUID;
 public class Task {
 
     private String taskName;
-    private UUID id;
     private String description;
     private ArrayList<Image> photos;
     private Location geolocation;
     private User taskRequester;
-    private BidList bidList;
+    private User taskProvider;
+    //private BidList bidList;
     private Status status;
+
+    @JestId
+    private String id;
 
     public Task(User taskRequester, String taskName, String description){
         this(taskRequester, taskName, description, null, null);
@@ -58,6 +62,7 @@ public class Task {
         this.description = description;
         this.photos = photos;
         this.geolocation = location;
+        this.taskProvider = null;
         this.status = Status.REQUESTED;
     }
 
@@ -65,9 +70,10 @@ public class Task {
 
     }
 
+    /*
     public BidList getBids(){
         return bidList;
-    }
+    }*/
 
     public void addPhoto(Image photo){
 
@@ -85,7 +91,13 @@ public class Task {
 
     }
 
-    public void setStatus(Status status){this.status = status; }
+    public void setStatus(Status status){
+        this.status = status;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 
     public String getTaskName() {
         return taskName;
@@ -111,15 +123,20 @@ public class Task {
         return taskRequester;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public User getTaskProvider() {
+        return taskProvider;
+    }
+
+    public void assign(User taskProvider) {
+        this.taskProvider = taskProvider;
+        this.status = Status.ASSIGNED;
     }
 }
