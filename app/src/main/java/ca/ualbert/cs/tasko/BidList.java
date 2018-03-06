@@ -37,14 +37,16 @@ public class BidList{
     }
 
     /**
-     * Returns a BidList that contains all Bids from a Given UserID
-     * @param UserID The UserID is used to search the BidList and find all matching values
-     * @return Returns a BidList that Contains all Bids made by a given user in a BidList.
+     * Returns the bid placed by the user or null otherwise
+     * @param UserID The UserID is used to search the BidList and find matching bid
+     * @return Returns a Bid that was made by UserID or null if it does not exist
      */
 
     public Bid getBid(String UserID){
         for (int i = 0; i < bids.size(); i++){
-            return bids.get(i);
+            if(bids.get(i).getUserID().compareTo(UserID) == 0){
+                return bids.get(i);
+            }
         }
         return null;
     }
