@@ -19,13 +19,35 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import java.util.ArrayList;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+
 /**
  * Created by ryan on 2018-02-24.
+ * Edited by chase on 2018-03-05
  */
 
 public class UserTest extends ActivityInstrumentationTestCase2 {
     public UserTest(){
         super(MainActivity.class);
+    }
+
+    User user;
+    User provider;
+    Bid bid;
+    Task task;
+
+    @Override
+    public void setUp(){
+        user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+        user.setId("userid");
+        provider = new User("jdoe", "John Doe", "123-456-9999", "jdoe@example.com");
+        user.setId("userid2");
+
+        task = new Task(provider, "Test Task", "This is a simple test!");
+        task.setId("taskid");
+
+        /*TODO: Implememnt using new bid*/
+        bid = new Bid(provider.getId(), 4.99f, task.getId());
     }
 
     public void testCreateUser() {
@@ -39,34 +61,27 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testGetUserBids() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
         assertNull(user.getBids());
-        Bid bid = new Bid(user, 59.99f);
         user.addBid(bid);
         assertTrue(user.getBids().hasBid(bid));
     }
 
     public void testGetMyTasks() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-
         assertNull(user.getMyTasks());
         Task task = new Task(user, "Good Task Name", "Better description.");
-        user.addMyTasks(task);
+        user.addMyTask(task);
         assertTrue(user.getMyTasks().getTasks().contains(task));
     }
 
     public void testGetAssignments() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
-
         assertNull(user.getAssignments());
-        Task task = new Task(user2, "Good Task Name", "Better description.");
-        user.addAssignments(task);
+        task.assign(user);
         assertTrue(user.getAssignments().getTasks().contains(task));
     }
 
 
+    /*TODO: RedoTest cases for Updated Notifications Class*/
     public void testGetNotifications() {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
         User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
@@ -74,7 +89,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         Notification notification = new Notification(task);
 
         assertNull(user.getNotifications());
-        user.addNotification(notification);
+        notification.sendNotification(notification);
         assertTrue(user.getNotifications().contains(notification));
     }
 
