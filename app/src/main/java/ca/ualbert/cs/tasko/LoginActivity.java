@@ -22,7 +22,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+
+/**
+ * LoginActivity should be the first Activity a user will see if they are not logged in.
+ * Just contains a EditText that allows the user to Login, If the text in the EditText matches
+ * a username in the database then access is granted. The user also has the option to navigate to
+ * the create a new account activity if they do not already have an account.
+ */
 public class LoginActivity extends AppCompatActivity {
+
+    private DataManager DM = DataManager.getInstance();
+    private CurrentUser CU = CurrentUser.getInstance();
 
     private LoginActivity activity = this;
     private EditText usernameText;
@@ -40,16 +51,24 @@ public class LoginActivity extends AppCompatActivity {
 
         setupLoginButton();
         setupCreateAccountButton();
-
     }
 
+    /**
+     * The login button checks to make sure the username provided matches a username in the
+     * Database, if it does it sets that user to the current user using the CurrentUser singelton.
+     * Otherwise the user is prompted to provide a valid username.
+     */
     public void setupLoginButton (){
         loginButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                // Need to use getUsernamebyUsername function chase is working on.
-                if (usernameText.getText() != null) { //usernameText.getText is in DataBase
+
+                User usernameInput = DM.getUserByUsername(usernameText.getText().toString(),
+                        LoginActivity.this);
+
+                if (usernameInput != null){
+                    CU.setCurrentUser(usernameInput);
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);
                 } else {
@@ -57,9 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
+    /**
+     * The Create Account Activity simply sends the user to the create account activity.
+     */
     public void setupCreateAccountButton (){
         createAccountButton.setOnClickListener(new View.OnClickListener() {
 
@@ -71,7 +92,4 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 }
