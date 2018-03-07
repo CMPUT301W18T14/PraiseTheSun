@@ -37,7 +37,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
     private DataManager dm;
 
     public void setUp(){
-        user1 = new User("jdoe", "John Doe", "555-333-1234", "jdoe@example.com");
+        user1 = new User("jdoe3", "John Doe", "555-333-1234", "jdoe3@example.com");
         dm = DataManager.getInstance();
     }
 
@@ -58,17 +58,21 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         assertEquals(returnedUser.getId(), user1.getId());
     }
 
-    /*public void testGetUser(){
-
+    public void testGetUserByUsername(){
+        User returnedUser = null;
         try {
             dm.putUser(user1, getActivity().getApplicationContext());
-            User returnedUser = dm.getUserById(user1.getUsername(), getActivity()
-                    .getApplicationContext());
-        } catch (NoInternetException e) {
-
+        } catch (NoInternetException e){
+            Log.i("Error", "No internet connection, can not add the user to elasticsearch");
         }
 
+        try {
+            returnedUser = dm.getUserByUsername(user1.getUsername(), getActivity()
+                    .getApplicationContext());
+        } catch (NoInternetException e){
+            Log.i("Error", "No internet connection, can not get the user from elasticsearch");
+        }
+        assertFalse(returnedUser == null);
         assertEquals(returnedUser.getId(), user1.getId());
-
-    }*/
+    }
 }

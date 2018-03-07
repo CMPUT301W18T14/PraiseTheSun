@@ -24,6 +24,11 @@ import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
+import ca.ualbert.cs.tasko.Commands.Command;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Notification;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
@@ -38,9 +43,10 @@ import ca.ualbert.cs.tasko.User;
 public class DataManager {
 
     public static DataManager instance = new DataManager();
+    private DataCommandManager dcm;
 
     private DataManager(){
-
+        dcm = DataCommandManager.getInstance();
     }
 
     public static DataManager getInstance(){
@@ -56,43 +62,37 @@ public class DataManager {
      */
     public void putUser(User user, Context context) throws NoInternetException{
         context = context.getApplicationContext();
+        PutUserCommand command = new PutUserCommand(user);
         if(isOnline(context)){
-            ElasticSearchUserController.AddUserTask addUserTask =
-                    new ElasticSearchUserController.AddUserTask();
-            addUserTask.execute(user);
-            try{
-                user.setId(addUserTask.get());
-            } catch (Exception e){
-                Log.i("Error", "Failed to obtain the user ID from the async object");
-            }
-
+            dcm.invokeCommand(command);
         } else {
+            //TODO: Add to a todoQueue for when we reconnect???
             throw new NoInternetException();
         }
     }
 
     public User getUserById(String id, Context context) throws NoInternetException{
         context = context.getApplicationContext();
+        GetUserByIdCommand command = new GetUserByIdCommand(id);
         if(isOnline(context)){
-            ElasticSearchUserController.GetUserByIdTask getUserTask =
-                    new ElasticSearchUserController.GetUserByIdTask();
-            getUserTask.execute(id);
+            dcm.invokeCommand(command);
+            return command.getResult();
 
-            try {
-                User user = getUserTask.get();
-                return user;
-            } catch (Exception e){
-                Log.i("Error", "Failed to get user from the async object");
-            }
         } else {
             throw new NoInternetException();
         }
-        return null;
     }
 
     //TODO
-    public User getUserByUsername(String username, Context context){
-        return new User();
+    public User getUserByUsername(String username, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetUserByUsernameCommand command = new GetUserByUsernameCommand(username);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
+            return command.getResult();
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     //TODO part 5

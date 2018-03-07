@@ -89,4 +89,28 @@ public class ElasticSearchUserController {
         }
     }
 
+    public static class GetUserByUsernameTask extends AsyncTask<String, Void, User> {
+
+        @Override
+        protected User doInBackground(String... usernames){
+            User user = null;
+            JestWrapper.verifySettings();
+
+            //Build the search query
+            Search search = new Search.Builder(usernames[0]).addIndex(JestWrapper.getIndex())
+                    .addType("user").build();
+            try{
+                SearchResult sr = JestWrapper.getClient().execute(search);
+                if(sr.isSucceeded()){
+                    user = sr.getSourceAsObject(User.class);
+                }
+
+            } catch (Exception e){
+                Log.i("Error", "Could not build and execute getUserByUsernameTask");
+            }
+
+            return user;
+        }
+    }
+
 }
