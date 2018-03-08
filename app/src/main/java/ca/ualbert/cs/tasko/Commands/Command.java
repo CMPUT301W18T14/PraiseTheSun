@@ -17,6 +17,8 @@ package ca.ualbert.cs.tasko.Commands;
 
 /**
  * Represents a command object with a basic execute and undo functionality.
+ *
+ * @author Chase Buhler
  */
 public interface Command {
     public void execute();

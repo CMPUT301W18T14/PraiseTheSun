@@ -19,6 +19,8 @@ import ca.ualbert.cs.tasko.Commands.Command;
 
 /**
  * Represents a command that will be used to put data into the database. With no results
+ *
+ * @author Chase Buhler
  */
 public interface PutCommand extends Command {
 }

@@ -23,7 +23,7 @@ import com.searchly.jestdroid.JestDroidClient;
  * Created by chase on 3/4/2018.
  *
  */
-class JestWrapper {
+public class JestWrapper {
 
     private static JestDroidClient client;
 
