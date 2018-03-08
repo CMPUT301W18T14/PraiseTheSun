@@ -19,6 +19,8 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by chase on 3/4/2018.
  *
@@ -42,7 +44,9 @@ public class JestWrapper {
         https://github.com/7FeiW/lonelyTwitter/blob/lab5_base/app/src/main/java/ca/ualberta/cs/lonelytwitter/ElasticsearchTweetController.java
          */
         if(client == null){
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder(database);
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder(database)
+                    .discoveryEnabled(true).discoveryFrequency(101, TimeUnit.SECONDS)
+                    .multiThreaded(true);
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();

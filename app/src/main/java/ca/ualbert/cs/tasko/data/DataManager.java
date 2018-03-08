@@ -63,8 +63,18 @@ public class DataManager {
     public void putUser(User user, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         PutUserCommand command = new PutUserCommand(user);
+        GetUserByUsernameCommand isDuplicate = new GetUserByUsernameCommand(user.getUsername());
         if(isOnline(context)){
+            dcm.invokeCommand(isDuplicate);
+            if(isDuplicate.getResult().getId() != user.getId()){
+                throw new IllegalArgumentException("Can not add duplicate users");
+            }
             dcm.invokeCommand(command);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             //TODO: Add to a todoQueue for when we reconnect???
             throw new NoInternetException();
@@ -83,12 +93,12 @@ public class DataManager {
         }
     }
 
-    //TODO
     public User getUserByUsername(String username, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserByUsernameCommand command = new GetUserByUsernameCommand(username);
         if(isOnline(context)){
             dcm.invokeCommand(command);
+
             return command.getResult();
         } else {
             throw new NoInternetException();

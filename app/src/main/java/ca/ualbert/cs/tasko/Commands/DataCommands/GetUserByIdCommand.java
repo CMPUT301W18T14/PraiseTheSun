@@ -15,10 +15,16 @@
 
 package ca.ualbert.cs.tasko.Commands.DataCommands;
 
+import android.os.AsyncTask;
 import android.util.Log;
+
+import java.io.IOException;
 
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.ElasticSearchUserController;
+import ca.ualbert.cs.tasko.data.JestWrapper;
+import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Get;
 
 /**
  * Created by chase on 3/7/2018.
@@ -34,8 +40,7 @@ public class GetUserByIdCommand extends GetCommand<User> {
 
     @Override
     public void execute() {
-        ElasticSearchUserController.GetUserByIdTask getUserTask =
-                new ElasticSearchUserController.GetUserByIdTask();
+        GetUserByIdTask getUserTask = new GetUserByIdTask();
         getUserTask.execute(id);
 
         try {
@@ -43,6 +48,32 @@ public class GetUserByIdCommand extends GetCommand<User> {
             setResult(user);
         } catch (Exception e){
             Log.i("Error", "Failed to get user from the async object");
+        }
+    }
+
+    private static class GetUserByIdTask extends AsyncTask<String, Void, User> {
+
+        @Override
+        protected User doInBackground(String... ids) {
+            User user = new User();
+            JestWrapper.verifySettings();
+
+            //Build the get query
+            Get get = new Get.Builder(JestWrapper.getIndex(), ids[0]).build();
+
+            //Get the results
+            try{
+                DocumentResult result = JestWrapper.getClient().execute(get);
+                if(result.isSucceeded()){
+                    user = result.getSourceAsObject(User.class);
+                    return user;
+                }
+
+            } catch (IOException e){
+                Log.i("Error", "Failed to get user by ID from ElasticSearch");
+            }
+
+            return user;
         }
     }
 }

@@ -18,11 +18,13 @@ package ca.ualbert.cs.tasko.Commands.DataCommands;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.ElasticSearchUserController;
 import ca.ualbert.cs.tasko.data.JestWrapper;
+import io.searchbox.client.JestResult;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
@@ -45,7 +47,9 @@ public class GetUserByUsernameCommand extends GetCommand<User> {
         GetUserByUsernameTask getUserTask = new GetUserByUsernameTask();
         getUserTask.execute(query);
         try{
-            setResult(getUserTask.get());
+            User user = getUserTask.get();
+            Log.i("THE USER WTF\n\n\n\n\n", user.getId() + "");
+            setResult(user);
         } catch (Exception e){
             Log.i("Error", "Failed to get the user by username from the async object");
         }
@@ -56,7 +60,7 @@ public class GetUserByUsernameCommand extends GetCommand<User> {
 
         @Override
         protected User doInBackground(String... usernames){
-            User user = null;
+            User user = new User();
             JestWrapper.verifySettings();
 
             //Build the search query
@@ -64,12 +68,12 @@ public class GetUserByUsernameCommand extends GetCommand<User> {
                     .addType("user").build();
             try{
                 SearchResult sr = JestWrapper.getClient().execute(search);
-                if(sr.isSucceeded()){
-                    user = sr.getSourceAsObject(User.class);
+                if(sr.isSucceeded() && sr.getTotal() > 0){
+                    user = sr.getFirstHit(User.class).source;
                 }
 
-            } catch (Exception e){
-                Log.i("Error", "Could not build and execute getUserByUsernameTask");
+            } catch (IOException e){
+                Log.i("Error", e.getMessage());
             }
 
             return user;
