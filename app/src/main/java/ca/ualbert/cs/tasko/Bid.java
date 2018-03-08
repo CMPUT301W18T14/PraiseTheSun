@@ -83,4 +83,12 @@ public class Bid implements Comparable<Bid>{
     public int compareTo(Bid bid){
         return Float.compare(this.value, bid.getValue());
     }
+
+    public String getBidID() {
+        return BidID;
+    }
+
+    public void setBidID(String bidID) {
+        BidID = bidID;
+    }
 }

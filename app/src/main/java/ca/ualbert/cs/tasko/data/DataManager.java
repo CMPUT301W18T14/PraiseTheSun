@@ -25,9 +25,11 @@ import java.util.ArrayList;
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
 import ca.ualbert.cs.tasko.Commands.Command;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetBidsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Notification;
 import ca.ualbert.cs.tasko.Task;
@@ -121,13 +123,27 @@ public class DataManager {
     }
 
     //TODO
-    public void addBid(Bid bid, Context context){
-
+    public void addBid(Bid bid, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        PutBidCommand putBidCommand = new PutBidCommand(bid);
+        if (isOnline(context)) {
+            dcm.invokeCommand(putBidCommand);
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     //TODO
-    public BidList getUserBids(String userId, Context context){
-        return new BidList();
+    public BidList getUserBids(String userId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetBidsCommand command = new GetBidsCommand(userId);
+        if (isOnline(context)) {
+            dcm.invokeCommand(command);
+            return command.getResult();
+        } else {
+            throw new NoInternetException();
+        }
+
     }
 
     //TODO
