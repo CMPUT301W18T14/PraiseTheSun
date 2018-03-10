@@ -20,6 +20,8 @@ import android.media.Image;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by Chase on 2/23/2018.
  *
@@ -35,6 +37,9 @@ public class Task {
     private User taskProvider;
     private BidList bidList;
     private Status status;
+
+    @JestId
+    private String id;
 
     public Task(User taskRequester, String taskName, String description){
         this(taskRequester, taskName, description, null, null);
@@ -57,6 +62,7 @@ public class Task {
         this.description = description;
         this.photos = photos;
         this.geolocation = location;
+        this.taskProvider = null;
         this.status = Status.REQUESTED;
     }
 
@@ -64,9 +70,10 @@ public class Task {
 
     }
 
+    /*
     public BidList getBids(){
         return bidList;
-    }
+    }*/
 
     public void addPhoto(Image photo){
 
@@ -84,7 +91,13 @@ public class Task {
 
     }
 
-    public void setStatus(Status status){this.status = status; }
+    public void setStatus(Status status){
+        this.status = status;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 
     public String getTaskName() {
         return taskName;
@@ -110,8 +123,21 @@ public class Task {
         return taskRequester;
     }
 
-    public Status getStatus() {
-        return status;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public User getTaskProvider() {
+        return taskProvider;
+    }
+
+    public void assign(User taskProvider) {
+        this.taskProvider = taskProvider;
+        this.status = Status.ASSIGNED;
     }
 
     public User getTaskProvider() { return taskProvider; }

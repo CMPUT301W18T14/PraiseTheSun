@@ -15,21 +15,34 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.test.ActivityInstrumentationTestCase2;
-
 /**
- * Created by Chase on 2/23/2018.
+ * Created by spack on 2018-03-06.
  */
-public class BidTest extends ActivityInstrumentationTestCase2 {
-    public BidTest(){
-        super(MainActivity.class);
+
+public class CurrentUser {
+
+    private static final CurrentUser Instance = new CurrentUser();
+
+    private User currentUser;
+
+    public static CurrentUser getInstance() {
+        return Instance;
     }
 
-    public void testCreateBid(){
-        User user = new User();
-        Bid bid = new Bid("User1", 13.57f, "Test Task 1");
+    private CurrentUser() {
+    }
 
-        assertEquals(bid.getUserID(), "User1");
-        assertEquals(bid.getValue(), 13.57f);
+    public void setCurrentUser(User user){
+        currentUser = user;
+    }
+
+    public User getCurrentUser(){
+        return currentUser;
+    }
+
+    public boolean loggedIn(){
+        if (currentUser == null){
+            return false;
+        }else{ return true; }
     }
 }

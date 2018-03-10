@@ -13,23 +13,12 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko;
-
-import android.test.ActivityInstrumentationTestCase2;
+package ca.ualbert.cs.tasko.data;
 
 /**
- * Created by Chase on 2/23/2018.
+ * Created by chase on 3/4/2018.
+ * This exception is thrown when the methods that depend on internet are called when there is no
+ * internet
  */
-public class BidTest extends ActivityInstrumentationTestCase2 {
-    public BidTest(){
-        super(MainActivity.class);
-    }
-
-    public void testCreateBid(){
-        User user = new User();
-        Bid bid = new Bid("User1", 13.57f, "Test Task 1");
-
-        assertEquals(bid.getUserID(), "User1");
-        assertEquals(bid.getValue(), 13.57f);
-    }
+public class NoInternetException extends Exception {
 }

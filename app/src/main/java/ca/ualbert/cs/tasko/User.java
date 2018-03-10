@@ -17,6 +17,8 @@ package ca.ualbert.cs.tasko;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by chase on 2/23/2018.
  * Represents a user (which can be both a task requester and task provider). Contains info such
@@ -32,11 +34,16 @@ public class User {
     private String name;
     private String phoneNumber;
     private String email;
+
     private BidList userBids;
     private TaskList myTasks;
     private TaskList assignments;
     private Float rating;
     private ArrayList<Notification> notifications;
+    private float rating;
+
+    @JestId
+    private String id;
 
     public User(){
     }
@@ -51,6 +58,7 @@ public class User {
         this.assignments = null;
         this.notifications = new ArrayList<>();
         this.rating = null;
+
     }
 
     public String getUsername() {
@@ -89,43 +97,49 @@ public class User {
     }
 
     public void addBid(Bid bid) {
-        userBids.addBid(bid);
+        /*TODO: Add bid to server through DataManager*/
     }
 
     public BidList getBids() {
-        return userBids;
+        return new BidList();
     }
 
-    public void addMyTasks(Task task) {
-        myTasks.addTask(task);
+
+    public void addMyTask(Task task) {
+        /*TODO: Implement this*/
     }
 
     public TaskList getMyTasks() {
-        return myTasks;
+        return new TaskList();
     }
 
-    public void addAssignments(Task task) {
-        assignments.addTask(task);
-    }
 
     public TaskList getAssignments () {
-        return assignments;
+        return new TaskList();
     }
 
-    public void addNotification(Notification notification) {
-        notifications.add(notification);
-    }
 
     public ArrayList<Notification> getNotifications () {
-        return notifications;
+        return new ArrayList<>();
     }
 
-    public Float getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating (Float rating) {
+    public void setRating (float rating) throws IllegalArgumentException{
+        if(rating < 0 || rating > 10){
+            throw new IllegalArgumentException("Argument must be between 0 and 10 inclusive.");
+        }
         this.rating = rating;
+    }
+
+    public String getId(){
+        return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 
 }
