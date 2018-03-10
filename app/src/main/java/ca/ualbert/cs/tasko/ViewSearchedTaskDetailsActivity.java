@@ -27,14 +27,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class ViewTaskDetailsActivity extends AppCompatActivity {
+public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
     private TextView taskDescription;
     private TextView taskName;
+    private TextView lowestBid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_task_details);
+        setContentView(R.layout.activity_view_searched_task_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,23 +48,27 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             }
         });
 
-        Button deleteButton = (Button)findViewById(R.id.deleteButton);
-        Button editButton = (Button)findViewById(R.id.editButton);
-        Button viewBidsButton = (Button)findViewById(R.id.placeBidButton);
+        //Button and text boxes definitions
+        Button placeBidButton = (Button)findViewById(R.id.placeBidButton);
+        Button geolocationButton = (Button)findViewById(R.id.geolocationButton);
+        taskDescription = (TextView) findViewById(R.id.taskDescription);
+        taskName = (TextView) findViewById(R.id.taskName);
+        lowestBid = (TextView) findViewById(R.id.lowestBid);
 
-         //Dialog for choosing to make a bid on the task
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        //Dialog for choosing to make a bid on the task
+        placeBidButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Confirm deletion and return to main page
-                AlertDialog.Builder builder = new AlertDialog.Builder(ViewTaskDetailsActivity.this);
-                final View deleteView = getLayoutInflater().inflate(R.layout.delete_my_task_dialog, null);
-                Button confirmButton = (Button) deleteView.findViewById(R.id.confirmButton);
-                Button cancelButton = (Button) deleteView.findViewById(R.id.cancelButton);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewSearchedTaskDetailsActivity.this);
+                final View bidView = getLayoutInflater().inflate(R.layout.place_bid_dialog, null);
+                EditText bidAmount = (EditText) bidView.findViewById(R.id.bidAmount);
+                Button confirmButton = (Button) bidView.findViewById(R.id.confirmButton);
+                Button cancelButton = (Button) bidView.findViewById(R.id.cancelButton);
 
                 confirmButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //CONFIRMATION DELETION OF TASK
+                        //CONFIRMATION OF BID PLACED
                     }
                 });
 
@@ -72,28 +77,28 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         //Probably a better way to do this but it works for now
                         finish();
-                        startActivity(new Intent(ViewTaskDetailsActivity.this, ViewTaskDetailsActivity.class));
+                        startActivity(new Intent(ViewSearchedTaskDetailsActivity.this, ViewSearchedTaskDetailsActivity.class));
                     }
                 });
 
-                builder.setView(deleteView);
+                builder.setView(bidView);
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
         });
 
-        /* NEED TO BE IMPLEMENTED PROPERLY
-        editButton.setOnClickListener(new View.OnClickListener() {
-            //This should go to a pre-filled in version of the AddTaskActivity
-        });
 
-        viewBidsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ViewTaskDetailsActivity.this, .class));
-            }
-        });
-        */
+
+
+
+
+
+
+
+
+
     }
 
 }
+
+
