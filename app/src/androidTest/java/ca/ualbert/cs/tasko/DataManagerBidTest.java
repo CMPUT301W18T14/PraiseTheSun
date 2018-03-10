@@ -42,19 +42,24 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testPutBid() {
+        boolean isConnected = true;
         BidList returnedBids = null;
         try {
             dm.addBid(bid1, getActivity().getApplicationContext());
         } catch(NoInternetException e) {
             Log.i("Error", "No internet connection");
+            isConnected = false;
         }
+        assertTrue(isConnected);
         try {
-            returnedBids = dm.getUserBids(bid1.getBidID(), getActivity()
+            returnedBids = dm.getUserBids(bid1.getUserID(), getActivity()
                     .getApplicationContext());
-        } catch (NoInternetException e){
+        } catch (NoInternetException e) {
             Log.i("Error", "The phone has no internet so this test will fail");
         }
         assertFalse(returnedBids == null);
-        assertEquals(returnedBids.getBid(userID), bid1.getBidID());
+        Log.i("NOT ERROR", returnedBids.getBid(userID).getBidID() + "vs" + bid1.getBidID());
+        assertEquals(returnedBids.getBid(userID).getValue(), bid1.getValue());
+        assertEquals(returnedBids.getBid(userID).getTaskID(), bid1.getTaskID());
     }
 }

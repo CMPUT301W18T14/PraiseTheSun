@@ -18,6 +18,7 @@ package ca.ualbert.cs.tasko.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -199,10 +200,7 @@ public class DataManager {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        if(isConnected){
-            return activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
-        }
-        return false;
+        return isConnected;
     }
 
 
