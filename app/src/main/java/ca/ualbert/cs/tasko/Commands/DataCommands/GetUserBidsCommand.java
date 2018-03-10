@@ -19,6 +19,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
@@ -62,28 +65,29 @@ public class GetUserBidsCommand extends GetCommand<BidList> {
 
     public static class GetBidListTask extends AsyncTask<String, Void, BidList> {
         @Override
-        protected BidList doInBackground(String... ids){
+        protected BidList doInBackground(String... userIds){
             BidList bidList = new BidList();
+
             JestWrapper.verifySettings();
 
-            //Build the get query
-            Get get = new Get.Builder(JestWrapper.getIndex(), ids[0]).build();
+            //Build the search query
+            Search search = new Search.Builder(userIds[0]).addIndex(JestWrapper.getIndex())
+                    .addType("bid").build();
 
-            //Get the results
             try{
-                DocumentResult result = JestWrapper.getClient().execute(get);
+                SearchResult result = JestWrapper.getClient().execute(search);
                 if(result.isSucceeded()){
-                    Bid bid = result.getSourceAsObject(Bid.class);
-                    bidList.addBid(bid);
-                    return bidList;
+                    List<Bid> foundBids = result.getSourceAsObjectList(Bid.class);
+                    bidList.addAll(foundBids);
                 }
-
-            } catch (IOException e){
-                Log.i("Error", "Failed to get BidList by ID from ElasticSearch");
+                else {
+                    Log.i("Error", "Search result did not succeed");
+                }
+            } catch (Exception e){
+                Log.i("Error", "Search result threw an exception");
             }
 
-            return null;
-
+            return bidList;
         }
     }
 }
