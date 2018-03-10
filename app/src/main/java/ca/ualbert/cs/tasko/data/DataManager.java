@@ -18,15 +18,12 @@ package ca.ualbert.cs.tasko.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
-import ca.ualbert.cs.tasko.Commands.Command;
-import ca.ualbert.cs.tasko.Commands.DataCommands.GetBidsCommand;
-import ca.ualbert.cs.tasko.Commands.DataCommands.GetCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserBidsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand;
@@ -146,7 +143,7 @@ public class DataManager {
     //TODO
     public BidList getUserBids(String userId, Context context) throws NoInternetException{
         context = context.getApplicationContext();
-        GetBidsCommand command = new GetBidsCommand(userId);
+        GetUserBidsCommand command = new GetUserBidsCommand(userId);
         if (isOnline(context)) {
             dcm.invokeCommand(command);
             return command.getResult();

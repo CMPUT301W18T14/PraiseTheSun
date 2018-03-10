@@ -33,10 +33,10 @@ import io.searchbox.core.SearchResult;
  * Created by Thomas on 2018-03-07.
  */
 
-public class GetBidsCommand extends GetCommand<BidList> {
+public class GetUserBidsCommand extends GetCommand<BidList> {
     private String id;
 
-    public GetBidsCommand(String id){
+    public GetUserBidsCommand(String id){
         this.id = id;
     }
 
