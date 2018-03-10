@@ -71,7 +71,7 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
 
-
+        //Dialog for choosing to make a bid on the task
         placeBidButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Confirm deletion and return to main page
@@ -91,6 +91,7 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        //Probably a better way to do this but it works for now
                         finish();
                         startActivity(new Intent(ViewSearchedTaskDetailsActivity.this, ViewSearchedTaskDetailsActivity.class));
                     }

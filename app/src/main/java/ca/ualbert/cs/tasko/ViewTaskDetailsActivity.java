@@ -15,13 +15,16 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class ViewTaskDetailsActivity extends AppCompatActivity {
@@ -48,11 +51,38 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         Button editButton = (Button)findViewById(R.id.editButton);
         Button viewBidsButton = (Button)findViewById(R.id.placeBidButton);
 
-        /* NEED TO BE IMPLEMENTED PROPERLY
+         //Dialog for choosing to make a bid on the task
         deleteButton.setOnClickListener(new View.OnClickListener() {
-            //This should delete your currently viewed task
+            public void onClick(View v) {
+                // Confirm deletion and return to main page
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewTaskDetailsActivity.this);
+                final View deleteView = getLayoutInflater().inflate(R.layout.delete_my_task_dialog, null);
+                Button confirmButton = (Button) deleteView.findViewById(R.id.confirmButton);
+                Button cancelButton = (Button) deleteView.findViewById(R.id.cancelButton);
+
+                confirmButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //CONFIRMATION DELETION OF TASK
+                    }
+                });
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Probably a better way to do this but it works for now
+                        finish();
+                        startActivity(new Intent(ViewTaskDetailsActivity.this, ViewTaskDetailsActivity.class));
+                    }
+                });
+
+                builder.setView(deleteView);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         });
 
+        /* NEED TO BE IMPLEMENTED PROPERLY
         editButton.setOnClickListener(new View.OnClickListener() {
             //This should go to a pre-filled in version of the AddTaskActivity
         });
