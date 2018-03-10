@@ -19,60 +19,65 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.List;
 
+import ca.ualbert.cs.tasko.Task;
+import ca.ualbert.cs.tasko.TaskList;
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.JestWrapper;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by chase on 3/7/2018.
+ * Created by chase on 3/10/2018.
  */
 
-public class GetUserByUsernameCommand extends GetCommand<User> {
+public class SearchTasksCommand extends GetCommand<TaskList> {
 
-    private String username;
+    private String searchTerm;
 
-    public GetUserByUsernameCommand(String username){
-        this.username = username;
+    public SearchTasksCommand(String searchTerm){
+        this.searchTerm = searchTerm;
     }
 
     @Override
     public void execute() {
-
-        String query = "{\"query\":{\"term\":{\"username\":\"" + username + "\" } } }";
-        GetUserByUsernameTask getUserTask = new GetUserByUsernameTask();
-        getUserTask.execute(query);
+        String query = "{\"query\":{\"match\":{\"description\": { \"query\" : \"" + searchTerm +
+                "\", \"operator\" : \"and\" } } } }";
+        SearchTasks searchTask = new SearchTasks();
+        searchTask.execute(query);
         try{
-            User user = getUserTask.get();
-            setResult(user);
+            TaskList tasks = searchTask.get();
+            setResult(tasks);
         } catch (Exception e){
             Log.i("Error", "Failed to get the user by username from the async object");
         }
-
     }
 
-    private static class GetUserByUsernameTask extends AsyncTask<String, Void, User> {
+    private static class SearchTasks extends AsyncTask<String, Void, TaskList> {
 
         @Override
-        protected User doInBackground(String... usernames){
-            User user = new User();
+        protected TaskList doInBackground(String... searchTerms){
+            TaskList tasks = new TaskList();
             JestWrapper.verifySettings();
 
             //Build the search query
-            Search search = new Search.Builder(usernames[0]).addIndex(JestWrapper.getIndex())
-                    .addType("user").build();
+            Search search = new Search.Builder(searchTerms[0]).addIndex(JestWrapper.getIndex())
+                    .addType("task").build();
             try{
                 SearchResult sr = JestWrapper.getClient().execute(search);
                 if(sr.isSucceeded() && sr.getTotal() > 0){
-                    user = sr.getFirstHit(User.class).source;
+                    List<SearchResult.Hit<Task, Void>> hits = sr.getHits(Task.class);
+                    for(SearchResult.Hit hit : hits){
+                        tasks.addTask((Task) hit.source);
+                    }
                 }
 
             } catch (IOException e){
                 Log.i("Error", e.getMessage());
             }
 
-            return user;
+            return tasks;
         }
     }
 }

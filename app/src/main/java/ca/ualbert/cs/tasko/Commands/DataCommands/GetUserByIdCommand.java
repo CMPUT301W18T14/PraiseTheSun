@@ -21,7 +21,6 @@ import android.util.Log;
 import java.io.IOException;
 
 import ca.ualbert.cs.tasko.User;
-import ca.ualbert.cs.tasko.data.ElasticSearchUserController;
 import ca.ualbert.cs.tasko.data.JestWrapper;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;

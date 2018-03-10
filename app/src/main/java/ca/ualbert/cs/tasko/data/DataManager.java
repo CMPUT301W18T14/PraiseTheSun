@@ -28,6 +28,7 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
 import ca.ualbert.cs.tasko.Notification;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
@@ -140,8 +141,16 @@ public class DataManager {
     }
 
     //TODO
-    public TaskList searchTasks(String[] searchParameters, Context context ){
-        return new TaskList();
+    public TaskList searchTasks(String searchTerm, Context context ) throws NoInternetException{
+        context = context.getApplicationContext();
+        SearchTasksCommand command = new SearchTasksCommand(searchTerm);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
+
+            return command.getResult();
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     //TODO
@@ -200,6 +209,7 @@ public class DataManager {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
         if(isConnected){
             return activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
         }

@@ -45,7 +45,6 @@ public class PutUserCommand implements PutCommand {
 
         try{
             DocumentResult result = JestWrapper.getClient().execute(index);
-            System.out.println(result.getJsonObject());
             if(result.isSucceeded()){
                 user.setId(result.getId());
             }

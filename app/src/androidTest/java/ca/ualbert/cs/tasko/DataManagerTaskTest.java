@@ -40,8 +40,9 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         dm = DataManager.getInstance();
         requester = new User("requester", "Ima Requester", "4567891234", "gimmieRequests@example" +
                 ".com");
-        task1 = new Task(requester, "A Task", "Descriptionononion");
-        task2 = new Task(requester, "Different Name", "Explination");
+        requester.setId("MyIDisAwesome");
+        task1 = new Task(requester.getId(), "Task for lazy people", "Description");
+        task2 = new Task(requester.getId(), "Different a task", "Explination");
 
     }
 
@@ -63,5 +64,26 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         assertTrue(isConnected);
         assertNotNull(retTask);
         assertEquals(task1.getId(), retTask.getId());
+    }
+
+    public void testSearchTasks(){
+        boolean isConnected = true;
+        try{
+            dm.putTask(task1, getActivity().getApplicationContext());
+            dm.putTask(task2, getActivity().getApplicationContext());
+        } catch (NoInternetException e){
+            isConnected = false;
+        }
+        assertTrue(isConnected);
+        TaskList results = null;
+        try{
+            results = dm.searchTasks("Description", getActivity().getApplicationContext());
+        } catch (NoInternetException e){
+            isConnected = false;
+        }
+        assertTrue(isConnected);
+        assertTrue(!results.getTasks().isEmpty());
+        assertTrue(results.getTasks().contains(task1));
+        assertFalse(results.getTasks().contains(task2));
     }
 }
