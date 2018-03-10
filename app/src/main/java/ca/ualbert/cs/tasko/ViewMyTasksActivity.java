@@ -31,6 +31,8 @@ public class ViewMyTasksActivity extends AppCompatActivity {
 
     public ListView myTaskList;
 
+    private Integer statusFilter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
