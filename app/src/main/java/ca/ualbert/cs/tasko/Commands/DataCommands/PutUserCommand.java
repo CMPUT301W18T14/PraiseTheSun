@@ -17,8 +17,12 @@ package ca.ualbert.cs.tasko.Commands.DataCommands;
 
 import android.util.Log;
 
+import java.io.IOException;
+
 import ca.ualbert.cs.tasko.User;
-import ca.ualbert.cs.tasko.data.ElasticSearchUserController;
+import ca.ualbert.cs.tasko.data.JestWrapper;
+import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Index;
 
 /**
  * Created by chase on 3/7/2018.
@@ -34,13 +38,19 @@ public class PutUserCommand implements PutCommand {
 
     @Override
     public void execute() {
-        ElasticSearchUserController.AddUserTask addUserTask =
-                new ElasticSearchUserController.AddUserTask();
-        addUserTask.execute(user);
+        JestWrapper.verifySettings();
+
+        Index index = new Index.Builder(user).index(JestWrapper.getIndex()).type("user")
+                .build();
+
         try{
-            user.setId(addUserTask.get());
+            DocumentResult result = JestWrapper.getClient().execute(index);
+            System.out.println(result.getJsonObject());
+            if(result.isSucceeded()){
+                user.setId(result.getId());
+            }
         } catch (Exception e){
-            Log.i("Error", "Failed to obtain the user ID from the async object");
+            Log.i("Error", "The application failed to build and send the user");
         }
     }
 

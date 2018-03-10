@@ -20,8 +20,15 @@ import android.util.Log;
 
 import junit.framework.TestCase;
 
+import java.io.IOException;
+
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.JestWrapper;
 import ca.ualbert.cs.tasko.data.NoInternetException;
+import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Index;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
 
 /**
  * Created by chase on 3/4/2018.
@@ -34,28 +41,41 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
     }
 
     private User user1;
+    private User user2;
     private DataManager dm;
 
     public void setUp(){
-        user1 = new User("jdoe3", "John Doe", "555-333-1234", "jdoe3@example.com");
+        user1 = new User("jdoe62", "John Doe", "555-333-1234", "jdoe7@example.com");
+        user2 = new User("jdoe63", "John Doe", "555-333-1234", "jdoe7@example.com");
         dm = DataManager.getInstance();
     }
 
     public void testPutUser(){
         User returnedUser = null;
         try {
-            dm.putUser(user1, getActivity().getApplicationContext());
+            dm.putUser(user2, getActivity().getApplicationContext());
         } catch (NoInternetException e) {
             Log.i("Error", "No internet connection. Can not add a new user at the moment");
         }
         try {
-            returnedUser = dm.getUserById(user1.getId(), getActivity()
+            returnedUser = dm.getUserById(user2.getId(), getActivity()
                     .getApplicationContext());
         } catch (NoInternetException e){
             Log.i("Error", "The phone has no internet so this test will fail");
         }
         assertFalse(returnedUser == null);
-        assertEquals(returnedUser.getId(), user1.getId());
+        assertEquals(returnedUser.getId(), user2.getId());
+
+        boolean noDup = false;
+        try {
+            dm.putUser(user2, getActivity().getApplicationContext());
+        } catch (IllegalArgumentException e){
+            noDup = true;
+        } catch (NoInternetException e) {
+
+        }
+
+        assertTrue(noDup);
     }
 
     public void testGetUserByUsername(){
@@ -65,7 +85,11 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         } catch (NoInternetException e){
             Log.i("Error", "No internet connection, can not add the user to elasticsearch");
         }
-
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         try {
             returnedUser = dm.getUserByUsername(user1.getUsername(), getActivity()
                     .getApplicationContext());
@@ -73,6 +97,6 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
             Log.i("Error", "No internet connection, can not get the user from elasticsearch");
         }
         assertFalse(returnedUser == null);
-        assertEquals(returnedUser.getId(), user1.getId());
+        assertEquals(user1.getUsername(), returnedUser.getUsername());
     }
 }
