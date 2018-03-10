@@ -18,16 +18,15 @@ package ca.ualbert.cs.tasko.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
-import ca.ualbert.cs.tasko.Commands.Command;
-import ca.ualbert.cs.tasko.Commands.DataCommands.GetCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Notification;
 import ca.ualbert.cs.tasko.Task;
@@ -111,13 +110,33 @@ public class DataManager {
     }
 
     //TODO
-    public void putTask(Task task, Context context){
+    public void putTask(Task task, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        PutTaskCommand command = new PutTaskCommand(task);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new NoInternetException();
+        }
 
     }
 
     //TODO
-    public Task getTask(String taskId, Context context){
-        return new Task(null, null, null);
+    public Task getTask(String taskId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetTaskCommand command = new GetTaskCommand(taskId);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
+            return command.getResult();
+
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     //TODO
