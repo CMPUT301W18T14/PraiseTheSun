@@ -62,7 +62,7 @@ public class Bid implements Comparable<Bid>{
         return TaskID;
     }
 
-    public void serTaskID(String TaskID){
+    public void setTaskID(String TaskID){
         this.TaskID = TaskID;
     }
 

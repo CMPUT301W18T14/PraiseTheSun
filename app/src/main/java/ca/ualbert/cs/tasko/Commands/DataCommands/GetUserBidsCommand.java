@@ -45,6 +45,7 @@ public class GetUserBidsCommand extends GetCommand<BidList> {
 
     @Override
     public void execute() {
+        String query = "{\"query\":{\"term\":{\"UserID\":\"" + id + "\" } } }";
         GetBidListTask getBidListTask = new GetBidListTask();
         getBidListTask.execute(id);
         try {
