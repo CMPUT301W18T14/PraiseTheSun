@@ -15,9 +15,11 @@
 
 package ca.ualbert.cs.tasko.data;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -38,6 +40,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import ca.ualbert.cs.tasko.R;
+import ca.ualbert.cs.tasko.ViewMyTasksActivity;
+import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
 
 public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
     private TextView taskDescription;
@@ -87,10 +91,14 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-
+                        finish();
+                        startActivity(new Intent(ViewSearchedTaskDetailsActivity.this, ViewSearchedTaskDetailsActivity.class));
                     }
                 });
+
+                builder.setView(bidView);
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
