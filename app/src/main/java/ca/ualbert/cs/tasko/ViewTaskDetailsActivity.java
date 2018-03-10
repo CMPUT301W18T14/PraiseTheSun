@@ -15,7 +15,6 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,9 +25,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ViewTaskDetailsActivity extends AppCompatActivity {
-
-    public TextView taskDescription;
-    public TextView taskName;
+    private TextView taskDescription;
+    private TextView taskName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
         Button deleteButton = (Button)findViewById(R.id.deleteButton);
         Button editButton = (Button)findViewById(R.id.editButton);
-        Button viewBidsButton = (Button)findViewById(R.id.viewBidsButton);
+        Button viewBidsButton = (Button)findViewById(R.id.placeBidButton);
 
         /* NEED TO BE IMPLEMENTED PROPERLY
         deleteButton.setOnClickListener(new View.OnClickListener() {
