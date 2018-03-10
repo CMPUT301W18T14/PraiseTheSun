@@ -13,12 +13,8 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko.data;
+package ca.ualbert.cs.tasko;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -30,18 +26,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-
-import ca.ualbert.cs.tasko.R;
-import ca.ualbert.cs.tasko.ViewMyTasksActivity;
-import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
 
 public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
     private TextView taskDescription;
