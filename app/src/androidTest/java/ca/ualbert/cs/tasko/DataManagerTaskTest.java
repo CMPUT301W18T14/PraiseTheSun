@@ -17,8 +17,8 @@ package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import ca.ualbert.cs.tasko.data.DataCommandManager;
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Created by chase on 3/9/2018.
@@ -46,6 +46,22 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testPutTask(){
-        dm.putTask(task1, getActivity().getApplicationContext());
+        boolean isConnected = true;
+        try {
+            dm.putTask(task1, getActivity().getApplicationContext());
+        } catch (NoInternetException e){
+            isConnected = false;
+        }
+        assertTrue(isConnected);
+        assertTrue(task1.getId() != null);
+        Task retTask = null;
+        try {
+            retTask = dm.getTask(task1.getId(), getActivity().getApplicationContext());
+        } catch (NoInternetException e){
+            isConnected = false;
+        }
+        assertTrue(isConnected);
+        assertNotNull(retTask);
+        assertEquals(task1.getId(), retTask.getId());
     }
 }
