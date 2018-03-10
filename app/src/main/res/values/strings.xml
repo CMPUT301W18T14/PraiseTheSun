@@ -35,5 +35,7 @@
     <string name="post_a_task">Post a Task</string>
     <string name="search_for_a_task">Search for a task</string>
     <string name="title_activity_view_task_details">ViewTaskDetails</string>
+    <string name="title_activity_view_searched_task_details">ViewSearchedTaskDetailsActivity
+    </string>
 </resources>
 
