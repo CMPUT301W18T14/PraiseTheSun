@@ -20,41 +20,41 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import ca.ualbert.cs.tasko.User;
+import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.data.JestWrapper;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 
 /**
- * Created by chase on 3/7/2018.
+ * Created by chase on 3/9/2018.
  */
 
-public class GetUserByIdCommand extends GetCommand<User> {
+public class GetTaskCommand extends GetCommand<Task> {
 
-    private String id;
+    private String taskid;
 
-    public GetUserByIdCommand(String id){
-        this.id = id;
+    public GetTaskCommand(String taskid){
+        this.taskid = taskid;
     }
 
     @Override
     public void execute() {
-        GetUserByIdTask getUserTask = new GetUserByIdTask();
-        getUserTask.execute(id);
+        GetTask getTask = new GetTask();
+        getTask.execute(taskid);
 
         try {
-            User user = getUserTask.get();
-            setResult(user);
+            Task task = getTask.get();
+            setResult(task);
         } catch (Exception e){
             Log.i("Error", "Failed to get user from the async object");
         }
     }
 
-    private static class GetUserByIdTask extends AsyncTask<String, Void, User> {
+    private static class GetTask extends AsyncTask<String, Void, Task> {
 
         @Override
-        protected User doInBackground(String... ids) {
-            User user = new User();
+        protected Task doInBackground(String... ids) {
+            Task task = null;
             JestWrapper.verifySettings();
 
             //Build the get query
@@ -64,15 +64,15 @@ public class GetUserByIdCommand extends GetCommand<User> {
             try{
                 DocumentResult result = JestWrapper.getClient().execute(get);
                 if(result.isSucceeded()){
-                    user = result.getSourceAsObject(User.class);
-                    return user;
+                    task = result.getSourceAsObject(Task.class);
+                    return task;
                 }
 
             } catch (IOException e){
                 Log.i("Error", "Failed to get user by ID from ElasticSearch");
             }
 
-            return user;
+            return task;
         }
     }
 }
