@@ -37,15 +37,15 @@ import io.searchbox.core.SearchResult;
  */
 
 public class GetUserBidsCommand extends GetCommand<BidList> {
-    private String id;
+    private String userId;
 
-    public GetUserBidsCommand(String id){
-        this.id = id;
+    public GetUserBidsCommand(String userId){
+        this.userId = userId;
     }
 
     @Override
     public void execute() {
-        String query = "{\"query\":{\"term\":{\"UserID\":\"" + id + "\" } } }";
+        String query = "{\"query\":{\"term\":{\"UserID\":\"" + userId + "\" } } }";
         GetBidListTask getBidListTask = new GetBidListTask();
         getBidListTask.execute(query);
         try {

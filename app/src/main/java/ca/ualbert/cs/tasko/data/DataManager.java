@@ -130,7 +130,15 @@ public class DataManager {
         return new TaskList();
     }
 
-    //TODO
+    /**
+     * Given a bid object, store this bid into the database.
+     *
+     * @param bid the bid object that must be stored in the database
+     * @param context the context of the app at the moment of calling this function (to determine
+     *               if the requester has a valid internet connection)
+     * @throws NoInternetException Thrown if user does not have a valid internet connection.
+     * @author tlafranc
+     */
     public void addBid(Bid bid, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         PutBidCommand putBidCommand = new PutBidCommand(bid);
@@ -146,7 +154,16 @@ public class DataManager {
         }
     }
 
-    //TODO
+    /**
+     * Given a userID, return all bids associated to this user.
+     *
+     * @param userId the userID associated to the bids in the returned BidList
+     * @param context the context of the app at the moment of calling this function (to determine
+     *               if the requester has a valid internet connection)
+     * @return A BidList containing all bids associated with this user.
+     * @throws NoInternetException Thrown if user does not have a valid internet connection.
+     * @author tlafranc
+     */
     public BidList getUserBids(String userId, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserBidsCommand command = new GetUserBidsCommand(userId);
@@ -159,8 +176,18 @@ public class DataManager {
 
     }
 
-    //TODO
-    public BidList getTaskBids(String taskId, Context context){
+    /**
+     * Given a taskId, return all bids associated to this task.
+     *
+     * @param taskId the taskId associated to the bids the returned BidList
+     * @param context the context of the app at the moment of calling this function (to determine
+     *               if the requester has a valid internet connection)
+     * @return A BidList containing all the bids associated with this task.
+     * @throws NoInternetException Thrown if user does not have a valid internet connection.
+     * @author tlafranc
+     */
+    public BidList getTaskBids(String taskId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
         return new BidList();
     }
 
