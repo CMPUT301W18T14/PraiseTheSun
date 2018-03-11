@@ -23,14 +23,12 @@ import ca.ualbert.cs.tasko.User;
 
 /**
  * Created by spack on 2018-02-23.
- * Anytime something happens to a Task i.e a status change or a bid is made a called will be made to
- * Create a notification object, this way, we will always have a Task object to pass into the
- * notifications class in order to get necessary info. The body of the notification will change
- * depending on the status of the task. These notifications get auto stored to the respective user,
- * Im not sure if this will work with online connectivity, its something to discuss on monday. I was
- * thinking about something like facebook where on the home page UI there is a little icon indicating,
- * unread notifications that when clicked on expands into a listview of notifications. I am
- * also unsure exactly how the rating notification will work.
+ * NotificationHandler deals with the creation of objects of the Notification Type. essentially
+ * A middle man to communicate with the Factories.
+ *
+ * Currently I am using Users as parameters, I can change this to UserIDs pretty easily if we think
+ * thats a good idea, I just was not sure the best way to integrate that with the data manager so
+ * I kept it simple.
  */
 
 public class NotificationHandler {
@@ -39,6 +37,10 @@ public class NotificationHandler {
     private NotificationFactory notificationFactory;
     private RatingNotificationFactory ratingNotificationFactory;
 
+    /**
+     * Currently there are 3 constructors. One for each possible factory combination we could use
+     * @param nf This represents the Factory Object we pass in, a Notification Factory
+     */
     public NotificationHandler(NotificationFactory nf) {
 
         this.notificationFactory = nf;
@@ -58,6 +60,15 @@ public class NotificationHandler {
 
     }
 
+    /**
+     * This method is called to create notifications based on bidding, and assigning tasks.
+     * @param status the current status of the task the notification will be based on. Depending
+     *               on this status the body of the notification will change.
+     * @param taskname the name of the task the notification is related to.
+     * @param taskrequestor the taskrequestor who posted the task
+     * @param taskprovider the taskprovider who interacts with the task
+     * @return This Function will return a notification object
+     */
     public SimpleNotification newSimpleNotification(Status status, String taskname, User taskrequestor
             , User taskprovider){
 
@@ -69,12 +80,20 @@ public class NotificationHandler {
         return notification;
     }
 
-    public ArrayList<RatingNotification> newRatingNotification(Status status, String taskname, User taskrequestor
+    /**
+     * This method is called to create rating notifications sent to both parties upon a tasks completion
+     * @param taskname the name of the task the notification is related to.
+     * @param taskrequestor the taskrequestor who posted the task
+     * @param taskprovider the taskprovider who interacts with the task
+     * @return This function contains an arraylist of two notifications, one to be sent to the
+     * task requestor and one to the task provider
+     */
+    public ArrayList<RatingNotification> newRatingNotification(String taskname, User taskrequestor
             , User taskprovider){
 
         ArrayList<RatingNotification> notifications;
 
-        notifications = ratingNotificationFactory.createNotification(status, taskname, taskrequestor,
+        notifications = ratingNotificationFactory.createNotification(taskname, taskrequestor,
                 taskprovider);
 
         return notifications;

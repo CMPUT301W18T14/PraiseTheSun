@@ -18,6 +18,7 @@ package ca.ualbert.cs.tasko.NotificationArtifacts;
 import ca.ualbert.cs.tasko.User;
 
 /**
+ * The super class representing a generic notification object
  * Created by spack on 2018-03-10.
  */
 

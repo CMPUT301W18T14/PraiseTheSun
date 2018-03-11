@@ -77,7 +77,7 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
 
         ArrayList<RatingNotification> notifications;
 
-        notifications = nh.newRatingNotification(task.getStatus(), task.getTaskName(), requestor,
+        notifications = nh.newRatingNotification(task.getTaskName(), requestor,
                 provider);
 
         assertEquals(notifications.size(), 2);

@@ -19,6 +19,9 @@ import ca.ualbert.cs.tasko.User;
 import io.searchbox.annotations.JestId;
 
 /**
+ * A rating notification object. I made this a different type than a simple notification object
+ * because I was thinking that if a user were to click on the notification it should create a
+ * rating screen which would not happen with a regular notification.
  * Created by spack on 2018-03-10.
  */
 

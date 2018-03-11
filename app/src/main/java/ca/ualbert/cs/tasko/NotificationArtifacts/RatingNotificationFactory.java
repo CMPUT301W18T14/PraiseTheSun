@@ -16,16 +16,15 @@
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
 import java.util.ArrayList;
-
-import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.User;
 
 /**
+ * A factory the creates the appropriate rating notifications and returns them in an arraylist.
  * Created by spack on 2018-03-10.
  */
 
 public class RatingNotificationFactory {
-    public ArrayList<RatingNotification> createNotification(Status currentStatus, String taskName, User taskrequestor
+    public ArrayList<RatingNotification> createNotification(String taskName, User taskrequestor
             , User taskprovider) {
 
         ArrayList<RatingNotification> notifications = new ArrayList<>();

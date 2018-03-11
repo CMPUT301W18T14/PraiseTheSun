@@ -19,6 +19,8 @@ import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.User;
 
 /**
+ * Used to create a simple notification, the body of which is dependent on the status of the task
+ * its related to.
  * Created by spack on 2018-03-10.
  */
 
