@@ -17,7 +17,10 @@ package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
+import java.util.ArrayList;
+
+import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotification;
+import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 
@@ -47,9 +50,9 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
                 "Help me with the factory pattern ahhhhhhh");
     }
 
-    public void testCreate() {
+    public void testCreateSimpleNotification() {
 
-        Notification notification = nh.newNotification(task.getStatus(), task.getTaskName(),
+        SimpleNotification notification = nh.newNotification(task.getStatus(), task.getTaskName(),
                 requestor, provider);
 
         //Test to see if notification handler is properly communicating with the factory.
@@ -57,7 +60,7 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
 
         task.setStatus(Status.BIDDED);
 
-        Notification notification2 = nh.newNotification(task.getStatus(), task.getTaskName(),
+        SimpleNotification notification2 = nh.newNotification(task.getStatus(), task.getTaskName(),
                 requestor, provider);
 
         //Test to see if notification factory logic is working.
@@ -65,5 +68,26 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
                 notification2.getMessage());
 
     }
+
+    public void testCreateRatingNotification() {
+
+        ArrayList<RatingNotification> notifications = nh.newNotification(task.getStatus(), task.getTaskName(),
+                requestor, provider);
+
+        //Test to see if notification handler is properly communicating with the factory.
+        assertEquals("Default Message for Testing", notification.getMessage());
+
+        task.setStatus(Status.BIDDED);
+
+        SimpleNotification notification2 = nh.newNotification(task.getStatus(), task.getTaskName(),
+                requestor, provider);
+
+        //Test to see if notification factory logic is working.
+        assertEquals("You have received a new Bid on" + task.getTaskName(),
+                notification2.getMessage());
+
+    }
+
+
 
 }

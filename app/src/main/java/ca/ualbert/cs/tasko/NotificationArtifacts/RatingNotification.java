@@ -16,28 +16,28 @@
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
 import ca.ualbert.cs.tasko.User;
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by spack on 2018-03-10.
  */
 
-public class Rating{
+public class RatingNotification extends Notification{
 
-    private float rating;
-    private User recipient;
 
-    public Rating(User recipient, float rating) {
-        this.recipient = recipient;
-        this.rating = rating;
+    public RatingNotification(String message, User recipient){
+        super(message, recipient);
     }
 
-    public void setRating(float rating) {
-        this.rating = rating;
+    @JestId
+    private String id;
+
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public float getRating() {
-
-        return rating;
+    public String getId() {
+        return id;
     }
 
 }

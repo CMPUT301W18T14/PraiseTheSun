@@ -17,7 +17,7 @@ package ca.ualbert.cs.tasko;
 
 import java.util.ArrayList;
 
-import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
+import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
 import io.searchbox.annotations.JestId;
 
 /**
@@ -39,7 +39,7 @@ public class User {
     private BidList userBids;
     private TaskList myTasks;
     private TaskList assignments;
-    private ArrayList<Notification> notifications;
+    private ArrayList<SimpleNotification> notifications;
     private float rating;
 
     @JestId
@@ -119,7 +119,7 @@ public class User {
     }
 
 
-    public ArrayList<Notification> getNotifications () {
+    public ArrayList<SimpleNotification> getNotifications () {
         return new ArrayList<>();
     }
 

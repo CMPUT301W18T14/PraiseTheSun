@@ -41,10 +41,10 @@ public class NotificationHandler {
 
     }
 
-    public Notification newNotification(Status status, String taskname, User taskrequestor
+    public SimpleNotification newNotification(Status status, String taskname, User taskrequestor
             , User taskprovider){
 
-        Notification notification;
+        SimpleNotification notification;
 
         notification = notificationFactory.createNotification(status, taskname, taskrequestor,
                     taskprovider);

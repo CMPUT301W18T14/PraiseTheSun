@@ -24,10 +24,10 @@ import ca.ualbert.cs.tasko.User;
 
 public class NotificationFactory {
 
-    public Notification createNotification(Status currentStatus, String taskName, User taskrequestor
+    public SimpleNotification createNotification(Status currentStatus, String taskName, User taskrequestor
             , User taskprovider) {
 
-        Notification notification = null;
+        SimpleNotification notification = null;
         String message = null;
         String taskname = taskName;
         User recipient;
@@ -38,18 +38,19 @@ public class NotificationFactory {
             case REQUESTED:
                 recipient = taskprovider;
                 message = "Default Message for Testing";
-                notification = new Notification(message, recipient);
+                notification = new SimpleNotification(message, recipient);
                 break;
             case BIDDED:
                 recipient = taskrequestor;
                 message = "You have received a new Bid on" + taskname;
-                notification = new Notification(message, recipient);
+                notification = new SimpleNotification(message, recipient);
                 break;
             case ASSIGNED:
                 recipient = taskprovider;
                 message = "You have been assigned to complete" + taskname;
-                notification = new Notification(message, recipient);
+                notification = new SimpleNotification(message, recipient);
                 break;
+
         }
 
         return notification;

@@ -15,25 +15,9 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import ca.ualbert.cs.tasko.User;
-
 /**
  * Created by spack on 2018-03-10.
  */
 
-public abstract class Notification {
-
-    private String message;
-    private User recipient;
-
-
-    public Notification(String message, User recipient) {
-        this.message = message;
-        this.recipient = recipient;
-    }
-
-    public String getMessage(){
-        return message;
-
-    }
+public class RatingNotificationFactory {
 }
