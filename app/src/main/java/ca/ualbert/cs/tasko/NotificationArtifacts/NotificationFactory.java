@@ -15,7 +15,6 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.User;
 

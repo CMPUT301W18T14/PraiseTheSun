@@ -22,7 +22,7 @@ import io.searchbox.annotations.JestId;
  * Created by spack on 2018-03-10.
  */
 
-public class Notification {
+public class Notification{
 
     @JestId
     private String id;

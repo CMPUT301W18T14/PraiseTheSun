@@ -15,12 +15,9 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import java.util.ArrayList;
-
 import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.User;
 
-import static ca.ualbert.cs.tasko.Status.DONE;
 
 /**
  * Created by spack on 2018-02-23.
@@ -36,10 +33,7 @@ import static ca.ualbert.cs.tasko.Status.DONE;
 
 public class NotificationHandler {
 
-    private ArrayList<User> recipients;
-
     private NotificationFactory notificationFactory;
-    private RatingFactory ratingFactory;
 
     public NotificationHandler(NotificationFactory nf) {
 
@@ -47,23 +41,13 @@ public class NotificationHandler {
 
     }
 
-    public NotificationHandler(NotificationFactory nf, RatingFactory rf) {
-
-        this.notificationFactory = nf;
-        this.ratingFactory = rf;
-    }
-
     public Notification newNotification(Status status, String taskname, User taskrequestor
             , User taskprovider){
 
         Notification notification;
 
-        if (status == DONE){
-            notification = ratingFactory.createRating();
-        } else {
-            notification = notificationFactory.createNotification(status, taskname, taskrequestor,
+        notification = notificationFactory.createNotification(status, taskname, taskrequestor,
                     taskprovider);
-        }
 
         return notification;
     }

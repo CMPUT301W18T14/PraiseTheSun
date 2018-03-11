@@ -19,6 +19,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 
 /**
  * Created by spack on 2018-02-23.
@@ -30,14 +31,14 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
     }
 
     private NotificationFactory nf;
-    private NotificationArtifacts.NotificationHandler nh;
+    private NotificationHandler nh;
     private User provider;
     private User requestor;
     private Task task;
 
     public void setUp() {
         nf = new NotificationFactory();
-        nh = new NotificationArtifacts.NotificationHandler(nf);
+        nh = new NotificationHandler(nf);
         requestor = new User("StevieP", "Steve", "780-450-1000",
                 "spacker@ualberta.ca");
         provider = new User("Stevoo", "Stephen", "780-454-1054",

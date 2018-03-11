@@ -31,7 +31,7 @@ public class Rating{
         this.rating = rating;
     }
 
-    public void setRating(float rating, User recipient) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
