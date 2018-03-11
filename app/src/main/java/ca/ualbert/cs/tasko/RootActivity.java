@@ -28,6 +28,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+/**
+ * @author imtihan
+ * @version 1.0
+ */
 public class RootActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;

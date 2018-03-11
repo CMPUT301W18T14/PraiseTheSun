@@ -16,10 +16,7 @@ public class MainActivity extends RootActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.navbar);
-        setSupportActionBar(toolbar);
-        */
+
         /*
         * The following implements the menu bar here
         * reference:
@@ -28,18 +25,10 @@ public class MainActivity extends RootActivity {
         * */
 
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        //getLayoutInflater().inflate(R.layout.activity_main, contentFrameLayout);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(0).setChecked(true);
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        }); */
+
     }
 
     @Override
