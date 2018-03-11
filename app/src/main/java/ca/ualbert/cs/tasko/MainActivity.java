@@ -24,8 +24,7 @@ public class MainActivity extends RootActivity {
         * accessed 2018-03-11
         * */
 
-        FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-
+       // FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(0).setChecked(true);
 
@@ -49,7 +48,6 @@ public class MainActivity extends RootActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

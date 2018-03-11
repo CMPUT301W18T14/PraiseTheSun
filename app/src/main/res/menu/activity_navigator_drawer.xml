@@ -45,6 +45,11 @@
             android:id="@+id/find_nearby_tasks"
             android:icon="?android:attr/actionModeWebSearchDrawable"
             android:title="Find nearby tasks" />
+
+        <item
+            android:id="@+id/view_profile"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="View profile" />
     </group>
 
 

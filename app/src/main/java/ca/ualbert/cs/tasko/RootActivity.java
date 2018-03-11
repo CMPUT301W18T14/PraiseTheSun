@@ -31,6 +31,12 @@ import android.view.View;
 /**
  * @author imtihan
  * @version 1.0
+ *
+ * references:
+ * https://stackoverflow.com/questions/19451715/same-navigation-drawer-in-different-activities
+ * Accessed 2018-03-10
+ * http://shockingandroid.blogspot.ca/2017/04/navigation-drawer-in-every-activity.html
+ * Accessed 2018-03-10
  */
 public class RootActivity extends AppCompatActivity {
 
@@ -91,6 +97,12 @@ public class RootActivity extends AppCompatActivity {
 
                             case R.id.find_nearby_tasks:
                                 i = new Intent(getApplicationContext(), FindNearbyTasksActivity.class);
+                                startActivity(i);
+                                drawerLayout.closeDrawers();
+                                break;
+
+                            case R.id.view_profile:
+                                i = new Intent(getApplicationContext(), ViewProfileActivity.class);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
