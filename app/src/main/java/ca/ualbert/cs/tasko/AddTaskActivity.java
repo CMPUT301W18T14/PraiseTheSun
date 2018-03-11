@@ -47,11 +47,9 @@ public class AddTaskActivity extends AppCompatActivity {
 
     public void onAddPhotoClick(View view){
         // Create an Intent to AddPhotoActivity
-        /*
         Intent addPhotoIntent = new Intent(this, AddPhotoActivity.class);
         final int result = 1;
         startActivityForResult(addPhotoIntent, result);
-         */
     }
 
     public void onAddLocationClick(View view){

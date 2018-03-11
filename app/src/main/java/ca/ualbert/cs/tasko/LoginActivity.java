@@ -18,11 +18,13 @@ package ca.ualbert.cs.tasko;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * LoginActivity should be the first Activity a user will see if they are not logged in.
@@ -64,15 +66,19 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
 
-                User usernameInput = DM.getUserByUsername(usernameText.getText().toString(),
-                        LoginActivity.this);
+                try {
+                    User usernameInput = DM.getUserByUsername(usernameText.getText().toString(),
+                            LoginActivity.this);
 
-                if (usernameInput != null){
-                    CU.setCurrentUser(usernameInput);
-                    Intent intent = new Intent(activity, MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    usernameText.setError("This is not a valid username");
+                    if (usernameInput != null){
+                        CU.setCurrentUser(usernameInput);
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        usernameText.setError("This is not a valid username");
+                    }
+                } catch (NoInternetException e) {
+                    Log.i("ERROR", "No internet connection");
                 }
             }
         });
