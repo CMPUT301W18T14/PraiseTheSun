@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import java.util.ArrayList;
+
 import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.User;
 
@@ -33,7 +35,9 @@ import ca.ualbert.cs.tasko.User;
 
 public class NotificationHandler {
 
+    private ArrayList<RatingNotification> notifications = new ArrayList<>();
     private NotificationFactory notificationFactory;
+    private RatingNotificationFactory ratingNotificationFactory;
 
     public NotificationHandler(NotificationFactory nf) {
 
@@ -41,7 +45,20 @@ public class NotificationHandler {
 
     }
 
-    public SimpleNotification newNotification(Status status, String taskname, User taskrequestor
+    public NotificationHandler(RatingNotificationFactory rnf) {
+
+        this.ratingNotificationFactory = rnf;
+
+    }
+
+    public NotificationHandler(NotificationFactory nf, RatingNotificationFactory rnf) {
+
+        this.notificationFactory = nf;
+        this.ratingNotificationFactory = rnf;
+
+    }
+
+    public SimpleNotification newSimpleNotification(Status status, String taskname, User taskrequestor
             , User taskprovider){
 
         SimpleNotification notification;
@@ -50,6 +67,17 @@ public class NotificationHandler {
                     taskprovider);
 
         return notification;
+    }
+
+    public ArrayList<RatingNotification> newRatingNotification(Status status, String taskname, User taskrequestor
+            , User taskprovider){
+
+        ArrayList<RatingNotification> notifications;
+
+        notifications = ratingNotificationFactory.createNotification(status, taskname, taskrequestor,
+                taskprovider);
+
+        return notifications;
     }
 
 }

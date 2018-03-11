@@ -15,9 +15,36 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import java.util.ArrayList;
+
+import ca.ualbert.cs.tasko.Status;
+import ca.ualbert.cs.tasko.User;
+
 /**
  * Created by spack on 2018-03-10.
  */
 
 public class RatingNotificationFactory {
+    public ArrayList<RatingNotification> createNotification(Status currentStatus, String taskName, User taskrequestor
+            , User taskprovider) {
+
+        ArrayList<RatingNotification> notifications = new ArrayList<>();
+        RatingNotification providerNotification = null;
+        RatingNotification requestorNotification = null;
+        String message;
+        String taskname = taskName;
+
+        message = taskprovider.getUsername() + " has completed " + taskname
+                + ". Please rate their services";
+        providerNotification = new RatingNotification(message, taskrequestor);
+        notifications.add(providerNotification);
+
+        message = "You have completed " + taskname + ". Please rate your experience with "
+                + taskrequestor.getUsername();
+        requestorNotification = new RatingNotification(message, taskprovider);
+        notifications.add(requestorNotification);
+
+        return notifications;
+
+    }
 }
