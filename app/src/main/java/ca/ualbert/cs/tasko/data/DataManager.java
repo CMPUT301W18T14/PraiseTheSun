@@ -23,11 +23,15 @@ import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
+
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskBidsCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserBidsCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
 import ca.ualbert.cs.tasko.Notification;
@@ -166,19 +170,72 @@ public class DataManager {
         }
     }
 
-    //TODO
-    public void addBid(Bid bid, Context context){
-
+    /**
+     * Given a bid object, store this bid into the database.
+     *
+     * @param bid the bid object that must be stored in the database
+     * @param context the context of the app at the moment of calling this function (to determine
+     *               if the requester has a valid internet connection)
+     * @throws NoInternetException Thrown if user does not have a valid internet connection.
+     * @author tlafranc
+     */
+    public void addBid(Bid bid, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        PutBidCommand putBidCommand = new PutBidCommand(bid);
+        if (isOnline(context)) {
+            dcm.invokeCommand(putBidCommand);
+        } else {
+            throw new NoInternetException();
+        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    //TODO
-    public BidList getUserBids(String userId, Context context){
-        return new BidList();
+    /**
+     * Given a userID, return all bids associated to this user.
+     *
+     * @param userId the userID associated to the bids in the returned BidList
+     * @param context the context of the app at the moment of calling this function (to determine
+     *               if the requester has a valid internet connection)
+     * @return A BidList containing all bids associated with this user.
+     * @throws NoInternetException Thrown if user does not have a valid internet connection.
+     * @author tlafranc
+     */
+    public BidList getUserBids(String userId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetUserBidsCommand command = new GetUserBidsCommand(userId);
+        if (isOnline(context)) {
+            dcm.invokeCommand(command);
+            return command.getResult();
+        }
+        else {
+            throw new NoInternetException();
+        }
     }
 
-    //TODO
-    public BidList getTaskBids(String taskId, Context context){
-        return new BidList();
+    /**
+     * Given a taskId, return all bids associated to this task.
+     *
+     * @param taskId the taskId associated to the bids the returned BidList
+     * @param context the context of the app at the moment of calling this function (to determine
+     *               if the requester has a valid internet connection)
+     * @return A BidList containing all the bids associated with this task.
+     * @throws NoInternetException Thrown if user does not have a valid internet connection.
+     * @author tlafranc
+     */
+    public BidList getTaskBids(String taskId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetTaskBidsCommand command = new GetTaskBidsCommand(taskId);
+        if (isOnline(context)) {
+            dcm.invokeCommand(command);
+            return command.getResult();
+        }
+        else {
+            throw new NoInternetException();
+        }
     }
 
     //TODO Part 5
@@ -217,11 +274,7 @@ public class DataManager {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
-        if(isConnected){
-            return activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
-        }
-        return false;
+        return isConnected;
     }
 
 
