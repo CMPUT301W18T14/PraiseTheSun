@@ -68,7 +68,6 @@ public class GetTaskBidsCommand extends GetCommand<BidList> {
             //Build the search query
             Search search = new Search.Builder(taskIds[0]).addIndex(JestWrapper.getIndex())
                     .addType("bid").build();
-            Log.i("Not Error", taskIds[0]);
 
             try{
                 SearchResult result = JestWrapper.getClient().execute(search);

@@ -30,16 +30,18 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
     private Bid bid1;
     private Bid bid2;
     private DataManager dm;
-    private String userID;
+    private String userID1;
+    private String userID2;
 
     public DataManagerBidTest() {
         super(MainActivity.class);
     }
 
     public void setUp() {
-        userID = "AWIEMxQnTFjKf1vhacZH";
-        bid1 = new Bid(userID, 10, "Thomas");
-        bid2 = new Bid(userID, 10, "TestID");
+        userID1 = "AWIEMxQnTFjKf1vhacZH";
+        bid1 = new Bid(userID1, 10, "TestID");
+        userID2 = "NewId";
+        bid2 = new Bid(userID2, 20, "NewTask");
         dm = DataManager.getInstance();
     }
 
@@ -60,9 +62,8 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
             Log.i("Error", "The phone has no internet so this test will fail");
         }
         assertFalse(returnedBids == null);
-        Log.i("NOT ERROR", returnedBids.getBid(userID).getBidID() + "vs" + bid1.getBidID());
-        assertEquals(returnedBids.getBid(userID).getValue(), bid1.getValue());
-        assertEquals(returnedBids.getBid(userID).getTaskID(), bid1.getTaskID());
+        assertEquals(returnedBids.getBid(userID1).getValue(), bid1.getValue());
+        assertEquals(returnedBids.getBid(userID1).getTaskID(), bid1.getTaskID());
     }
 
     public void testGetBidsByTask() {
@@ -76,14 +77,14 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
         }
         assertTrue(isConnected);
         try {
-            returnedBids = dm.getTaskBids(bid1.getTaskID(), getActivity()
+            returnedBids = dm.getTaskBids(bid2.getTaskID(), getActivity()
                     .getApplicationContext());
         } catch (NoInternetException e) {
             Log.i("Error", "The phone has no internet so this test will fail");
         }
         assertFalse(returnedBids == null);
-        Log.i("NOT ERROR", returnedBids.getBid(userID).getBidID() + "vs" + bid1.getBidID());
-        assertEquals(returnedBids.getBid(userID).getValue(), bid1.getValue());
-        assertEquals(returnedBids.getBid(userID).getTaskID(), bid1.getTaskID());
+        Log.i("Not Error", returnedBids.getBids().toString());
+        assertEquals(returnedBids.getBid(userID2).getValue(), bid2.getValue());
+        assertEquals(returnedBids.getBid(userID2).getTaskID(), bid2.getTaskID());
     }
 }
