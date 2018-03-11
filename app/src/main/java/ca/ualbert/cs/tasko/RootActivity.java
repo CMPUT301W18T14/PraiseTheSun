@@ -40,7 +40,7 @@ public class RootActivity extends AppCompatActivity {
         setContentView(R.layout.activity_root);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.navbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -110,5 +110,10 @@ public class RootActivity extends AppCompatActivity {
     public void finish(){
         super.finish();
 
+    }
+
+    @Override
+    public void startActivity(Intent intent){
+        super.startActivity(intent);
     }
 }
