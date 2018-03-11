@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko.data;
+package ca.ualbert.cs.tasko.Commands.DataCommands;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -21,52 +21,40 @@ import android.util.Log;
 import java.io.IOException;
 
 import ca.ualbert.cs.tasko.User;
+import ca.ualbert.cs.tasko.data.JestWrapper;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
-import io.searchbox.core.Index;
-import io.searchbox.core.Search;
-import io.searchbox.core.SearchResult;
 
 /**
- * Created by chase on 3/4/2018.
+ * Created by chase on 3/7/2018.
  */
-public class ElasticSearchUserController {
 
-    /*
-    Create a task that will add a user to our elastic search database
-     */
-    public static class AddUserTask extends AsyncTask<User, Void, String> {
+public class GetUserByIdCommand extends GetCommand<User> {
 
+    private String id;
 
-        @Override
-        protected String doInBackground(User... users){
-            JestWrapper.verifySettings();
+    public GetUserByIdCommand(String id){
+        this.id = id;
+    }
 
-            for(User user : users){
-                Index index = new Index.Builder(user).index(JestWrapper.getIndex()).type("user")
-                        .build();
+    @Override
+    public void execute() {
+        GetUserByIdTask getUserTask = new GetUserByIdTask();
+        getUserTask.execute(id);
 
-                try{
-                    DocumentResult result = JestWrapper.getClient().execute(index);
-                    if(result.isSucceeded()){
-                        return result.getId();
-                    }
-                } catch (IOException e){
-                    Log.i("Error", "The application failed to build and send the users");
-                }
-            }
-            return null;
+        try {
+            User user = getUserTask.get();
+            setResult(user);
+        } catch (Exception e){
+            Log.i("Error", "Failed to get user from the async object");
         }
     }
 
-    /**
-     * This Task will request to find a user by the JestID provided and will return the user as a
-     * User Object if it is found otherwise it will return null
-     */
-    public static class GetUserByIdTask extends AsyncTask<String, Void, User> {
+    private static class GetUserByIdTask extends AsyncTask<String, Void, User> {
+
         @Override
-        protected User doInBackground(String... ids){
-            User user;
+        protected User doInBackground(String... ids) {
+            User user = new User();
             JestWrapper.verifySettings();
 
             //Build the get query
@@ -84,9 +72,7 @@ public class ElasticSearchUserController {
                 Log.i("Error", "Failed to get user by ID from ElasticSearch");
             }
 
-            return null;
-
+            return user;
         }
     }
-
 }

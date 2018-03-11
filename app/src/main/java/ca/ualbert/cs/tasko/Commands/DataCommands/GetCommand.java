@@ -13,34 +13,32 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko;
+package ca.ualbert.cs.tasko.Commands.DataCommands;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import ca.ualbert.cs.tasko.Commands.Command;
 
 /**
- * Created by Thomas on 2018-02-23.
- * Represents a TaskList object that contains an array of tasks.
- *
- * @author tlafranc
+ * Created by chase on 3/7/2018.
  */
-public class TaskList {
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
+public abstract class GetCommand<T> implements Command {
+    private T result;
 
-    public void addTask(Task task){
-        tasks.add(task);
+    public T getResult(){
+        return result;
     }
 
-    public void removeTask(Task task){
-        tasks.remove(task);
+    protected void setResult(T result){
+        this.result = result;
     }
 
-    public ArrayList<Task> getTasks(){
-        return tasks;
+    @Override
+    public void undo(){
+
     }
 
-    public void addAll(Collection<? extends Task> c){
-        tasks.addAll(c);
+    @Override
+    public boolean canUndo(){
+        return false;
     }
 }

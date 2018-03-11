@@ -62,7 +62,7 @@ public class Bid implements Comparable<Bid>{
         return TaskID;
     }
 
-    public void serTaskID(String TaskID){
+    public void setTaskID(String TaskID){
         this.TaskID = TaskID;
     }
 
@@ -82,5 +82,13 @@ public class Bid implements Comparable<Bid>{
     @Override
     public int compareTo(Bid bid){
         return Float.compare(this.value, bid.getValue());
+    }
+
+    public String getBidID() {
+        return BidID;
+    }
+
+    public void setBidID(String bidID) {
+        BidID = bidID;
     }
 }
