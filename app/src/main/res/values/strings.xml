@@ -13,5 +13,9 @@
     <string name="add_photo">Add Photo</string>
     <string name="add_location">Add Location</string>
     <string name="post_task">Post your task!</string>
+    <string name="title_activity_navigator">NavigatorActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
 
