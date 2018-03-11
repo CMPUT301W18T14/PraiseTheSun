@@ -16,8 +16,15 @@
 package ca.ualbert.cs.tasko.Commands.DataCommands;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
+import java.util.List;
+
+import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
+import ca.ualbert.cs.tasko.data.JestWrapper;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
 
 /**
  * Created by Thomas on 2018-03-10.
@@ -32,7 +39,15 @@ public class GetTaskBidsCommand extends GetCommand<BidList> {
 
     @Override
     public void execute() {
-        String query = "{\"query\":{\"term\":{\"UserID\":\"" + taskId + "\" } } }";
+        String query = "{\"query\":{\"term\":{\"TaskID\":\"" + taskId + "\" } } }";
+        GetBidListTask getBidListTask = new GetBidListTask();
+        getBidListTask.execute(query);
+        try {
+            BidList bidList = getBidListTask.get();
+            setResult(bidList);
+        } catch (Exception e){
+            Log.i("Error", "Failed to get user from the async object");
+        }
     }
 
     public void undo() {
@@ -45,8 +60,30 @@ public class GetTaskBidsCommand extends GetCommand<BidList> {
 
     public static class GetBidListTask extends AsyncTask<String, Void, BidList> {
         @Override
-        protected BidList doInBackground(String... userIds) {
-            return null;
+        protected BidList doInBackground(String... taskIds){
+            BidList bidList = new BidList();
+
+            JestWrapper.verifySettings();
+
+            //Build the search query
+            Search search = new Search.Builder(taskIds[0]).addIndex(JestWrapper.getIndex())
+                    .addType("bid").build();
+            Log.i("Not Error", taskIds[0]);
+
+            try{
+                SearchResult result = JestWrapper.getClient().execute(search);
+                if(result.isSucceeded()){
+                    List<Bid> foundBids = result.getSourceAsObjectList(Bid.class);
+                    bidList.addAll(foundBids);
+                }
+                else {
+                    Log.i("Error", "Search result did not succeed");
+                }
+            } catch (Exception e){
+                Log.i("Error", "Search result threw an exception");
+            }
+
+            return bidList;
         }
     }
 }
