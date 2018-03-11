@@ -17,10 +17,6 @@ package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import java.util.ArrayList;
-
-import ca.ualbert.cs.tasko.data.DataManager;
-
 /**
  * Created by ryan on 2018-02-24.
  * Edited by chase on 2018-03-05
@@ -82,16 +78,16 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
 
     /*TODO: RedoTest cases for Updated Notifications Class*/
-    public void testGetNotifications() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
-        Task task = new Task(user2, "Good Task Name", "Better description.");
-        Notification notification = new Notification(task);
-
-        assertNull(user.getNotifications());
-        notification.sendNotification(notification);
-        assertTrue(user.getNotifications().contains(notification));
-    }
+//    public void testGetNotifications() {
+//        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+//        User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
+//        Task task = new Task(user2, "Good Task Name", "Better description.");
+//        NotificationHandler notification = new NotificationHandler(task);
+//
+//        assertNull(user.getNotifications());
+//        notification.sendNotification(notification);
+//        assertTrue(user.getNotifications().contains(notification));
+//    }
 
     public void testGetRating() {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");

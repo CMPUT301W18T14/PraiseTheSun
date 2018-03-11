@@ -17,53 +17,52 @@ package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import java.util.ArrayList;
+import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
 
 /**
  * Created by spack on 2018-02-23.
  */
 
 public class NotificationTest extends ActivityInstrumentationTestCase2 {
-    public NotificationTest(){
+    public NotificationTest() {
         super(MainActivity.class);
     }
 
-    public void testCreate() {
-        User user = new User("StevieP", "Steve", "780-450-1000",
+    private NotificationFactory nf;
+    private NotificationArtifacts.NotificationHandler nh;
+    private User provider;
+    private User requestor;
+    private Task task;
+
+    public void setUp() {
+        nf = new NotificationFactory();
+        nh = new NotificationArtifacts.NotificationHandler(nf);
+        requestor = new User("StevieP", "Steve", "780-450-1000",
                 "spacker@ualberta.ca");
-        Task task = new Task(user,"TestTask1", "Help me test software");
-        Notification notification = new Notification(task);
+        provider = new User("Stevoo", "Stephen", "780-454-1054",
+                "stevooo@ualberta.ca");
+        task = new Task(requestor, "TestTask1",
+                "Help me with the factory pattern ahhhhhhh");
+    }
 
-        //Test to see if notification is being created and can get info from the passed in task.
-        assertEquals("TestTask1", notification.getTaskname());
+    public void testCreate() {
 
-        //Test to see if notification switch block is working properly.
+        Notification notification = nh.newNotification(task.getStatus(), task.getTaskName(),
+                requestor, provider);
+
+        //Test to see if notification handler is properly communicating with the factory.
         assertEquals("Default Message for Testing", notification.getMessage());
 
+        task.setStatus(Status.BIDDED);
+
+        Notification notification2 = nh.newNotification(task.getStatus(), task.getTaskName(),
+                requestor, provider);
+
+        //Test to see if notification factory logic is working.
+        assertEquals("You have received a new Bid on" + task.getTaskName(),
+                notification2.getMessage());
 
     }
 
-    // Test to see if notifications are properly "sent" to users
-    public void testSend(){
-        User requestor = new User("StevieP", "Steve", "780-450-1000",
-                "spacker@ualberta.ca");
-        User provider = new User("Stevoo", "Stephen", "780-454-1054",
-                "stevooo@ualberta.ca");
-        Task task = new Task(requestor,  "TestTask2", "Help me test software");
-        task.setTaskProvider(provider);
-        task.setStatus(Status.DONE);
-
-        Notification notification = new Notification(task);
-
-        //Test the task requestor gets notification in hypothetical rating scenario
-        ArrayList<Notification> testNotifications1;
-        testNotifications1 = requestor.getNotifications();
-        assertEquals(testNotifications1.get(0).getMessage(), "Please rate ..."  );
-
-        //Test the task provider gets notification in hypothetical rating scenario
-        ArrayList<Notification> testNotifications2;
-        testNotifications2 = provider.getNotifications();
-        assertEquals(testNotifications2.get(0).getMessage(), "Please rate ..."  );
-
-    }
 }

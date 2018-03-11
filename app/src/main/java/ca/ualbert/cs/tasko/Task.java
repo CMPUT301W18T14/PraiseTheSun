@@ -140,8 +140,6 @@ public class Task {
         this.status = Status.ASSIGNED;
     }
 
-    public User getTaskProvider() { return taskProvider; }
-
     public void setTaskProvider (User taskProvider) { this.taskProvider = taskProvider; }
 
 }

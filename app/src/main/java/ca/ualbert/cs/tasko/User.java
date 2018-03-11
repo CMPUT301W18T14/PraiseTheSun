@@ -38,8 +38,7 @@ public class User {
     private BidList userBids;
     private TaskList myTasks;
     private TaskList assignments;
-    private Float rating;
-    private ArrayList<Notification> notifications;
+    private ArrayList<NotificationArtifacts.NotificationHandler> notifications;
     private float rating;
 
     @JestId
@@ -57,7 +56,7 @@ public class User {
         this.myTasks = null;
         this.assignments = null;
         this.notifications = new ArrayList<>();
-        this.rating = null;
+        this.rating = 0;
 
     }
 
@@ -119,7 +118,7 @@ public class User {
     }
 
 
-    public ArrayList<Notification> getNotifications () {
+    public ArrayList<NotificationArtifacts.NotificationHandler> getNotifications () {
         return new ArrayList<>();
     }
 
