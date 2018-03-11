@@ -27,8 +27,10 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
 
     private User requester;
+    private User requester2;
     private Task task1;
     private Task task2;
+    private Task task3;
     private DataManager dm;
 
     public DataManagerTaskTest(){
@@ -41,8 +43,13 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         requester = new User("requester", "Ima Requester", "4567891234", "gimmieRequests@example" +
                 ".com");
         requester.setId("MyIDisAwesome");
+
+        requester2 = new User("Requester2", "Ima reqster 2", "2222222222", "Gimmie2@example.com");
+        requester2.setId("Number2ftw");
+
         task1 = new Task(requester.getId(), "Task for lazy people", "Description");
         task2 = new Task(requester.getId(), "Different a task", "Explination");
+        task3 = new Task(requester2.getId(), "Number 2 Task", "THis task helps number 2");
 
     }
 
@@ -85,5 +92,26 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         assertTrue(!results.getTasks().isEmpty());
         assertTrue(results.getTasks().contains(task1));
         assertFalse(results.getTasks().contains(task2));
+    }
+
+    public void testGetUserTasks(){
+        boolean isConnected = true;
+        try{
+            dm.putTask(task1, getActivity().getApplicationContext());
+            dm.putTask(task3, getActivity().getApplicationContext());
+        } catch (NoInternetException e){
+            isConnected = false;
+        }
+        assertTrue(isConnected);
+        TaskList results = null;
+        try{
+            results = dm.getUserTasks(task1.getTaskRequesterID(), getActivity()
+                    .getApplicationContext());
+        } catch (NoInternetException e){
+            isConnected = false;
+        }
+        assertTrue(isConnected);
+        assertTrue(results.getTasks().contains(task1));
+        assertFalse(results.getTasks().contains(task3));
     }
 }

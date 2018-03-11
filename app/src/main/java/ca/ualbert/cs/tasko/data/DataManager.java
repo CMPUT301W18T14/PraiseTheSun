@@ -26,6 +26,7 @@ import ca.ualbert.cs.tasko.BidList;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
@@ -154,8 +155,15 @@ public class DataManager {
     }
 
     //TODO
-    public TaskList getUserTasks(String userId, Context context){
-        return new TaskList();
+    public TaskList getUserTasks(String userId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetUserTasksCommand command = new GetUserTasksCommand(userId);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
+            return command.getResult();
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     //TODO
