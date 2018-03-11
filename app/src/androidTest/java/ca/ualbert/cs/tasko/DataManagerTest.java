@@ -56,6 +56,8 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
             dm.putUser(user2, getActivity().getApplicationContext());
         } catch (NoInternetException e) {
             Log.i("Error", "No internet connection. Can not add a new user at the moment");
+        } catch (IllegalArgumentException e){
+            //this is good
         }
         try {
             returnedUser = dm.getUserById(user2.getId(), getActivity()
@@ -84,6 +86,8 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
             dm.putUser(user1, getActivity().getApplicationContext());
         } catch (NoInternetException e){
             Log.i("Error", "No internet connection, can not add the user to elasticsearch");
+        } catch (IllegalArgumentException e){
+
         }
         try {
             Thread.sleep(2000);

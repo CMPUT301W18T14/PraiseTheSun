@@ -40,7 +40,8 @@ public class GetUserTasksCommand extends GetCommand<TaskList> {
 
     @Override
     public void execute() {
-        String query = "{\"query\":{\"term\":{\"taskRequesterID\":\"" + userID + "\" } } }";
+        String query = "{\"size\": 1000, \"query\":{\"term\":{\"taskRequesterID\":\"" + userID +
+                "\" } } }";
         GetUserTasksTask getUserTasks = new GetUserTasksTask();
         getUserTasks.execute(query);
         try {
@@ -65,10 +66,8 @@ public class GetUserTasksCommand extends GetCommand<TaskList> {
             try{
                 SearchResult result = JestWrapper.getClient().execute(search);
                 if(result.isSucceeded()){
-                    List<SearchResult.Hit<Task, Void>> foundTasks = result.getHits(Task.class);
-                    for(SearchResult.Hit hit : foundTasks){
-                        tasks.addTask((Task) hit.source);
-                    }
+                    List<Task> results = result.getSourceAsObjectList(Task.class);
+                    tasks.addAll(results);
                 }
                 else {
                     Log.i("Error", "Search result did not succeed");

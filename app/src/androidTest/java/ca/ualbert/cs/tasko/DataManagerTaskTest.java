@@ -90,6 +90,10 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         }
         assertTrue(isConnected);
         assertTrue(!results.getTasks().isEmpty());
+        for(Task task: results.getTasks()){
+            System.out.println("This task id is: " + task.getId());
+            System.out.println("THE REAL task id is: " + task1.getId());
+        }
         assertTrue(results.getTasks().contains(task1));
         assertFalse(results.getTasks().contains(task2));
     }

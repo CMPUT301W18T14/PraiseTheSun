@@ -42,7 +42,8 @@ public class SearchTasksCommand extends GetCommand<TaskList> {
 
     @Override
     public void execute() {
-        String query = "{\"query\":{\"match\":{\"description\": { \"query\" : \"" + searchTerm +
+        String query = "{\"size\": 1000, \"query\":{\"match\":{\"description\": { \"query\" : \"" +
+                searchTerm +
                 "\", \"operator\" : \"and\" } } } }";
         SearchTasks searchTask = new SearchTasks();
         searchTask.execute(query);
@@ -67,10 +68,8 @@ public class SearchTasksCommand extends GetCommand<TaskList> {
             try{
                 SearchResult sr = JestWrapper.getClient().execute(search);
                 if(sr.isSucceeded() && sr.getTotal() > 0){
-                    List<SearchResult.Hit<Task, Void>> hits = sr.getHits(Task.class);
-                    for(SearchResult.Hit hit : hits){
-                        tasks.addTask((Task) hit.source);
-                    }
+                    List<Task> results = sr.getSourceAsObjectList(Task.class);
+                    tasks.addAll(results);
                 }
 
             } catch (IOException e){

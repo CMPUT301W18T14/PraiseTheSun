@@ -274,7 +274,12 @@ public class DataManager {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        return isConnected;
+        if(isConnected){
+            return activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET ||
+                    activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ||
+                    activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
+        }
+        return false;
     }
 
 

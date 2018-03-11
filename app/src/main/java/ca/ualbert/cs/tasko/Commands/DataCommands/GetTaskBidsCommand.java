@@ -39,7 +39,7 @@ public class GetTaskBidsCommand extends GetCommand<BidList> {
 
     @Override
     public void execute() {
-        String query = "{\"query\":{\"term\":{\"TaskID\":\"" + taskId + "\" } } }";
+        String query = "{\"size\": 1000, \"query\":{\"term\":{\"TaskID\":\"" + taskId + "\" } } }";
         GetBidListTask getBidListTask = new GetBidListTask();
         getBidListTask.execute(query);
         try {
