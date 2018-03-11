@@ -36,33 +36,36 @@ public class Task {
     private User taskRequester;
     private User taskProvider;
     private BidList bidList;
+    private String taskRequesterID;
+    private String taskProviderID;
+    //private BidList bidList;
     private Status status;
 
     @JestId
     private String id;
 
-    public Task(User taskRequester, String taskName, String description){
-        this(taskRequester, taskName, description, null, null);
+    public Task(String taskRequesterID, String taskName, String description){
+        this(taskRequesterID, taskName, description, null, null);
     }
 
-    public Task(User taskRequester, String taskName, String description,
+    public Task(String taskRequesterID, String taskName, String description,
                 ArrayList<Image> photos){
-        this(taskRequester, taskName, description, photos, null);
+        this(taskRequesterID, taskName, description, photos, null);
     }
 
-    public Task(User taskRequester, String taskName, String description,
+    public Task(String taskRequesterID, String taskName, String description,
                 Location location){
-        this(taskRequester, taskName, description, null, location);
+        this(taskRequesterID, taskName, description, null, location);
     }
 
-    public Task(User taskRequester, String taskName, String description,
+    public Task(String taskRequesterID, String taskName, String description,
                 ArrayList<Image> photos, Location location){
-        this.taskRequester = taskRequester;
+        this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
         this.photos = photos;
         this.geolocation = location;
-        this.taskProvider = null;
+        this.taskProviderID = null;
         this.status = Status.REQUESTED;
     }
 
@@ -119,8 +122,8 @@ public class Task {
         return geolocation;
     }
 
-    public User getTaskRequester() {
-        return taskRequester;
+    public String getTaskRequesterID() {
+        return taskRequesterID;
     }
 
     public String getId() {
@@ -131,15 +134,24 @@ public class Task {
         this.id = id;
     }
 
-    public User getTaskProvider() {
-        return taskProvider;
+    public String getTaskProviderID() {
+        return taskProviderID;
     }
 
-    public void assign(User taskProvider) {
-        this.taskProvider = taskProvider;
+    public void assign(String taskProviderID) {
+        this.taskProviderID = taskProviderID;
         this.status = Status.ASSIGNED;
     }
 
+
     public void setTaskProvider (User taskProvider) { this.taskProvider = taskProvider; }
 
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Task)){
+            return false;
+        }
+        return this.getId().equals(((Task)o).getId());
+    }
 }

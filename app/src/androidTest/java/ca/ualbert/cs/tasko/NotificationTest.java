@@ -34,6 +34,7 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
+<<<<<<< HEAD
     private NotificationFactory nf;
     private RatingNotificationFactory rnf;
     private NotificationHandler nh;

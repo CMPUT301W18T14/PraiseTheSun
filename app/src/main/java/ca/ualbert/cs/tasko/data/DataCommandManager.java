@@ -13,34 +13,35 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko;
+package ca.ualbert.cs.tasko.data;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedList;
+
+import ca.ualbert.cs.tasko.Commands.Command;
 
 /**
- * Created by Thomas on 2018-02-23.
- * Represents a TaskList object that contains an array of tasks.
- *
- * @author tlafranc
+ * Created by chase on 3/7/2018.
  */
-public class TaskList {
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
+public class DataCommandManager {
+    private LinkedList<Command> historyList;
+    private static DataCommandManager instance = new DataCommandManager();
 
-    public void addTask(Task task){
-        tasks.add(task);
+    private DataCommandManager(){
+        historyList = new LinkedList<>();
     }
 
-    public void removeTask(Task task){
-        tasks.remove(task);
+    public static DataCommandManager getInstance(){
+        return instance;
     }
 
-    public ArrayList<Task> getTasks(){
-        return tasks;
-    }
+    public void invokeCommand(Command command){
+        command.execute();
 
-    public void addAll(Collection<? extends Task> c){
-        tasks.addAll(c);
+        if(command.canUndo()){
+            historyList.add(command);
+        } else {
+            historyList.clear();
+        }
     }
 }
