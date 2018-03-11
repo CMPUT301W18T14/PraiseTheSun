@@ -19,6 +19,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context="ca.ualbert.cs.tasko.AddPhotoActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/addPhotoTaskImage"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/image_to_be_uploaded"/>
+
+        <Button
+            android:id="@+id/addPhotoUploadButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onUploadClick"
+            android:text="@string/select_an_image"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/addPhotoConfirmButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onConfirmClick"
+            android:text="@string/confirm_upload"
+            android:textColor="@android:color/black" />
+
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

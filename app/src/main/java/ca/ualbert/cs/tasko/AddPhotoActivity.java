@@ -15,14 +15,30 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 public class AddPhotoActivity extends AppCompatActivity {
+
+    private ImageView imageToUpload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
+
+        imageToUpload = (ImageView) findViewById(R.id.addPhotoTaskImage);
+
+    }
+
+    public void onUploadClick(View view) {
+
+    }
+
+    public void onConfirmClick(View view) {
+
     }
 }
