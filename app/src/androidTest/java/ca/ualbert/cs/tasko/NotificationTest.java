@@ -34,7 +34,6 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
-<<<<<<< HEAD
     private NotificationFactory nf;
     private RatingNotificationFactory rnf;
     private NotificationHandler nh;
@@ -50,7 +49,7 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
                 "spacker@ualberta.ca");
         provider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
-        task = new Task(requestor, "TestTask1",
+        task = new Task("requestorID", "TestTask1",
                 "Help me with the factory pattern ahhhhhhh");
     }
 
