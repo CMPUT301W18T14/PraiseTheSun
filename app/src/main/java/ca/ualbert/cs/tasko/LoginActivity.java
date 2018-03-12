@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * LoginActivity should be the first Activity a user will see if they are not logged in.
@@ -64,8 +65,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
 
-                User usernameInput = DM.getUserByUsername(usernameText.getText().toString(),
-                        LoginActivity.this);
+                User usernameInput = null;
+                try {
+                    usernameInput = DM.getUserByUsername(usernameText.getText().toString(),
+                            LoginActivity.this);
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
 
                 if (usernameInput != null){
                     CU.setCurrentUser(usernameInput);
