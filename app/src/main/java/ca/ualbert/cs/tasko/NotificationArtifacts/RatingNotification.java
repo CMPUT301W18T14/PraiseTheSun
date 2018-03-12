@@ -13,34 +13,34 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko;
+package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import ca.ualbert.cs.tasko.User;
+import io.searchbox.annotations.JestId;
 
 /**
- * Created by Thomas on 2018-02-23.
- * Represents a TaskList object that contains an array of tasks.
- *
- * @author tlafranc
+ * A rating notification object. I made this a different type than a simple notification object
+ * because I was thinking that if a user were to click on the notification it should create a
+ * rating screen which would not happen with a regular notification.
+ * Created by spack on 2018-03-10.
  */
-public class TaskList {
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
+public class RatingNotification extends Notification{
 
-    public void addTask(Task task){
-        tasks.add(task);
+
+    public RatingNotification(String message, User recipient){
+        super(message, recipient);
     }
 
-    public void removeTask(Task task){
-        tasks.remove(task);
+    @JestId
+    private String id;
+
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public ArrayList<Task> getTasks(){
-        return tasks;
+    public String getId() {
+        return id;
     }
 
-    public void addAll(Collection<? extends Task> c){
-        tasks.addAll(c);
-    }
 }

@@ -18,8 +18,25 @@ package ca.ualbert.cs.tasko.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
+import java.util.ArrayList;
+
+import ca.ualbert.cs.tasko.Bid;
+import ca.ualbert.cs.tasko.BidList;
+
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskBidsCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserBidsCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
+import ca.ualbert.cs.tasko.Notification;
+import ca.ualbert.cs.tasko.Task;
+import ca.ualbert.cs.tasko.TaskList;
 import ca.ualbert.cs.tasko.User;
 
 /**
@@ -31,9 +48,10 @@ import ca.ualbert.cs.tasko.User;
 public class DataManager {
 
     public static DataManager instance = new DataManager();
+    private DataCommandManager dcm;
 
     private DataManager(){
-
+        dcm = DataCommandManager.getInstance();
     }
 
     public static DataManager getInstance(){
@@ -49,42 +67,195 @@ public class DataManager {
      */
     public void putUser(User user, Context context) throws NoInternetException{
         context = context.getApplicationContext();
+        PutUserCommand command = new PutUserCommand(user);
+        GetUserByUsernameCommand isDuplicate = new GetUserByUsernameCommand(user.getUsername());
         if(isOnline(context)){
-            ElasticSearchUserController.AddUserTask addUserTask =
-                    new ElasticSearchUserController.AddUserTask();
-            addUserTask.execute(user);
-            try{
-                user.setId(addUserTask.get());
-            } catch (Exception e){
-                Log.i("Error", "Failed to obtain the user ID from the async object");
+            dcm.invokeCommand(isDuplicate);
+            if(isDuplicate.getResult().getId() != user.getId()){
+                throw new IllegalArgumentException("Can not add duplicate users");
             }
-
+            dcm.invokeCommand(command);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
+            //TODO: Add to a todoQueue for when we reconnect???
             throw new NoInternetException();
         }
     }
 
     public User getUserById(String id, Context context) throws NoInternetException{
         context = context.getApplicationContext();
+        GetUserByIdCommand command = new GetUserByIdCommand(id);
         if(isOnline(context)){
-            ElasticSearchUserController.GetUserByIdTask getUserTask =
-                    new ElasticSearchUserController.GetUserByIdTask();
-            getUserTask.execute(id);
+            dcm.invokeCommand(command);
+            return command.getResult();
 
+        } else {
+            throw new NoInternetException();
+        }
+    }
+
+    public User getUserByUsername(String username, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetUserByUsernameCommand command = new GetUserByUsernameCommand(username);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
+
+            return command.getResult();
+        } else {
+            throw new NoInternetException();
+        }
+    }
+
+    //TODO part 5
+    public void deleteUser(String userId, Context context){
+
+    }
+
+    //TODO
+    public void putTask(Task task, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        PutTaskCommand command = new PutTaskCommand(task);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
             try {
-                User user = getUserTask.get();
-                return user;
-            } catch (Exception e){
-                Log.i("Error", "Failed to get user from the async object");
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         } else {
             throw new NoInternetException();
         }
-        return null;
+
     }
 
-    public User getUserByUsername(String username, Context context){
-        return new User();
+    //TODO
+    public Task getTask(String taskId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetTaskCommand command = new GetTaskCommand(taskId);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
+            return command.getResult();
+
+        } else {
+            throw new NoInternetException();
+        }
+    }
+
+    //TODO
+    public TaskList searchTasks(String searchTerm, Context context ) throws NoInternetException{
+        context = context.getApplicationContext();
+        SearchTasksCommand command = new SearchTasksCommand(searchTerm);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
+
+            return command.getResult();
+        } else {
+            throw new NoInternetException();
+        }
+    }
+
+    //TODO
+    public TaskList getUserTasks(String userId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetUserTasksCommand command = new GetUserTasksCommand(userId);
+        if(isOnline(context)){
+            dcm.invokeCommand(command);
+            return command.getResult();
+        } else {
+            throw new NoInternetException();
+        }
+    }
+
+    /**
+     * Given a bid object, store this bid into the database.
+     *
+     * @param bid the bid object that must be stored in the database
+     * @param context the context of the app at the moment of calling this function (to determine
+     *               if the requester has a valid internet connection)
+     * @throws NoInternetException Thrown if user does not have a valid internet connection.
+     * @author tlafranc
+     */
+    public void addBid(Bid bid, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        PutBidCommand putBidCommand = new PutBidCommand(bid);
+        if (isOnline(context)) {
+            dcm.invokeCommand(putBidCommand);
+        } else {
+            throw new NoInternetException();
+        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Given a userID, return all bids associated to this user.
+     *
+     * @param userId the userID associated to the bids in the returned BidList
+     * @param context the context of the app at the moment of calling this function (to determine
+     *               if the requester has a valid internet connection)
+     * @return A BidList containing all bids associated with this user.
+     * @throws NoInternetException Thrown if user does not have a valid internet connection.
+     * @author tlafranc
+     */
+    public BidList getUserBids(String userId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetUserBidsCommand command = new GetUserBidsCommand(userId);
+        if (isOnline(context)) {
+            dcm.invokeCommand(command);
+            return command.getResult();
+        }
+        else {
+            throw new NoInternetException();
+        }
+    }
+
+    /**
+     * Given a taskId, return all bids associated to this task.
+     *
+     * @param taskId the taskId associated to the bids the returned BidList
+     * @param context the context of the app at the moment of calling this function (to determine
+     *               if the requester has a valid internet connection)
+     * @return A BidList containing all the bids associated with this task.
+     * @throws NoInternetException Thrown if user does not have a valid internet connection.
+     * @author tlafranc
+     */
+    public BidList getTaskBids(String taskId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        GetTaskBidsCommand command = new GetTaskBidsCommand(taskId);
+        if (isOnline(context)) {
+            dcm.invokeCommand(command);
+            return command.getResult();
+        }
+        else {
+            throw new NoInternetException();
+        }
+    }
+
+    //TODO Part 5
+    public void deleteBid(String bidId, Context context){
+
+    }
+
+    //TODO
+    public void putNotification(Notification notification, Context context){
+
+    }
+
+    //TODO
+    public ArrayList<Notification> getNotifications(String userId, Context context){
+        return new ArrayList<>();
+    }
+
+    //TODO
+    public void deleteNotification(String userId, Context context){
+
     }
 
     /**
@@ -104,7 +275,9 @@ public class DataManager {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if(isConnected){
-            return activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+            return activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET ||
+                    activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ||
+                    activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
         }
         return false;
     }

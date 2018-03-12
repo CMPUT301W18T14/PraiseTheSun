@@ -15,32 +15,34 @@
 
 package ca.ualbert.cs.tasko;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
- * Created by Thomas on 2018-02-23.
- * Represents a TaskList object that contains an array of tasks.
- *
- * @author tlafranc
+ * Created by spack on 2018-03-06.
  */
-public class TaskList {
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
+public class CurrentUser {
 
-    public void addTask(Task task){
-        tasks.add(task);
+    private static final CurrentUser Instance = new CurrentUser();
+
+    private User currentUser;
+
+    public static CurrentUser getInstance() {
+        return Instance;
     }
 
-    public void removeTask(Task task){
-        tasks.remove(task);
+    private CurrentUser() {
     }
 
-    public ArrayList<Task> getTasks(){
-        return tasks;
+    public void setCurrentUser(User user){
+        currentUser = user;
     }
 
-    public void addAll(Collection<? extends Task> c){
-        tasks.addAll(c);
+    public User getCurrentUser(){
+        return currentUser;
+    }
+
+    public boolean loggedIn(){
+        if (currentUser == null){
+            return false;
+        }else{ return true; }
     }
 }

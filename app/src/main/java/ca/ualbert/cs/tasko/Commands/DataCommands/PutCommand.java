@@ -13,34 +13,14 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko;
+package ca.ualbert.cs.tasko.Commands.DataCommands;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import ca.ualbert.cs.tasko.Commands.Command;
 
 /**
- * Created by Thomas on 2018-02-23.
- * Represents a TaskList object that contains an array of tasks.
+ * Represents a command that will be used to put data into the database. With no results
  *
- * @author tlafranc
+ * @author Chase Buhler
  */
-public class TaskList {
-
-    private ArrayList<Task> tasks = new ArrayList<Task>();
-
-    public void addTask(Task task){
-        tasks.add(task);
-    }
-
-    public void removeTask(Task task){
-        tasks.remove(task);
-    }
-
-    public ArrayList<Task> getTasks(){
-        return tasks;
-    }
-
-    public void addAll(Collection<? extends Task> c){
-        tasks.addAll(c);
-    }
+public interface PutCommand extends Command {
 }

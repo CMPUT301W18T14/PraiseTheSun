@@ -13,34 +13,28 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko;
+package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import ca.ualbert.cs.tasko.User;
 
 /**
- * Created by Thomas on 2018-02-23.
- * Represents a TaskList object that contains an array of tasks.
- *
- * @author tlafranc
+ * The super class representing a generic notification object
+ * Created by spack on 2018-03-10.
  */
-public class TaskList {
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
+public abstract class Notification {
 
-    public void addTask(Task task){
-        tasks.add(task);
+    private String message;
+    private User recipient;
+
+
+    public Notification(String message, User recipient) {
+        this.message = message;
+        this.recipient = recipient;
     }
 
-    public void removeTask(Task task){
-        tasks.remove(task);
-    }
+    public String getMessage(){
+        return message;
 
-    public ArrayList<Task> getTasks(){
-        return tasks;
-    }
-
-    public void addAll(Collection<? extends Task> c){
-        tasks.addAll(c);
     }
 }
