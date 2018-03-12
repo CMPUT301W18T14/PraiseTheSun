@@ -26,7 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+//Bruh ur text is dank
 public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
     private TextView taskDescription;
     private TextView taskName;
@@ -54,7 +54,7 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
         taskDescription = (TextView) findViewById(R.id.taskDescription);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
-
+        //diaglog for choosing a dick to suck ayeeeee
         //Dialog for choosing to make a bid on the task
         placeBidButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -76,6 +76,7 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //Probably a better way to do this but it works for now
+                        //probably a better way to suck dick but I'll settle
                         finish();
                         startActivity(new Intent(ViewSearchedTaskDetailsActivity.this, ViewSearchedTaskDetailsActivity.class));
                     }
