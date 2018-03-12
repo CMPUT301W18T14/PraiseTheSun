@@ -87,13 +87,16 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             //This should go to a pre-filled in version of the AddTaskActivity
         });
 
+        */
+
+        //Alden's addition 2018-03-12
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ViewTaskDetailsActivity.this, .class));
+                startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
             }
         });
-        */
+
     }
 
 }
