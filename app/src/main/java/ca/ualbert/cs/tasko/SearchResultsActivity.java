@@ -17,18 +17,33 @@ package ca.ualbert.cs.tasko;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
-    private TextView test;
+    private RecyclerView searchRecyclerView;
+    private RecyclerView.Adapter searchAdapter;
+    private RecyclerView.LayoutManager searchLayoutManager;
+    private DataManager dm = DataManager.getInstance();
+    private SearchResultsActivity activity = this;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
-        test = (TextView) findViewById(R.id.keywords);
+        searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
+
+        searchLayoutManager = new LinearLayoutManager(activity);
+        searchRecyclerView.setLayoutManager(searchLayoutManager);
+
+        // searchAdapter = new MyTaskRecyclerViewAdapter()
 
         String keywords;
 
@@ -36,9 +51,13 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         keywords = extras.getString("INeedIt");
 
-        test.setText(keywords);
+        TaskList foundtasks = new TaskList();
 
-
+        try {
+            foundtasks = dm.searchTasks(keywords, activity);
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
 
     }
 
