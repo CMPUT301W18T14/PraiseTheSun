@@ -37,5 +37,6 @@
     <string name="title_activity_view_task_details">ViewTaskDetails</string>
     <string name="title_activity_view_searched_task_details">ViewSearchedTaskDetailsActivity
     </string>
+    <string name="title_activity_search_results">SearchResultsActivity</string>
 </resources>
 
