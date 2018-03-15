@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -43,13 +42,15 @@ public class SearchResultsActivity extends AppCompatActivity {
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
-        // searchAdapter = new MyTaskRecyclerViewAdapter()
-
         String keywords;
 
         Bundle extras = getIntent().getExtras();
 
-        keywords = extras.getString("INeedIt");
+        if (extras != null) {
+            keywords = extras.getString("INeedIt");
+        }else{
+            keywords = null;
+        }
 
         TaskList foundtasks = new TaskList();
 
@@ -58,6 +59,9 @@ public class SearchResultsActivity extends AppCompatActivity {
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
+
+        searchAdapter = new TaskListAdapter(activity, foundtasks);
+        searchRecyclerView.setAdapter(searchAdapter);
 
     }
 

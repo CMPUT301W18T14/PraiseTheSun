@@ -15,42 +15,68 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
  * Created by spack on 2018-03-14.
  */
 
-public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHolder> {
+public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
+
+    private LayoutInflater inflater;
     private TaskList tasks;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
-
-        public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
-        }
-    }
-
-    public TaskListAdapter(TaskList dmtasks) {
+    public TaskListAdapter(Context context, TaskList dmtasks){
+        inflater = LayoutInflater.from(context);
         tasks = dmtasks;
     }
 
     @Override
-    public TaskListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.task_view, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+    public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.task_view, parent, false);
+        TaskViewHolder holder = new TaskViewHolder(view);
+
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(tasks[position]);
+    public void onBindViewHolder(TaskViewHolder holder, int position) {
+        Task currentTask = tasks.get(position);
+
+        holder.taskTitle.setText(currentTask.getTaskName());
+        holder.taskDescription.setText(currentTask.getDescription());
+        //Needs more information then I currently have/ know how to implement.
+        //holder.taskBid.setText();
+        //holder.taskPhoto.setImageResource();
 
     }
+
+    @Override
+    public int getItemCount(){
+        return tasks.getSize();
+    }
+
+    public static class TaskViewHolder extends RecyclerView.ViewHolder {
+
+        TextView taskTitle;
+        TextView taskBid;
+        TextView taskDescription;
+        //ImageView taskPhoto;
+
+        public TaskViewHolder(View itemView) {
+            super(itemView);
+            taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
+            taskBid = (TextView) itemView.findViewById(R.id.searchTaskLowBid);
+            taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
+            //taskPhoto = (ImageView) itemView.findViewById(R.id.taskPhoto);
+        }
+    }
+
 }

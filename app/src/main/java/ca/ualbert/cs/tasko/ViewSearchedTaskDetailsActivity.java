@@ -51,7 +51,7 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
         //Button and text boxes definitions
         Button placeBidButton = (Button)findViewById(R.id.placeBidButton);
         Button geolocationButton = (Button)findViewById(R.id.geolocationButton);
-        taskDescription = (TextView) findViewById(R.id.taskDescription);
+        taskDescription = (TextView) findViewById(R.id.searchTaskDescription);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
 

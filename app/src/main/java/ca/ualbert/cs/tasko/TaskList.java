@@ -44,4 +44,12 @@ public class TaskList {
         tasks.addAll(c);
     }
 
+    public int getSize(){
+        return tasks.size();
+    }
+
+    public Task get(int position){
+        return tasks.get(position);
+    }
+
 }

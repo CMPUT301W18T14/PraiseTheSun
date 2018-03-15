@@ -30,9 +30,9 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  */
 
 public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
-    private Solo solo;
 
-    private DataManager DM = DataManager.getInstance();
+    private Solo solo;
+    private DataManager dm = DataManager.getInstance();
     private User testUser = new User("username1", "John Doe", "123-456-9999",
             "jdoe@example.com");
 
@@ -59,11 +59,9 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
      */
     public void testLoginVALIDCredentials() throws NoInternetException {
 
-
-
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
         solo.enterText((EditText) solo.getView(R.id.usernameEditText), "username1");
-        User usernameInput = DM.getUserByUsername("username1",
+        User usernameInput = dm.getUserByUsername("username1",
                 InstrumentationRegistry.getTargetContext());
         assertEquals(testUser, usernameInput);
         solo.clickOnButton("LOGIN");
