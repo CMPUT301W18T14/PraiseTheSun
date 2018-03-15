@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,7 +25,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -51,14 +55,14 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
 
         // Instanciating an array list (you don't need to do this,
         // you already have yours).
-        List<String> your_array_list = new ArrayList<String>();
+        final List<String> your_array_list = new ArrayList<String>();
         your_array_list.add("foo");
         your_array_list.add("bar");
 
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
         // array as a third parameter.
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
                 your_array_list );
@@ -66,6 +70,48 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         myBidList.setAdapter(arrayAdapter);
 
         //end of listview population codezzzzz
+
+        //start of codez for being able to select a bid and either accept it or reject it
+
+        myBidList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewBidsOnTaskActivity.this);
+                final View acceptOrRejectView = getLayoutInflater().inflate(R.layout.accept_or_reject_bid_dialog, null);
+
+                Button acceptButton = (Button) acceptOrRejectView.findViewById(R.id.acceptButton);
+                Button rejectButton = (Button) acceptOrRejectView.findViewById(R.id.rejectButton);
+
+                rejectButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        your_array_list.add("rejected");
+                        arrayAdapter.notifyDataSetChanged();
+                        finish();
+                        startActivity(new Intent(ViewBidsOnTaskActivity.this, ViewBidsOnTaskActivity.class));
+                    }
+                });
+
+                acceptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Probably a better way to do this but it works for now
+                        your_array_list.add("accepted");
+                        arrayAdapter.notifyDataSetChanged();
+                        finish();
+                        startActivity(new Intent(ViewBidsOnTaskActivity.this, ViewBidsOnTaskActivity.class));
+                    }
+                });
+
+                //build and show popup
+                builder.setView(acceptOrRejectView);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
+
+        //end of accept/reject bid codezzzzassss
 
         /*TODO:
         In storyboard each bid in the list of bids has 2 buttons: one for Accept and Reject.
