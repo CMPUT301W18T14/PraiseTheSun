@@ -37,11 +37,12 @@ import java.util.List;
  * Created by Aldentan1997 on 2018-03-12.
  */
 
-    //TODO: MAKE TEST FOR THIS AND APPROPRIATE XML FILES!
+    //TODO: MAKE TEST FOR THIS AND TEST FOR APPROPRIATE XML FILES!
 
 public class ViewBidsOnTaskActivity extends AppCompatActivity {
     public ListView myBidList;
 
+    //TODO: get bidlists involved in code
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,38 +54,42 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
 
         //Populating za listview with some stuffzzzzz
 
-        // Instanciating an array list (you don't need to do this,
-        // you already have yours).
+        // Instanciating an array list. For testing purposes, obviously will have a bidlist
         final List<String> your_array_list = new ArrayList<String>();
         your_array_list.add("foo");
         your_array_list.add("bar");
 
-        // This is the array adapter, it takes the context of the activity as a
-        // first parameter, the type of list view as a second parameter and your
-        // array as a third parameter.
+        // This is the array adapter.
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
                 your_array_list );
 
+        //setting the adapter
         myBidList.setAdapter(arrayAdapter);
 
         //end of listview population codezzzzz
 
         //start of codez for being able to select a bid and either accept it or reject it
 
+        //OnItemClickListener
         myBidList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                //builds the dialog box when you click on a bid
                 AlertDialog.Builder builder = new AlertDialog.Builder(ViewBidsOnTaskActivity.this);
                 final View acceptOrRejectView = getLayoutInflater().inflate(R.layout.accept_or_reject_bid_dialog, null);
 
+                //buttons on the dialog box
                 Button acceptButton = (Button) acceptOrRejectView.findViewById(R.id.acceptButton);
                 Button rejectButton = (Button) acceptOrRejectView.findViewById(R.id.rejectButton);
 
+                //reject button clicked
+                //TODO: implement the actual rejecting of a bid
                 rejectButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        //just for testing, this will all be different obviously
                         your_array_list.add("rejected");
                         arrayAdapter.notifyDataSetChanged();
                         finish();
@@ -92,10 +97,12 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
                     }
                 });
 
+                //accept button clicked
+                //TODO: implement the actual rejecting of a bid
                 acceptButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //Probably a better way to do this but it works for now
+                        //just for testing, this will all be different obviously
                         your_array_list.add("accepted");
                         arrayAdapter.notifyDataSetChanged();
                         finish();
@@ -113,11 +120,7 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
 
         //end of accept/reject bid codezzzzassss
 
-        /*TODO:
-        In storyboard each bid in the list of bids has 2 buttons: one for Accept and Reject.
-        I don't know how to make it so that each bid item in the list has those 2 buttons... */
-
-        //Not sure what this is for - need to find out
+        //Not sure what this is for - apparently no use, just comes with the default xml layout
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
