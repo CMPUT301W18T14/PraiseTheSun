@@ -76,10 +76,11 @@ public class GetTaskBidsCommand extends GetCommand<BidList> {
     public static class GetBidListTask extends AsyncTask<String, Void, BidList> {
         /**
          * doInBackground is called immediately when GetBidListTask.execute() is called and the
-         * code is done in the background of the program. Builds a query, searches for matches to
-         * this query, and returns all matches in the form a BidList.
+         * execution is done in the background of the program. Builds a query, searches for
+         * matches to this query, and returns all matches in the form a BidList.
          *
-         * @param taskIds the taskIds that would like to be searched for in the database
+         * @param taskIds the taskIds associated to the bids that are supposed to be retrieved
+         *                from the database
          * @return a BidList associated to the taskId given as a parameter
          */
         @Override
