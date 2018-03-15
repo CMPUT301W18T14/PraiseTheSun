@@ -29,9 +29,6 @@ import android.widget.ListView;
  * Created by Aldentan1997 on 2018-03-12.
  */
 
-    //Approprite xml file "activity_view_bids_on_task.xml" -the toolbar cuts into the listview
-    //Need to fix ^
-
     //TODO: MAKE TEST FOR THIS AND APPROPRIATE XML FILES!
 
 public class ViewBidsOnTaskActivity extends AppCompatActivity {
@@ -40,7 +37,7 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_bids_on_task);
+        setContentView(R.layout.activity_view_bids_on_a_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

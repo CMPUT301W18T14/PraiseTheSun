@@ -19,7 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.ualbert.cs.tasko.ViewBidsOnTaskActivity">
+    tools:context="ca.ualbert.cs.tasko.ViewMyTasksActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_view_bids_on_task" />
+    <include layout="@layout/content_view_bids_on_a_tasks" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
