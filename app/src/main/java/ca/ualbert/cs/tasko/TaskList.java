@@ -43,4 +43,13 @@ public class TaskList {
     public void addAll(Collection<? extends Task> c){
         tasks.addAll(c);
     }
+
+    public int getSize(){
+        return tasks.size();
+    }
+
+    public Task get(int position){
+        return tasks.get(position);
+    }
+
 }

@@ -30,6 +30,8 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * Just contains a EditText that allows the user to Login, If the text in the EditText matches
  * a username in the database then access is granted. The user also has the option to navigate to
  * the create a new account activity if they do not already have an account.
+ *
+ * @author spack
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -73,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (usernameInput != null){
+                if (usernameInput.getUsername() != null){
                     CU.setCurrentUser(usernameInput);
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);

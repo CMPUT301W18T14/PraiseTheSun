@@ -26,17 +26,29 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 
 /**
- * Created by chase on 3/7/2018.
+ * An extension of the GetCommand class. When a GetUserByIdCommand is executed,
+ * it will attempt to query our database using Elasticsearch in order to
+ * retrieve the user associated with the given UserId.
+ *
+ * @author Chase Buhler
+ * @see GetCommand
  */
-
 public class GetUserByIdCommand extends GetCommand<User> {
-
     private String id;
 
+    /**
+     * The constructor for the GetUSerByIdCommand. Receives a userID
+     * @param id userId of the user that should be retrieved.
+     */
     public GetUserByIdCommand(String id){
         this.id = id;
     }
 
+    /**
+     * execute is a function that once called, will try to query our
+     * database using Elasticsearch in order to retrieve the user associated
+     * with id then it will set this commands result to be that user.
+     */
     @Override
     public void execute() {
         GetUserByIdTask getUserTask = new GetUserByIdTask();
@@ -50,8 +62,21 @@ public class GetUserByIdCommand extends GetCommand<User> {
         }
     }
 
+    /**
+     * An extension of AsyncTask. This class builds a query and executes it
+     * on a separate thread to retrieve a User from elastic search.
+     */
     private static class GetUserByIdTask extends AsyncTask<String, Void, User> {
 
+        /**
+         * doInBackground is the main part of the AsyncTask running on the
+         * separate thread. It will build a query, execute the query and get
+         * the results.
+         *
+         * @param ids the id that is associated with the user that is to
+         *            be retrieved.
+         * @return The found user or an empty user if no user is found.
+         */
         @Override
         protected User doInBackground(String... ids) {
             User user = new User();

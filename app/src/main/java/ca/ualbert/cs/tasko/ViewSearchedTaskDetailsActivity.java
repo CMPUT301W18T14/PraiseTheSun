@@ -22,15 +22,28 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+<<<<<<< HEAD
 //Bruh ur text is dank
+=======
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
+>>>>>>> dev
 public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
+
     private TextView taskDescription;
     private TextView taskName;
     private TextView lowestBid;
+    private Button placeBidButton;
+    private Button geolocationButton;
+    private DataManager dm = DataManager.getInstance();
+    private Task currentTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,23 +52,41 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         //Button and text boxes definitions
-        Button placeBidButton = (Button)findViewById(R.id.placeBidButton);
-        Button geolocationButton = (Button)findViewById(R.id.geolocationButton);
-        taskDescription = (TextView) findViewById(R.id.taskDescription);
+        placeBidButton = (Button) findViewById(R.id.placeBidButton);
+        geolocationButton = (Button) findViewById(R.id.geolocationButton);
+        taskDescription = (TextView) findViewById(R.id.searchTaskDescription);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
+<<<<<<< HEAD
         //diaglog for choosing a dick to suck ayeeeee
         //Dialog for choosing to make a bid on the task
+=======
+
+        Bundle extras = getIntent().getExtras();
+
+        try {
+            String taskID = extras.getString("TaskID");
+            currentTask = dm.getTask(taskID, this);
+            populateFields();
+        }catch(NullPointerException e){
+            Log.i("Error", "TaskID from TaskListAdapter not properly passed");
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
+
+        setupPlaceBidButton();
+
+    }
+
+    private void populateFields(){
+        taskName.setText(currentTask.getTaskName());
+        taskDescription.setText(currentTask.getDescription());
+    }
+
+    //Dialog for choosing to make a bid on the task
+    private void setupPlaceBidButton() {
+>>>>>>> dev
         placeBidButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Confirm deletion and return to main page
@@ -87,19 +118,6 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-
-
-
-
-
-
-
-
-
-
-
     }
 
 }
-
-
