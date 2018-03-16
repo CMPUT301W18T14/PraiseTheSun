@@ -15,29 +15,12 @@
 
 package ca.ualbert.cs.tasko;
 
-import java.util.ArrayList;
+import android.test.ActivityInstrumentationTestCase2;
 
 /**
- * Created by Thomas on 2018-02-23.
- * Represents a TaskList object that contains an array of tasks.
- *
- * @author tlafranc
+ * Created by imtih on 2018-03-16.
  */
-public class TaskList {
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
-
-    TaskList(){}
-
-    public void addTask(Task task){
-        tasks.add(task);
-    }
-
-    public void removeTask(Task task){
-        tasks.remove(task);
-    }
-
-    public ArrayList<Task> getTasks(){
-        return tasks;
-    }
+public class RootActivityTest extends ActivityInstrumentationTestCase2 {
+    public RootActivityTest(){super(MainActivity.class);}
 }

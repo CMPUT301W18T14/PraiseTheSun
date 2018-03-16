@@ -54,7 +54,7 @@ public class User {
         this.email = email;
         this.userBids = null;
         this.myTasks = null;
-        this.assignments = null;
+        this.assignments = new TaskList();
         this.notifications = null;
         this.rating = 0;
     }
