@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (usernameInput.getUsername() != usernameText.getText().toString()){
+                if (usernameInput.getUsername() != null){
                     CU.setCurrentUser(usernameInput);
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);

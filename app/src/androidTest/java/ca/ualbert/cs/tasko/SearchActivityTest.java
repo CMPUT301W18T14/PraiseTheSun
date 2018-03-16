@@ -34,8 +34,9 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
     private DataManager dm = DataManager.getInstance();
     private User testUser = new User("username1", "John Doe", "123-456-9999",
             "jdoe@example.com");
-    private Task task = new Task("requestorID", "TestTask1",
-                            "Help me with recyclerview adapters ahhhhhhh");
+    private Task task = new Task("requestorID", "TestTask4",
+                            "Help me with recyclerview adapters ahhhhhhh," +
+                                    "Help me find NullPointerErrors... :(");
 
     public SearchActivityTest() {
         super(MainActivity.class);
@@ -52,9 +53,8 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
         TaskList foundtasks = dm.searchTasks("Help", InstrumentationRegistry.getTargetContext());
-        assertEquals(3, foundtasks.getSize());
-        assertEquals("TestTask1", foundtasks.get(0).getTaskName());
+        assertEquals("TestTask4", foundtasks.get(0).getTaskName());
         solo.clickOnButton("Search");
-        //solo.assertCurrentActivity("Wrong Activity", SearchResultsActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", SearchResultsActivity.class);
     }
 }

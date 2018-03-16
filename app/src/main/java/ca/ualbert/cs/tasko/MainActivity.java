@@ -45,8 +45,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String keywords = searchQuery.getText().toString();
+                //I realise this is not the best design, dont know how to check for empty results
+                //Without making the search occur here, would prefer not to pass the tasklist to
+                //SearchResultsActivity... Definately needs refinement
                 try {
-                    if(dm.searchTasks(keywords, activity) == null){
+                    TaskList temptasks = dm.searchTasks(keywords, activity);
+                    if(temptasks.getSize() == 0){
                         searchQuery.setError("This Search Found No Results");
                     }else{
                         Intent intent = new Intent(activity, SearchResultsActivity.class);
