@@ -19,12 +19,21 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
+
+import java.util.regex.Pattern;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private EditText usernameText;
@@ -40,6 +49,13 @@ public class CreateAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
+        /*
+         * I used youtube to figure out how to put a back button on the action bar.
+         * https://www.youtube.com/watch?v=6rMQ7vBE-CU
+         * Accessed on 2018-02-03
+         * By user: Priya Kamble
+         */
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         usernameText = (EditText) findViewById(R.id.createAccountUsername);
         nameText = (EditText) findViewById(R.id.createAccountName);
@@ -51,8 +67,28 @@ public class CreateAccountActivity extends AppCompatActivity {
         boolean valid = checkFieldsForEmptyValues();
         if (valid) {
             User newUser = new User(username, name, email, phone);
-            // This relies on Chases DataManager class. Subject to change in future.
-            // DataManager.getInstance().putUser(newUser);
+            try {
+                User retrievedUser = DataManager.getInstance().getUserByUsername(username, this
+                        .getApplicationContext());
+                if (retrievedUser.getUsername() == null) {
+                    try {
+                        DataManager.getInstance().putUser(newUser, this.getApplicationContext());
+                    } catch (NoInternetException e) {
+                        Log.i("Error", "No internet connection in CreateAccountActivity");
+                        Toast.makeText(this.getApplicationContext(), "No Internet Connection!",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    //finish();
+                }
+                else {
+                    Toast.makeText(this.getApplicationContext(), "Sorry, username already " +
+                            "taken", Toast.LENGTH_LONG).show();
+                }
+            } catch (NoInternetException e) {
+                Log.i("Error", "No internet connection in CreateAccountActivity");
+                Toast.makeText(this.getApplicationContext(), "No Internet Connection!", Toast
+                        .LENGTH_LONG).show();
+            }
         }
     }
 
@@ -71,6 +107,14 @@ public class CreateAccountActivity extends AppCompatActivity {
             nameText.setError("Name cannot be left blank");
             validInputs = false;
         }
+        // Retrieved from:
+        // https://stackoverflow.com/questions/12947620/email-address-validation-in-android-on
+        // -edittext
+        // taken on 2018-03-16
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailText.setError("Invalid email address");
+            validInputs = false;
+        }
         if (email.trim().equals("")) {
             emailText.setError("Email cannot be left blank");
             validInputs = false;
@@ -79,7 +123,10 @@ public class CreateAccountActivity extends AppCompatActivity {
             phoneText.setError("Phone number cannot be left blank");
             validInputs = false;
         }
-
+        if (!Pattern.compile(getString(R.string.phone_number_pattern)).matcher(phone).matches()) {
+            phoneText.setError("Phone number must be in form ***-***-***");
+            validInputs = false;
+        }
         return validInputs;
     }
 }
