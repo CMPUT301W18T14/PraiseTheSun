@@ -76,8 +76,7 @@ public class GetUserBidsCommand extends GetCommand<BidList> {
 
     /**
      * An extension of the AsyncTask<String, void, BidList> class. This class is utilized to
-     * perform the searching and retrieval of a database using Elasticsearch for the execute
-     * method in GetUserTasksCommand.
+     * perform the searching and retrieval of a database using Elasticsearch.
      */
     public static class GetBidListTask extends AsyncTask<String, Void, BidList> {
         /**
