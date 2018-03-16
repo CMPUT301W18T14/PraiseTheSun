@@ -48,7 +48,7 @@ public class GetTaskBidsCommand extends GetCommand<BidList> {
     }
 
     /**
-     * execute is a function that once called, will try to query to query our database using
+     * execute is a function that once called, will try to query our database using
      * Elasticsearch in order to retrieve all bids associated with taskId.
      */
     @Override
