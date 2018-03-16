@@ -98,7 +98,6 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ViewSearchedTaskDetailsActivity.this);
                 final View bidView = getLayoutInflater().inflate(R.layout.place_bid_dialog, null);
                 final EditText bidAmount = (EditText) bidView.findViewById(R.id.bidAmount);
-                Button confirmButton = (Button) bidView.findViewById(R.id.confirmButton);
 
                 builder.setView(bidView).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
@@ -133,41 +132,6 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
                         alert11.show();
                     }
                 });
-                /*confirmButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        /*
-                        Taken March 16, 2018
-                        https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
-                        Response from user: Mahesh
-                         *
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-                        builder1.setMessage("Are you sure you want to make a bid?");
-                        builder1.setCancelable(true);
-
-                        builder1.setPositiveButton(
-                                "Yes",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        placeBid(Float.valueOf(bidAmount.getText().toString()), currentTask);
-                                        dialog.cancel();
-                                    }
-                                });
-
-                        builder1.setNegativeButton(
-                                "No",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
-                    }
-                });*/
-
-
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
