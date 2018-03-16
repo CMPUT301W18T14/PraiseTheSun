@@ -245,7 +245,7 @@ public class DataManager {
     }
 
     /**
-     * Given a bid object, store this bid into the database.
+     * addBid will attempt to store a bid into the database.
      *
      * @param bid the bid object that must be stored in the database
      * @param context the context of the app at the moment of calling this function (to determine
@@ -269,12 +269,12 @@ public class DataManager {
     }
 
     /**
-     * Given a userID, return all bids associated to this user.
+     * getUserBids will return all bids associated to the userId given as a parameter.
      *
      * @param userId the userID associated to the bids in the returned BidList
      * @param context the context of the app at the moment of calling this function (to determine
      *               if the requester has a valid internet connection)
-     * @return A BidList containing all bids associated with this user.
+     * @return A BidList containing all bids associated with the user that was given as a parameter.
      * @throws NoInternetException Thrown if user does not have a valid internet connection.
      * @author tlafranc
      */
@@ -291,12 +291,12 @@ public class DataManager {
     }
 
     /**
-     * Given a taskId, return all bids associated to this task.
+     * getTaskBids will return all bids associated to the userID given as a parameter.
      *
-     * @param taskId the taskId associated to the bids the returned BidList
+     * @param taskId the taskId associated to the bids in the returned BidList
      * @param context the context of the app at the moment of calling this function (to determine
      *               if the requester has a valid internet connection)
-     * @return A BidList containing all the bids associated with this task.
+     * @return A BidList containing all bids associated with the task that was given as a parameter.
      * @throws NoInternetException Thrown if user does not have a valid internet connection.
      * @author tlafranc
      */

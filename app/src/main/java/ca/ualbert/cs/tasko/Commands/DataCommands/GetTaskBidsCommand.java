@@ -27,16 +27,30 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by Thomas on 2018-03-10.
+ * An extension of the GetCommand class. When a GetTasksBidsCommand is executed, it will
+ * attempt to query our database using Elasticsearch in order to retrieve all bids associated
+ * with a given TaskId.
+ *
+ * @see GetCommand
+ * @author tlafranc
  */
-
 public class GetTaskBidsCommand extends GetCommand<BidList> {
     private String taskId;
 
+    /**
+     * Constructor for the GetTaskBidsCommand. Requires the parameter taskId in order to be
+     * initialized.
+     *
+     * @param taskId the taskId associated to the bids in the returned BidList
+     */
     public GetTaskBidsCommand(String taskId) {
         this.taskId = taskId;
     }
 
+    /**
+     * execute is a function that once called, will try to query to query our database using
+     * Elasticsearch in order to retrieve all bids associated with taskId.
+     */
     @Override
     public void execute() {
         String query = "{\"size\": 1000, \"query\":{\"term\":{\"TaskID\":\"" + taskId + "\" } } }";
@@ -54,11 +68,20 @@ public class GetTaskBidsCommand extends GetCommand<BidList> {
         // TODO: Implement delete
     }
 
-    public boolean canUndo() {
-        return true;
-    }
-
+    /**
+     * An extension of the AsyncTask<String, void, BidList> class. This class is utilized to
+     * perform the searching and retrieval of a database using Elasticsearch.
+     */
     public static class GetBidListTask extends AsyncTask<String, Void, BidList> {
+        /**
+         * doInBackground is called immediately when GetBidListTask.execute() is called and the
+         * execution is done in the background of the program. Builds a query, searches for
+         * matches to this query, and returns all matches in the form a BidList.
+         *
+         * @param taskIds the taskIds associated to the bids that are supposed to be retrieved
+         *                from the database
+         * @return a BidList associated to the taskId given as a parameter
+         */
         @Override
         protected BidList doInBackground(String... taskIds){
             BidList bidList = new BidList();

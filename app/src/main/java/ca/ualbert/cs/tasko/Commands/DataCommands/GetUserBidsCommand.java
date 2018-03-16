@@ -33,16 +33,30 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by Thomas on 2018-03-07.
+ * An extension of the GetCommand class. When a GetUserBidsCommand is executed, it will
+ * attempt to query our database using Elasticsearch in order to retrieve all bids associated
+ * with a given userId.
+ *
+ * @see GetCommand
+ * @author tlafranc
  */
-
 public class GetUserBidsCommand extends GetCommand<BidList> {
     private String userId;
 
+    /**
+     * Constructor for the GetTaskBidsCommand. Requires the parameter userId in order to be
+     * initialized.
+     *
+     * @param userId the userId associated to the bids in the returned BidList
+     */
     public GetUserBidsCommand(String userId){
         this.userId = userId;
     }
 
+    /**
+     * execute is a function that once called, will try to query to query our database using
+     * Elasticsearch in order to retrieve all bids associated with userId.
+     */
     @Override
     public void execute() {
         String query = "{\"size\": 1000, \"query\":{\"term\":{\"UserID\":\"" + userId + "\" } } }";
@@ -60,11 +74,20 @@ public class GetUserBidsCommand extends GetCommand<BidList> {
         // TODO: Implement delete
     }
 
-    public boolean canUndo() {
-        return true;
-    }
-
+    /**
+     * An extension of the AsyncTask<String, void, BidList> class. This class is utilized to
+     * perform the searching and retrieval of a database using Elasticsearch.
+     */
     public static class GetBidListTask extends AsyncTask<String, Void, BidList> {
+        /**
+         * doInBackground is called immediately when GetBidListTask.execute() is called and the
+         * execution is done in the background of the program. Builds a query, searches for
+         * matches to this query, and returns all matches in the form a BidList.
+         *
+         * @param userIds the userIds associated to the bids that are supposed to be retrieved from
+         *                the database
+         * @return a BidList associated to the userId given as a parameter
+         */
         @Override
         protected BidList doInBackground(String... userIds){
             BidList bidList = new BidList();
