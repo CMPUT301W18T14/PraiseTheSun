@@ -41,10 +41,6 @@ public class CreateAccountActivityTest extends ActivityInstrumentationTestCase2 
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
-    public void testStart() throws Exception {
-        Activity activity = getActivity();
-    }
-
     public void testAccount() {
         solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
         solo.enterText((EditText) solo.getView(R.id.createAccountUsername), "tlafranc");
