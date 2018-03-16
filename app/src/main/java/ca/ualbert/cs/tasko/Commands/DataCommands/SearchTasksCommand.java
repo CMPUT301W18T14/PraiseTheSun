@@ -29,17 +29,33 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by chase on 3/10/2018.
+ * An extension of the GetCommand class. When a SearchTasksCommand is executed,
+ * it will attempt to query our database using Elasticsearch in order to
+ * retrieve all tasks who's description contains all terms in the searchTerm
+ * string
+ *
+ * @see GetCommand
+ * @author Chase Buhler
  */
-
 public class SearchTasksCommand extends GetCommand<TaskList> {
-
     private String searchTerm;
 
+    /**
+     * Constructor for the SearchTasksCommand. Requires the parameter searchTerm
+     * in order to be initialized.
+     *
+     * @param searchTerm the String containing the terms that will be used to
+     *                  search the description of the tasks
+     */
     public SearchTasksCommand(String searchTerm){
         this.searchTerm = searchTerm;
     }
 
+    /**
+     * execute is a function that once called, will try to query to query our
+     * database using Elasticsearch in order to retrieve all tasks containing
+     * the terms in searchTerm.
+     */
     @Override
     public void execute() {
         String query = "{\"size\": 1000, \"query\":{\"match\":{\"description\": { \"query\" : \"" +
@@ -55,8 +71,23 @@ public class SearchTasksCommand extends GetCommand<TaskList> {
         }
     }
 
+    /**
+     * An extension of the AsyncTask class. This class is utilized to
+     * perform the searching and retrieval of a database using Elasticsearch.
+     */
     private static class SearchTasks extends AsyncTask<String, Void, TaskList> {
 
+        /**
+         * doInBackground is the main part of the AsyncTask running on the
+         * separate thread. It will build a query, execute the query and get
+         * the results.
+         *
+         * @param searchTerms the string containing the searchTerms that are
+         *                    to be used to query the description of the tasks
+         * @return A TaskList with all tasks who's descriptions match all the
+         * terms in the search term string. Or an empty TaskList if there are
+         * no such tasks
+         */
         @Override
         protected TaskList doInBackground(String... searchTerms){
             TaskList tasks = new TaskList();

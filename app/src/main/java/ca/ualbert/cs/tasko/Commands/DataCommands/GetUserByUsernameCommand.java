@@ -26,20 +26,32 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by chase on 3/7/2018.
+ * An extension of the GetCommand class. When a GetUserByUsername Command is
+ * executed, it will attempt to query our database using Elasticsearch in
+ * order to retrieve the user associated with the given Username.
+ *
+ * @author Chase Buhler
+ * @see GetCommand
  */
-
 public class GetUserByUsernameCommand extends GetCommand<User> {
-
     private String username;
 
+    /**
+     * The constructor for the GetUserByUsernameCommand. Receives a username
+     *
+     * @param username username of the user that should be retrieved.
+     */
     public GetUserByUsernameCommand(String username){
         this.username = username;
     }
 
+    /**
+     * execute is a function that once called, will try to query our
+     * database using Elasticsearch in order to retrieve the user associated
+     * with username then it will set this commands result to be that user.
+     */
     @Override
     public void execute() {
-
         String query = "{\"query\":{\"term\":{\"username\":\"" + username + "\" } } }";
         GetUserByUsernameTask getUserTask = new GetUserByUsernameTask();
         getUserTask.execute(query);
@@ -49,11 +61,23 @@ public class GetUserByUsernameCommand extends GetCommand<User> {
         } catch (Exception e){
             Log.i("Error", "Failed to get the user by username from the async object");
         }
-
     }
 
+    /**
+     * An extension of AsyncTask. This class builds a query and executes it
+     * on a separate thread to retrieve a User from elastic search.
+     */
     private static class GetUserByUsernameTask extends AsyncTask<String, Void, User> {
 
+        /**
+         * doInBackground is the main part of the AsyncTask running on the
+         * separate thread. It will build a query, execute the query and get
+         * the results.
+         *
+         * @param usernames the username that is associated with the user
+         *                  that is to be retrieved.
+         * @return The found user or an empty user if no user is found.
+         */
         @Override
         protected User doInBackground(String... usernames){
             User user = new User();

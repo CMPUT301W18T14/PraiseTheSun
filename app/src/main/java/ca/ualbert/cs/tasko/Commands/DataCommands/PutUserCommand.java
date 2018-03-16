@@ -25,17 +25,30 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 
 /**
- * Created by chase on 3/7/2018.
+ * An extension of PutCommand, PutUserCommand will take a user and attempt to
+ * add it to our elastic search database.
+ *
+ * @author Chase Buhler
+ * @see PutCommand
+ * @see ca.ualbert.cs.tasko.Commands.Command
  */
-
 public class PutUserCommand implements PutCommand {
-
     private User user;
 
+    /**
+     * Constructor for the PutUserCommand. Requires the parameter user in
+     * order to be initialized.
+     *
+     * @param user the user object to be stored in the database
+     */
     public PutUserCommand(User user){
         this.user = user;
     }
 
+    /**
+     * Once execute is called. The method first builds a put request and then
+     * attempts to add user to the elastic search Database.
+     */
     @Override
     public void execute() {
         JestWrapper.verifySettings();
@@ -53,13 +66,19 @@ public class PutUserCommand implements PutCommand {
         }
     }
 
+    //TODO
     @Override
     public void undo() {
         //TODO: Implement Delete
     }
 
+    /**
+     * Return true because we can undo this command by deleting the user that
+     * we added.
+     * @return true
+     */
     @Override
     public boolean canUndo() {
-        return false;
+        return true;
     }
 }
