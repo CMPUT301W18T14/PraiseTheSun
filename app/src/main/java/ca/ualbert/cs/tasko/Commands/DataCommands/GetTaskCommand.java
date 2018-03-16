@@ -26,9 +26,8 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 
 /**
- * Created by chase on 3/9/2018.
+ * Class is used to model a get
  */
-
 public class GetTaskCommand extends GetCommand<Task> {
 
     private String taskid;
