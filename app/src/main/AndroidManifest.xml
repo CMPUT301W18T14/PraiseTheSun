@@ -44,7 +44,8 @@
         <activity
             android:name=".SearchResultsActivity"
             android:label="@string/title_activity_search_results"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ViewTasksIBidOnActivity"></activity>
     </application>
 
 </manifest>
