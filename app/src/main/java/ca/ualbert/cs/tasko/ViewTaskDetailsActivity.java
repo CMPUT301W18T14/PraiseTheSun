@@ -27,9 +27,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+
 public class ViewTaskDetailsActivity extends AppCompatActivity {
     private TextView taskDescription;
     private TextView taskName;
+    private Button deleteButton;
+    private Button editButton;
+    private Button viewBidsButton;
+    private Task currentTask;
+    private DataManager dm = DataManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +45,17 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        //Button and Tec=xtView definitions
+        deleteButton = (Button)findViewById(R.id.deleteButton);
+        editButton = (Button)findViewById(R.id.editButton);
+        viewBidsButton = (Button)findViewById(R.id.placeBidButton);
+        taskName = (TextView) findViewById(R.id.taskName);
+        taskDescription = (TextView) findViewById(R.id.taskDescription);
 
-        Button deleteButton = (Button)findViewById(R.id.deleteButton);
-        Button editButton = (Button)findViewById(R.id.editButton);
-        Button viewBidsButton = (Button)findViewById(R.id.placeBidButton);
+        Bundle extras = getIntent().getExtras();
+        
 
-         //Dialog for choosing to make a bid on the task
+        //Dialog for choosing to make a bid on the task
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Confirm deletion and return to main page
@@ -82,18 +86,19 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             }
         });
 
-        /* NEED TO BE IMPLEMENTED PROPERLY
+
         editButton.setOnClickListener(new View.OnClickListener() {
-            //This should go to a pre-filled in version of the AddTaskActivity
+            public void onClick(View v) {
+                //This should go to a pre-filled in version of the AddTaskActivity
+            }
         });
 
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
-                startActivity(new Intent(ViewTaskDetailsActivity.this, .class));
+                //Displays the bids on your activity
             }
         });
-        */
+
     }
 
 }

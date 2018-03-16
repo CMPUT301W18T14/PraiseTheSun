@@ -87,16 +87,6 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
-
-
-
-
     }
 
 }
