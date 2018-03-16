@@ -21,6 +21,9 @@ import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
 /**
  * Created by Thomas on 2018-03-04.
  * Testing class for the activity CreateAccountActivity
@@ -48,6 +51,12 @@ public class CreateAccountActivityTest extends ActivityInstrumentationTestCase2 
         solo.enterText((EditText) solo.getView(R.id.createAccountEmail), "tlafranc@ualberta.ca");
         solo.enterText((EditText) solo.getView(R.id.createAccountPhone), "780-111-1111");
         solo.clickOnButton("Create");
+        try {
+            assertTrue(DataManager.getInstance().getUserByUsername("tlafranc", getActivity()
+                    .getApplicationContext()).getUsername() != null);
+        } catch (NoInternetException e) {
+
+        }
     }
 
     @Override

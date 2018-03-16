@@ -71,6 +71,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 User retrievedUser = DataManager.getInstance().getUserByUsername(username, this
                         .getApplicationContext());
                 if (retrievedUser.getUsername() == null) {
+                    Log.i("NotError", "ERROR IS HERE");
                     try {
                         DataManager.getInstance().putUser(newUser, this.getApplicationContext());
                     } catch (NoInternetException e) {
