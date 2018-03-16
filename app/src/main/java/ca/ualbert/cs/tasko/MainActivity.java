@@ -1,5 +1,6 @@
 package ca.ualbert.cs.tasko;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +18,7 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final int LOGIN_REQUEST = 1;
     private MainActivity activity = this;
     private DataManager dm = DataManager.getInstance();
 
@@ -25,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(!CurrentUser.getInstance().loggedIn()){
+            Intent login = new Intent(this, LoginActivity.class);
+            startActivity(login);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Button postTaskButton = (Button)findViewById(R.id.postTaskButton);

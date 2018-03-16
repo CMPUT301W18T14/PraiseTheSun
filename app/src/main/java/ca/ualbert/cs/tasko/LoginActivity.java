@@ -77,8 +77,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (usernameInput.getUsername() != null){
                     CU.setCurrentUser(usernameInput);
-                    Intent intent = new Intent(activity, MainActivity.class);
-                    startActivity(intent);
+                    finish();
                 } else {
                     usernameText.setError("This is not a valid username");
                 }

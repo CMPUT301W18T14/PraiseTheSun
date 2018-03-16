@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -27,6 +29,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -40,6 +43,7 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
     private Button geolocationButton;
     private DataManager dm = DataManager.getInstance();
     private Task currentTask;
+    private final Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,16 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
     private void populateFields(){
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
+        float lowbid;
+        try{
+            BidList bids = dm.getTaskBids(currentTask.getId(), getApplicationContext());
+            lowbid = bids.getMinBid().getValue();
+            lowestBid.setText(lowbid + "");
+        } catch (NoInternetException e){
+            Toast t = new Toast(this);
+            t.setText("No Connection");
+            t.show();
+        }
     }
 
     //Dialog for choosing to make a bid on the task
@@ -83,31 +97,93 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
                 // Confirm deletion and return to main page
                 AlertDialog.Builder builder = new AlertDialog.Builder(ViewSearchedTaskDetailsActivity.this);
                 final View bidView = getLayoutInflater().inflate(R.layout.place_bid_dialog, null);
-                EditText bidAmount = (EditText) bidView.findViewById(R.id.bidAmount);
+                final EditText bidAmount = (EditText) bidView.findViewById(R.id.bidAmount);
                 Button confirmButton = (Button) bidView.findViewById(R.id.confirmButton);
-                Button cancelButton = (Button) bidView.findViewById(R.id.cancelButton);
 
-                confirmButton.setOnClickListener(new View.OnClickListener() {
+                builder.setView(bidView).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        //CONFIRMATION OF BID PLACED
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        /*
+                        Taken March 16, 2018
+                        https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+                        Response from user: Mahesh
+                         */
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                        builder1.setMessage("Are you sure you want to make a bid?");
+                        builder1.setCancelable(true);
+
+                        builder1.setPositiveButton(
+                                "Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        placeBid(Float.valueOf(bidAmount.getText().toString()), currentTask);
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        builder1.setNegativeButton(
+                                "No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
                     }
                 });
-
-                cancelButton.setOnClickListener(new View.OnClickListener() {
+                /*confirmButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //Probably a better way to do this but it works for now
-                        finish();
-                        startActivity(new Intent(ViewSearchedTaskDetailsActivity.this, ViewSearchedTaskDetailsActivity.class));
-                    }
-                });
+                        /*
+                        Taken March 16, 2018
+                        https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+                        Response from user: Mahesh
+                         *
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                        builder1.setMessage("Are you sure you want to make a bid?");
+                        builder1.setCancelable(true);
 
-                builder.setView(bidView);
+                        builder1.setPositiveButton(
+                                "Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        placeBid(Float.valueOf(bidAmount.getText().toString()), currentTask);
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        builder1.setNegativeButton(
+                                "No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                    }
+                });*/
+
+
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
         });
+    }
+
+    private void placeBid(float value, Task task){
+        Bid bid = new Bid(CurrentUser.getInstance()
+                .getCurrentUser().getId(), value, currentTask.getId());
+        try{
+            dm.addBid(bid, getApplicationContext());
+        } catch (NoInternetException e){
+            Toast t = new Toast(getApplicationContext());
+            t.setText("No connection");
+            t.show();
+        }
     }
 
 }
