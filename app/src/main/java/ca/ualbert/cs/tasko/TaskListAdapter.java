@@ -16,8 +16,8 @@
 package ca.ualbert.cs.tasko;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +32,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
     private LayoutInflater inflater;
     private TaskList tasks;
+    private Context thiscontext;
 
     public TaskListAdapter(Context context, TaskList dmtasks){
+        thiscontext = context;
         inflater = LayoutInflater.from(context);
         tasks = dmtasks;
     }
@@ -52,7 +54,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
-        //Needs more information then I currently have/ know how to implement.
+        //Needs more information then I currently have/ dont know how to implement.
         //holder.taskBid.setText();
         //holder.taskPhoto.setImageResource();
 
@@ -63,19 +65,30 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         return tasks.getSize();
     }
 
-    public static class TaskViewHolder extends RecyclerView.ViewHolder {
+    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView taskTitle;
         TextView taskBid;
         TextView taskDescription;
-        //ImageView taskPhoto;
+        ImageView taskPhoto;
 
         public TaskViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(this);
+
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
             taskBid = (TextView) itemView.findViewById(R.id.searchTaskLowBid);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
-            //taskPhoto = (ImageView) itemView.findViewById(R.id.taskPhoto);
+            taskPhoto = (ImageView) itemView.findViewById(R.id.taskPhoto);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
+            intent.putExtra("TaskID", tasks.get(getAdapterPosition()).getId());
+            thiscontext.startActivity(intent);
+
         }
     }
 

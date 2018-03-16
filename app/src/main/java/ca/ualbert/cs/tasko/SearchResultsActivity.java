@@ -15,15 +15,17 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity{
 
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter searchAdapter;
@@ -47,7 +49,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            keywords = extras.getString("INeedIt");
+            keywords = extras.getString("SearchKeywords");
         }else{
             keywords = null;
         }
@@ -60,9 +62,9 @@ public class SearchResultsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         searchAdapter = new TaskListAdapter(activity, foundtasks);
         searchRecyclerView.setAdapter(searchAdapter);
-
     }
 
 }

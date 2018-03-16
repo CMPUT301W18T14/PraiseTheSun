@@ -28,7 +28,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * Created by spack on 2018-03-14.
  */
 
-public class SearchTesting extends ActivityInstrumentationTestCase2 {
+public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
     private DataManager dm = DataManager.getInstance();
@@ -37,7 +37,7 @@ public class SearchTesting extends ActivityInstrumentationTestCase2 {
     private Task task = new Task("requestorID", "TestTask1",
                             "Help me with recyclerview adapters ahhhhhhh");
 
-    public SearchTesting() {
+    public SearchActivityTest() {
         super(MainActivity.class);
     }
 

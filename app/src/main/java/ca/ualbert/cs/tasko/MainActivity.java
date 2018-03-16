@@ -13,9 +13,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
 public class MainActivity extends AppCompatActivity {
 
     private MainActivity activity = this;
+    private DataManager dm = DataManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +45,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String keywords = searchQuery.getText().toString();
-                Intent intent = new Intent(activity, SearchResultsActivity.class);
-                intent.putExtra("INeedIt", keywords);
-                startActivity(intent);
+                try {
+                    if(dm.searchTasks(keywords, activity) == null){
+                        searchQuery.setError("This Search Found No Results");
+                    }else{
+                        Intent intent = new Intent(activity, SearchResultsActivity.class);
+                        intent.putExtra("SearchKeywords", keywords);
+                        startActivity(intent);
+                    }
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
