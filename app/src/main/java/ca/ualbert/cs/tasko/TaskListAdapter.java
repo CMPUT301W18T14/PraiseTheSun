@@ -24,10 +24,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/**
- * Created by spack on 2018-03-14.
- */
+//Todo: It would be nice to make the adapter more modular, can be reused but needs slight modifications each time
 
+/**
+ * The class represents a Adapter that is specifically designed to display search results in an
+ * AdapterView. Clicking on an element in the view will send the user to that tasks details where
+ * they can place a Bid if they wish.
+ */
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
 
     private LayoutInflater inflater;
@@ -65,6 +68,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         return tasks.getSize();
     }
 
+    /**
+     * The clickabale view holder that will get displayed in the recylcerview which displays
+     * relevant information about a task.
+     */
     class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView taskTitle;

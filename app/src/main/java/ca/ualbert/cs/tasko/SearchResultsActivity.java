@@ -15,16 +15,20 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
+/**
+ * SearchResultsActivity is a simple class that works with TaskListAdapter to generate a recyclerview
+ * of tasks that match the users keyword search.
+ *
+ * @author spack
+ */
 public class SearchResultsActivity extends AppCompatActivity{
 
     private RecyclerView searchRecyclerView;

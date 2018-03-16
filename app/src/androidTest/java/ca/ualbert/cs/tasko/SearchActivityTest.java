@@ -24,16 +24,20 @@ import com.robotium.solo.Solo;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-/**
- * Created by spack on 2018-03-14.
- */
 
+/**
+ * SearchActivity Test test the functionality of the search activity which begins in main activity,
+ * and can go to ViewSearchedTaskDetailsActivity if a task in the recyclerview displayed in the
+ * SearchResultActivity is clicked. By testing Searchactivity, I am also testing that my TaskList
+ * Adapter is working and that the DataManger command to search tasks is working.
+ *
+ * @author spack
+ *
+ */
 public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
     private DataManager dm = DataManager.getInstance();
-    private User testUser = new User("username1", "John Doe", "123-456-9999",
-            "jdoe@example.com");
     private Task task = new Task("requestorID", "TestTask4",
                             "Help me with recyclerview adapters ahhhhhhh," +
                                     "Help me find NullPointerErrors... :(");
@@ -47,14 +51,50 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
-    public void testSearchRecycleView() throws NoInternetException {
+    /**
+     * A valid search means that there is a task in the database whose description matches with a
+     * value in the keyword string provided by the user.
+     * @throws NoInternetException
+     */
+    public void testValidSearch() throws NoInternetException {
+        //Dont want to flood the datbase with test tasks
         //dm.putTask(task, InstrumentationRegistry.getTargetContext());
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
         TaskList foundtasks = dm.searchTasks("Help", InstrumentationRegistry.getTargetContext());
-        assertEquals("TestTask4", foundtasks.get(0).getTaskName());
         solo.clickOnButton("Search");
         solo.assertCurrentActivity("Wrong Activity", SearchResultsActivity.class);
+    }
+
+    /**
+     * An Invalid search means that there is no task in the database whose description matches with a
+     * value in the keyword string provided by the user.
+     * @throws NoInternetException
+     */
+    public void testInvalidSearch() throws NoInternetException {
+
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
+        TaskList foundtasks = dm.searchTasks("", InstrumentationRegistry.getTargetContext());
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+    }
+
+    /**
+     * Ensures that the recyclerview goes to the appropriate activity when clicked.
+     * @throws NoInternetException
+     */
+    public void testRecyclerViewOnClick() throws NoInternetException {
+
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.searchQuery), "find");
+        TaskList foundtasks = dm.searchTasks("Help", InstrumentationRegistry.getTargetContext());
+        solo.clickOnButton("Search");
+        solo.assertCurrentActivity("Wrong Activity", SearchResultsActivity.class);
+        solo.clickInRecyclerView(0);
+        solo.assertCurrentActivity("Wrong Activity", ViewSearchedTaskDetailsActivity.class);
+
+
     }
 }
