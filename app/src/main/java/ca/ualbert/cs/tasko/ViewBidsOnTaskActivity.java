@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
 /**
  * Created by Aldentan1997 on 2018-03-12.
  */
@@ -43,6 +47,9 @@ import java.util.List;
 
 public class ViewBidsOnTaskActivity extends AppCompatActivity {
     public ListView myBidList;
+    private BidList bidsOnTask;
+    private Task currentTask;
+    private DataManager dm = DataManager.getInstance();
 
     //TODO: get bidlists involved in code
     @Override
@@ -57,15 +64,41 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         //Populating za listview with some stuffzzzzz
 
         // Instanciating an array list. For testing purposes, obviously will have a bidlist
-        final List<String> your_array_list = new ArrayList<String>();
-        your_array_list.add("foo");
-        your_array_list.add("bar");
+        //final List<String> your_array_list = new ArrayList<String>();
+        //your_array_list.add("foo");
+        //your_array_list.add("bar");
+
+        //test datazzzzz
+        Bid testBid = null;
+        testBid.setBidID("testid");
+        testBid.setTaskID("testtaskid");
+        testBid.setValue((float) 5.7);
+
+        bidsOnTask.addBid(testBid);
+
+        Bundle extras = getIntent().getExtras();
+
+        /*
+        try {
+            String taskID = extras.getString("TaskID");
+            currentTask = dm.getTask(taskID, this);
+        }catch(NullPointerException e){
+            Log.i("Error", "TaskID from TaskListAdapter not properly passed");
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
+
+        */
+
+        //bidsOnTask = currentTask.getBids();
+
+        final List<BidList> bidsOnTask = new ArrayList<BidList>();
 
         // This is the array adapter.
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        final ArrayAdapter<BidList> arrayAdapter = new ArrayAdapter<BidList>(
                 this,
                 android.R.layout.simple_list_item_1,
-                your_array_list );
+                (List<BidList>) bidsOnTask);
 
         //setting the adapter
         myBidList.setAdapter(arrayAdapter);
@@ -92,7 +125,8 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //just for testing, this will all be different obviously
-                        your_array_list.add("rejected");
+                        //your_array_list.add("rejected");
+                        //bidsOnTask.add("rejected");
                         arrayAdapter.notifyDataSetChanged();
                         finish();
                         startActivity(new Intent(ViewBidsOnTaskActivity.this, ViewBidsOnTaskActivity.class));
@@ -105,7 +139,8 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //just for testing, this will all be different obviously
-                        your_array_list.add("accepted");
+                        //your_array_list.add("accepted");
+                        //bidsOnTask.add("accepted");
                         arrayAdapter.notifyDataSetChanged();
                         finish();
                         startActivity(new Intent(ViewBidsOnTaskActivity.this, ViewBidsOnTaskActivity.class));

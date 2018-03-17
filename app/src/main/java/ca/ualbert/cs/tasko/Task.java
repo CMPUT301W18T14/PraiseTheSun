@@ -73,10 +73,10 @@ public class Task {
 
     }
 
-    /*
+
     public BidList getBids(){
         return bidList;
-    }*/
+    }
 
     public void addPhoto(Image photo){
 
