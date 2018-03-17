@@ -22,6 +22,7 @@
     <string name="my_assignments">My assignments</string>
     <string name="edit_profile">Edit profile</string>
     <string name="my_tasks">My tasks</string>
-    <string name="phone_number">123 456 7890</string>
+    <string name="username_header">Username</string>
+    <string name="contact">Contact information</string>
 </resources>
 
