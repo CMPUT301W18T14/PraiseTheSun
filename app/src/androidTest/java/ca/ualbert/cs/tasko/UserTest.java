@@ -15,7 +15,10 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
+
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Created by ryan on 2018-02-24.
@@ -56,17 +59,19 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
     }
 
-    public void testGetUserBids() {
+    public void testGetUserBids() throws NoInternetException {
 
         assertNull(user.getBids());
-        user.addBid(bid);
+        Context context = getActivity().getApplicationContext();
+        user.addBid(bid, context);
         assertTrue(user.getBids().hasBid(bid));
     }
 
-    public void testGetMyTasks() {
+    public void testGetMyTasks() throws NoInternetException {
         assertNull(user.getMyTasks());
         Task task = new Task(user.getId(), "Good Task Name", "Better description.");
-        user.addMyTask(task);
+        Context context = getActivity().getApplicationContext();
+        user.addMyTask( task , context);
         assertTrue(user.getMyTasks().getTasks().contains(task));
     }
 
