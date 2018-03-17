@@ -16,24 +16,35 @@
 package ca.ualbert.cs.tasko;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private ImageView imageToUpload;
+    private Bitmap image;
     private Button confirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
+
         confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
         confirm.setEnabled(false);
         imageToUpload = (ImageView) findViewById(R.id.addPhotoTaskImage);
@@ -46,16 +57,37 @@ public class AddPhotoActivity extends AppCompatActivity {
     }
 
     public void onConfirmClick(View view) {
+        // https://stackoverflow.com/questions/11010386/passing-android-bitmap-data-within
+        // -activity-using-intent-in-android taken on 2018-03-17
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte [] byteArray = stream.toByteArray();
 
+        Intent returnImage = new Intent();
+        returnImage.putExtra("image", byteArray);
+        setResult(RESULT_OK, returnImage);
+        finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
-            imageToUpload.setImageURI(selectedImage);
-            confirm.setEnabled(true);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RESULT_LOAD_IMAGE && data != null) {
+                Uri selectedImage = data.getData();
+
+                InputStream inputStream;
+                try {
+                    inputStream = getContentResolver().openInputStream(selectedImage);
+                    image = BitmapFactory.decodeStream(inputStream);
+                    imageToUpload.setImageBitmap(image);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this.getApplicationContext(), "Image not found",
+                            Toast.LENGTH_LONG).show();
+                }
+                confirm.setEnabled(true);
+            }
         }
     }
 }

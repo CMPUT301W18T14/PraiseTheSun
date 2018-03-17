@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.media.Image;
 
@@ -32,6 +33,7 @@ public class Task {
     private String taskName;
     private String description;
     private ArrayList<Image> photos;
+    private ArrayList<Bitmap> otherPhotos;
     private Location geolocation;
     private User taskRequester;
     private User taskProvider;
@@ -48,10 +50,13 @@ public class Task {
         this(taskRequesterID, taskName, description, null, null);
     }
 
+    /*
+       Had to comment out in order to introduce constructor with images as bitmap objects
     public Task(String taskRequesterID, String taskName, String description,
                 ArrayList<Image> photos){
         this(taskRequesterID, taskName, description, photos, null);
     }
+    */
 
     public Task(String taskRequesterID, String taskName, String description,
                 Location location){
@@ -68,6 +73,18 @@ public class Task {
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
     }
+
+    public Task(String taskRequesterID, String taskName, String description,
+                ArrayList<Bitmap> photos){
+        this.taskRequesterID = taskRequesterID;
+        this.taskName = taskName;
+        this.description = description;
+        this.otherPhotos = photos;
+        this.geolocation = null;
+        this.taskProviderID = null;
+        this.status = Status.REQUESTED;
+    }
+
 
     public void acceptBid(Bid bid){
 

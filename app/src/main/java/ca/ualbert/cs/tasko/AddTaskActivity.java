@@ -16,6 +16,8 @@
 package ca.ualbert.cs.tasko;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
@@ -36,7 +38,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private String taskName;
     private String description;
     private User taskRequester;
-    private ArrayList<Image> photos = null;
+    private ArrayList<Bitmap> photos = null;
     private Location geoLocation = null;
 
     @Override
@@ -62,7 +64,7 @@ public class AddTaskActivity extends AppCompatActivity {
     public void onAddPhotoClick(View view){
         // Create an Intent to AddPhotoActivity
         Intent addPhotoIntent = new Intent(this, AddPhotoActivity.class);
-        final int result = 1;
+        final int result = 19;
         startActivityForResult(addPhotoIntent, result);
     }
 
@@ -80,8 +82,10 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1) {
             switch (requestCode) {
-                case 1:
-                    // Handle add photo Intent result
+                case 19:
+                    byte[] byteArray = data.getByteArrayExtra("image");
+                    Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    photos.add(image);
                     break;
                 case 2:
                     // Handle add location Intent result
@@ -93,8 +97,7 @@ public class AddTaskActivity extends AppCompatActivity {
     public void onAddTaskClick(View view){
         boolean valid = checkFieldsForEmptyValues();
         if (valid){
-            Task newTask = new Task(taskRequester.getId(), taskName, description, photos,
-                    geoLocation);
+            Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
             } catch (NoInternetException e) {
