@@ -19,9 +19,10 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
+
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
+
 import io.searchbox.annotations.JestId;
 
 /**
@@ -39,17 +40,17 @@ public class User {
     private String name;
     private String phoneNumber;
     private String email;
-
-    private BidList userBids;
-    private TaskList myTasks;
-    private TaskList assignments;
-    private ArrayList<SimpleNotification> notifications;
+    //private BidList userBids;
+    //private TaskList myTasks;
+    //private TaskList assignments;
+    //private ArrayList<Notification> notifications;
     private float rating;
 
     @JestId
     private String id;
 
     public User(){
+
     }
 
     public User(String username, String name, String phoneNumber, String email){
@@ -57,18 +58,7 @@ public class User {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.userBids = null;
-        this.myTasks = null;
-        //from imtihan
-        this.assignments = new TaskList();
-        this.notifications = null;
-        /*
-=======
-        this.assignments = null;
-        this.notifications = new ArrayList<>();
->>>>>>> dev
-*/
-        this.rating = 0;
+        this.rating = 5;
 
     }
 
@@ -116,23 +106,27 @@ public class User {
     }
 
 
-    public void addMyTask(Task task) {
-        //do we want it to go through data manager here?
-
-        assignments.addTask(task);
+    public void addMyTask() {
     }
 
     public TaskList getMyTasks() {
         return new TaskList();
     }
 
-
+    /*TODO: I Think all these add methods will be accounted for when they are created????
+    public void addAssignments(Task task) {
+        assignments.addTask(task);
+    }*/
     public TaskList getAssignments () {
         return new TaskList();
     }
 
+    /*
+    public void addNotification(Notification notification) {
+        notifications.add(notification);
+    }*/
 
-    public ArrayList<SimpleNotification> getNotifications () {
+    public ArrayList<Notification> getNotifications () {
         return new ArrayList<>();
     }
 
