@@ -77,6 +77,11 @@ public class BidList{
         return bids;
     }
 
+    //Alden's addition
+    public int getSize(){
+        return bids.size();
+    }
+
     /**
      * Sorts Bids in a Bid List based on value of Bid, The lower Bids get out first.
      * @return returns a Sorted BidList in Ascending Order(In terms of Bid Value)

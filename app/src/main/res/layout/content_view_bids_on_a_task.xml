@@ -20,17 +20,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ca.ualbert.cs.tasko.ViewMyTasksActivity"
-    tools:showIn="@layout/activity_view_my_tasks">
+    tools:context="ca.ualbert.cs.tasko.SearchResultsActivity"
+    tools:showIn="@layout/activity_search_results">
 
-    <ListView
-        android:id="@+id/bidListView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bidListRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 </android.support.constraint.ConstraintLayout>

@@ -21,6 +21,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -46,10 +48,14 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
     //TODO: MAKE TEST FOR THIS AND TEST FOR APPROPRIATE XML FILES!
 
 public class ViewBidsOnTaskActivity extends AppCompatActivity {
-    public ListView myBidList;
+    public RecyclerView myBidList;
     private BidList bidsOnTask;
     private Task currentTask;
     private DataManager dm = DataManager.getInstance();
+    private RecyclerView searchRecyclerView;
+    private RecyclerView.Adapter searchAdapter;
+    private RecyclerView.LayoutManager searchLayoutManager;
+    private ViewBidsOnTaskActivity activity = this;
 
     //TODO: get bidlists involved in code
     @Override
@@ -59,7 +65,10 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        myBidList = (ListView) findViewById(R.id.bidListView);
+        myBidList = (RecyclerView) findViewById(R.id.bidListRecyclerView);
+
+        searchLayoutManager = new LinearLayoutManager(activity);
+        myBidList.setLayoutManager(searchLayoutManager);
 
         //Populating za listview with some stuffzzzzz
 
@@ -69,42 +78,58 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         //your_array_list.add("bar");
 
         //test datazzzzz
-        Bid testBid = null;
-        testBid.setBidID("testid");
-        testBid.setTaskID("testtaskid");
-        testBid.setValue((float) 5.7);
+        //Bid testBid = new Bid("testid", 5.7f, "testtaskid");
 
-        bidsOnTask.addBid(testBid);
+        //bidsOnTask.addBid(testBid);
+
+
+
+        //end of test data
 
         Bundle extras = getIntent().getExtras();
 
-        /*
+
+
+        //gets current task that was selected
         try {
             String taskID = extras.getString("TaskID");
-            currentTask = dm.getTask(taskID, this);
+            bidsOnTask = dm.getTaskBids(taskID, this);
         }catch(NullPointerException e){
             Log.i("Error", "TaskID from TaskListAdapter not properly passed");
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
 
-        */
 
+
+        //bidsOnTask.addBid(new Bid("testid", 5.7f, "testtaskid"));
+
+        //gets the bidlist from task
         //bidsOnTask = currentTask.getBids();
 
-        final List<BidList> bidsOnTask = new ArrayList<BidList>();
+        searchAdapter = new ViewBidsAdapter(activity, bidsOnTask);
+        searchRecyclerView.setAdapter(searchAdapter);
 
+        //final List<BidList> bidsOnTask = new ArrayList<BidList>();
+
+        /*
         // This is the array adapter.
         final ArrayAdapter<BidList> arrayAdapter = new ArrayAdapter<BidList>(
                 this,
                 android.R.layout.simple_list_item_1,
                 (List<BidList>) bidsOnTask);
 
+
+
         //setting the adapter
         myBidList.setAdapter(arrayAdapter);
 
         //end of listview population codezzzzz
 
+        */
+
+
+        /*
         //start of codez for being able to select a bid and either accept it or reject it
 
         //OnItemClickListener
@@ -156,6 +181,8 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         });
 
         //end of accept/reject bid codezzzzassss
+
+        */
 
         //Not sure what this is for - apparently no use, just comes with the default xml layout
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
