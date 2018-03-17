@@ -59,7 +59,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
         try {
             String taskID = extras.getString("TaskID");
-            currentTask = dm.getTask(taskID, this);
+            //currentTask = dm.getTask(taskID, this);
             fillInformation();
         } catch (NullPointerException e) {
             Log.i("Error", "TaskID from TaskListAdapter not properly passed");

@@ -30,7 +30,6 @@ import android.widget.ListView;
 public class ViewMyTasksActivity extends AppCompatActivity {
 
     public ListView myTaskList;
-
     private Integer statusFilter;
 
     @Override
@@ -48,7 +47,6 @@ public class ViewMyTasksActivity extends AppCompatActivity {
                 startActivity(new Intent(ViewMyTasksActivity.this, ViewTaskDetailsActivity.class));
             }
         });
-
 
     }
 
