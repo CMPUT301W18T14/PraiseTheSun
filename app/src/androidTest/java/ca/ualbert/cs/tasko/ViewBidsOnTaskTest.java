@@ -36,66 +36,35 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
     private DataManager dm = DataManager.getInstance();
     private String userID1 = "AWIEMxQnTFjKf1vhacZH";
     private Bid bid1 = new Bid(userID1, 10, "TestID");
+    /*
     private String userID2 = "NewId";
     private Bid bid2 = new Bid(userID2, 20, "NewTask");
+    private Task task = new Task("requestorID", "TestTask4",
+            "Help me with recyclerview adapters ahhhhhhh," +
+                    "Help me find NullPointerErrors... :(");
+                    */
+
 
     public ViewBidsOnTaskTest() {
         super(ViewBidsOnTaskActivity.class);
     }
 
+    @Override
     public void setUp() {
         solo = new Solo(getInstrumentation(), getActivity());
+        try {
+            dm.addBid(bid1, getActivity().getApplicationContext());
+        } catch(NoInternetException e) {
+            Log.i("Error", "No internet connection");
+        }
+
     }
 
     public void testStart() throws Exception {
         Activity activity = getActivity();
     }
 
-    public void testPutBid() {
-        boolean isConnected = true;
-        BidList returnedBids = null;
-        try {
-            dm.addBid(bid1, getActivity().getApplicationContext());
-        } catch(NoInternetException e) {
-            Log.i("Error", "No internet connection");
-            isConnected = false;
-        }
-        assertTrue(isConnected);
-        try {
-            returnedBids = dm.getUserBids(bid1.getUserID(), getActivity()
-                    .getApplicationContext());
-        } catch (NoInternetException e) {
-            Log.i("Error", "The phone has no internet so this test will fail");
-        }
-        assertFalse(returnedBids == null);
-        assertEquals(returnedBids.getBid(userID1).getValue(), bid1.getValue());
-        assertEquals(returnedBids.getBid(userID1).getTaskID(), bid1.getTaskID());
-    }
-
-    public void testGetBidsByTask() {
-        boolean isConnected = true;
-        BidList returnedBids = null;
-        try {
-            dm.addBid(bid2, getActivity().getApplicationContext());
-        } catch(NoInternetException e) {
-            Log.i("Error", "No internet connection");
-            isConnected = false;
-        }
-        assertTrue(isConnected);
-        try {
-            returnedBids = dm.getTaskBids(bid2.getTaskID(), getActivity()
-                    .getApplicationContext());
-        } catch (NoInternetException e) {
-            Log.i("Error", "The phone has no internet so this test will fail");
-        }
-        assertFalse(returnedBids == null);
-        Log.i("Not Error", returnedBids.getBids().toString());
-        assertEquals(returnedBids.getBid(userID2).getValue(), bid2.getValue());
-        assertEquals(returnedBids.getBid(userID2).getTaskID(), bid2.getTaskID());
-    }
-
     public void testRecyclerView() throws NoInternetException {
-
         solo.assertCurrentActivity("Wrong Activity", ViewBidsOnTaskActivity.class);
     }
 }
