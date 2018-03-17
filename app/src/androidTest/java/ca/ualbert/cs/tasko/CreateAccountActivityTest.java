@@ -55,13 +55,19 @@ public class CreateAccountActivityTest extends ActivityInstrumentationTestCase2 
 
     public void testAccount() {
         solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
-        solo.enterText(usernameText, "tlafranc");
-        solo.enterText(nameText, "Thomas Lafrance");
-        solo.enterText(emailText, "tlafranc@ualberta.ca");
-        solo.enterText(phoneText, "780-111-1111");
+        String username = "jdoe67";
+        solo.enterText(usernameText, username);
+        solo.enterText(nameText, "John Doe");
+        solo.enterText(emailText, "john@ualberta.ca");
+        solo.enterText(phoneText, "780-111-2222");
         solo.clickOnButton("Create");
         try {
-            assertTrue(DataManager.getInstance().getUserByUsername("tlafranc", getActivity()
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            assertTrue(DataManager.getInstance().getUserByUsername(username, getActivity()
                     .getApplicationContext()).getUsername() != null);
         } catch (NoInternetException e) {
             e.printStackTrace();
