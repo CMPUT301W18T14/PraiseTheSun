@@ -15,7 +15,13 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
+
 import java.util.ArrayList;
+
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 import io.searchbox.annotations.JestId;
 
@@ -24,7 +30,7 @@ import io.searchbox.annotations.JestId;
  * Represents a user (which can be both a task requester and task provider). Contains info such
  * as name, username, number, email, tasks bidded on, tasks that you have requested, tasks that
  * you are assigned and their rating.
- *
+ * @author imtihan, chase
  *
  */
 
@@ -53,6 +59,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.rating = 5;
+
     }
 
     public String getUsername() {
@@ -90,8 +97,8 @@ public class User {
         this.email = email;
     }
 
-    public void addBid(Bid bid) {
-        /*TODO: Add bid to server through DataManager*/
+    public void addBid(Bid bid, Context context) throws NoInternetException {
+        DataManager.getInstance().addBid(bid, context);
     }
 
     public BidList getBids() {
@@ -99,8 +106,7 @@ public class User {
     }
 
 
-    public void addMyTask(Task task) {
-        /*TODO: Implement this*/
+    public void addMyTask() {
     }
 
     public TaskList getMyTasks() {
