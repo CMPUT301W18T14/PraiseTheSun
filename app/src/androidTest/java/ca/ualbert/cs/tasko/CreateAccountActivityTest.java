@@ -110,7 +110,7 @@ public class CreateAccountActivityTest extends ActivityInstrumentationTestCase2 
         solo.clickOnButton("Create");
         solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
 
-        solo.enterText(emailText, "7800000000");
+        solo.enterText(phoneText, "7800000000");
         solo.clickOnButton("Create");
         solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
     }
