@@ -57,6 +57,11 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         boolean isConnected = true;
         try {
             dm.putTask(task1, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch (NoInternetException e){
             isConnected = false;
         }
@@ -65,6 +70,11 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         Task retTask = null;
         try {
             retTask = dm.getTask(task1.getId(), getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch (NoInternetException e){
             isConnected = false;
         }
@@ -78,6 +88,11 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         try{
             dm.putTask(task1, getActivity().getApplicationContext());
             dm.putTask(task2, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch (NoInternetException e){
             isConnected = false;
         }
@@ -103,6 +118,11 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         try{
             dm.putTask(task1, getActivity().getApplicationContext());
             dm.putTask(task3, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch (NoInternetException e){
             isConnected = false;
         }
