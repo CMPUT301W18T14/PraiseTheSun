@@ -35,9 +35,6 @@ public class Task {
     private ArrayList<Image> photos;
     private ArrayList<Bitmap> otherPhotos;
     private Location geolocation;
-    private User taskRequester;
-    private User taskProvider;
-    private BidList bidList;
     private String taskRequesterID;
     private String taskProviderID;
     //private BidList bidList;
@@ -159,10 +156,6 @@ public class Task {
         this.taskProviderID = taskProviderID;
         this.status = Status.ASSIGNED;
     }
-
-
-    public void setTaskProvider (User taskProvider) { this.taskProvider = taskProvider; }
-
 
     @Override
     public boolean equals(Object o){

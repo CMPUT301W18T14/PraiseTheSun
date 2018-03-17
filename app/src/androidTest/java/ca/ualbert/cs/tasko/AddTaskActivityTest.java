@@ -90,6 +90,7 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
         solo.enterText(nameText, "Test task");
         solo.enterText(descriptionText, "This is a description for the " +
                 "test task");
+        solo.clickOnButton("Add Photo");
         solo.assertCurrentActivity("Wrong Activity", AddPhotoActivity.class);
     }
 

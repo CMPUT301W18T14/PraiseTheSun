@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -36,6 +40,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String FILENAME = "nfile.sav";
     private DataManager DM = DataManager.getInstance();
     private CurrentUser CU = CurrentUser.getInstance();
 
@@ -59,8 +64,9 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * The login button checks to make sure the username provided matches a username in the
-     * Database, if it does it sets that user to the current user using the CurrentUser singelton.
-     * Otherwise the user is prompted to provide a valid username.
+     * Database, if it does it sets that user to the current user using the CurrentUser singelton
+     * and also save the use to a local file so it does not have to login again.
+     * Otherwise the user is prompted to provide a valid username or create a new user profile.
      */
     public void setupLoginButton (){
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +84,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (usernameInput.getUsername() != null){
                     CU.setCurrentUser(usernameInput);
+                    try {
+                        FileOutputStream fos = openFileOutput(FILENAME,
+                                Context.MODE_APPEND);
+                        fos.write(usernameInput.getUsername().getBytes());
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);
                 } else {
