@@ -50,6 +50,11 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
         BidList returnedBids = null;
         try {
             dm.addBid(bid1, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch(NoInternetException e) {
             Log.i("Error", "No internet connection");
             isConnected = false;
@@ -71,6 +76,11 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
         BidList returnedBids = null;
         try {
             dm.addBid(bid2, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch(NoInternetException e) {
             Log.i("Error", "No internet connection");
             isConnected = false;

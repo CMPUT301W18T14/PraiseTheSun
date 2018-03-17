@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko.Commands.DataCommands;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
@@ -51,18 +52,13 @@ public class PutUserCommand implements PutCommand {
      */
     @Override
     public void execute() {
-        JestWrapper.verifySettings();
-
-        Index index = new Index.Builder(user).index(JestWrapper.getIndex()).type("user")
-                .build();
-
-        try{
-            DocumentResult result = JestWrapper.getClient().execute(index);
-            if(result.isSucceeded()){
-                user.setId(result.getId());
-            }
+        PutUserTask task =  new PutUserTask();
+        task.execute(user);
+        try {
+            user.setId(task.get());
         } catch (Exception e){
-            Log.i("Error", "The application failed to build and send the user");
+            e.printStackTrace();
+            Log.i("Error", "AsyncTask was interrupted or something");
         }
     }
 
@@ -80,5 +76,25 @@ public class PutUserCommand implements PutCommand {
     @Override
     public boolean canUndo() {
         return true;
+    }
+
+    private class PutUserTask extends AsyncTask<User, Void, String>{
+
+        @Override
+        protected String doInBackground(User... users) {
+
+            Index index = new Index.Builder(users[0]).index(JestWrapper.getIndex()).type("user")
+                    .build();
+
+            try {
+                DocumentResult result = JestWrapper.getClient().execute(index);
+                if (result.isSucceeded()) {
+                    return result.getId();
+                }
+            } catch (Exception e) {
+                Log.i("Error", "The application failed to build and send the user");
+            }
+            return null;
+        }
     }
 }
