@@ -15,12 +15,14 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -91,11 +93,15 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
             Bid = (TextView) itemView.findViewById(R.id.LowBid);
         }
 
+
+        //TODO: Use case 15 & 16
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
+            //Intent intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
             //intent.putExtra("UserID", bids.get(getAdapterPosition()).get());
-            thiscontext.startActivity(intent);
+            //thiscontext.startActivity(intent);
+
+
 
         }
     }
