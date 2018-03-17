@@ -19,5 +19,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_root">RootActivity</string>
     <string name="view_profile">View Profile</string>
+    <string name="my_assignments">My assignments</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="my_tasks">My tasks</string>
+    <string name="phone_number">123 456 7890</string>
 </resources>
 

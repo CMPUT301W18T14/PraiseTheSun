@@ -31,7 +31,8 @@
         <activity
             android:name=".RootActivity"
             android:label="@string/title_activity_root"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UserActivity"></activity>
     </application>
 
 </manifest>
