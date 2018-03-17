@@ -47,15 +47,18 @@ public class CreateAccountActivityTest extends ActivityInstrumentationTestCase2 
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
-
+        usernameText = (EditText) solo.getView(R.id.createAccountUsername);
+        nameText = (EditText) solo.getView(R.id.createAccountName);
+        emailText = (EditText) solo.getView(R.id.createAccountEmail);
+        phoneText = (EditText) solo.getView(R.id.createAccountPhone);
     }
 
     public void testAccount() {
         solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
-        solo.enterText((EditText) solo.getView(R.id.createAccountUsername), "tlafranc");
-        solo.enterText((EditText) solo.getView(R.id.createAccountName), "Thomas Lafrance");
-        solo.enterText((EditText) solo.getView(R.id.createAccountEmail), "tlafranc@ualberta.ca");
-        solo.enterText((EditText) solo.getView(R.id.createAccountPhone), "780-111-1111");
+        solo.enterText(usernameText, "tlafranc");
+        solo.enterText(nameText, "Thomas Lafrance");
+        solo.enterText(emailText, "tlafranc@ualberta.ca");
+        solo.enterText(phoneText, "780-111-1111");
         solo.clickOnButton("Create");
         try {
             assertTrue(DataManager.getInstance().getUserByUsername("tlafranc", getActivity()
