@@ -1,4 +1,8 @@
 /*
+ * DataManager
+ *
+ * March 15, 2018
+ *
  * Copyright © 2018 Chase Buhler, Imtihan Ahmed, Thomas Lafrance, Ryan Romano, Stephen Packer,
  * Alden Emerson Ern Tan
  *
@@ -23,7 +27,6 @@ import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
-
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
@@ -44,35 +47,49 @@ import ca.ualbert.cs.tasko.User;
  * functionality. This class provides a singleton interface with various
  * methods to provide a simple way to store and retrieve data from the
  * elastic search index.
+ *
+ * @author Chase Buhler
+ * @author Thomas Lafrance
+ * @version 1
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands
+ * @see DataCommandManager
  */
 public class DataManager {
-
-    public static DataManager instance = new DataManager();
+    private static DataManager instance = new DataManager();
     private DataCommandManager dcm;
 
+    /**
+     * Construct the singleton and create a DataCommandManager for use
+     * throughout this class
+     */
     private DataManager(){
         dcm = DataCommandManager.getInstance();
     }
 
+    /**
+     * Return the singleton instance of the DataManager
+     * @return the single DataManager Object
+     */
     public static DataManager getInstance(){
         return instance;
     }
 
     /**
-     * putUser will attempt to add a user to the elastic search database.
-     * context is used to check for network connectivity.
+     * Given a User, attempt to add the user to the elastic search database.
+     *
      * @param user user to be inserted
      * @param context Application Context Object
-     * @return boolean indicating success or not
      */
     public void putUser(User user, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         PutUserCommand command = new PutUserCommand(user);
-        GetUserByUsernameCommand isDuplicate = new GetUserByUsernameCommand(user.getUsername());
+        GetUserByUsernameCommand isDuplicate =
+                new GetUserByUsernameCommand(user.getUsername());
         if(isOnline(context)){
             dcm.invokeCommand(isDuplicate);
             if(isDuplicate.getResult().getId() != user.getId()){
-                throw new IllegalArgumentException("Can not add duplicate users");
+                throw new IllegalArgumentException(
+                        "Can not add duplicate users");
             }
             dcm.invokeCommand(command);
             try {
@@ -86,6 +103,16 @@ public class DataManager {
         }
     }
 
+    /**
+     * Given a userID, attempt to retrieve a User object from elastic search
+     * based on the provided UUID string.
+     *
+     * @param id UUID of the desired user
+     * @param context Application Context
+     * @return The user found on the database or an empty user if not found.
+     * @throws NoInternetException when the device has no internet.
+     * @see GetUserByIdCommand
+     */
     public User getUserById(String id, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserByIdCommand command = new GetUserByIdCommand(id);
@@ -98,9 +125,20 @@ public class DataManager {
         }
     }
 
-    public User getUserByUsername(String username, Context context) throws NoInternetException{
+    /**
+     * Given a username, attempt to retrieve a User object from elastic
+     * search based on the provided username.
+     *
+     * @param username username of desired user
+     * @param context Application Context
+     * @return The found user or an empty user if not found
+     * @throws NoInternetException when the device has no internet.
+     */
+    public User getUserByUsername(String username, Context context)
+            throws NoInternetException{
         context = context.getApplicationContext();
-        GetUserByUsernameCommand command = new GetUserByUsernameCommand(username);
+        GetUserByUsernameCommand command =
+                new GetUserByUsernameCommand(username);
         if(isOnline(context)){
             dcm.invokeCommand(command);
 
@@ -115,8 +153,15 @@ public class DataManager {
 
     }
 
-    //TODO
+    /**
+     * Given a task, add it to the elasticSearch Database
+     *
+     * @param task task to be added
+     * @param context Application Context
+     * @throws NoInternetException when not connected to the internet.
+     */
     public void putTask(Task task, Context context) throws NoInternetException{
+        //TODO: OFFLINE BEHAVIOUR
         context = context.getApplicationContext();
         PutTaskCommand command = new PutTaskCommand(task);
         if(isOnline(context)){
@@ -132,8 +177,17 @@ public class DataManager {
 
     }
 
-    //TODO
-    public Task getTask(String taskId, Context context) throws NoInternetException{
+    /**
+     * Given a taskID, attempt to retrieve the task object from elastic search
+     * based on the provided UUID string.
+     *
+     * @param taskId UUID of the desired task
+     * @param context Application Context
+     * @return the found task object or null if not found
+     * @throws NoInternetException when not connected to the internet
+     */
+    public Task getTask(String taskId, Context context)
+            throws NoInternetException{
         context = context.getApplicationContext();
         GetTaskCommand command = new GetTaskCommand(taskId);
         if(isOnline(context)){
@@ -145,8 +199,20 @@ public class DataManager {
         }
     }
 
-    //TODO
-    public TaskList searchTasks(String searchTerm, Context context ) throws NoInternetException{
+    /**
+     * Given a string containing search terms, attempt to get the first 100
+     * tasks from elastic search who's description contains all the terms in
+     * the searchTerm string.
+     *
+     * @param searchTerm string containing terms to search for in the
+     *                   description of a task
+     * @param context Application Context
+     * @return a TaskList of all tasks who's description contains all terms in
+     * searchTerm
+     * @throws NoInternetException when not connected to the internet.
+     */
+    public TaskList searchTasks(String searchTerm, Context context )
+            throws NoInternetException{
         context = context.getApplicationContext();
         SearchTasksCommand command = new SearchTasksCommand(searchTerm);
         if(isOnline(context)){
@@ -158,7 +224,15 @@ public class DataManager {
         }
     }
 
-    //TODO
+    /**
+     * Given a userID, attempt to get all the tasks that have the requesterID
+     * matching the provided userId.
+     *
+     * @param userId userID of the user who's tasks are requested
+     * @param context Application Context
+     * @return TaskList of the tasks containing userId as the requesterID
+     * @throws NoInternetException
+     */
     public TaskList getUserTasks(String userId, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserTasksCommand command = new GetUserTasksCommand(userId);
@@ -171,7 +245,7 @@ public class DataManager {
     }
 
     /**
-     * Given a bid object, store this bid into the database.
+     * addBid will attempt to store a bid into the database.
      *
      * @param bid the bid object that must be stored in the database
      * @param context the context of the app at the moment of calling this function (to determine
@@ -195,12 +269,12 @@ public class DataManager {
     }
 
     /**
-     * Given a userID, return all bids associated to this user.
+     * getUserBids will return all bids associated to the userId given as a parameter.
      *
      * @param userId the userID associated to the bids in the returned BidList
      * @param context the context of the app at the moment of calling this function (to determine
      *               if the requester has a valid internet connection)
-     * @return A BidList containing all bids associated with this user.
+     * @return A BidList containing all bids associated with the user that was given as a parameter.
      * @throws NoInternetException Thrown if user does not have a valid internet connection.
      * @author tlafranc
      */
@@ -217,12 +291,12 @@ public class DataManager {
     }
 
     /**
-     * Given a taskId, return all bids associated to this task.
+     * getTaskBids will return all bids associated to the userID given as a parameter.
      *
-     * @param taskId the taskId associated to the bids the returned BidList
+     * @param taskId the taskId associated to the bids in the returned BidList
      * @param context the context of the app at the moment of calling this function (to determine
      *               if the requester has a valid internet connection)
-     * @return A BidList containing all the bids associated with this task.
+     * @return A BidList containing all bids associated with the task that was given as a parameter.
      * @throws NoInternetException Thrown if user does not have a valid internet connection.
      * @author tlafranc
      */
@@ -259,8 +333,8 @@ public class DataManager {
     }
 
     /**
-     * isOnline will check the netWork info and verify that we are not only connected to a
-     * network but that we are connected via wifi.
+     * isOnline will check the network info and verify that we are connected
+     *
      * @param context Application Context
      * @return true when connected to wifi, false otherwise.
      */
@@ -270,14 +344,17 @@ public class DataManager {
         https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#DetermineType
          */
         ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) context.getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        boolean isConnected = activeNetwork != null
+                && activeNetwork.isConnectedOrConnecting();
         if(isConnected){
-            return activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET ||
-                    activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ||
-                    activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
+            return activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET
+                    || activeNetwork.getType() == ConnectivityManager.TYPE_WIFI
+                    || activeNetwork.getType() == ConnectivityManager
+                    .TYPE_MOBILE;
         }
         return false;
     }

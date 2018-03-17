@@ -17,6 +17,7 @@ package ca.ualbert.cs.tasko;
 
 import java.util.ArrayList;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
 import io.searchbox.annotations.JestId;
 
 /**
@@ -34,17 +35,17 @@ public class User {
     private String name;
     private String phoneNumber;
     private String email;
-    //private BidList userBids;
-    //private TaskList myTasks;
-    //private TaskList assignments;
-    //private ArrayList<Notification> notifications;
+
+    private BidList userBids;
+    private TaskList myTasks;
+    private TaskList assignments;
+    private ArrayList<SimpleNotification> notifications;
     private float rating;
 
     @JestId
     private String id;
 
     public User(){
-
     }
 
     public User(String username, String name, String phoneNumber, String email){
@@ -52,7 +53,12 @@ public class User {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.rating = 5;
+        this.userBids = null;
+        this.myTasks = null;
+        this.assignments = null;
+        this.notifications = new ArrayList<>();
+        this.rating = 0;
+
     }
 
     public String getUsername() {
@@ -107,20 +113,13 @@ public class User {
         return new TaskList();
     }
 
-    /*TODO: I Think all these add methods will be accounted for when they are created????
-    public void addAssignments(Task task) {
-        assignments.addTask(task);
-    }*/
+
     public TaskList getAssignments () {
         return new TaskList();
     }
 
-    /*
-    public void addNotification(Notification notification) {
-        notifications.add(notification);
-    }*/
 
-    public ArrayList<Notification> getNotifications () {
+    public ArrayList<SimpleNotification> getNotifications () {
         return new ArrayList<>();
     }
 

@@ -1,8 +1,4 @@
 /*
- * NoInternetException
- *
- * March 15, 2018
- *
  * Copyright © 2018 Chase Buhler, Imtihan Ahmed, Thomas Lafrance, Ryan Romano, Stephen Packer,
  * Alden Emerson Ern Tan
  *
@@ -17,14 +13,28 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko.data;
+package ca.ualbert.cs.tasko.NotificationArtifacts;
+
+import ca.ualbert.cs.tasko.User;
 
 /**
- * This exception is thrown when the methods that depend on internet are called
- * when there is no internet.
- * @author Chase Buhler
- * @version 1
- * @see DataManager
+ * The super class representing a generic notification object
+ * Created by spack on 2018-03-10.
  */
-public class NoInternetException extends Exception {
+
+public abstract class Notification {
+
+    private String message;
+    private User recipient;
+
+
+    public Notification(String message, User recipient) {
+        this.message = message;
+        this.recipient = recipient;
+    }
+
+    public String getMessage(){
+        return message;
+
+    }
 }

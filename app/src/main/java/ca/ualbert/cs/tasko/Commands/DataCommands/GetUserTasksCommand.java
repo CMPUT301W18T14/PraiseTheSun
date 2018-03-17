@@ -27,17 +27,30 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by chase on 3/10/2018.
+ * An extension of the GetCommand class. When a GetUserTasksCommand is
+ * executed, it will attempt to query our database using Elasticsearch in
+ * order to retrieve all tasks associated with the given UserId.
+ *
+ * @author Chase Buhler
+ * @see GetCommand
  */
-
 public class GetUserTasksCommand extends GetCommand<TaskList> {
-
     private String userID;
 
+    /**
+     * GetUserTasksCommand Constructor. Requires a userid to be initialized
+     *
+     * @param userID userid of the user who's tasks should be retrieved.
+     */
     public GetUserTasksCommand(String userID){
         this.userID = userID;
     }
 
+    /**
+     * execute is a function that once called, will try to query our
+     * database using Elasticsearch in order to retrieve the tasks associated
+     * with userID then it will set this commands result to be those tasks.
+     */
     @Override
     public void execute() {
         String query = "{\"size\": 1000, \"query\":{\"term\":{\"taskRequesterID\":\"" + userID +
@@ -52,7 +65,22 @@ public class GetUserTasksCommand extends GetCommand<TaskList> {
         }
     }
 
+    /**
+     * An extension of AsyncTask. This class builds a query and executes it
+     * on a separate thread to retrieve a Task from elastic search.
+     */
     private static class GetUserTasksTask extends AsyncTask<String, Void, TaskList> {
+
+        /**
+         * doInBackground is the main part of the AsyncTask running on the
+         * separate thread. It will build a query, execute the query and get
+         * the results.
+         *
+         * @param userIDs the userid that is associated with the tasks that are
+         *               to be retrieved.
+         * @return A TaskList with the found Tasks or an empty TaskList if no
+         * tasks are found.
+         */
         @Override
         protected TaskList doInBackground(String... userIDs){
             TaskList tasks = new TaskList();

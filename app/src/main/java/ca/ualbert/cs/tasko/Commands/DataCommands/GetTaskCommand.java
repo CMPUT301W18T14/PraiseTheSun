@@ -26,17 +26,30 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 
 /**
- * Created by chase on 3/9/2018.
+ * An extension of the GetCommand class. When a GetTaskCommand is executed, it
+ * will attempt to query our database using Elasticsearch in order to retrieve
+ * the task associated with the given TaskId.
+ *
+ * @author Chase Buhler
+ * @see GetCommand
  */
-
 public class GetTaskCommand extends GetCommand<Task> {
-
     private String taskid;
 
+    /**
+     * GetTaskCommand Constructor. Requires a taskid to be initialized
+     *
+     * @param taskid taskid of the task to be searched for
+     */
     public GetTaskCommand(String taskid){
         this.taskid = taskid;
     }
 
+    /**
+     * execute is a function that once called, will try to query our
+     * database using Elasticsearch in order to retrieve the task associated
+     * with taskId then it will set this commands result to be that task.
+     */
     @Override
     public void execute() {
         GetTask getTask = new GetTask();
@@ -50,8 +63,21 @@ public class GetTaskCommand extends GetCommand<Task> {
         }
     }
 
+    /**
+     * An extension of AsyncTask. This class builds a query and executes it
+     * on a separate thread to retrieve a Task from elastic search.
+     */
     private static class GetTask extends AsyncTask<String, Void, Task> {
 
+        /**
+         * doInBackground is the main part of the AsyncTask running on the
+         * separate thread. It will build a query, execute the query and get
+         * the results.
+         *
+         * @param ids the taskid that is associated with the task that is to
+         *            be retrieved.
+         * @return The found task or null if no task is found.
+         */
         @Override
         protected Task doInBackground(String... ids) {
             Task task = null;

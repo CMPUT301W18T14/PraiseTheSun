@@ -11,8 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MainActivity activity = this;
+    private DataManager dm = DataManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Button postTaskButton = (Button)findViewById(R.id.postTaskButton);
+        Button searchTaskButton = (Button)findViewById(R.id.SearchButton);
+        final EditText searchQuery = (EditText)findViewById(R.id.searchQuery);
 
         /**
          * Go to the AddTaskActivity to create a new task
@@ -31,14 +40,30 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, AddTaskActivity.class));
             }
         });
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        searchTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                String keywords = searchQuery.getText().toString();
+                //I realise this is not the best design, dont know how to check for empty results
+                //Without making the search occur here, would prefer not to pass the tasklist to
+                //SearchResultsActivity... Definately needs refinement
+                try {
+                    TaskList temptasks = dm.searchTasks(keywords, activity);
+                    if(temptasks.getSize() == 0){
+                        searchQuery.setError("This Search Found No Results");
+                    }else{
+                        Intent intent = new Intent(activity, SearchResultsActivity.class);
+                        intent.putExtra("SearchKeywords", keywords);
+                        startActivity(intent);
+                    }
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
+
     }
 
     @Override
