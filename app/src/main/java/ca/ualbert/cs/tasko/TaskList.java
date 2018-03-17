@@ -28,6 +28,8 @@ public class TaskList {
 
     private ArrayList<Task> tasks = new ArrayList<Task>();
 
+    public TaskList(){}
+
     public void addTask(Task task){
         tasks.add(task);
     }
