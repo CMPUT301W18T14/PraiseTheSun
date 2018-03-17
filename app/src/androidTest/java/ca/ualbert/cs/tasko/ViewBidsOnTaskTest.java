@@ -33,9 +33,11 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
+    /*
     private DataManager dm = DataManager.getInstance();
     private String userID1 = "AWIEMxQnTFjKf1vhacZH";
     private Bid bid1 = new Bid(userID1, 10, "TestID");
+    */
     /*
     private String userID2 = "NewId";
     private Bid bid2 = new Bid(userID2, 20, "NewTask");
@@ -45,13 +47,16 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
                     */
 
 
+
     public ViewBidsOnTaskTest() {
         super(ViewBidsOnTaskActivity.class);
     }
 
+
     @Override
-    public void setUp() {
+    public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+
         /*
         try {
             dm.addBid(bid1, getActivity().getApplicationContext());
@@ -62,11 +67,16 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
 
     }
 
+
+
     public void testStart() throws Exception {
         Activity activity = getActivity();
     }
 
-    public void testRecyclerView() throws NoInternetException {
+    /*
+
+    public void testRecyclerView() {
         solo.assertCurrentActivity("Wrong Activity", ViewBidsOnTaskActivity.class);
     }
+    */
 }
