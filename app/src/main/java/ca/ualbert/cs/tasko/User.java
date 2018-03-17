@@ -106,7 +106,8 @@ public class User {
     }
 
 
-    public void addMyTask() {
+    public void addMyTask(Task task, Context context) throws NoInternetException {
+        DataManager.getInstance().putTask(task, context);
     }
 
     public TaskList getMyTasks() {
