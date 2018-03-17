@@ -15,8 +15,13 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 import io.searchbox.annotations.JestId;
 
 /**
@@ -24,7 +29,7 @@ import io.searchbox.annotations.JestId;
  * Represents a user (which can be both a task requester and task provider). Contains info such
  * as name, username, number, email, tasks bidded on, tasks that you have requested, tasks that
  * you are assigned and their rating.
- *
+ * @author imtihan, chase
  *
  */
 
@@ -34,17 +39,17 @@ public class User {
     private String name;
     private String phoneNumber;
     private String email;
+
     private BidList userBids;
     private TaskList myTasks;
     private TaskList assignments;
-    private ArrayList<Notification> notifications;
+    private ArrayList<SimpleNotification> notifications;
     private float rating;
 
     @JestId
     private String id;
 
     public User(){
-
     }
 
     public User(String username, String name, String phoneNumber, String email){
@@ -54,9 +59,17 @@ public class User {
         this.email = email;
         this.userBids = null;
         this.myTasks = null;
+        //from imtihan
         this.assignments = new TaskList();
         this.notifications = null;
+        /*
+=======
+        this.assignments = null;
+        this.notifications = new ArrayList<>();
+>>>>>>> dev
+*/
         this.rating = 0;
+
     }
 
     public String getUsername() {
@@ -94,35 +107,33 @@ public class User {
         this.email = email;
     }
 
-    public void addBid(Bid bid) {
-        userBids.addBid(bid);
+    public void addBid(Bid bid, Context context) throws NoInternetException {
+        DataManager.getInstance().addBid(bid, context);
     }
 
     public BidList getBids() {
-        return userBids;
+        return new BidList();
     }
 
-    public void addMyTasks(Task task) {
-        myTasks.addTask(task);
+
+    public void addMyTask(Task task) {
+        //do we want it to go through data manager here?
+
+        assignments.addTask(task);
     }
 
     public TaskList getMyTasks() {
-        return myTasks;
+        return new TaskList();
     }
 
-    public void addAssignments(Task task) {
-        assignments.addTask(task);
-    }
+
     public TaskList getAssignments () {
-        return assignments;
+        return new TaskList();
     }
 
-    public void addNotification(Notification notification) {
-        notifications.add(notification);
-    }
 
-    public ArrayList<Notification> getNotifications () {
-        return notifications;
+    public ArrayList<SimpleNotification> getNotifications () {
+        return new ArrayList<>();
     }
 
     public float getRating() {
@@ -143,4 +154,5 @@ public class User {
     public void setId(String id){
         this.id = id;
     }
+
 }

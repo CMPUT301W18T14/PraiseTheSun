@@ -1,4 +1,8 @@
 /*
+ * JestWrapper
+ *
+ * March 15, 2018
+ *
  * Copyright © 2018 Chase Buhler, Imtihan Ahmed, Thomas Lafrance, Ryan Romano, Stephen Packer,
  * Alden Emerson Ern Tan
  *
@@ -18,40 +22,60 @@ package ca.ualbert.cs.tasko.data;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Created by chase on 3/4/2018.
+ * Provides a few simple methods to work with the Jest Client
  *
+ * @author Chase Buhler
+ * @version 1
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands
  */
-class JestWrapper {
-
+public class JestWrapper {
+    private final static String index =
+            "cmput301w18t14"; //Our elasticSearch index
+    private final static String database =
+            "http://cmput301.softwareprocess.es:8080"; // Our elasticSearch url
     private static JestDroidClient client;
 
-    private final static String index = "cmput301w18t14";
-
-    private final static String database = "http://cmput301.softwareprocess.es:8080";
-
+    /**
+     * Will return the single JestDroidClient using our server url or create
+     * it if it is not yet made
+     * @return A Jest Droid Client
+     */
     public static JestDroidClient getClient(){
         verifySettings();
         return client;
     }
 
+    /**
+     * Will get the final String that is the elastic search index currently in
+     * use.
+     * @return the Elastic Search index for this project
+     */
+    public static final String getIndex(){
+        return index;
+    }
+
+    /**
+     * Verify the JestDroidClient is created and build it if it is not
+     */
     public static void verifySettings(){
         /*
         Retrieved on 04-03-2018
         https://github.com/7FeiW/lonelyTwitter/blob/lab5_base/app/src/main/java/ca/ualberta/cs/lonelytwitter/ElasticsearchTweetController.java
          */
         if(client == null){
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder(database);
+            DroidClientConfig.Builder builder = new DroidClientConfig
+                    .Builder(database)
+                    .discoveryEnabled(true)
+                    .discoveryFrequency(101, TimeUnit.SECONDS)
+                    .multiThreaded(true);
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
             factory.setDroidClientConfig(config);
             client = (JestDroidClient) factory.getObject();
         }
-    }
-
-    public static final String getIndex(){
-        return index;
     }
 }

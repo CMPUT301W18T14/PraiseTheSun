@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.ualbert.cs.tasko">
 
+<<<<<<< HEAD
+=======
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+>>>>>>> dev
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -23,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateAccountActivity" />
+<<<<<<< HEAD
         <activity android:name=".AddTaskActivity" />
         <activity
             android:name=".NavigatorActivity"
@@ -34,6 +42,26 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UserActivity" />
         <activity android:name=".UserProfileActivity"></activity>
+=======
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".AddTaskActivity" />
+        <activity
+            android:name=".ViewMyTasksActivity"
+            android:label="@string/title_activity_view_my_tasks"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewTaskDetailsActivity"
+            android:label="@string/title_activity_view_task_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewSearchedTaskDetailsActivity"
+            android:label="@string/title_activity_view_searched_task_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchResultsActivity"
+            android:label="@string/title_activity_search_results"
+            android:theme="@style/AppTheme"></activity>
+>>>>>>> dev
     </application>
 
 </manifest>
