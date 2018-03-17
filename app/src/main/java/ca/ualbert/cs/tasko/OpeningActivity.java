@@ -24,9 +24,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
+
+
+/**
+ * OpeningActivity is the first activity our app will open too, it checks in a local file if a
+ * user string exsits and if it does it starts the app at the MainActivity. Otherwise, a user
+ * is directed to the LoginActivity.
+ *
+ * @author spack
+ */
+
 public class OpeningActivity extends AppCompatActivity {
 
-
+    private CurrentUser cu = CurrentUser.getInstance();
+    private DataManager dm = DataManager.getInstance();
     private static final String FILENAME = "nfile.sav";
     private String loggedInUser;
 
@@ -38,10 +52,20 @@ public class OpeningActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        checkForUser();
+        try {
+            checkForUser();
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void checkForUser() {
+    /**
+     * checkForUser is called when the app starts, it looks in a local file to see if a username
+     * string exsits and send the user to the appropriate activity depending on if the string
+     * exsits or not. If it does exsists it sets that user as the currently logged in user.
+     * @throws NoInternetException
+     */
+    private void checkForUser() throws NoInternetException {
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -52,6 +76,7 @@ public class OpeningActivity extends AppCompatActivity {
 
         if(loggedInUser == null){
             Intent intent = new Intent(this, LoginActivity.class);
+            cu.setCurrentUser(dm.getUserByUsername(loggedInUser, this));
             startActivity(intent);
         }else{
             Intent intent = new Intent(this, MainActivity.class);
