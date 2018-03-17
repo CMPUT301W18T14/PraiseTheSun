@@ -22,7 +22,7 @@ import io.searchbox.annotations.JestId;
 /**
  * Created by Chase on 2/23/2018.
  * Represents a bid Object containing the ID of the bidder, the value they bid and the task they
- * were biding on.
+ * were bidigng on.
  *
  * @author Chase Buhler
  * @see Task
