@@ -22,7 +22,7 @@
     tools:context="ca.ualbert.cs.tasko.UserProfileActivity">
 
     <TextView
-        android:id="@+id/Username:"
+        android:id="@+id/UserProfileActivityUsernameHeader"
         android:layout_width="352dp"
         android:layout_height="34dp"
         android:layout_marginEnd="8dp"
@@ -40,8 +40,9 @@
         android:id="@+id/UserProfileActivityUsername"
         android:layout_width="354dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginLeft="52dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/username"
@@ -49,14 +50,13 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Username:" />
+        app:layout_constraintTop_toBottomOf="@+id/UserProfileActivityUsernameHeader" />
 
     <TextView
         android:id="@+id/UserProfileActivityPhoneHeader"
-        android:layout_width="350dp"
+        android:layout_width="364dp"
         android:layout_height="33dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/contact"
@@ -67,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UserProfileActivityUsername"
-        app:layout_constraintVertical_bias="0.211" />
+        app:layout_constraintVertical_bias="0.068" />
 
     <EditText
         android:id="@+id/UserProfileActivityPhoneNumber"

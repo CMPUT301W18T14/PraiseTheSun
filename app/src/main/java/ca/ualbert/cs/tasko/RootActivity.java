@@ -100,13 +100,13 @@ public class RootActivity extends AppCompatActivity {
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-
+                            */
                             case R.id.view_profile:
-                                i = new Intent(getApplicationContext(), ViewProfileActivity.class);
+                                i = new Intent(getApplicationContext(), UserProfileActivity.class);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-                            */
+
                         }
 
                         return false;

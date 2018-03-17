@@ -15,14 +15,18 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends RootActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
         setContentView(R.layout.activity_user_profile);
+
     }
 }
