@@ -27,14 +27,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-<<<<<<< HEAD
+
 //Bruh ur text is dank
-=======
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
->>>>>>> dev
 public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
 
     private TextView taskDescription;
@@ -58,10 +56,10 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
         taskDescription = (TextView) findViewById(R.id.searchTaskDescription);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
-<<<<<<< HEAD
+
         //diaglog for choosing a dick to suck ayeeeee
         //Dialog for choosing to make a bid on the task
-=======
+
 
         Bundle extras = getIntent().getExtras();
 
@@ -86,7 +84,7 @@ public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
 
     //Dialog for choosing to make a bid on the task
     private void setupPlaceBidButton() {
->>>>>>> dev
+
         placeBidButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Confirm deletion and return to main page
