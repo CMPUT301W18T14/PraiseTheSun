@@ -52,11 +52,13 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() {
         solo = new Solo(getInstrumentation(), getActivity());
+        /*
         try {
             dm.addBid(bid1, getActivity().getApplicationContext());
         } catch(NoInternetException e) {
             Log.i("Error", "No internet connection");
         }
+        */
 
     }
 
