@@ -27,16 +27,29 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 
 /**
- * Created by Thomas on 2018-03-07.
+ * A class that implements the interface PutCommand. When a PutCommand is executed, it will
+ * attempt to store the a given bid into our database.
+ *
+ * @see PutCommand
+ * @author tlafranc
  */
-
 public class PutBidCommand implements PutCommand {
     private Bid bid;
 
+    /**
+     * Constructor for the PutBidCommand. Requires the parameter bid in order to be
+     * initialized.
+     *
+     * @param bid the bid object to be stored in the database
+     */
     public PutBidCommand(Bid bid) {
         this.bid = bid;
     }
 
+    /**
+     * execute is a function that once called, will try to store the given bid object into our
+     * database
+     */
     @Override
     public void execute(){
         AddBidTask addBidTask = new AddBidTask();
@@ -53,12 +66,29 @@ public class PutBidCommand implements PutCommand {
         // TODO: Implement delete
     }
 
+    /**
+     * A function that returns whether a PutBidCommand is undoable.
+     *
+     * @return false as a PutBidCommand is not undoable.
+     */
     @Override
     public boolean canUndo() {
         return false;
     }
 
+    /**
+     * An extension of the AsyncTask<Bid, void, String> class. This class is utilized to
+     * perform the storing of the Bid object into the database.
+     */
     public static class AddBidTask extends AsyncTask<Bid, Void, String> {
+        /**
+         * doInBackground is called immediately when AddBidTask.execute() is called and the
+         * execution is done in the background of the program. Stores the bid object in the
+         * database.
+         *
+         * @param bids the bids to be stored in the database
+         * @return the bidId of the bid object that was stored in the database
+         */
         @Override
         protected String doInBackground(Bid... bids){
             JestWrapper.verifySettings();

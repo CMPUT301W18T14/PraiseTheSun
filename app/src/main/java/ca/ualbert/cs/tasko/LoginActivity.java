@@ -31,6 +31,8 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * Just contains a EditText that allows the user to Login, If the text in the EditText matches
  * a username in the database then access is granted. The user also has the option to navigate to
  * the create a new account activity if they do not already have an account.
+ *
+ * @author spack
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -66,19 +68,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
 
+                User usernameInput = null;
                 try {
-                    User usernameInput = DM.getUserByUsername(usernameText.getText().toString(),
+                    usernameInput = DM.getUserByUsername(usernameText.getText().toString(),
                             LoginActivity.this);
-
-                    if (usernameInput != null){
-                        CU.setCurrentUser(usernameInput);
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        startActivity(intent);
-                    } else {
-                        usernameText.setError("This is not a valid username");
-                    }
                 } catch (NoInternetException e) {
-                    Log.i("ERROR", "No internet connection");
+                    e.printStackTrace();
+                }
+
+                if (usernameInput.getUsername() != null){
+                    CU.setCurrentUser(usernameInput);
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    usernameText.setError("This is not a valid username");
                 }
             }
         });

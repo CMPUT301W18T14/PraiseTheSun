@@ -1,4 +1,8 @@
 /*
+ * DataCommandManager
+ *
+ * March 15, 2018
+ *
  * Copyright © 2018 Chase Buhler, Imtihan Ahmed, Thomas Lafrance, Ryan Romano, Stephen Packer,
  * Alden Emerson Ern Tan
  *
@@ -20,21 +24,37 @@ import java.util.LinkedList;
 import ca.ualbert.cs.tasko.Commands.Command;
 
 /**
- * Created by chase on 3/7/2018.
+ * DataCommandManager is a commandManager for the dataCommands. It is a
+ * singleton pattern and  will store a history of executed commands that if
+ * requested may be undone.
+ *
+ * @author Chase Buhler
+ * @version 1
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands
  */
-
 public class DataCommandManager {
     private LinkedList<Command> historyList;
     private static DataCommandManager instance = new DataCommandManager();
 
+    /**
+     * Create a new DataCommandManager with an empty history
+     */
     private DataCommandManager(){
         historyList = new LinkedList<>();
     }
 
+    /**
+     * return the instance of the DataCommandManager
+     * @return instance of the command manager
+     */
     public static DataCommandManager getInstance(){
         return instance;
     }
 
+    /**
+     * Invoke the command and if undoable add to the history
+     * @param command command to be executed
+     */
     public void invokeCommand(Command command){
         command.execute();
 
@@ -44,4 +64,6 @@ public class DataCommandManager {
             historyList.clear();
         }
     }
+
+    //TODO: Add an undo all and undo last
 }
