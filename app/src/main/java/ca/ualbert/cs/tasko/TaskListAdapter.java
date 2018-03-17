@@ -57,8 +57,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
+        holder.taskStatus.setText("Status:" + currentTask.getStatus());
         //Needs more information then I currently have/ dont know how to implement.
-        //holder.taskBid.setText();
         //holder.taskPhoto.setImageResource();
 
     }
@@ -70,12 +70,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
     /**
      * The clickabale view holder that will get displayed in the recylcerview which displays
-     * relevant information about a task.
+     * relevant information about a task including name description and status.
      */
     class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView taskTitle;
-        TextView taskBid;
+        TextView taskStatus;
         TextView taskDescription;
         ImageView taskPhoto;
 
@@ -85,8 +85,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             itemView.setOnClickListener(this);
 
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
-            taskBid = (TextView) itemView.findViewById(R.id.searchTaskLowBid);
-            taskDescription = (TextView) itemView.findViewById(R.id.taskDescription);
+            taskStatus = (TextView) itemView.findViewById(R.id.searchTaskStatus);
+            taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
             taskPhoto = (ImageView) itemView.findViewById(R.id.taskPhoto);
         }
 
