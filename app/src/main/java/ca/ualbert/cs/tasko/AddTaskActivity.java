@@ -20,10 +20,15 @@ import android.location.Location;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class AddTaskActivity extends AppCompatActivity {
     private EditText taskNameText;
@@ -42,7 +47,16 @@ public class AddTaskActivity extends AppCompatActivity {
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
 
-        // INCOMPLETE: Need to receive taskRequester from previous activity
+        /*
+        taskRequester = CurrentUser.getInstance().getCurrentUser();
+        Commented out since I am not sure if it is not working correctly yet
+         */
+        try {
+            taskRequester = DataManager.getInstance().getUserByUsername("jdoe62", this
+                    .getApplicationContext());
+        } catch (NoInternetException e) {
+
+        }
     }
 
     public void onAddPhotoClick(View view){
@@ -79,10 +93,15 @@ public class AddTaskActivity extends AppCompatActivity {
     public void onAddTaskClick(View view){
         boolean valid = checkFieldsForEmptyValues();
         if (valid){
-            //Task newTask = new Task(taskRequester.getId(), taskName, description, photos,
-                //    geoLocation);
-            // This relies on Chases DataManager class. Subject to change in future.
-            // DataManager.getInstance().putTask(newTask);
+            Task newTask = new Task(taskRequester.getId(), taskName, description, photos,
+                    geoLocation);
+            try {
+                DataManager.getInstance().putTask(newTask, this.getApplicationContext());
+            } catch (NoInternetException e) {
+                Log.i("Error", "No internet connection in CreateAccountActivity");
+                Toast.makeText(this.getApplicationContext(), "No Internet Connection!",
+                        Toast.LENGTH_LONG).show();
+            }
         }
     }
 
