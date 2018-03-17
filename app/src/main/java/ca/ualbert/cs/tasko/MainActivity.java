@@ -42,10 +42,11 @@ public class MainActivity extends RootActivity {
        // FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
        // NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         //navigationView.getMenu().getItem(0).setChecked(true);
+        //Referenced: https://www.c-sharpcorner.com/article/navigation-drawer-activity-in-android/
+        //on 03-17-2018
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//inflate your activity layout here!
-        //@SuppressLint("InflateParams")
+        //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_main, null, false);
         drawerLayout.addView(contentView, 0);
 

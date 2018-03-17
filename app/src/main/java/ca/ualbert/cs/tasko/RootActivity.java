@@ -76,13 +76,13 @@ public class RootActivity extends AppCompatActivity {
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-                            /*
+
                             case R.id.my_tasks:
-                                i = new Intent(getApplicationContext(), MyTasksActivity.class);
+                                i = new Intent(getApplicationContext(), ViewMyTasksActivity.class);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-
+                            /*
                             case R.id.my_bids:
                                 i = new Intent(getApplicationContext(), MyBidsActivity.class);
                                 startActivity(i);
@@ -100,7 +100,7 @@ public class RootActivity extends AppCompatActivity {
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-                            */
+*/
                             case R.id.view_profile:
                                 i = new Intent(getApplicationContext(), UserProfileActivity.class);
                                 startActivity(i);
