@@ -23,14 +23,14 @@ import static ca.ualbert.cs.tasko.Status.BIDDED;
 
 public class Notification {
 
-    private User recipient; //Maybe an ArrayList of users to handle multiple recipients...
+    private String recipient; //Maybe an ArrayList of users to handle multiple recipients...
     private String taskname;
     private String message;
 
     public Notification(Task task){
 
         this.taskname = task.getTaskName();
-        this.recipient = task.getTaskRequester(); //Default
+        this.recipient = task.getTaskRequesterID(); //Default
 
         Status status = task.getStatus();
         switch (status){
@@ -38,7 +38,7 @@ public class Notification {
                 this.message = "Default Message for Testing";
                 break;
             case BIDDED:
-                this.recipient = task.getTaskRequester();
+                this.recipient = task.getTaskRequesterID();
                 this.message = "You have received a new Bid on" + taskname;
                 break;
             case ASSIGNED:

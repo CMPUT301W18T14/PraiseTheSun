@@ -81,7 +81,8 @@ public class AddTaskActivity extends AppCompatActivity {
     public void onAddTaskClick(View view){
         boolean valid = checkFieldsForEmptyValues();
         if (valid){
-            Task newTask = new Task(taskRequester, taskName, description, photos, geoLocation);
+            //Task newTask = new Task(taskRequester.getId(), taskName, description, photos,
+                //    geoLocation);
             // This relies on Chases DataManager class. Subject to change in future.
             // DataManager.getInstance().putTask(newTask);
         }

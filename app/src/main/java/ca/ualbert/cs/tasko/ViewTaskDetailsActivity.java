@@ -17,26 +17,21 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class ViewTaskDetailsActivity extends AppCompatActivity {
     private TextView taskDescription;
     private TextView taskName;
     private TextView taskStatus;
-    private Button deleteButton;
-    private Button editButton;
-    private Button viewBidsButton;
     private Task currentTask;
     private DataManager dm = DataManager.getInstance();
 
@@ -47,10 +42,10 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Button and Tec=xtView definitions
-        deleteButton = (Button) findViewById(R.id.deleteButton);
-        editButton = (Button) findViewById(R.id.editButton);
-        viewBidsButton = (Button) findViewById(R.id.placeBidButton);
+        //Button and TextView definitions
+        Button deleteButton = (Button) findViewById(R.id.deleteButton);
+        Button editButton = (Button) findViewById(R.id.editButton);
+        Button viewBidsButton = (Button) findViewById(R.id.placeBidButton);
         taskName = (TextView) findViewById(R.id.taskName);
         taskDescription = (TextView) findViewById(R.id.taskDescription);
         taskStatus = (TextView) findViewById(R.id.taskStatus);
@@ -59,10 +54,12 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
         try {
             String taskID = extras.getString("TaskID");
-            //currentTask = dm.getTask(taskID, this);
+            currentTask = dm.getTask(taskID, this);
             fillInformation();
         } catch (NullPointerException e) {
-            Log.i("Error", "TaskID from TaskListAdapter not properly passed");
+            Log.i("Error", "TaskID from _____________ not properly passed");
+        } catch (NoInternetException e) {
+            e.printStackTrace();
         }
 
         //Dialog for choosing to make a bid on the task
@@ -93,9 +90,9 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                 builder.setView(deleteView);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
             }
         });
-
 
         editButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -114,7 +111,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private void fillInformation() {
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
-        taskName.setText(currentTask.getStatus().toString());
+        taskStatus.setText(currentTask.getStatus().toString());
     }
 
 }

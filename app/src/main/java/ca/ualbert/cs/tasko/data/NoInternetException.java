@@ -1,4 +1,8 @@
 /*
+ * NoInternetException
+ *
+ * March 15, 2018
+ *
  * Copyright © 2018 Chase Buhler, Imtihan Ahmed, Thomas Lafrance, Ryan Romano, Stephen Packer,
  * Alden Emerson Ern Tan
  *
@@ -16,9 +20,11 @@
 package ca.ualbert.cs.tasko.data;
 
 /**
- * Created by chase on 3/4/2018.
- * This exception is thrown when the methods that depend on internet are called when there is no
- * internet
+ * This exception is thrown when the methods that depend on internet are called
+ * when there is no internet.
+ * @author Chase Buhler
+ * @version 1
+ * @see DataManager
  */
 public class NoInternetException extends Exception {
 }

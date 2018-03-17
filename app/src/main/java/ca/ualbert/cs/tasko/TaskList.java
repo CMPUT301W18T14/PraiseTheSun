@@ -16,6 +16,7 @@
 package ca.ualbert.cs.tasko;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Thomas on 2018-02-23.
@@ -38,4 +39,17 @@ public class TaskList {
     public ArrayList<Task> getTasks(){
         return tasks;
     }
+
+    public void addAll(Collection<? extends Task> c){
+        tasks.addAll(c);
+    }
+
+    public int getSize(){
+        return tasks.size();
+    }
+
+    public Task get(int position){
+        return tasks.get(position);
+    }
+
 }

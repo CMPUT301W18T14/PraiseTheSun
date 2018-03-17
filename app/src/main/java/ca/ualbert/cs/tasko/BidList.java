@@ -16,6 +16,7 @@
 package ca.ualbert.cs.tasko;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -29,11 +30,15 @@ public class BidList{
     private ArrayList<Bid> bids;
 
     public BidList(){
-        bids = new ArrayList<>();
+        bids = new ArrayList<Bid>();
     }
 
     public void addBid(Bid bid){
         bids.add(bid);
+    }
+
+    public void addAll(Collection<Bid> bids) {
+        this.bids.addAll(bids);
     }
 
     /**
