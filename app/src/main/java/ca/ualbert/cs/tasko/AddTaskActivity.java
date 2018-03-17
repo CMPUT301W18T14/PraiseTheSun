@@ -44,7 +44,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private String taskName;
     private String description;
     private User taskRequester;
-    private ArrayList<Bitmap> photos = null;
+    private ArrayList<Bitmap> photos;
     private Location geoLocation = null;
 
     /**
@@ -60,17 +60,8 @@ public class AddTaskActivity extends AppCompatActivity {
 
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
-
-        /*
         taskRequester = CurrentUser.getInstance().getCurrentUser();
-        Commented out since I am not sure if it is not working correctly yet
-         */
-        try {
-            taskRequester = DataManager.getInstance().getUserByUsername("jdoe62", this
-                    .getApplicationContext());
-        } catch (NoInternetException e) {
-
-        }
+        photos = new ArrayList<Bitmap>();
     }
 
     /**

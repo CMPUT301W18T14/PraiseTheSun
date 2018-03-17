@@ -58,15 +58,6 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
         solo.enterText(descriptionText, "This is a description for the " +
                 "test task");
         solo.clickOnButton("Post your task!");
-        // How do I get the taskId
-        /*
-        try {
-            assertTrue(DataManager.getInstance().getUserByUsername("tlafranc", getActivity()
-                    .getApplicationContext()).getUsername() != null);
-        } catch (NoInternetException e) {
-            e.printStackTrace();
-        }
-        */
         Activity activity = solo.getCurrentActivity();
         assertFalse(activity.getClass() == AddTaskActivity.class);
     }

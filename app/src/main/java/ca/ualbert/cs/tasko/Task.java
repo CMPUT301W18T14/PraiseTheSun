@@ -16,8 +16,8 @@
 package ca.ualbert.cs.tasko;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.media.Image;
 
 import java.util.ArrayList;
 
@@ -32,8 +32,7 @@ public class Task {
 
     private String taskName;
     private String description;
-    private ArrayList<Image> photos;
-    private ArrayList<Bitmap> otherPhotos;
+    private ArrayList<Bitmap> photos;
     private Location geolocation;
     private String taskRequesterID;
     private String taskProviderID;
@@ -47,21 +46,13 @@ public class Task {
         this(taskRequesterID, taskName, description, null, null);
     }
 
-    /*
-       Had to comment out in order to introduce constructor with images as bitmap objects
-    public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<Image> photos){
-        this(taskRequesterID, taskName, description, photos, null);
-    }
-    */
-
     public Task(String taskRequesterID, String taskName, String description,
                 Location location){
         this(taskRequesterID, taskName, description, null, location);
     }
 
     public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<Image> photos, Location location){
+                ArrayList<Bitmap> photos, Location location){
         this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
@@ -76,7 +67,7 @@ public class Task {
         this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
-        this.otherPhotos = photos;
+        this.photos = photos;
         this.geolocation = null;
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
@@ -92,7 +83,7 @@ public class Task {
         return bidList;
     }*/
 
-    public void addPhoto(Image photo){
+    public void addPhoto(Bitmap photo){
 
     }
 
