@@ -33,7 +33,7 @@ import android.widget.TextView;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-public class ViewSearchedTaskDetailsActivity extends AppCompatActivity {
+public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     private TextView taskDescription;
     private TextView taskName;
