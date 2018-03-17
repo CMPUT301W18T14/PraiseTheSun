@@ -28,7 +28,7 @@ public class TaskList {
 
     private ArrayList<Task> tasks = new ArrayList<Task>();
 
-    TaskList(){}
+    public TaskList(){}
 
     public void addTask(Task task){
         tasks.add(task);

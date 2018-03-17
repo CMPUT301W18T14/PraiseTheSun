@@ -1,5 +1,6 @@
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,10 +40,17 @@ public class MainActivity extends RootActivity {
         * */
 
        // FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
+       // NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        //navigationView.getMenu().getItem(0).setChecked(true);
 
-        setContentView(R.layout.activity_main);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//inflate your activity layout here!
+        //@SuppressLint("InflateParams")
+        View contentView = inflater.inflate(R.layout.activity_main, null, false);
+        drawerLayout.addView(contentView, 0);
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Button postTaskButton = (Button)findViewById(R.id.postTaskButton);

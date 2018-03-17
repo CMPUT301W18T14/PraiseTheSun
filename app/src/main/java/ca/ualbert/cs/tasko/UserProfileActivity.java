@@ -16,7 +16,6 @@
 package ca.ualbert.cs.tasko;
 
 import android.support.design.widget.NavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -35,7 +34,7 @@ public class UserProfileActivity extends RootActivity {
         emailAddress = (EditText)findViewById(R.id.UserProfileActivityEmail);
         User user = CurrentUser.getInstance().getCurrentUser();
 
-        if(CurrentUser.loggedIn()){
+        if(CurrentUser.getInstance().loggedIn()){
             username.setText(user.getUsername());
             phoneNumber.setText(user.getPhoneNumber());
             emailAddress.setText(user.getEmail());
