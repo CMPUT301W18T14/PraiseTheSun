@@ -34,12 +34,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+/**
+ * Activity that adds a photo to a task. Is called by AddTaskActivity when the user presses the
+ * "Add Photo" button from AddTaskActivity.
+ *
+ * @author tlafranc
+ * @see AddTaskActivity
+ */
 public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private ImageView imageToUpload;
     private Bitmap image;
     private Button confirm;
 
+    /**
+     * Called when the activity is started. Initializes the confirm button.
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +61,23 @@ public class AddPhotoActivity extends AppCompatActivity {
         imageToUpload = (ImageView) findViewById(R.id.addPhotoTaskImage);
     }
 
+    /**
+     * Called when the clicks on the "Upload Image" button in this activity. Creates an intent to
+     * go to the users gallery.
+     *
+     */
     public void onUploadClick(View view) {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media
                 .EXTERNAL_CONTENT_URI);
         startActivityForResult(gallery, RESULT_LOAD_IMAGE);
     }
 
+    /**
+     * Called when the user clicks the "Confirm Upload" button. This button can only be clicked
+     * after the user has selected an image from his gallery. Turns the image chosen into a byte
+     * stream and sends this back to AddTaskActivity.
+     *
+     */
     public void onConfirmClick(View view) {
         // https://stackoverflow.com/questions/11010386/passing-android-bitmap-data-within
         // -activity-using-intent-in-android taken on 2018-03-17
@@ -69,6 +91,16 @@ public class AddPhotoActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Called after the user exits his gallery by either selecting a photo or pressing the back
+     * button. If he pressed the back button, do nothing. If the user selected a photo, create an
+     * input stream and make an Bitmap object from this stream.
+     *
+     * @param requestCode Code created when creating intent for gallery
+     * @param resultCode Code sent from called activity indicating if task was completed
+     * @param data Information sent back from activity
+
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -81,12 +113,12 @@ public class AddPhotoActivity extends AppCompatActivity {
                     inputStream = getContentResolver().openInputStream(selectedImage);
                     image = BitmapFactory.decodeStream(inputStream);
                     imageToUpload.setImageBitmap(image);
+                    confirm.setEnabled(true);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     Toast.makeText(this.getApplicationContext(), "Image not found",
                             Toast.LENGTH_LONG).show();
                 }
-                confirm.setEnabled(true);
             }
         }
     }
