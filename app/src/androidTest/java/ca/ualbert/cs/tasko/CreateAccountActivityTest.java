@@ -34,6 +34,11 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class CreateAccountActivityTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
+    private EditText usernameText;
+    private EditText nameText;
+    private EditText emailText;
+    private EditText phoneText;
+
 
     public CreateAccountActivityTest() {
         super(CreateAccountActivity.class);
@@ -42,6 +47,7 @@ public class CreateAccountActivityTest extends ActivityInstrumentationTestCase2 
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+
     }
 
     public void testAccount() {
@@ -55,8 +61,55 @@ public class CreateAccountActivityTest extends ActivityInstrumentationTestCase2 
             assertTrue(DataManager.getInstance().getUserByUsername("tlafranc", getActivity()
                     .getApplicationContext()).getUsername() != null);
         } catch (NoInternetException e) {
-
+            e.printStackTrace();
         }
+
+        Activity activity = solo.getCurrentActivity();
+        assertFalse(activity.getClass() == AddTaskActivity.class);
+    }
+
+    public void testEmptyUsername() {
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+        solo.enterText(nameText, "name");
+        solo.enterText(emailText, "email@email.ca");
+        solo.enterText(phoneText, "780-000-0000");
+        solo.clickOnButton("Create");
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+    }
+
+    public void testEmptyName() {
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+        solo.enterText(usernameText, "username");
+        solo.enterText(emailText, "email@email.ca");
+        solo.enterText(phoneText, "780-000-0000");
+        solo.clickOnButton("Create");
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+    }
+
+    public void testRestrictionsEmail() {
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+        solo.enterText(usernameText, "username");
+        solo.enterText(nameText, "name");
+        solo.enterText(phoneText, "780-000-0000");
+        solo.clickOnButton("Create");
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+
+        solo.enterText(emailText, "Invalid email");
+        solo.clickOnButton("Create");
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+    }
+
+    public void testRestrictionsNumber() {
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+        solo.enterText(usernameText, "username");
+        solo.enterText(nameText, "name");
+        solo.enterText(emailText, "email@email.ca");
+        solo.clickOnButton("Create");
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
+
+        solo.enterText(emailText, "7800000000");
+        solo.clickOnButton("Create");
+        solo.assertCurrentActivity("Wrong Activity", CreateAccountActivity.class);
     }
 
     @Override
