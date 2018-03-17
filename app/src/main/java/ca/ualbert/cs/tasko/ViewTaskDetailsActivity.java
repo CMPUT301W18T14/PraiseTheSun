@@ -22,6 +22,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +33,7 @@ import ca.ualbert.cs.tasko.data.DataManager;
 public class ViewTaskDetailsActivity extends AppCompatActivity {
     private TextView taskDescription;
     private TextView taskName;
+    private TextView taskStatus;
     private Button deleteButton;
     private Button editButton;
     private Button viewBidsButton;
@@ -46,14 +48,22 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Button and Tec=xtView definitions
-        deleteButton = (Button)findViewById(R.id.deleteButton);
-        editButton = (Button)findViewById(R.id.editButton);
-        viewBidsButton = (Button)findViewById(R.id.placeBidButton);
+        deleteButton = (Button) findViewById(R.id.deleteButton);
+        editButton = (Button) findViewById(R.id.editButton);
+        viewBidsButton = (Button) findViewById(R.id.placeBidButton);
         taskName = (TextView) findViewById(R.id.taskName);
         taskDescription = (TextView) findViewById(R.id.taskDescription);
+        taskStatus = (TextView) findViewById(R.id.taskStatus);
 
         Bundle extras = getIntent().getExtras();
-        
+
+        try {
+            String taskID = extras.getString("TaskID");
+            currentTask = dm.getTask(taskID, this);
+            fillInformation();
+        } catch (NullPointerException e) {
+            Log.i("Error", "TaskID from TaskListAdapter not properly passed");
+        }
 
         //Dialog for choosing to make a bid on the task
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +109,12 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void fillInformation() {
+        taskName.setText(currentTask.getTaskName());
+        taskDescription.setText(currentTask.getDescription());
+        taskName.setText(currentTask.getStatus().toString());
     }
 
 }
