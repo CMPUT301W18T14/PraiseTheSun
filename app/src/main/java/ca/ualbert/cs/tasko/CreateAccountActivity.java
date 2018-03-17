@@ -35,6 +35,13 @@ import java.util.regex.Pattern;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
+/**
+ * Activity that creates an account. It is called from the LoginActivity screen when the user
+ * selects the "Create Account" button.
+ *
+ * @author tlafranc
+ * @see LoginActivity
+ */
 public class CreateAccountActivity extends AppCompatActivity {
     private EditText usernameText;
     private EditText nameText;
@@ -45,6 +52,11 @@ public class CreateAccountActivity extends AppCompatActivity {
     private String email;
     private String phone;
 
+    /**
+     * Called when activity is started. Initializes the usernameText, nameText, emailText and
+     * phoneText instance variables.
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +75,22 @@ public class CreateAccountActivity extends AppCompatActivity {
         phoneText = (EditText) findViewById(R.id.createAccountPhone);
     }
 
+    /**
+     * Called when the user clicks on the "Create" button in this activity. Checks to see
+     * if all fields satisfy the requirements. If they don't, does nothing. Otherwise, it checks to
+     * see if the selected username has already been chosen. If it has, notifies user to enter a
+     * new username. Otherwise, it creates a user using the instance variables username, name,
+     * email and phone and tries to store this user in our database.
+     *
+     */
     public void onCreateClick(View view) {
         boolean valid = checkFieldsForEmptyValues();
         if (valid) {
-            User newUser = new User(username, name, email, phone);
             try {
                 User retrievedUser = DataManager.getInstance().getUserByUsername(username, this
                         .getApplicationContext());
                 if (retrievedUser.getUsername() == null) {
+                    User newUser = new User(username, name, email, phone);
                     Log.i("NotError", "ERROR IS HERE");
                     try {
                         DataManager.getInstance().putUser(newUser, this.getApplicationContext());
@@ -93,6 +113,13 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Function that determines if there are any blank fields for username, name, email and phone
+     * as all of these fields must be provided. Also, checks to see that the email given has a
+     * valid email format and checks that the phone number is of format ***-***-****.
+     * @return returns a boolean. Returns false if there is at least one field that does not
+     * satisfy the requirements and true otherwise.
+     */
     private boolean checkFieldsForEmptyValues() {
         username = usernameText.getText().toString();
         name = nameText.getText().toString();
