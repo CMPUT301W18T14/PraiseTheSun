@@ -54,6 +54,11 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         User returnedUser = null;
         try {
             dm.putUser(user2, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch (NoInternetException e) {
             Log.i("Error", "No internet connection. Can not add a new user at the moment");
         } catch (IllegalArgumentException e){
@@ -71,6 +76,11 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         boolean noDup = false;
         try {
             dm.putUser(user2, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch (IllegalArgumentException e){
             noDup = true;
         } catch (NoInternetException e) {
@@ -84,6 +94,11 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         User returnedUser = null;
         try {
             dm.putUser(user1, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch (NoInternetException e){
             Log.i("Error", "No internet connection, can not add the user to elasticsearch");
         } catch (IllegalArgumentException e){
