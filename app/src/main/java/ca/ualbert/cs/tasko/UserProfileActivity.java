@@ -17,6 +17,7 @@ package ca.ualbert.cs.tasko;
 
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 
 public class UserProfileActivity extends RootActivity {
@@ -35,9 +36,11 @@ public class UserProfileActivity extends RootActivity {
         User user = CurrentUser.getInstance().getCurrentUser();
 
         if(CurrentUser.getInstance().loggedIn()){
+            Log.i("User logged in", " " );
             username.setText(user.getUsername());
             phoneNumber.setText(user.getPhoneNumber());
             emailAddress.setText(user.getEmail());
+
         }
 
     }
