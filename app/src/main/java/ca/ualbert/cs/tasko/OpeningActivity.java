@@ -76,9 +76,11 @@ public class OpeningActivity extends AppCompatActivity {
 
         if(loggedInUser == null){
             Intent intent = new Intent(this, LoginActivity.class);
+            //CurrentUser.getInstance().setCurrentUser(dm.getUserByUsername(loggedInUser, this));
             cu.setCurrentUser(dm.getUserByUsername(loggedInUser, this));
             startActivity(intent);
         }else{
+            cu.setCurrentUser(dm.getUserByUsername(loggedInUser, this));
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
