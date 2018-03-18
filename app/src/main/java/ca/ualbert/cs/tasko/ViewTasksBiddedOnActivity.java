@@ -15,59 +15,60 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-/**
- * SearchResultsActivity is a simple class that works with TaskListAdapter to generate a recyclerview
- * of tasks that match the users keyword search.
- *
- * @author spack
- */
-public class SearchResultsActivity extends AppCompatActivity{
+public class ViewTasksBiddedOnActivity extends AppCompatActivity {
 
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter searchAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
     private DataManager dm = DataManager.getInstance();
-    private SearchResultsActivity activity = this;
-
+    private ViewTasksBiddedOnActivity activity = this;
+    private CurrentUser cu  = CurrentUser.getInstance();
+    private User user;
+    private BidList userBids;
+    private TaskList biddedTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+        setContentView(R.layout.activity_view_tasks_bidded_on);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
-        String keywords;
-
-        Bundle extras = getIntent().getExtras();
-
-        if (extras != null) {
-            keywords = extras.getString("SearchKeywords");
-        }else{
-            keywords = null;
-        }
-
-        TaskList foundtasks = new TaskList();
-
-        try {
-            foundtasks = dm.searchTasks(keywords, activity);
-        } catch (NoInternetException e) {
-            e.printStackTrace();
-        }
-
-
-        searchAdapter = new TaskListAdapter(activity, foundtasks);
-        searchRecyclerView.setAdapter(searchAdapter);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+     //   user = cu.getCurrentUser();
+        userBids = new BidList();
+
+//        try {
+//            userBids = dm.getUserBids(user.getId(), activity);
+//        } catch (NoInternetException e) {
+//            e.printStackTrace();
+//        }
+
+
+        biddedTasks = new TaskList();
+        for (int i = 0; i < userBids.getSize(); i++)
+            try {
+                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), activity));
+            } catch (NoInternetException e) {
+                e.printStackTrace();
+            }
+
+
+        searchAdapter = new TaskListAdapter(activity, biddedTasks);
+        searchRecyclerView.setAdapter(searchAdapter);
+    }
 }
