@@ -49,15 +49,19 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-     //   user = cu.getCurrentUser();
-        userBids = new BidList();
-
+        user = cu.getCurrentUser();
 //        try {
-//            userBids = dm.getUserBids(user.getId(), activity);
+//            user = dm.getUserByUsername("rromano", activity);
 //        } catch (NoInternetException e) {
 //            e.printStackTrace();
 //        }
+        userBids = new BidList();
 
+        try {
+            userBids = dm.getUserBids(user.getId(), activity);
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
 
         biddedTasks = new TaskList();
         for (int i = 0; i < userBids.getSize(); i++)
