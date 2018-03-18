@@ -94,12 +94,12 @@ public class CreateAccountActivity extends AppCompatActivity {
                     Log.i("NotError", "ERROR IS HERE");
                     try {
                         DataManager.getInstance().putUser(newUser, this.getApplicationContext());
+                        finish();
                     } catch (NoInternetException e) {
                         Log.i("Error", "No internet connection in CreateAccountActivity");
                         Toast.makeText(this.getApplicationContext(), "No Internet Connection!",
                                 Toast.LENGTH_LONG).show();
                     }
-                    //finish();
                 }
                 else {
                     Toast.makeText(this.getApplicationContext(), "Sorry, username already " +
