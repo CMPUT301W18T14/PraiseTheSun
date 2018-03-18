@@ -49,11 +49,20 @@ public class OpeningActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * If the current user is already set and we navigate to this activity, then exit the app and
+     * set the current user to null, otherwise the app has just started and we go and check
+     * for user in the local file.
+     */
     @Override
     protected void onStart() {
         super.onStart();
         try {
-            checkForUser();
+            if (!cu.loggedIn())
+                checkForUser();
+            else
+                cu.setCurrentUser(null);
+                this.finishAffinity();
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
@@ -76,8 +85,6 @@ public class OpeningActivity extends AppCompatActivity {
 
         if(loggedInUser == null){
             Intent intent = new Intent(this, LoginActivity.class);
-            //CurrentUser.getInstance().setCurrentUser(dm.getUserByUsername(loggedInUser, this));
-            cu.setCurrentUser(dm.getUserByUsername(loggedInUser, this));
             startActivity(intent);
         }else{
             cu.setCurrentUser(dm.getUserByUsername(loggedInUser, this));

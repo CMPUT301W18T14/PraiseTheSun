@@ -23,10 +23,16 @@ import android.support.v7.widget.RecyclerView;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
+/**
+ * This activity allows the user to view all of the tasks they have bidded on, Which will show up
+ * as a recyclerview of tasks that includes all relevant information include your bid on the task.
+ *
+ * @author spack
+ */
 public class ViewTasksBiddedOnActivity extends AppCompatActivity {
 
     private RecyclerView searchRecyclerView;
-    private RecyclerView.Adapter searchAdapter;
+    private RecyclerView.Adapter tasksBiddedAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
     private DataManager dm = DataManager.getInstance();
     private ViewTasksBiddedOnActivity activity = this;
@@ -49,20 +55,25 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        user = cu.getCurrentUser();
-//        try {
-//            user = dm.getUserByUsername("rromano", activity);
-//        } catch (NoInternetException e) {
-//            e.printStackTrace();
-//        }
+        //user = cu.getCurrentUser();
+        //Used for testing, setting the current user in test cases doe snot seem to work and thus
+        //gives a null pointer error.
+        try {
+            user = dm.getUserByUsername("rromano", activity);
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
         userBids = new BidList();
 
+        //Get all bids associated with a user.
         try {
             userBids = dm.getUserBids(user.getId(), activity);
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
 
+        //For each bid, find the task with which the bid was placed and add it to a task list to
+        // be displayed
         biddedTasks = new TaskList();
         for (int i = 0; i < userBids.getSize(); i++)
             try {
@@ -72,7 +83,7 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
             }
 
 
-        searchAdapter = new TaskListAdapter(activity, biddedTasks);
-        searchRecyclerView.setAdapter(searchAdapter);
+        tasksBiddedAdapter = new TaskBiddedAdapter(activity, biddedTasks, userBids);
+        searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
 }

@@ -15,24 +15,23 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
-
 import com.robotium.solo.Solo;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-/**
- * Created by spack on 2018-03-17.
- */
 
+/**
+ * The tests will return a null pointer error if a use ris not hardcoded into the ViewBiddedTask
+ * Activity, this is because the currentusersingelton is not set when I directly start the activity
+ * Will work in the normal workflow. So if test are failing comment out the cu.getuser() and
+ * hard code in a user i.e rromano
+ */
 public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
     private DataManager dm = DataManager.getInstance();
-    private CurrentUser cu = CurrentUser.getInstance();
     private Task task1;
     private Task task2;
     private User user;
@@ -44,6 +43,8 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
         super(ViewTasksBiddedOnActivity.class);
     }
 
+    // Fully loaded setup, need to make a user, multiple task and multiple bids and put everything
+    // In the database.
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
@@ -54,7 +55,6 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
         task2 = new Task("test", "TestTask3", "Help me test code");
         dm.putTask(task1, getActivity().getApplicationContext());
         dm.putTask(task2, getActivity().getApplicationContext());
-        // cu.setCurrentUser(user);
         bid1 = new Bid(dmuser.getId(), 10, task1.getId());
         bid2 = new Bid(dmuser.getId(), 10, task2.getId());
         dm.addBid(bid1, getActivity().getApplicationContext());
@@ -62,6 +62,10 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
 
     }
 
+    /**
+     * Tests the process that adds Tasks to a tasklist by using a users posted bids.
+     * @throws NoInternetException
+     */
     public void testPlacingBids() throws NoInternetException {
         BidList userBids = dm.getUserBids(dmuser.getId(), getActivity().getApplicationContext());
         TaskList biddedTasks = new TaskList();
@@ -71,12 +75,16 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
             } catch (NoInternetException e) {
                 e.printStackTrace();
             }
-        //assertEquals(2, biddedTasks.getSize());
+        assertFalse(biddedTasks.getSize() == 0);
 
     }
 
+    /**
+     * Ensures the onClick in viewholder is accurate, directs the user to the proper activity.
+     */
     public void testClick(){
         solo.clickInRecyclerView(0);
+        solo.assertCurrentActivity("Click did not register", ViewSearchedTaskDetailsActivity.class);
     }
 
 }
