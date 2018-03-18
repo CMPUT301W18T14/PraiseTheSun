@@ -15,7 +15,10 @@
 
 package ca.ualbert.cs.tasko.Commands.DataCommands;
 
+import android.os.AsyncTask;
 import android.util.Log;
+
+import java.security.spec.ECField;
 
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.data.JestWrapper;
@@ -49,19 +52,12 @@ public class PutTaskCommand implements PutCommand {
      */
     @Override
     public void execute() {
-        JestWrapper.verifySettings();
-
-        Index index = new Index.Builder(task).index(JestWrapper.getIndex()).type("task")
-                .build();
-
+        PutTaskTask put = new PutTaskTask();
+        put.execute(task);
         try{
-            DocumentResult result = JestWrapper.getClient().execute(index);
-            System.out.println(result.getJsonObject());
-            if(result.isSucceeded()){
-                task.setId(result.getId());
-            }
+            task.setId(put.get());
         } catch (Exception e){
-            Log.i("Error", "The application failed to build and send the task");
+            Log.i("Error", "Things went wrong in putTask AsyncObject");
         }
     }
 
@@ -79,6 +75,29 @@ public class PutTaskCommand implements PutCommand {
     @Override
     public boolean canUndo() {
         return true;
+    }
+
+    private class PutTaskTask extends AsyncTask<Task, Void, String>{
+
+        @Override
+        protected String doInBackground(Task... tasks) {
+            JestWrapper.verifySettings();
+
+            Index index = new Index.Builder(tasks[0]).index(JestWrapper.getIndex()).type("task")
+                    .build();
+
+            try{
+                DocumentResult result = JestWrapper.getClient().execute(index);
+                System.out.println(result.getJsonObject());
+                if(result.isSucceeded()){
+                    return result.getId();
+                }
+            } catch (Exception e){
+                Log.i("Error", "The application failed to build and send the task");
+            }
+
+            return null;
+        }
     }
 
 

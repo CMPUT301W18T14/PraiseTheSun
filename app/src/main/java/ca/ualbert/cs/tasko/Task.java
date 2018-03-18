@@ -15,8 +15,9 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.media.Image;
 
 import java.util.ArrayList;
 
@@ -31,11 +32,8 @@ public class Task {
 
     private String taskName;
     private String description;
-    private ArrayList<Image> photos;
+    private ArrayList<Bitmap> photos;
     private Location geolocation;
-    private User taskRequester;
-    private User taskProvider;
-    private BidList bidList;
     private String taskRequesterID;
     private String taskProviderID;
     //private BidList bidList;
@@ -49,17 +47,12 @@ public class Task {
     }
 
     public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<Image> photos){
-        this(taskRequesterID, taskName, description, photos, null);
-    }
-
-    public Task(String taskRequesterID, String taskName, String description,
                 Location location){
         this(taskRequesterID, taskName, description, null, location);
     }
 
     public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<Image> photos, Location location){
+                ArrayList<Bitmap> photos, Location location){
         this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
@@ -68,6 +61,18 @@ public class Task {
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
     }
+
+    public Task(String taskRequesterID, String taskName, String description,
+                ArrayList<Bitmap> photos){
+        this.taskRequesterID = taskRequesterID;
+        this.taskName = taskName;
+        this.description = description;
+        this.photos = photos;
+        this.geolocation = null;
+        this.taskProviderID = null;
+        this.status = Status.REQUESTED;
+    }
+
 
     public void acceptBid(Bid bid){
 
@@ -78,7 +83,7 @@ public class Task {
         return bidList;
     }*/
 
-    public void addPhoto(Image photo){
+    public void addPhoto(Bitmap photo){
 
     }
 
@@ -142,10 +147,6 @@ public class Task {
         this.taskProviderID = taskProviderID;
         this.status = Status.ASSIGNED;
     }
-
-
-    public void setTaskProvider (User taskProvider) { this.taskProvider = taskProvider; }
-
 
     @Override
     public boolean equals(Object o){
