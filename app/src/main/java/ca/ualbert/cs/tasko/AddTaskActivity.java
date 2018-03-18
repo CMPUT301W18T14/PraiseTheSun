@@ -129,6 +129,7 @@ public class AddTaskActivity extends AppCompatActivity {
             Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
+                finish();
             } catch (NoInternetException e) {
                 Log.i("Error", "No internet connection in CreateAccountActivity");
                 Toast.makeText(this.getApplicationContext(), "No Internet Connection!",
