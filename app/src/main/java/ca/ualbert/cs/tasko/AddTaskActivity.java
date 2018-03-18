@@ -16,24 +16,43 @@
 package ca.ualbert.cs.tasko;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
+/**
+ * Activity that adds a task. Is called either from the MainActivity when the user selects "Post
+ * a Task" or from the menu bar.
+ *
+ * @author tlafranc
+ */
 public class AddTaskActivity extends AppCompatActivity {
     private EditText taskNameText;
     private EditText descriptionText;
     private String taskName;
     private String description;
     private User taskRequester;
-    private ArrayList<Image> photos = null;
+    private ArrayList<Bitmap> photos;
     private Location geoLocation = null;
 
+    /**
+     * Called when the activity is started. Initializes the taskNameText and descriptionText.
+     * Uses the CurrentUser singleton class in order to determine the current user who is posting
+     * a task.
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,19 +60,27 @@ public class AddTaskActivity extends AppCompatActivity {
 
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
-
-        // INCOMPLETE: Need to receive taskRequester from previous activity
+        taskRequester = CurrentUser.getInstance().getCurrentUser();
+        photos = new ArrayList<Bitmap>();
     }
 
+    /**
+     * Called when the user clicks on the "Add Photo" button in this activity. Calls the
+     * AddPhotoActivity.
+     *
+     */
     public void onAddPhotoClick(View view){
         // Create an Intent to AddPhotoActivity
-        /*
         Intent addPhotoIntent = new Intent(this, AddPhotoActivity.class);
-        final int result = 1;
+        final int result = 19;
         startActivityForResult(addPhotoIntent, result);
-         */
     }
 
+    /**
+     * Called when the user clicks on the "Add Location" button in this activity. Calls the
+     * AddLocationActivity.
+     *
+     */
     public void onAddLocationClick(View view){
         // Create an Intent to AddLocationActivity
         /*
@@ -63,13 +90,25 @@ public class AddTaskActivity extends AppCompatActivity {
          */
     }
 
+    /**
+     * Called upon completion of AddPhotoActivity or AddLocationActivity. If the result is coming
+     * from AddPhotoActivity, retrieve the bytes sent by the AddPhotoActivity and turn them into
+     * a bitmap object and append them to the local photos instance variable. If the result is
+     * coming from AddLocationActivity then ... (not implemented yet)
+     *
+     * @param requestCode Code created when creating intent for activity
+     * @param resultCode Code sent from called activity indicating if task was completed
+     * @param data Information sent back from activity
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 1) {
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case 1:
-                    // Handle add photo Intent result
+                case 19:
+                    byte[] byteArray = data.getByteArrayExtra("image");
+                    Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    photos.add(image);
                     break;
                 case 2:
                     // Handle add location Intent result
@@ -78,16 +117,33 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Called when the user clicks on the "Post your task!" button in this activity. Creates a
+     * task object from the fields taskNameText and descriptionText and then tries to store this
+     * information in the database.
+     *
+     */
     public void onAddTaskClick(View view){
         boolean valid = checkFieldsForEmptyValues();
         if (valid){
-            //Task newTask = new Task(taskRequester.getId(), taskName, description, photos,
-                //    geoLocation);
-            // This relies on Chases DataManager class. Subject to change in future.
-            // DataManager.getInstance().putTask(newTask);
+            Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
+            try {
+                DataManager.getInstance().putTask(newTask, this.getApplicationContext());
+                finish();
+            } catch (NoInternetException e) {
+                Log.i("Error", "No internet connection in CreateAccountActivity");
+                Toast.makeText(this.getApplicationContext(), "No Internet Connection!",
+                        Toast.LENGTH_LONG).show();
+            }
         }
     }
 
+    /**
+     * Function that determines if there are any blank fields for name or description as both of
+     * these fields must be provided.
+     * @return returns a boolean. Returns false if there is at either name or description are
+     * blank and true otherwise.
+     */
     private boolean checkFieldsForEmptyValues(){
         taskName = taskNameText.getText().toString();
         description = descriptionText.getText().toString();
