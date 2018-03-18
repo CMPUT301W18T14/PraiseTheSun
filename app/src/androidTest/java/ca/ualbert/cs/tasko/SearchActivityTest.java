@@ -58,7 +58,7 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
      */
     public void testValidSearch() throws NoInternetException {
         //Dont want to flood the datbase with test tasks
-        //dm.putTask(task, InstrumentationRegistry.getTargetContext());
+        dm.putTask(task, InstrumentationRegistry.getTargetContext());
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
@@ -88,11 +88,11 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
     public void testRecyclerViewOnClick() throws NoInternetException {
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.enterText((EditText) solo.getView(R.id.searchQuery), "find");
+        solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
         TaskList foundtasks = dm.searchTasks("Help", InstrumentationRegistry.getTargetContext());
         solo.clickOnButton("Search");
         solo.assertCurrentActivity("Wrong Activity", SearchResultsActivity.class);
-        solo.clickInRecyclerView(0);
+        solo.clickInRecyclerView(1);
         solo.assertCurrentActivity("Wrong Activity", ViewSearchedTaskDetailsActivity.class);
 
 

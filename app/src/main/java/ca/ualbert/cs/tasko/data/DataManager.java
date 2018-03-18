@@ -92,11 +92,7 @@ public class DataManager {
                         "Can not add duplicate users");
             }
             dcm.invokeCommand(command);
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         } else {
             //TODO: Add to a todoQueue for when we reconnect???
             throw new NoInternetException();
@@ -166,11 +162,6 @@ public class DataManager {
         PutTaskCommand command = new PutTaskCommand(task);
         if(isOnline(context)){
             dcm.invokeCommand(command);
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } else {
             throw new NoInternetException();
         }
@@ -261,11 +252,7 @@ public class DataManager {
         } else {
             throw new NoInternetException();
         }
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**
