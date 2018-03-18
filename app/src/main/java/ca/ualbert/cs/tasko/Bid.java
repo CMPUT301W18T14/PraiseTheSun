@@ -16,34 +16,57 @@
 
 package ca.ualbert.cs.tasko;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by Chase on 2/23/2018.
- * Represents a bid Object containing the name of the bidder and the value they
- * bidded.
+ * Represents a bid Object containing the ID of the bidder, the value they bid and the task they
+ * were biddng on.
  *
  * @author Chase Buhler
  * @see Task
+ *
  */
-public class Bid {
+public class Bid implements Comparable<Bid>{
 
-    private User taskProvider;
+    private String TaskID;
+    private String UserID;
     private float value;
 
-    public Bid(User taskProvider, float value){
-        this.taskProvider = taskProvider;
+    @JestId
+    private String BidID;
+
+    /**
+     * Constructor for Bid, All values are Required
+     * @param UserID The UserID of the task provider who placed the bid
+     * @param value The value of the bid in dollars, a float
+     * @param TaskID The ID of the Task which is being bid on
+     */
+    public Bid(String UserID, float value, String TaskID){
+        this.UserID = UserID;
+        this.TaskID = TaskID;
         this.value = value;
+
     }
 
-    public User getTaskProvider() {
-        return taskProvider;
+    public String getUserID(){
+        return UserID;
     }
 
-    public void setTaskProvider(User taskProvider) {
-        this.taskProvider = taskProvider;
+    public void setUserID(String UserID) {
+        this.UserID = UserID;
+    }
+
+    public String getTaskID(){
+        return TaskID;
+    }
+
+    public void setTaskID(String TaskID){
+        this.TaskID = TaskID;
     }
 
     public float getValue() {
-
         return value;
     }
 
@@ -51,11 +74,21 @@ public class Bid {
         this.value = value;
     }
 
+    /**
+     * Implementing Comparable in a way that allows bids to be sorted in order of increasing value
+     * @param bid The bids to be sorted
+     * @return returns an int (-1, 0, 1) which is used to create sorting order
+     */
     @Override
-    public boolean equals(Object o){
-        if(!(o instanceof Bid)){
-            return false;
-        }
-        return false;
+    public int compareTo(Bid bid){
+        return Float.compare(this.value, bid.getValue());
+    }
+
+    public String getBidID() {
+        return BidID;
+    }
+
+    public void setBidID(String bidID) {
+        BidID = bidID;
     }
 }

@@ -35,52 +35,25 @@ public class TaskListTest extends ActivityInstrumentationTestCase2 {
 
     public void testAddTask(){
         TaskList tasks = new TaskList();
-        String username = "tlafranc";
-        String name = "Thomas";
-        String number = "780-444-4444";
-        String email = "tlafranc@ualberta.ca";
-        User user = new User(username, name, number, email);
 
         String taskName = "task1";
         String description = "This is a test task";
-        Task task = new Task(user, taskName, description);
+        Task task = new Task("bobismyID", taskName, description);
+        task.setId("Anewid");
         tasks.addTask(task);
         assertTrue(tasks.getTasks().contains(task));
     }
 
     public void testDeleteTask(){
         TaskList tasks = new TaskList();
-        String username = "tlafranc";
-        String name = "Thomas";
-        String number = "780-444-4444";
-        String email = "tlafranc@ualberta.ca";
-        User user = new User(username, name, number, email);
 
         String taskName = "task1";
         String description = "This is a test task";
-        Task task = new Task(user, taskName, description);
+        Task task = new Task("bobismyID", taskName, description);
+        task.setId("Anewid");
         tasks.addTask(task);
         tasks.removeTask(task);
         assertFalse(tasks.getTasks().contains(task));
     }
 
-    public void testGetTasks(){
-        TaskList tasks = new TaskList();
-
-        assertTrue(tasks != null);
-
-        String username = "tlafranc";
-        String name = "Thomas";
-        String number = "780-444-4444";
-        String email = "tlafranc@ualberta.ca";
-        User user = new User(username, name, number, email);
-
-        String taskName = "task1";
-        String description = "This is test task 1";
-        Task task = new Task(user, taskName, description);
-        tasks.addTask(task);
-
-        ArrayList<Task> returnedTasks = tasks.getTasks();
-        assertTrue(tasks != null);
-    }
 }

@@ -30,20 +30,17 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testGetTaskName(){
-        User user = new User();
-        Task task = new Task(user, "atask", "test");
+        Task task = new Task("bobismyID", "atask", "test");
         assertEquals("atask", task.getTaskName());
     }
 
     public void testGetDescription(){
-        User user = new User();
-        Task task = new Task(user, "atask", "test");
+        Task task = new Task("bobismyID", "atask", "test");
         assertEquals("test", task.getDescription());
     }
 
     public void testSetDescription(){
-        User user = new User();
-        Task task = new Task(user, "atask", "");
+        Task task = new Task("bobismyID", "atask", "");
         task.setDescription("new description");
         assertEquals("new description", task.getDescription());
     }
@@ -52,29 +49,25 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         Location location = new Location("");
         location.setLatitude(0.0d);//your coords of course
         location.setLongitude(0.0d);
-        User user = new User();
-        Task task = new Task(user, "atask", "test", location);
+        Task task = new Task("bobismyID", "atask", "test", location);
         assertEquals(location, task.getGeolocation());
     }
 
     public void testGetTaskRequester(){
 
-        User user = new User();
-        Task task = new Task(user, "atask", "test");
-        assertEquals(user, task.getTaskRequester());
+        Task task = new Task("bobismyID", "atask", "test");
+        assertEquals("bobismyID", task.getTaskRequesterID());
     }
 
     public void testGetStatus(){
 
-        User user = new User();
-        Task task = new Task(user, "atask", "test");
-        assertNull(task.getStatus());
+        Task task = new Task("bobismyID", "atask", "test");
+        assertTrue(task.getStatus() == Status.REQUESTED);
     }
 
     public void testSetStatus(){
 
-        User user = new User();
-        Task task = new Task(user, "atask", "test");
+        Task task = new Task("bobismyID", "atask", "test");
         task.setStatus(Status.BIDDED);
         assertEquals(Status.BIDDED,task.getStatus());
     }
@@ -82,10 +75,8 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
 
 
     public void testAcceptBid(){
-        User user = new User();
-        User secondUser = new User();
-        Task task = new Task(user, "atask", "test");
-        Bid bid = new Bid(secondUser, 2.56f);
+        Task task = new Task("bobismyID", "atask", "test");
+        Bid bid = new Bid("secondUser", 2.56f, "atask");
         task.acceptBid(bid);
         assertEquals(task.getStatus(),Status.ASSIGNED);
     }
@@ -107,8 +98,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         Location location = new Location("");
         location.setLatitude(0.0d);//your coords of course
         location.setLongitude(0.0d);
-        User user = new User();
-        Task task = new Task(user, "atask", "test");
+        Task task = new Task("bobismyID", "atask", "test");
         task.addLocation(location);
         assertEquals(location, task.getGeolocation());
     }
@@ -117,8 +107,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         Location location = new Location("");
         location.setLatitude(0.0d);//your coords of course
         location.setLongitude(0.0d);
-        User user = new User();
-        Task task = new Task(user, "atask", "test", location);
+        Task task = new Task("bobismyID", "atask", "test", location);
         task.removeLocation();
         assertNull(task.getGeolocation());
     }

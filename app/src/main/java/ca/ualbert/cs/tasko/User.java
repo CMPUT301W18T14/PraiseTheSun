@@ -15,7 +15,13 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
+
 import java.util.ArrayList;
+
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 import io.searchbox.annotations.JestId;
 
@@ -24,7 +30,7 @@ import io.searchbox.annotations.JestId;
  * Represents a user (which can be both a task requester and task provider). Contains info such
  * as name, username, number, email, tasks bidded on, tasks that you have requested, tasks that
  * you are assigned and their rating.
- *
+ * @author imtihan, chase
  *
  */
 
@@ -34,10 +40,10 @@ public class User {
     private String name;
     private String phoneNumber;
     private String email;
-    private BidList userBids;
-    private TaskList myTasks;
-    private TaskList assignments;
-    private ArrayList<Notification> notifications;
+    //private BidList userBids;
+    //private TaskList myTasks;
+    //private TaskList assignments;
+    //private ArrayList<Notification> notifications;
     private float rating;
 
     @JestId
@@ -52,11 +58,8 @@ public class User {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.userBids = null;
-        this.myTasks = null;
-        this.assignments = null;
-        this.notifications = null;
-        this.rating = 0;
+        this.rating = 5;
+
     }
 
     public String getUsername() {
@@ -94,35 +97,38 @@ public class User {
         this.email = email;
     }
 
-    public void addBid(Bid bid) {
-        userBids.addBid(bid);
+    public void addBid(Bid bid, Context context) throws NoInternetException {
+        DataManager.getInstance().addBid(bid, context);
     }
 
     public BidList getBids() {
-        return userBids;
+        return new BidList();
     }
 
-    public void addMyTasks(Task task) {
-        myTasks.addTask(task);
+
+    public void addMyTask(Task task, Context context) throws NoInternetException {
+        DataManager.getInstance().putTask(task, context);
     }
 
     public TaskList getMyTasks() {
-        return myTasks;
+        return new TaskList();
     }
 
+    /*TODO: I Think all these add methods will be accounted for when they are created????
     public void addAssignments(Task task) {
         assignments.addTask(task);
-    }
+    }*/
     public TaskList getAssignments () {
-        return assignments;
+        return new TaskList();
     }
 
+    /*
     public void addNotification(Notification notification) {
         notifications.add(notification);
-    }
+    }*/
 
     public ArrayList<Notification> getNotifications () {
-        return notifications;
+        return new ArrayList<>();
     }
 
     public float getRating() {
@@ -143,4 +149,5 @@ public class User {
     public void setId(String id){
         this.id = id;
     }
+
 }

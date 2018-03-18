@@ -15,17 +15,38 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
 
-import java.util.ArrayList;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Created by ryan on 2018-02-24.
+ * Edited by chase on 2018-03-05
  */
 
 public class UserTest extends ActivityInstrumentationTestCase2 {
     public UserTest(){
         super(MainActivity.class);
+    }
+
+    User user;
+    User provider;
+    Bid bid;
+    Task task;
+
+    @Override
+    public void setUp(){
+        user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+        user.setId("userid");
+        provider = new User("jdoe", "John Doe", "123-456-9999", "jdoe@example.com");
+        user.setId("userid2");
+
+        task = new Task("jdoeID", "Test Task", "This is a simple test!");
+        task.setId("taskid");
+
+        /*TODO: Implememnt using new bid*/
+        bid = new Bid(provider.getId(), 4.99f, task.getId());
     }
 
     public void testCreateUser() {
@@ -38,45 +59,53 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
     }
 
-    public void testGetUserBids() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+    public void testGetUserBids() throws NoInternetException {
 
         assertNull(user.getBids());
-        Bid bid = new Bid(user, 59.99f);
-        user.addBid(bid);
+        Context context = getActivity().getApplicationContext();
+        user.addBid(bid, context);
         assertTrue(user.getBids().hasBid(bid));
     }
 
-    public void testGetMyTasks() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-
+    public void testGetMyTasks() throws NoInternetException {
         assertNull(user.getMyTasks());
-        Task task = new Task(user, "Good Task Name", "Better description.");
-        user.addMyTasks(task);
+        Task task = new Task(user.getId(), "Good Task Name", "Better description.");
+        Context context = getActivity().getApplicationContext();
+        user.addMyTask( task , context);
         assertTrue(user.getMyTasks().getTasks().contains(task));
     }
 
     public void testGetAssignments() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
-
         assertNull(user.getAssignments());
-        Task task = new Task(user2, "Good Task Name", "Better description.");
-        user.addAssignments(task);
+        task.assign(user.getId());
         assertTrue(user.getAssignments().getTasks().contains(task));
     }
 
 
+    /*TODO: RedoTest cases for Updated Notifications Class*/
+//    public void testGetNotifications() {
+//        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+//        User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
+//        Task task = new Task(user2, "Good Task Name", "Better description.");
+//        NotificationHandler notification = new NotificationHandler(task);
+//
+//        assertNull(user.getNotifications());
+//        notification.sendNotification(notification);
+//        assertTrue(user.getNotifications().contains(notification));
+//    }
+
     public void testGetNotifications() {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
         User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
-        Task task = new Task(user2, "Good Task Name", "Better description.");
+        user2.setId("bobID");
+        Task task = new Task(user2.getId(), "Good Task Name", "Better description.");
         Notification notification = new Notification(task);
 
         assertNull(user.getNotifications());
-        user.addNotification(notification);
+        notification.sendNotification(notification);
         assertTrue(user.getNotifications().contains(notification));
     }
+
 
     public void testGetRating() {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");

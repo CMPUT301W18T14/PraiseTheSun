@@ -15,11 +15,13 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.media.Image;
 
 import java.util.ArrayList;
-import java.util.UUID;
+
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by Chase on 2/23/2018.
@@ -29,47 +31,59 @@ import java.util.UUID;
 public class Task {
 
     private String taskName;
-    private UUID id;
     private String description;
-    private ArrayList<Image> photos;
+    private ArrayList<Bitmap> photos;
     private Location geolocation;
-    private User taskRequester;
-    private BidList bidList;
+    private String taskRequesterID;
+    private String taskProviderID;
+    //private BidList bidList;
     private Status status;
 
-    public Task(User taskRequester, String taskName, String description){
-        this(taskRequester, taskName, description, null, null);
+    @JestId
+    private String id;
+
+    public Task(String taskRequesterID, String taskName, String description){
+        this(taskRequesterID, taskName, description, null, null);
     }
 
-    public Task(User taskRequester, String taskName, String description,
-                ArrayList<Image> photos){
-        this(taskRequester, taskName, description, photos, null);
-    }
-
-    public Task(User taskRequester, String taskName, String description,
+    public Task(String taskRequesterID, String taskName, String description,
                 Location location){
-        this(taskRequester, taskName, description, null, location);
+        this(taskRequesterID, taskName, description, null, location);
     }
 
-    public Task(User taskRequester, String taskName, String description,
-                ArrayList<Image> photos, Location location){
-        this.taskRequester = taskRequester;
+    public Task(String taskRequesterID, String taskName, String description,
+                ArrayList<Bitmap> photos, Location location){
+        this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
         this.photos = photos;
         this.geolocation = location;
+        this.taskProviderID = null;
         this.status = Status.REQUESTED;
     }
+
+    public Task(String taskRequesterID, String taskName, String description,
+                ArrayList<Bitmap> photos){
+        this.taskRequesterID = taskRequesterID;
+        this.taskName = taskName;
+        this.description = description;
+        this.photos = photos;
+        this.geolocation = null;
+        this.taskProviderID = null;
+        this.status = Status.REQUESTED;
+    }
+
 
     public void acceptBid(Bid bid){
 
     }
 
+    /*
     public BidList getBids(){
         return bidList;
-    }
+    }*/
 
-    public void addPhoto(Image photo){
+    public void addPhoto(Bitmap photo){
 
     }
 
@@ -85,7 +99,13 @@ public class Task {
 
     }
 
-    public void setStatus(Status status){this.status = status; }
+    public void setStatus(Status status){
+        this.status = status;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 
     public String getTaskName() {
         return taskName;
@@ -107,19 +127,32 @@ public class Task {
         return geolocation;
     }
 
-    public User getTaskRequester() {
-        return taskRequester;
+    public String getTaskRequesterID() {
+        return taskRequesterID;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTaskProviderID() {
+        return taskProviderID;
+    }
+
+    public void assign(String taskProviderID) {
+        this.taskProviderID = taskProviderID;
+        this.status = Status.ASSIGNED;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Task)){
+            return false;
+        }
+        return this.getId().equals(((Task)o).getId());
     }
 }

@@ -21,6 +21,9 @@ import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
 /**
  * Created by Thomas on 2018-03-04.
  * Testing class for the activity AddTaskActivity
@@ -31,6 +34,8 @@ import com.robotium.solo.Solo;
 
 public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
+    private EditText nameText;
+    private EditText descriptionText;
 
     public AddTaskActivityTest() {
         super(AddTaskActivity.class);
@@ -39,6 +44,8 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+        nameText = (EditText) solo.getView(R.id.addTaskName);
+        descriptionText = (EditText) solo.getView(R.id.addTaskDescription);
     }
 
     public void testStart() throws Exception {
@@ -47,10 +54,35 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
 
     public void testTask() {
         solo.assertCurrentActivity("Wrong Activity", AddTaskActivity.class);
-        solo.enterText((EditText) solo.getView(R.id.addTaskName), "Test task");
-        solo.enterText((EditText) solo.getView(R.id.addTaskDescription), "This is a description for the " +
+        solo.enterText(nameText, "Test task");
+        solo.enterText(descriptionText, "This is a description for the " +
                 "test task");
         solo.clickOnButton("Post your task!");
+        Activity activity = solo.getCurrentActivity();
+        assertFalse(activity.getClass() == AddTaskActivity.class);
+    }
+
+    public void testEmptyName() {
+        solo.assertCurrentActivity("Wrong Activity", AddTaskActivity.class);
+        solo.enterText(descriptionText, "Description");
+        solo.clickOnButton("Post your task!");
+        solo.assertCurrentActivity("Wrong Activity", AddTaskActivity.class);
+    }
+
+    public void testEmptyDescription() {
+        solo.assertCurrentActivity("Wrong Activity", AddTaskActivity.class);
+        solo.enterText(nameText, "Name");
+        solo.clickOnButton("Post your task!");
+        solo.assertCurrentActivity("Wrong Activity", AddTaskActivity.class);
+    }
+
+    public void testTransitionAddTask () {
+        solo.assertCurrentActivity("Wrong Activity", AddTaskActivity.class);
+        solo.enterText(nameText, "Test task");
+        solo.enterText(descriptionText, "This is a description for the " +
+                "test task");
+        solo.clickOnButton("Add Photo");
+        solo.assertCurrentActivity("Wrong Activity", AddPhotoActivity.class);
     }
 
     @Override

@@ -1,31 +1,97 @@
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import android.widget.FrameLayout;
+
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
+public class MainActivity extends RootActivity {
+
+    private MainActivity activity = this;
+    private DataManager dm = DataManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+
+        /*
+        * The following implements the menu bar here
+        * reference:
+        * http://shockingandroid.blogspot.ca/2017/04/navigation-drawer-in-every-activity.html
+        * accessed 2018-03-11
+        * */
+
+       // FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
+       // NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        //navigationView.getMenu().getItem(0).setChecked(true);
+        //Referenced: https://www.c-sharpcorner.com/article/navigation-drawer-activity-in-android/
+        //on 03-17-2018
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_main, null, false);
+        drawerLayout.addView(contentView, 0);
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Button postTaskButton = (Button)findViewById(R.id.postTaskButton);
+        Button searchTaskButton = (Button)findViewById(R.id.SearchButton);
+        final EditText searchQuery = (EditText)findViewById(R.id.searchQuery);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        /**
+         * Go to the AddTaskActivity to create a new task
+         */
+        postTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AddTaskActivity.class));
             }
         });
+
+        searchTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String keywords = searchQuery.getText().toString();
+                //I realise this is not the best design, dont know how to check for empty results
+                //Without making the search occur here, would prefer not to pass the tasklist to
+                //SearchResultsActivity... Definately needs refinement
+                try {
+                    TaskList temptasks = dm.searchTasks(keywords, activity);
+                    if(temptasks.getSize() == 0){
+                        searchQuery.setError("This Search Found No Results");
+                    }else{
+                        Intent intent = new Intent(activity, SearchResultsActivity.class);
+                        intent.putExtra("SearchKeywords", keywords);
+                        startActivity(intent);
+                    }
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
     }
 
     @Override
@@ -46,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
