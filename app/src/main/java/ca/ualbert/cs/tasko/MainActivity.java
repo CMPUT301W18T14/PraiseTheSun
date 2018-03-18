@@ -4,6 +4,7 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -33,8 +35,8 @@ public class MainActivity extends RootActivity {
         * accessed 2018-03-11
         * */
 
-       // FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-       // NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        //FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
+        //NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         //navigationView.getMenu().getItem(0).setChecked(true);
         //Referenced: https://www.c-sharpcorner.com/article/navigation-drawer-activity-in-android/
         //on 03-17-2018
@@ -82,8 +84,6 @@ public class MainActivity extends RootActivity {
 
             }
         });
-
-
     }
 
     @Override

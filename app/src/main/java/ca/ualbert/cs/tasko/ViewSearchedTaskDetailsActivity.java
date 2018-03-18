@@ -31,6 +31,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -39,8 +41,9 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private TextView taskDescription;
     private TextView taskName;
     private TextView lowestBid;
+    private TextView requesterName;
     private Button placeBidButton;
-    private Button geolocationButton;
+    //private Button geolocationButton;
     private DataManager dm = DataManager.getInstance();
     private Task currentTask;
     private final Context context = this;
@@ -53,9 +56,10 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         setSupportActionBar(toolbar);
 
         //Button and text boxes definitions
+        requesterName = (TextView) findViewById(R.id.taskRequesterName);
         placeBidButton = (Button) findViewById(R.id.placeBidButton);
-        geolocationButton = (Button) findViewById(R.id.geolocationButton);
-        taskDescription = (TextView) findViewById(R.id.searchTaskDescription);
+        //geolocationButton = (Button) findViewById(R.id.geolocationButton);
+        taskDescription = (TextView) findViewById(R.id.taskDescriptionView);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
 
@@ -78,11 +82,21 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private void populateFields(){
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
-        float lowbid;
+        /*
+        try {
+            requesterName.setText(dm.getUserById(currentTask.getTaskRequesterID(),
+                    getApplicationContext()).getUsername());
+        } catch (NoInternetException e){
+            requesterName.setText("unknown user");
+        }/**/
+        requesterName.setText(currentTask.getTaskRequesterID());
+        Bid lowbid;
         try{
             BidList bids = dm.getTaskBids(currentTask.getId(), getApplicationContext());
-            lowbid = bids.getMinBid().getValue();
-            lowestBid.setText(lowbid + "");
+            lowbid = bids.getMinBid();
+            if(lowbid != null){
+                lowestBid.setText(getString(R.string.search_lowest_bid, lowbid.getValue()));
+            }
         } catch (NoInternetException e){
             Toast t = new Toast(this);
             t.setText("No Connection");
@@ -115,8 +129,12 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                                 "Yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        placeBid(Float.valueOf(bidAmount.getText().toString()), currentTask);
-                                        dialog.cancel();
+                                        if(bidAmount.getText().length() <= 0){
+                                            bidAmount.setError("Must have a non-empty Bid!");
+                                        } else {
+                                            placeBid(Float.valueOf(bidAmount.getText().toString()), currentTask);
+                                            dialog.cancel();
+                                        }
                                     }
                                 });
 
@@ -139,15 +157,23 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     }
 
     private void placeBid(float value, Task task){
-        Bid bid = new Bid(CurrentUser.getInstance()
-                .getCurrentUser().getId(), value, currentTask.getId());
-        try{
-            dm.addBid(bid, getApplicationContext());
-        } catch (NoInternetException e){
+        if(CurrentUser.getInstance().loggedIn()) {
+            Bid bid = new Bid(CurrentUser.getInstance()
+                    .getCurrentUser().getId(), value, currentTask.getId());
+            try{
+                dm.addBid(bid, getApplicationContext());
+            } catch (NoInternetException e){
+                Toast t = new Toast(getApplicationContext());
+                t.setText("No connection");
+                t.show();
+            }
+        } else {
             Toast t = new Toast(getApplicationContext());
-            t.setText("No connection");
+            t.setText("Not Logged In");
             t.show();
         }
+        populateFields();
+
     }
 
 }
