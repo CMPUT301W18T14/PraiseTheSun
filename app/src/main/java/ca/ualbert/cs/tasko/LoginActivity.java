@@ -49,6 +49,11 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private Button createAccountButton;
 
+    /**
+     * Creates the activity, which includes setting the layout, finding and binding all the widgets
+     * and setting up the buttons.
+     * @param savedInstanceState Get the saved state form the current device
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

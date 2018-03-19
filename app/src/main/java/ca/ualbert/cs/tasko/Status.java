@@ -16,9 +16,8 @@
 package ca.ualbert.cs.tasko;
 
 /**
- * Created by Chase on 2/23/2018.
+ * An enumeration that is used to designate the status of a Task
  */
-
 public enum Status {
     REQUESTED, BIDDED, ASSIGNED, DONE
 }
