@@ -96,11 +96,6 @@ public class AddPhotoActivity extends AppCompatActivity {
         else {
             Toast.makeText(this.getApplicationContext(), "Image file chosen is too big.",
                     Toast.LENGTH_LONG).show();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
