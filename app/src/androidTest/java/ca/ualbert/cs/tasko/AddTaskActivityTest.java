@@ -58,10 +58,6 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
         }
     }
 
-    public void testStart() throws Exception {
-        Activity activity = getActivity();
-    }
-
     public void testTask() {
         solo.assertCurrentActivity("Wrong Activity", AddTaskActivity.class);
         solo.enterText(nameText, "Test task");
