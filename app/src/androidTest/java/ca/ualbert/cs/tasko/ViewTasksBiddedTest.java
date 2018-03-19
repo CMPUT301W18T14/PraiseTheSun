@@ -31,7 +31,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * already encountered a null pointer error. Because of this, I have to hard code a default
  * User into the Activity for the test to run. NOTE: this problem will never occur in the normal
  * workflow of the application because the current user HAS TO BE SET by the time a User could
- * naviagte to this activity.
+ * navigate to this activity.
  */
 public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
 
@@ -51,7 +51,7 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
-        user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+        //user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
         dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
         task1 = new Task("test", "TestTask2", "Help me test code");
         task2 = new Task("test", "TestTask3", "Help me test code");

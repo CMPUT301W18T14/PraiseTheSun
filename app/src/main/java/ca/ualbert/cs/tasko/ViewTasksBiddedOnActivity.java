@@ -25,7 +25,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * This activity allows the user to view all of the tasks they have bidded on, Which will show up
- * as a recyclerview of tasks that includes all relevant information include your bid on the task.
+ * as a RecyclerView of tasks that includes all relevant information include your bid on the task.
  *
  * @author spack
  */
@@ -47,15 +47,17 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
         searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
-        try {
-            setUser();
-        } catch (NoInternetException e) {
-            e.printStackTrace();
-        }
-        getBids();
+        try {setUser();
+        } catch (NoInternetException e) {e.printStackTrace();}
+        getTasks();
         setRecyclerView();
     }
 
+    /**
+     * Sets the current user. NOTE if the CurrentUser is null which occurs when testing,
+     * I have to hardcode in a value!
+     * @throws NoInternetException Elastic Search Does Not Work with no internet connection
+     */
     private void setUser() throws NoInternetException {
         if (CurrentUser.getInstance().getCurrentUser() == null){
             User = dm.getUserByUsername("rromano", activity);
@@ -64,7 +66,10 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
         }
     }
 
-    private void getBids(){
+    /**
+     * Gets all tasks a user has bidded on, which will be displayed in the RecyclerView.
+     */
+    private void getTasks(){
         userBids = new BidList();
         try {
             userBids = dm.getUserBids(User.getId(), activity);
@@ -76,6 +81,9 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Provides the TaskList for the Adapter and the Adapter for the RecyclerView.
+     */
     private void setRecyclerView(){
         tasksBiddedAdapter = new TaskBiddedAdapter(activity, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
