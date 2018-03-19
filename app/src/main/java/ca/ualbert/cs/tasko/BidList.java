@@ -27,11 +27,9 @@ import java.util.Collections;
 
 public class BidList{
 
-    private ArrayList<Bid> bids;
+    private ArrayList<Bid> bids = new ArrayList<Bid>();
 
-    public BidList(){
-        bids = new ArrayList<Bid>();
-    }
+    public BidList(){}
 
     public void addBid(Bid bid){
         bids.add(bid);

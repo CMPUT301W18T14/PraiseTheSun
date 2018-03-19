@@ -90,6 +90,7 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
 
 
 
+        /*
         //gets bidlist for the current task that was selected
         try {
             String taskID = extras.getString("TaskID");
@@ -98,17 +99,21 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
             Log.i("Error", "TaskID from TaskListAdapter not properly passed");
         } catch (NoInternetException e) {
             e.printStackTrace();
-        }
+        } */
 
 
+        bidsOnTask = new BidList();
 
-        //bidsOnTask.addBid(new Bid("testid", 5.7f, "testtaskid"));
+        bidsOnTask.addBid(new Bid("testid", 5.7f, "testtaskid"));
+        bidsOnTask.addBid(new Bid("testid2", 7.8f, "testtaskid2"));
+
 
         //gets the bidlist from task
         //bidsOnTask = currentTask.getBids();
 
         searchAdapter = new ViewBidsAdapter(activity, bidsOnTask);
-        searchRecyclerView.setAdapter(searchAdapter);
+        myBidList.setAdapter(searchAdapter);
+        //searchRecyclerView.setAdapter(searchAdapter);
 
         //final List<BidList> bidsOnTask = new ArrayList<BidList>();
 

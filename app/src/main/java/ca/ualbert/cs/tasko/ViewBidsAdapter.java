@@ -57,7 +57,11 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     public void onBindViewHolder(BidViewHolder holder, int position) {
         Bid currentTask = bids.get(position);
 
-        holder.bidTitle.setText(currentTask.getBidID());
+        holder.bidTitle.setText("Posted by: " + currentTask.getUserID());
+
+        String myBid = Float.toString(currentTask.getValue());
+        holder.Bid.setText("My Bid: " + myBid);
+
         //holder.taskDescription.setText(currentTask.getDescription());
         //Needs more information then I currently have/ dont know how to implement.
         //holder.taskBid.setText();
