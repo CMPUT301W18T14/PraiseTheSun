@@ -17,6 +17,8 @@ package ca.ualbert.cs.tasko;
 
 /**
  * An enumeration that is used to designate the status of a Task
+ *
+ * @see Task
  */
 public enum Status {
     REQUESTED, BIDDED, ASSIGNED, DONE
