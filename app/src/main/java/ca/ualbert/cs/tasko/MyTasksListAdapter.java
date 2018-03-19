@@ -28,11 +28,14 @@ import android.widget.TextView;
  * Created by ryand on 2018-03-18.
  */
 
-public class MyTasksListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
+public class MyTasksListAdapter {
 
     private LayoutInflater inflater;
     private TaskList tasks;
     private Context thiscontext;
+
+}
+/*
 
     public MyTasksListAdapter(Context context, TaskList dmtasks){
         thiscontext = context;
@@ -69,6 +72,8 @@ public class MyTasksListAdapter extends RecyclerView.Adapter<TaskListAdapter.Tas
      * The clickabale view holder that will get displayed in the recylcerview which displays
      * relevant information about a task including name description and status.
      */
+
+/*
     class MyTasksViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView taskTitle;
@@ -97,3 +102,4 @@ public class MyTasksListAdapter extends RecyclerView.Adapter<TaskListAdapter.Tas
     }
 
 }
+*/

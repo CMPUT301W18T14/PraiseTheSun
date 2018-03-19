@@ -107,7 +107,7 @@ public class ViewMyTasksActivity extends RootActivity {
                     emptyListMessage.setVisibility(View.GONE);
                 }
 
-                myTasksAdapter = new MyTasksListAdapter(activity, myTasks);
+                myTasksAdapter = new TaskListAdapter(activity, myTasks);
                 myTasksRecyclerView.setAdapter(myTasksAdapter);
 
             }
