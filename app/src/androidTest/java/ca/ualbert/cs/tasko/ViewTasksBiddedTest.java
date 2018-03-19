@@ -16,6 +16,8 @@
 package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
+
 import com.robotium.solo.Solo;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -24,9 +26,12 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * The tests will return a null pointer error if a use ris not hardcoded into the ViewBiddedTask
- * Activity, this is because the currentusersingelton is not set when I directly start the activity
- * Will work in the normal workflow. So if test are failing comment out the cu.getuser() and
- * hard code in a user i.e rromano
+ * Activity, this is because the CurrentUserSingelton is used in the creation of the activity.
+ * Becasue of this, By the time I try and set the CurrentUserSingelton in the Test Case, I have
+ * already encountered a null pointer error. Because of this, I have to hard code a default
+ * User into the Activity for the test to run. NOTE: this problem will never occur in the normal
+ * workflow of the application because the current user HAS TO BE SET by the time a User could
+ * naviagte to this activity.
  */
 public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
 
@@ -43,24 +48,21 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
         super(ViewTasksBiddedOnActivity.class);
     }
 
-    // Fully loaded setup, need to make a user, multiple task and multiple bids and put everything
-    // In the database.
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
         user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        //dm.putUser(user, getActivity().getApplicationContext());
         dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
         task1 = new Task("test", "TestTask2", "Help me test code");
         task2 = new Task("test", "TestTask3", "Help me test code");
         dm.putTask(task1, getActivity().getApplicationContext());
         dm.putTask(task2, getActivity().getApplicationContext());
-        bid1 = new Bid(dmuser.getId(), 10, task1.getId());
-        bid2 = new Bid(dmuser.getId(), 10, task2.getId());
+        bid1 = new Bid(dmuser.getId(), 11, task1.getId());
+        bid2 = new Bid(dmuser.getId(), 12, task2.getId());
         dm.addBid(bid1, getActivity().getApplicationContext());
         dm.addBid(bid2, getActivity().getApplicationContext());
-
     }
+
 
     /**
      * Tests the process that adds Tasks to a tasklist by using a users posted bids.
@@ -80,7 +82,8 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
     }
 
     /**
-     * Ensures the onClick in viewholder is accurate, directs the user to the proper activity.
+     * Ensures the onClick in viewholder is accurate, directs the user to the proper activity which
+     * in this case is ViewSerchedTaskDetails.
      */
     public void testClick(){
         solo.clickInRecyclerView(0);

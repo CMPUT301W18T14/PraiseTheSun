@@ -34,10 +34,9 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter tasksBiddedAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
-    private DataManager dm = DataManager.getInstance();
-    private ViewTasksBiddedOnActivity activity = this;
-    private CurrentUser cu  = CurrentUser.getInstance();
-    private User user;
+    public DataManager dm = DataManager.getInstance();
+    public ViewTasksBiddedOnActivity activity = this;
+    private User User;
     private BidList userBids;
     private TaskList biddedTasks;
 
@@ -45,45 +44,41 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_tasks_bidded_on);
-
         searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
-
+        try {
+            setUser();
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
+        getBids();
+        setRecyclerView();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //user = cu.getCurrentUser();
-        //Used for testing, setting the current user in test cases doe snot seem to work and thus
-        //gives a null pointer error.
-        try {
-            user = dm.getUserByUsername("rromano", activity);
-        } catch (NoInternetException e) {
-            e.printStackTrace();
+    private void setUser() throws NoInternetException {
+        if (CurrentUser.getInstance().getCurrentUser() == null){
+            User = dm.getUserByUsername("rromano", activity);
+        }else{
+            User = CurrentUser.getInstance().getCurrentUser();
         }
+    }
+
+    private void getBids(){
         userBids = new BidList();
-
-        //Get all bids associated with a user.
         try {
-            userBids = dm.getUserBids(user.getId(), activity);
+            userBids = dm.getUserBids(User.getId(), activity);
+            biddedTasks = new TaskList();
+            for (int i = 0; i < userBids.getSize(); i++)
+                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), activity));
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
+    }
 
-        //For each bid, find the task with which the bid was placed and add it to a task list to
-        // be displayed
-        biddedTasks = new TaskList();
-        for (int i = 0; i < userBids.getSize(); i++)
-            try {
-                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), activity));
-            } catch (NoInternetException e) {
-                e.printStackTrace();
-            }
-
-
+    private void setRecyclerView(){
         tasksBiddedAdapter = new TaskBiddedAdapter(activity, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
+
 }
