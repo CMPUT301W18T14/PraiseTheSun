@@ -25,7 +25,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * This activity allows the user to view all of the tasks they have bidded on, Which will show up
- * as a recyclerview of tasks that includes all relevant information include your bid on the task.
+ * as a RecyclerView of tasks that includes all relevant information include your bid on the task.
  *
  * @author spack
  */
@@ -34,10 +34,9 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter tasksBiddedAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
-    private DataManager dm = DataManager.getInstance();
-    private ViewTasksBiddedOnActivity activity = this;
-    private CurrentUser cu  = CurrentUser.getInstance();
-    private User user;
+    public DataManager dm = DataManager.getInstance();
+    public ViewTasksBiddedOnActivity activity = this;
+    private User User;
     private BidList userBids;
     private TaskList biddedTasks;
 
@@ -45,45 +44,49 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_tasks_bidded_on);
-
         searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
-
+        try {setUser();
+        } catch (NoInternetException e) {e.printStackTrace();}
+        getTasks();
+        setRecyclerView();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //user = cu.getCurrentUser();
-        //Used for testing, setting the current user in test cases doe snot seem to work and thus
-        //gives a null pointer error.
-        try {
-            user = dm.getUserByUsername("rromano", activity);
-        } catch (NoInternetException e) {
-            e.printStackTrace();
+    /**
+     * Sets the current user. NOTE if the CurrentUser is null which occurs when testing,
+     * I have to hardcode in a value!
+     * @throws NoInternetException Elastic Search Does Not Work with no internet connection
+     */
+    private void setUser() throws NoInternetException {
+        if (CurrentUser.getInstance().getCurrentUser() == null){
+            User = dm.getUserByUsername("rromano", activity);
+        }else{
+            User = CurrentUser.getInstance().getCurrentUser();
         }
+    }
+
+    /**
+     * Gets all tasks a user has bidded on, which will be displayed in the RecyclerView.
+     */
+    private void getTasks(){
         userBids = new BidList();
-
-        //Get all bids associated with a user.
         try {
-            userBids = dm.getUserBids(user.getId(), activity);
+            userBids = dm.getUserBids(User.getId(), activity);
+            biddedTasks = new TaskList();
+            for (int i = 0; i < userBids.getSize(); i++)
+                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), activity));
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
+    }
 
-        //For each bid, find the task with which the bid was placed and add it to a task list to
-        // be displayed
-        biddedTasks = new TaskList();
-        for (int i = 0; i < userBids.getSize(); i++)
-            try {
-                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), activity));
-            } catch (NoInternetException e) {
-                e.printStackTrace();
-            }
-
-
+    /**
+     * Provides the TaskList for the Adapter and the Adapter for the RecyclerView.
+     */
+    private void setRecyclerView(){
         tasksBiddedAdapter = new TaskBiddedAdapter(activity, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
+
 }
