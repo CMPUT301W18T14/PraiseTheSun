@@ -75,7 +75,6 @@ public class BidList{
         return bids;
     }
 
-    //Alden's addition
     public int getSize(){
         return bids.size();
     }
