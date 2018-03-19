@@ -126,6 +126,16 @@ public class AddTaskActivity extends AppCompatActivity {
     public void onAddTaskClick(View view){
         boolean valid = checkFieldsForEmptyValues();
         if (valid){
+            if (!CurrentUser.getInstance().loggedIn()) {
+                Toast.makeText(this.getApplicationContext(), "No user is currently logged " +
+                        "in, please log out and sign in again.", Toast.LENGTH_LONG).show();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                finish();
+            }
             Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
