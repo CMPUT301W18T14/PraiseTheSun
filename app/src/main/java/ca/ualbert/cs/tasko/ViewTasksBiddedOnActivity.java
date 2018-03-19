@@ -36,7 +36,7 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager searchLayoutManager;
     private DataManager dm = DataManager.getInstance();
     private ViewTasksBiddedOnActivity activity = this;
-    private CurrentUser cu  = CurrentUser.getInstance();
+    private CurrentUser cu = CurrentUser.getInstance();
     private User user;
     private BidList userBids;
     private TaskList biddedTasks;

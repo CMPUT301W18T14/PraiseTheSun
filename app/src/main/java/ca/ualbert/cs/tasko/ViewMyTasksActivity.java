@@ -39,13 +39,19 @@ import android.widget.Spinner;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
+/**
+ * ViewMyTasksActivity is a class that creates a recyclerview using TaskListAdapter filled with the
+ * tasks that the user has created. The user also has the option to filter theses tasks by each of
+ * their status
+ *
+ * @author ryandromano
+ */
 public class ViewMyTasksActivity extends RootActivity {
     private RecyclerView myTasksRecyclerView;
     private RecyclerView.Adapter myTasksAdapter;
     private RecyclerView.LayoutManager myTasksLayoutManager;
     private DataManager dm = DataManager.getInstance();
     private ViewMyTasksActivity activity = this;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +70,6 @@ public class ViewMyTasksActivity extends RootActivity {
 
         final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
         emptyListMessage.setLayoutResource(R.layout.empty_task_list);
-
 
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
