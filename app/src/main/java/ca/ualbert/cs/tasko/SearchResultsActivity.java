@@ -37,14 +37,12 @@ public class SearchResultsActivity extends AppCompatActivity{
     private DataManager dm = DataManager.getInstance();
     private SearchResultsActivity activity = this;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
-
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 

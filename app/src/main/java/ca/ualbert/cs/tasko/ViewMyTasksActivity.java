@@ -15,74 +15,109 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class ViewMyTasksActivity extends RootActivity {
+    private RecyclerView myTasksRecyclerView;
+    private RecyclerView.Adapter myTasksAdapter;
+    private RecyclerView.LayoutManager myTasksLayoutManager;
+    private DataManager dm = DataManager.getInstance();
+    private ViewMyTasksActivity activity = this;
 
-    public ListView myTaskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //inflate your activity layout here!
-        View contentView = inflater.inflate(R.layout.activity_view_my_tasks, null, false);
-        drawerLayout.addView(contentView, 0);
+        setContentView(R.layout.activity_view_my_tasks);
+
+        myTasksRecyclerView = (RecyclerView) findViewById(R.id.my_tasks_recycler_view);
+        myTasksLayoutManager = new LinearLayoutManager(activity);
+        myTasksRecyclerView.setLayoutManager(myTasksLayoutManager);
+
+        Spinner filterSpinner = (Spinner) findViewById(R.id.filter_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.filter_options_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterSpinner.setAdapter(adapter);
+
+        final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
+        emptyListMessage.setLayoutResource(R.layout.empty_task_list);
 
 
-        myTaskList = (ListView) findViewById(R.id.taskListView);
-
-        myTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startActivity(new Intent(ViewMyTasksActivity.this, ViewTaskDetailsActivity.class));
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                TaskList myTasks = new TaskList();
+                try {
+                    myTasks = dm.getUserTasks(CurrentUser.getInstance().getCurrentUser().getId(),
+                                              activity);
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
+
+                if (parent.getItemAtPosition(pos).equals("Requested")) {
+                    for (int i = 0; i < myTasks.getSize(); i++) {
+                        if (!myTasks.get(i).getStatus().equals(Status.REQUESTED)) {
+                            myTasks.removeTask(myTasks.get(i));
+                        }
+                    }
+                }
+                else if (parent.getItemAtPosition(pos).equals("Bidded")) {
+                    for (int i = 0; i < myTasks.getSize(); i++) {
+                        if (!myTasks.get(i).getStatus().equals(Status.BIDDED)) {
+                            myTasks.removeTask(myTasks.get(i));
+                        }
+                    }
+                }
+                else if (parent.getItemAtPosition(pos).equals("Assigned")) {
+                    for (int i = 0; i < myTasks.getSize(); i++) {
+                        if (!myTasks.get(i).getStatus().equals(Status.ASSIGNED)) {
+                            myTasks.removeTask(myTasks.get(i));
+                        }
+                    }
+                }
+
+                //If taskList is empty, notify the user
+                if (myTasks.getSize() == 0) {
+                    emptyListMessage.setVisibility(View.VISIBLE);
+                }
+                else {
+                    emptyListMessage.setVisibility(View.GONE);
+                }
+
+                myTasksAdapter = new TaskListAdapter(activity, myTasks);
+                myTasksRecyclerView.setAdapter(myTasksAdapter);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -24,47 +24,50 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-//Todo: It would be nice to make the adapter more modular, can be reused but needs slight modifications each time
-
 /**
- * The class represents a Adapter that is specifically designed to display search results in an
- * AdapterView. Clicking on an element in the view will send the user to that tasks details where
- * they can place a Bid if they wish.
+ * A simple modification to the search adapter that displays the task you have bidded on, aswell
+ * as the bid you have made on said task.
+ *
+ * @author spack
  */
-public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
+public class TaskBiddedAdapter extends RecyclerView.Adapter<TaskBiddedAdapter.TaskViewHolder> {
 
     private LayoutInflater inflater;
     private TaskList tasks;
+    private BidList myBids;
     private Context thiscontext;
 
-    public TaskListAdapter(Context context, TaskList dmtasks){
+    public TaskBiddedAdapter(Context context, TaskList dmTasks, BidList dmBids) {
         thiscontext = context;
         inflater = LayoutInflater.from(context);
-        tasks = dmtasks;
+        tasks = dmTasks;
+        myBids = dmBids;
     }
 
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.task_view, parent, false);
-        TaskViewHolder holder = new TaskViewHolder(view);
+        View view = inflater.inflate(R.layout.bidded_task_layout, parent, false);
+        TaskBiddedAdapter.TaskViewHolder holder = new TaskBiddedAdapter.TaskViewHolder(view);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(TaskViewHolder holder, int position) {
+    public void onBindViewHolder(TaskBiddedAdapter.TaskViewHolder holder, int position) {
         Task currentTask = tasks.get(position);
+        Bid myBid = myBids.get(position);
 
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
-        holder.taskStatus.setText("Status: " + currentTask.getStatus());
+        holder.taskStatus.setText("Status:" + currentTask.getStatus());
+        holder.yourBid.setText("Your Bid:" + myBid.getValue());
         //Needs more information then I currently have/ dont know how to implement.
         //holder.taskPhoto.setImageResource();
 
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return tasks.getSize();
     }
 
@@ -72,11 +75,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
      * The clickabale view holder that will get displayed in the recylcerview which displays
      * relevant information about a task including name description and status.
      */
-    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView taskTitle;
         TextView taskStatus;
         TextView taskDescription;
+        TextView yourBid;
         ImageView taskPhoto;
 
         public TaskViewHolder(View itemView) {
@@ -84,24 +88,21 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
             itemView.setOnClickListener(this);
 
-            taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
-            taskStatus = (TextView) itemView.findViewById(R.id.searchTaskStatus);
-            taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
-            taskPhoto = (ImageView) itemView.findViewById(R.id.taskPhoto);
+            taskTitle = (TextView) itemView.findViewById(R.id.biddedTaskTitle);
+            taskStatus = (TextView) itemView.findViewById(R.id.biddedTaskStatus);
+            taskDescription = (TextView) itemView.findViewById(R.id.biddedTaskDescription);
+            yourBid = (TextView) itemView.findViewById(R.id.biddedTaskYourBid);
+            taskPhoto = (ImageView) itemView.findViewById(R.id.biddedtaskPhoto);
         }
 
         @Override
         public void onClick(View view) {
-            Intent intent;
-            if (thiscontext instanceof ViewMyTasksActivity) {
-                intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
-            }
-            else {
-                intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
-            }
+            Intent intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
             intent.putExtra("TaskID", tasks.get(getAdapterPosition()).getId());
             thiscontext.startActivity(intent);
+
         }
     }
-
 }
+
+

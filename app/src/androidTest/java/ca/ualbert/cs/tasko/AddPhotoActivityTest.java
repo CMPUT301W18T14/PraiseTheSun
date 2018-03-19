@@ -33,7 +33,7 @@ public class AddPhotoActivityTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
 
     public AddPhotoActivityTest() {
-        super(AddTaskActivity.class);
+        super(AddPhotoActivity.class);
     }
 
     @Override
@@ -41,16 +41,9 @@ public class AddPhotoActivityTest extends ActivityInstrumentationTestCase2 {
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
-    public void testStart() throws Exception {
-        Activity activity = getActivity();
-    }
-
     public void testUploadPhotoButton() {
         solo.assertCurrentActivity("Wrong Activity", AddPhotoActivity.class);
         solo.clickOnButton("Select An Image");
-        Activity activity = solo.getCurrentActivity();
-        // Is this a valid way to check that it is no longer in AddPhotoActivity?
-        assertFalse(activity.getClass() == AddPhotoActivity.class);
     }
 
     @Override
