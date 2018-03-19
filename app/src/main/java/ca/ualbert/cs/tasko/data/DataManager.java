@@ -22,6 +22,7 @@ package ca.ualbert.cs.tasko.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import java.util.ArrayList;
 

@@ -60,6 +60,9 @@ public class BidList{
      */
     public Bid getMinBid(){
         Collections.sort(bids);
+        if(bids.size() <= 0){
+            return null;
+        }
         return bids.get(0);
     }
 
