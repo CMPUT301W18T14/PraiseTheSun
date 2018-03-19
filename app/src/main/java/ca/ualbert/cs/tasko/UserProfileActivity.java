@@ -48,9 +48,10 @@ public class UserProfileActivity extends RootActivity {
 
         if(CurrentUser.getInstance().loggedIn()){
             Log.i("User logged in", " " );
+            emailAddress.setText(user.getEmail());
             username.setText(user.getUsername());
             phoneNumber.setText(user.getPhoneNumber());
-            emailAddress.setText(user.getEmail());
+
 
         }
 
