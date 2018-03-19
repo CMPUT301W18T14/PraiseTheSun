@@ -59,29 +59,6 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
     }
 
-    public void testGetUserBids() throws NoInternetException {
-
-        assertNull(user.getBids());
-        Context context = getActivity().getApplicationContext();
-        user.addBid(bid, context);
-        assertTrue(user.getBids().hasBid(bid));
-    }
-
-    public void testGetMyTasks() throws NoInternetException {
-        assertNull(user.getMyTasks());
-        Task task = new Task(user.getId(), "Good Task Name", "Better description.");
-        Context context = getActivity().getApplicationContext();
-        user.addMyTask( task , context);
-        assertTrue(user.getMyTasks().getTasks().contains(task));
-    }
-
-    public void testGetAssignments() {
-        assertNull(user.getAssignments());
-        task.assign(user.getId());
-        assertTrue(user.getAssignments().getTasks().contains(task));
-    }
-
-
     /*TODO: RedoTest cases for Updated Notifications Class*/
 //    public void testGetNotifications() {
 //        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
@@ -94,23 +71,11 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 //        assertTrue(user.getNotifications().contains(notification));
 //    }
 
-    public void testGetNotifications() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
-        user2.setId("bobID");
-        Task task = new Task(user2.getId(), "Good Task Name", "Better description.");
-        Notification notification = new Notification(task);
-
-        assertNull(user.getNotifications());
-        notification.sendNotification(notification);
-        assertTrue(user.getNotifications().contains(notification));
-    }
-
 
     public void testGetRating() {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
-        assertTrue(user.getRating() == 0);
+        assertTrue(user.getRating() == 5);
         user.setRating(3.25f);
         assertFalse(user.getRating() == 4.25f);
         assertFalse(user.getRating() == -1.0f);
