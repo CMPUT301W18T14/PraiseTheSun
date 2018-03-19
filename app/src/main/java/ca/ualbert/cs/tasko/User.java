@@ -35,6 +35,7 @@ import io.searchbox.annotations.JestId;
  */
 
 public class User {
+    @JestId private String id;
 
     private String username;
     private String name;
@@ -42,8 +43,7 @@ public class User {
     private String email;
     private float rating;
 
-    @JestId
-    private String id;
+
 
     public User(){
 
@@ -76,6 +76,7 @@ public class User {
         return username;
     }
 
+
     /**
      * Method that sets the username of this user.
      *
@@ -104,6 +105,7 @@ public class User {
         this.name = name;
     }
 
+
     /**
      * Method that returns the phone number of the user.
      *
@@ -122,6 +124,7 @@ public class User {
     public void setPhoneNumber (String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
 
     /**
      * Method that returns the email of the user

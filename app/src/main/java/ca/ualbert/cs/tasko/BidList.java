@@ -28,7 +28,7 @@ import java.util.Collections;
 
 public class BidList{
 
-    private ArrayList<Bid> bids;
+    private ArrayList<Bid> bids = new ArrayList<Bid>();
 
     /**
      * Initializes a Bidlist to be an ArrayList of Bids
@@ -79,6 +79,9 @@ public class BidList{
      */
     public Bid getMinBid(){
         Collections.sort(bids);
+        if(bids.size() <= 0){
+            return null;
+        }
         return bids.get(0);
     }
 
@@ -107,6 +110,10 @@ public class BidList{
         return bids;
     }
 
+    public int getSize(){
+        return bids.size();
+    }
+
     /**
      * Sorts Bids in a Bid List based on value of Bid, The lower Bids get out first.
      * @return returns a Sorted BidList in Ascending Order(In terms of Bid Value)
@@ -123,10 +130,6 @@ public class BidList{
      */
     public Bid get(int index){
         return bids.get(index);
-    }
-
-    public int getSize(){
-        return bids.size();
     }
 
 }

@@ -49,7 +49,7 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
 
         task1 = new Task(requester.getId(), "Task for lazy people", "Description");
         task2 = new Task(requester.getId(), "Different a task", "Explination");
-        task3 = new Task(requester2.getId(), "Number 2 Task", "THis task helps number 2");
+        task3 = new Task(requester2.getId(), "Number 2 Task", "Description");
 
     }
 
@@ -88,6 +88,8 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         try{
             dm.putTask(task1, getActivity().getApplicationContext());
             dm.putTask(task2, getActivity().getApplicationContext());
+            task3.setStatus(Status.DONE);
+            dm.putTask(task3, getActivity().getApplicationContext());
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -105,12 +107,15 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         }
         assertTrue(isConnected);
         assertTrue(!results.getTasks().isEmpty());
-        for(Task task: results.getTasks()){
+        /*for(Task task: results.getTasks()){
             System.out.println("This task id is: " + task.getId());
             System.out.println("THE REAL task id is: " + task1.getId());
-        }
+        }/**/
         assertTrue(results.getTasks().contains(task1));
         assertFalse(results.getTasks().contains(task2));
+
+        //TODO: Make assert False
+        assertTrue(results.getTasks().contains(task3));
     }
 
     public void testGetUserTasks(){

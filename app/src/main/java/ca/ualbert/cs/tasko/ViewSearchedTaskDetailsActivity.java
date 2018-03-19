@@ -15,16 +15,21 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.content.Intent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.DigitsKeyListener;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -34,10 +39,14 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private TextView taskDescription;
     private TextView taskName;
     private TextView lowestBid;
+    private float lowbid = -1;
+    private TextView requesterName;
     private Button placeBidButton;
-    private Button geolocationButton;
+    //private Button geolocationButton;
     private DataManager dm = DataManager.getInstance();
     private Task currentTask;
+    private final Context context = this;
+    private User requesterUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +55,26 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         //Button and text boxes definitions
+        requesterName = (TextView) findViewById(R.id.taskRequesterName);
         placeBidButton = (Button) findViewById(R.id.placeBidButton);
-        geolocationButton = (Button) findViewById(R.id.geolocationButton);
-        taskDescription = (TextView) findViewById(R.id.taskDescription);
+        //geolocationButton = (Button) findViewById(R.id.geolocationButton);
+        taskDescription = (TextView) findViewById(R.id.taskDescriptionView);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
+
+        //Dialog for choosing to make a bid on the task
+
 
         Bundle extras = getIntent().getExtras();
 
         try {
             String taskID = extras.getString("TaskID");
             currentTask = dm.getTask(taskID, this);
+            requesterUser = dm.getUserById(currentTask.getTaskRequesterID(),
+                    getApplicationContext());
             populateFields();
         }catch(NullPointerException e){
             Log.i("Error", "TaskID from TaskListAdapter not properly passed");
@@ -72,36 +89,78 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private void populateFields(){
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
+        /*
+        try {
+            requesterName.setText(dm.getUserById(currentTask.getTaskRequesterID(),
+                    getApplicationContext()).getUsername());
+        } catch (NoInternetException e){
+            requesterName.setText("unknown user");
+        }/**/
+
+        requesterName.setText(requesterUser.getUsername());
+        Bid bid;
+        try{
+            BidList bids = dm.getTaskBids(currentTask.getId(), getApplicationContext());
+            bid = bids.getMinBid();
+            if(bid != null){
+                lowbid = bid.getValue();
+                lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
+            }
+        } catch (NoInternetException e){
+            Toast t = new Toast(this);
+            t.setText("No Connection");
+            t.show();
+        }
     }
 
     //Dialog for choosing to make a bid on the task
     private void setupPlaceBidButton() {
+
         placeBidButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Confirm deletion and return to main page
                 AlertDialog.Builder builder = new AlertDialog.Builder(ViewSearchedTaskDetailsActivity.this);
                 final View bidView = getLayoutInflater().inflate(R.layout.place_bid_dialog, null);
-                EditText bidAmount = (EditText) bidView.findViewById(R.id.bidAmount);
-                Button confirmButton = (Button) bidView.findViewById(R.id.confirmButton);
-                Button cancelButton = (Button) bidView.findViewById(R.id.cancelButton);
+                final EditText bidAmount = (EditText) bidView.findViewById(R.id.bidAmount);
+                bidAmount.setFilters(new InputFilter[] {new MoneyValueFilter()});
 
-                confirmButton.setOnClickListener(new View.OnClickListener() {
+                builder.setView(bidView).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        //CONFIRMATION OF BID PLACED
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        /*
+                        Taken March 16, 2018
+                        https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+                        Response from user: Mahesh
+                         */
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                        builder1.setMessage("Are you sure you want to make a bid?");
+                        builder1.setCancelable(true);
+
+                        builder1.setPositiveButton(
+                                "Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        if(bidAmount.getText().length() <= 0){
+                                            bidAmount.setError("Must have a non-empty Bid!");
+                                        } else {
+                                            placeBid(Float.valueOf(bidAmount.getText().toString()), currentTask);
+                                            dialog.cancel();
+                                        }
+                                    }
+                                });
+
+                        builder1.setNegativeButton(
+                                "No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
                     }
                 });
-
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //Probably a better way to do this but it works for now
-                        finish();
-                        startActivity(new Intent(ViewSearchedTaskDetailsActivity.this, ViewSearchedTaskDetailsActivity.class));
-                    }
-                });
-
-                builder.setView(bidView);
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
@@ -109,4 +168,88 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     }
 
+    private void placeBid(float value, Task task){
+        if(CurrentUser.getInstance().loggedIn()) {
+            Bid bid = new Bid(CurrentUser.getInstance()
+                    .getCurrentUser().getId(), value, currentTask.getId());
+            try{
+                dm.addBid(bid, getApplicationContext());
+                if(value < lowbid || lowbid == -1){
+                    lowbid = value;
+                    lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
+                }
+            } catch (NoInternetException e){
+                Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getApplicationContext(),"Not Logged In", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /*
+    Retrieved March 18, 2018
+    https://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext
+    solution from Konstantin Weitz
+     */
+    private class MoneyValueFilter extends DigitsKeyListener {
+        public MoneyValueFilter() {
+            super(false, true);
+        }
+
+        private int digits = 2;
+
+        public void setDigits(int d) {
+            digits = d;
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            CharSequence out = super.filter(source, start, end, dest, dstart, dend);
+
+            // if changed, replace the source
+            if (out != null) {
+                source = out;
+                start = 0;
+                end = out.length();
+            }
+
+            int len = end - start;
+
+            // if deleting, source is empty
+            // and deleting can't break anything
+            if (len == 0) {
+                return source;
+            }
+
+            int dlen = dest.length();
+
+            // Find the position of the decimal .
+            for (int i = 0; i < dstart; i++) {
+                if (dest.charAt(i) == '.') {
+                    // being here means, that a number has
+                    // been inserted after the dot
+                    // check if the amount of digits is right
+                    return (dlen-(i+1) + len > digits) ?
+                            "" :
+                            new SpannableStringBuilder(source, start, end);
+                }
+            }
+
+            for (int i = start; i < end; ++i) {
+                if (source.charAt(i) == '.') {
+                    // being here means, dot has been inserted
+                    // check if the amount of digits is right
+                    if ((dlen-dend) + (end-(i + 1)) > digits)
+                        return "";
+                    else
+                        break;  // return new SpannableStringBuilder(source, start, end);
+                }
+            }
+
+            // if the dot is after the inserted part,
+            // nothing can break
+            return new SpannableStringBuilder(source, start, end);
+        }
+    }
 }

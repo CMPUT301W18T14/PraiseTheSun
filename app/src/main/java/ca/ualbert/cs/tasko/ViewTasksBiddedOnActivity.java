@@ -15,29 +15,31 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * This activity allows the user to view all of the tasks they have bidded on, which will show up
- * as a recyclerview of tasks that includes all relevant information include your bid on the task.
+ * This activity allows the user to view all of the tasks they have bidded on, Which will show up
+ * as a RecyclerView of tasks that includes all relevant information include your bid on the task.
  *
  * @author spack
  */
-public class ViewTasksBiddedOnActivity extends AppCompatActivity {
+public class ViewTasksBiddedOnActivity extends RootActivity {
 
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter tasksBiddedAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
-    private DataManager dm = DataManager.getInstance();
-    private ViewTasksBiddedOnActivity activity = this;
-    private CurrentUser cu  = CurrentUser.getInstance();
-    private User user;
+    public DataManager dm = DataManager.getInstance();
+    public ViewTasksBiddedOnActivity activity = this;
+    private User User;
     private BidList userBids;
     private TaskList biddedTasks;
 
@@ -48,50 +50,56 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_tasks_bidded_on);
+
+        //setContentView(R.layout.activity_view_tasks_bidded_on);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_view_tasks_bidded_on, null, false);
+        drawerLayout.addView(contentView, 0);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
-
+        try {setUser();
+        } catch (NoInternetException e) {e.printStackTrace();}
+        getTasks();
+        setRecyclerView();
     }
 
     /**
-     * Populates the recyclerview with all task that a user has bid on.
+     * Sets the current User. Note we have to hardcode in a User for Testing.
+     * @throws NoInternetException
      */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //user = cu.getCurrentUser();
-        //Used for testing, setting the current user in test cases does not seem to work and thus
-        //gives a null pointer error, to run normally comment out try catch block and uncomment
-        //the CuurrentUser Line
-        try {
-            user = dm.getUserByUsername("rromano", activity);
-        } catch (NoInternetException e) {
-            e.printStackTrace();
+    private void setUser() throws NoInternetException {
+        if (CurrentUser.getInstance().getCurrentUser() == null){
+            User = dm.getUserByUsername("rromano", activity);
+        }else{
+            User = CurrentUser.getInstance().getCurrentUser();
         }
+    }
+
+    /**
+     * Gets all tasks a user has bidded on, which will be displayed in the RecyclerView.
+     */
+    private void getTasks(){
         userBids = new BidList();
-
-        //Get all bids associated with a user.
         try {
-            userBids = dm.getUserBids(user.getId(), activity);
+            userBids = dm.getUserBids(User.getId(), activity);
+            biddedTasks = new TaskList();
+            for (int i = 0; i < userBids.getSize(); i++)
+                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), activity));
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
+    }
 
-        //For each bid, find the task with which the bid was placed and add it to a task list to
-        // be displayed
-        biddedTasks = new TaskList();
-        for (int i = 0; i < userBids.getSize(); i++)
-            try {
-                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), activity));
-            } catch (NoInternetException e) {
-                e.printStackTrace();
-            }
 
-        //Initialize the Adapter and RecyclerView
+    /**
+     * Provides the TaskList for the Adapter and the Adapter for the RecyclerView.
+     */
+    private void setRecyclerView(){
         tasksBiddedAdapter = new TaskBiddedAdapter(activity, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
+
 }

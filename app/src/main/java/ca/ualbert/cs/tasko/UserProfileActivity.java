@@ -20,9 +20,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 
+/**
+ * Shows user information in an editable format
+ * @author imtihan
+ * @see User, UserActivity, RootActivity
+ */
 public class UserProfileActivity extends RootActivity {
     EditText username, phoneNumber, emailAddress;
 
+    /**
+     * Extends the menu into this activity
+     * Checks if a user is logged in
+     * If they are, it will show their information on the screen
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +47,11 @@ public class UserProfileActivity extends RootActivity {
         User user = CurrentUser.getInstance().getCurrentUser();
 
         if(CurrentUser.getInstance().loggedIn()){
-            Log.i("User logged in", " " );
+
+            emailAddress.setText(user.getEmail());
             username.setText(user.getUsername());
             phoneNumber.setText(user.getPhoneNumber());
-            emailAddress.setText(user.getEmail());
+            Log.i("User logged in", emailAddress.getText().toString() );
 
         }
 
