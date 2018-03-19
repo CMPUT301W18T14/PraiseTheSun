@@ -76,6 +76,11 @@ public class RootActivityTest extends ActivityInstrumentationTestCase2 {
         solo.setNavigationDrawer(Solo.OPENED);
         //solo.clickOnActionBarItem(R.id.my_bids);
         solo.clickOnText("My bids");
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         solo.assertCurrentActivity("wrong activity", ViewTasksBiddedOnActivity.class);
     }
 
