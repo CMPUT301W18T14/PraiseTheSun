@@ -174,14 +174,10 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                     lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
                 }
             } catch (NoInternetException e){
-                Toast t = new Toast(getApplicationContext());
-                t.setText("No connection");
-                t.show();
+                Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast t = new Toast(getApplicationContext());
-            t.setText("Not Logged In");
-            t.show();
+            Toast.makeText(getApplicationContext(),"Not Logged In", Toast.LENGTH_SHORT).show();
         }
     }
 
