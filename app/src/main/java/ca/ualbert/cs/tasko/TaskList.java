@@ -42,6 +42,12 @@ public class TaskList {
         return tasks;
     }
 
+    /**
+     * Utilizes the Collections.addAll() method to add multiple tasks that are all contained
+     * inside a collection to this taskList
+     *
+     * @param c a collection of tasks
+     */
     public void addAll(Collection<? extends Task> c){
         tasks.addAll(c);
     }
