@@ -30,6 +30,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * and can go to ViewSearchedTaskDetailsActivity if a task in the recyclerview displayed in the
  * SearchResultActivity is clicked. By testing Searchactivity, I am also testing that my TaskList
  * Adapter is working and that the DataManger command to search tasks is working.
+ * @see SearchResultsActivity
  *
  * @author spack
  *

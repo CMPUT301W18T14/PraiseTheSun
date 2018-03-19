@@ -27,6 +27,9 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * Activity, this is because the currentusersingelton is not set when I directly start the activity
  * Will work in the normal workflow. So if test are failing comment out the cu.getuser() and
  * hard code in a user i.e rromano
+ * @see ViewTasksBiddedOnActivity
+ *
+ * @author spack
  */
 public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
 
@@ -80,7 +83,7 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
     }
 
     /**
-     * Ensures the onClick in viewholder is accurate, directs the user to the proper activity.
+     * Ensures the onClick in viewholder is accurate and directs the user to the proper activity.
      */
     public void testClick(){
         solo.clickInRecyclerView(0);

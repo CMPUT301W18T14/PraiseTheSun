@@ -23,6 +23,7 @@ import java.util.Collections;
  * Created by chase on 2/23/2018.
  * Represents a List of Bid Objects, Has functionality to return minimum Bid, return a bid
  * associated with a UserID, along with typical ArrayList functionality.
+ * @see Bid
  */
 
 public class BidList{

@@ -26,9 +26,11 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * Created by spack on 2018-03-04.
+ * Tests The Login Activity.
+ * @see LoginActivity
+ *
+ * @author spack
  */
-
 public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;

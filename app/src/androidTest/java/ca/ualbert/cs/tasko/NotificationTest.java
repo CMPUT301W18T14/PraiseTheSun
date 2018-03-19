@@ -25,9 +25,7 @@ import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 
-/**
- * Created by spack on 2018-02-23.
- */
+//Notifications Need to be reworked for part 5... Avoiding in depth documentation until then
 
 public class NotificationTest extends ActivityInstrumentationTestCase2 {
     public NotificationTest() {
