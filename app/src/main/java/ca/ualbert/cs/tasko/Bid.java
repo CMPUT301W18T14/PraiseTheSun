@@ -26,7 +26,6 @@ import io.searchbox.annotations.JestId;
  *
  * @author Chase Buhler
  * @see Task
- *
  */
 public class Bid implements Comparable<Bid>{
 
@@ -60,7 +59,8 @@ public class Bid implements Comparable<Bid>{
     }
 
     /**
-     * Method that sets the userID. This userID refers to the user who placed this bid
+     * Method that sets the userID for this Bid object. This userID refers to the user who placed
+     * this bid
      *
      * @param UserID the userID of the user that placed this bid.
      */
@@ -79,7 +79,8 @@ public class Bid implements Comparable<Bid>{
     }
 
     /**
-     * Method that sets the taskID. This taskId refers to the task that this bid is placed on.
+     * Method that sets the taskID for this bid object. This taskId refers to the task that this bid
+     * is placed on.
      *
      * @param TaskID the taskID of the task that this is bid is placed on
      */
@@ -98,7 +99,7 @@ public class Bid implements Comparable<Bid>{
     }
 
     /**
-     * Method that sets the value of the bid.
+     * Method that sets the value of this bid.
      *
      * @param value the value of the bid in dollars.
      */
