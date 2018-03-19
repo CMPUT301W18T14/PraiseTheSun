@@ -26,8 +26,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-//Bruh ur text is dank
-
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
