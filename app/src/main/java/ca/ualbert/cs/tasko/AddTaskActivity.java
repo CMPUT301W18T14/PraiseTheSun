@@ -126,6 +126,16 @@ public class AddTaskActivity extends AppCompatActivity {
     public void onAddTaskClick(View view){
         boolean valid = checkFieldsForEmptyValues();
         if (valid){
+            if (!CurrentUser.getInstance().loggedIn()) {
+                Toast.makeText(this.getApplicationContext(), "No user is currently logged " +
+                        "in, please log out and sign in again.", Toast.LENGTH_LONG).show();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                finish();
+            }
             Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
@@ -141,6 +151,7 @@ public class AddTaskActivity extends AppCompatActivity {
     /**
      * Function that determines if there are any blank fields for name or description as both of
      * these fields must be provided.
+     *
      * @return returns a boolean. Returns false if there is at either name or description are
      * blank and true otherwise.
      */

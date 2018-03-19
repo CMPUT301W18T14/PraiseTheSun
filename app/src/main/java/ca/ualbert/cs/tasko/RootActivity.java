@@ -29,6 +29,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 /**
+ *
+ * This activity extends every activity in the app that requires a menu.
+ * Each activity must extend from this activity and inflate from it, thus allowing
+ * the menu to actually be visible on the screen.
  * @author imtihan
  * @version 1.0
  *
@@ -44,6 +48,14 @@ public class RootActivity extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
 
+    /**
+     * Takes a navigation_view for the formatting of the navigator menu,
+     * creates a toolbar object so that the items can be clicked,
+     * and places all the elements on a drawer to be shown in the navigation
+     * menu.
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,13 +94,13 @@ public class RootActivity extends AppCompatActivity {
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-                            /*
+
                             case R.id.my_bids:
-                                i = new Intent(getApplicationContext(), MyBidsActivity.class);
+                                i = new Intent(getApplicationContext(), ViewTasksBiddedOnActivity.class);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-
+/*
                             case R.id.my_assignments:
                                 i = new Intent(getApplicationContext(), MyAssignmentsActivity.class);
                                 startActivity(i);
@@ -118,7 +130,6 @@ public class RootActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState){
         super.onPostCreate(savedInstanceState);
-
         actionBarDrawerToggle.syncState();
     }
 

@@ -35,24 +35,28 @@ import io.searchbox.annotations.JestId;
  */
 
 public class User {
+    @JestId private String id;
 
     private String username;
     private String name;
     private String phoneNumber;
     private String email;
-    //private BidList userBids;
-    //private TaskList myTasks;
-    //private TaskList assignments;
-    //private ArrayList<Notification> notifications;
     private float rating;
 
-    @JestId
-    private String id;
+
 
     public User(){
 
     }
 
+    /**
+     * Constructor for a user object. All values are required.
+     *
+     * @param username username of the user
+     * @param name the name of the user
+     * @param phoneNumber the user's phone number
+     * @param email the user's email
+     */
     public User(String username, String name, String phoneNumber, String email){
         this.username = username;
         this.name = name;
@@ -62,79 +66,101 @@ public class User {
 
     }
 
+    /**
+     * Method that returns the username of the user.
+     *
+     * @return username of the user
+     * @see #setUsername(String)
+     */
     public String getUsername() {
         return username;
     }
 
-    public void setUsername (String name) {
-        this.name = name;
+
+    /**
+     * Method that sets the username of this user.
+     *
+     * @param username the username of the user
+     */
+    public void setUsername (String username) {
+        this.username = name;
     }
 
-
+    /**
+     * Method the returns the name of the user.
+     *
+     * @return name of the user
+     * @see #setName(String)
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Method that sets the name of the user.
+     *
+     * @param name the name of the user
+     */
     public void setName (String name) {
         this.name = name;
     }
 
 
+    /**
+     * Method that returns the phone number of the user.
+     *
+     * @return phone number of the user
+     * @see #setPhoneNumber(String)
+     */
     public String getPhoneNumber() {
         return phoneNumber ;
     }
 
+    /**
+     * Method that sets the phone number of the user
+     *
+     * @param phoneNumber the phone number of the user
+     */
     public void setPhoneNumber (String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
 
+    /**
+     * Method that returns the email of the user
+     *
+     * @return email of the user
+     * @see #setEmail(String)
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Method that sets the email of the user
+     *
+     * @param email the email of the user
+     */
     public void setEmail (String email) {
         this.email = email;
     }
 
-    public void addBid(Bid bid, Context context) throws NoInternetException {
-        DataManager.getInstance().addBid(bid, context);
-    }
-
-    public BidList getBids() {
-        return new BidList();
-    }
-
-
-    public void addMyTask(Task task, Context context) throws NoInternetException {
-        DataManager.getInstance().putTask(task, context);
-    }
-
-    public TaskList getMyTasks() {
-        return new TaskList();
-    }
-
-    /*TODO: I Think all these add methods will be accounted for when they are created????
-    public void addAssignments(Task task) {
-        assignments.addTask(task);
-    }*/
-    public TaskList getAssignments () {
-        return new TaskList();
-    }
-
-    /*
-    public void addNotification(Notification notification) {
-        notifications.add(notification);
-    }*/
-
-    public ArrayList<Notification> getNotifications () {
-        return new ArrayList<>();
-    }
-
+    /**
+     * Method that returns the rating of the user
+     *
+     * @return the rating of the user
+     * @see #setRating(float)
+     */
     public float getRating() {
         return rating;
     }
 
+    /**
+     * Method that sets the rating of the user
+     *
+     * @param rating the rating of the user
+     * @throws IllegalArgumentException if rating given is greater than 10
+     */
     public void setRating (float rating) throws IllegalArgumentException{
         if(rating < 0 || rating > 10){
             throw new IllegalArgumentException("Argument must be between 0 and 10 inclusive.");
@@ -142,10 +168,21 @@ public class User {
         this.rating = rating;
     }
 
+    /**
+     * Method that returns the userId of the user
+     *
+     * @return the userId of this user
+     * @see #setId(String)
+     */
     public String getId(){
         return id;
     }
 
+    /**
+     * Method that sets the userId of this user
+     *
+     * @param id the userId of this user
+     */
     public void setId(String id){
         this.id = id;
     }
