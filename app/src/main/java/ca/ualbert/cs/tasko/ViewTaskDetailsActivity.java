@@ -40,6 +40,12 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private Task currentTask;
     private DataManager dm = DataManager.getInstance();
 
+    /**
+     * On creation of the activity, fills the relevant displays with information selected from the
+     * task selected on ViewMyTasksActivity
+     *
+     * @param savedInstanceState the instance state of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +116,6 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                 startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
             }
         });
-
 
     }
 

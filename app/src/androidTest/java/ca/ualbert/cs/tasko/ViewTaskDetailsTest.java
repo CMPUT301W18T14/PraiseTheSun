@@ -23,17 +23,19 @@ import com.robotium.solo.Solo;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-/**
- * Created by ryand on 2018-03-19.
- */
 
+/**
+ * Created by ryandromano
+ * Testing class for the activity ViewTaskDetailsActivity
+ *
+ * @see ViewTaskDetailsActivity
+ * @author ryandromano
+ */
 public class ViewTaskDetailsTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private DataManager dm = DataManager.getInstance();
     private User newUser;
     private Task task;
-    private Bid bid1;
-    private Bid bid2;
     private User dmUser;
 
     public ViewTaskDetailsTest(){
@@ -52,19 +54,16 @@ public class ViewTaskDetailsTest extends ActivityInstrumentationTestCase2 {
         dm.getTask(task.getId(), getActivity().getApplicationContext());
     }
 
-    public void testViewingDetails() throws NoInternetException {
+    /**
+     * Tests the ViewBids button
+     *
+     * @throws NoInternetException
+     */
+    public void testViewBids() throws NoInternetException {
         solo.assertCurrentActivity("Wrong Activity", ViewTaskDetailsActivity.class);
-        TextView name = (TextView) solo.getView(R.id.taskName);
-        assertEquals("Test Task", name.getText().toString());
-        TextView description = (TextView) solo.getView(R.id.taskDescription);
-        assertEquals("Help me test this project", description.getText().toString());
-
+        solo.clickOnButton("View Bids");
+        solo.assertCurrentActivity("Wrong Activity", ViewBidsOnTaskActivity.class);
     }
-
-    /*TODO: */
-    //public void testViewBids() throws NoInternetException {
-    //
-    //}
 
     /*TODO: Test Case after editTask is implemented*/
     //public void testEditTask() throws NoInternetException {

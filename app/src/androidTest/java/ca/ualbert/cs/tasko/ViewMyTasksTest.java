@@ -26,6 +26,10 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Created by ryand on 2018-03-19.
+ * Testing class for the activity ViewMyTasksActivity
+ *
+ * @see ViewTaskDetailsActivity
+ * @author ryandromano
  */
 
 public class ViewMyTasksTest extends ActivityInstrumentationTestCase2 {
@@ -33,8 +37,6 @@ public class ViewMyTasksTest extends ActivityInstrumentationTestCase2 {
     private DataManager dm = DataManager.getInstance();
     private User newUser;
     private Task task;
-    private Bid bid1;
-    private Bid bid2;
     private User dmUser;
 
     public ViewMyTasksTest(){
@@ -45,7 +47,6 @@ public class ViewMyTasksTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
         newUser = new User("rye-guy", "Ryan", "780-780-7800", "rye-guy@hotmail.com");
-        dm.putUser(newUser, getActivity().getApplicationContext());
         dmUser = dm.getUserByUsername("rye-guy", getActivity().getApplicationContext());
         CurrentUser.getInstance().setCurrentUser(newUser);
         task = new Task(dmUser.getId(), "Test Task", "Help me test this project");
@@ -53,7 +54,8 @@ public class ViewMyTasksTest extends ActivityInstrumentationTestCase2 {
     }
 
     /**
-     * Ensures that the recyclerview goes to the appropriate activity when clicked.
+     * Tests to see if the spinner option selected displays the proper values based on the
+     * tasks status
      * @throws NoInternetException
      */
     public void testSpinner() throws NoInternetException {
@@ -61,8 +63,8 @@ public class ViewMyTasksTest extends ActivityInstrumentationTestCase2 {
         myTasks.addTask(task);
 
         solo.assertCurrentActivity("Wrong Activity", ViewMyTasksActivity.class);
-        solo.clickOnButton("All");
         assertTrue(myTasks.getSize() > 1);
+        solo.clickOnView(solo.getView(R.id.filter_spinner));
         solo.clickOnButton("Bidded");
         assertEquals(myTasks.getSize(), 0);
         solo.assertCurrentActivity("Wrong Activity", ViewTaskDetailsActivity.class);
@@ -74,14 +76,9 @@ public class ViewMyTasksTest extends ActivityInstrumentationTestCase2 {
      * @throws NoInternetException
      */
     public void testRecyclerViewOnClick() throws NoInternetException {
-        //TaskList myTasks = new TaskList();
-        //myTasks.addTask(task);
-        //dm.getUserTasks(dmUser.getId(),
-                                          //getActivity().getApplicationContext());
         solo.assertCurrentActivity("Wrong Activity", ViewMyTasksActivity.class);
         solo.clickInRecyclerView(0);
         solo.assertCurrentActivity("Wrong Activity", ViewTaskDetailsActivity.class);
-
     }
 
 }
