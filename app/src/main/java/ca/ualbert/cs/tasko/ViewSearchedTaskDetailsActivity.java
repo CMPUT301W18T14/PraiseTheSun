@@ -17,21 +17,19 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.DigitsKeyListener;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -120,6 +118,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ViewSearchedTaskDetailsActivity.this);
                 final View bidView = getLayoutInflater().inflate(R.layout.place_bid_dialog, null);
                 final EditText bidAmount = (EditText) bidView.findViewById(R.id.bidAmount);
+                bidAmount.setFilters(new InputFilter[] {new MoneyValueFilter()});
 
                 builder.setView(bidView).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
@@ -183,6 +182,73 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
             Toast t = new Toast(getApplicationContext());
             t.setText("Not Logged In");
             t.show();
+        }
+    }
+
+    /*
+    Retrieved March 18, 2018
+    https://stackoverflow.com/questions/5357455/limit-decimal-places-in-android-edittext
+    solution from Konstantin Weitz
+     */
+    private class MoneyValueFilter extends DigitsKeyListener {
+        public MoneyValueFilter() {
+            super(false, true);
+        }
+
+        private int digits = 2;
+
+        public void setDigits(int d) {
+            digits = d;
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            CharSequence out = super.filter(source, start, end, dest, dstart, dend);
+
+            // if changed, replace the source
+            if (out != null) {
+                source = out;
+                start = 0;
+                end = out.length();
+            }
+
+            int len = end - start;
+
+            // if deleting, source is empty
+            // and deleting can't break anything
+            if (len == 0) {
+                return source;
+            }
+
+            int dlen = dest.length();
+
+            // Find the position of the decimal .
+            for (int i = 0; i < dstart; i++) {
+                if (dest.charAt(i) == '.') {
+                    // being here means, that a number has
+                    // been inserted after the dot
+                    // check if the amount of digits is right
+                    return (dlen-(i+1) + len > digits) ?
+                            "" :
+                            new SpannableStringBuilder(source, start, end);
+                }
+            }
+
+            for (int i = start; i < end; ++i) {
+                if (source.charAt(i) == '.') {
+                    // being here means, dot has been inserted
+                    // check if the amount of digits is right
+                    if ((dlen-dend) + (end-(i + 1)) > digits)
+                        return "";
+                    else
+                        break;  // return new SpannableStringBuilder(source, start, end);
+                }
+            }
+
+            // if the dot is after the inserted part,
+            // nothing can break
+            return new SpannableStringBuilder(source, start, end);
         }
     }
 }
