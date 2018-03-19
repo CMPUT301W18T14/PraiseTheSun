@@ -18,6 +18,9 @@ package ca.ualbert.cs.tasko.Commands.DataCommands;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 
 import ca.ualbert.cs.tasko.User;
@@ -89,7 +92,19 @@ public class GetUserByUsernameCommand extends GetCommand<User> {
             try{
                 SearchResult sr = JestWrapper.getClient().execute(search);
                 if(sr.isSucceeded() && sr.getTotal() > 0){
-                    user = sr.getFirstHit(User.class).source;
+                    /*
+                    Example used from https://www.programcreek.com/java-api-examples/?api=io.searchbox.core.SearchResult
+                    Specifically example 5
+                    Retrieved March 18, 2018
+                     */
+                    JsonArray results = sr.getJsonObject().get("hits").getAsJsonObject().get
+                            ("hits").getAsJsonArray();
+                    SearchResult.Hit hit = sr.getFirstHit(User.class);
+                    user = (User)hit.source;
+                    String id = results.get(0).getAsJsonObject().get("_id").getAsString();
+                    user.setId(id);
+                    return user;
+
                 }
 
             } catch (IOException e){

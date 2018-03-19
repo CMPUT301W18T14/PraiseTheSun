@@ -16,30 +16,63 @@
 package ca.ualbert.cs.tasko;
 
 /**
- * Created by spack on 2018-03-06.
+ * Current User is a singleton that stores the currently logged in user. This allows all other
+ * activities to be able to get the current user. It also has a check to see if a user is logged
+ * in, which can restrict the app functionality if false is returned. Set in either the Login or
+ * OpeningActivity.
+ * @see User
+ * @see LoginActivity
+ * @see OpeningActivity
+ *
+ * @author spack
  */
-
 public class CurrentUser {
 
+    /**
+     * Stores a instance of the CurrentUser Singelton in the instance variable.
+     */
     private static final CurrentUser Instance = new CurrentUser();
 
+    /**
+     * Initials a User.
+     */
     private User currentUser;
 
+    /**
+     * By calling this method, any java class can get an instance of the CurrentUser singleton.
+     * @return Instance, which is an instance of a CurrentUser singleton
+     */
     public static CurrentUser getInstance() {
         return Instance;
     }
 
+    /**
+     * Default Constructor, labeled private so only one singleton can be created at a time.
+     */
     private CurrentUser() {
     }
 
+    /**
+     * Sets the Current user to the User passed in.
+     * @param user The User object that will be set as the CurrentUser.
+     */
     public void setCurrentUser(User user){
         currentUser = user;
     }
 
+    /**
+     * Returns the currently logged in User object.
+     * @return currently logged in User object currentUser.
+     */
     public User getCurrentUser(){
         return currentUser;
     }
 
+    /**
+     * A method that checks if a User object has been set in the CurrentUser, This indicates whether
+     * A User has "logged in" or not.
+     * @return True If a User has been Set, False if not.
+     */
     public boolean loggedIn(){
         if (currentUser == null){
             return false;

@@ -23,20 +23,32 @@ import java.util.Collections;
  * Created by chase on 2/23/2018.
  * Represents a List of Bid Objects, Has functionality to return minimum Bid, return a bid
  * associated with a UserID, along with typical ArrayList functionality.
+ * @see Bid
  */
 
 public class BidList{
 
-    private ArrayList<Bid> bids;
+    private ArrayList<Bid> bids = new ArrayList<Bid>();
 
+    /**
+     * Initializes a Bidlist to be an ArrayList of Bids
+     */
     public BidList(){
         bids = new ArrayList<Bid>();
     }
 
+    /**
+     * Adds a Bid Object to a Bidlist
+     * @param bid a Bid object
+     */
     public void addBid(Bid bid){
         bids.add(bid);
     }
 
+    /**
+     * Adds multiple bids at once to a BidList
+     * @param bids a Bid object
+     */
     public void addAll(Collection<Bid> bids) {
         this.bids.addAll(bids);
     }
@@ -47,6 +59,11 @@ public class BidList{
      * @return Returns a Bid that was made by UserID or null if it does not exist
      */
 
+    /**
+     * Get a specific Bid from the BidList that matches with a UserID
+     * @param UserID the Users ID used to compare bids in the BidList
+     * @return Returns A bid if such a bid is matching, or null if no bid matches with a UserID
+     */
     public Bid getBid(String UserID){
         for (int i = 0; i < bids.size(); i++){
             if(bids.get(i).getUserID().compareTo(UserID) == 0){
@@ -62,19 +79,39 @@ public class BidList{
      */
     public Bid getMinBid(){
         Collections.sort(bids);
+        if(bids.size() <= 0){
+            return null;
+        }
         return bids.get(0);
     }
 
+    /**
+     * Checks if a Bidlist contains a specific Bid
+     * @param bid The Bid object that is trying to be found in a BidList
+     * @return True if the Bid is in the Bidlist or False if not
+     */
     public Boolean hasBid(Bid bid){
         return bids.contains(bid);
     }
 
+    /**
+     * Remove a Bid from a BidList
+     * @param bid a Bid object
+     */
     public void removeBid(Bid bid){
         bids.remove(bid);
     }
 
+    /**
+     * Returns the Bidlist
+     * @return A Bidlist (ArrayList<Bid>)
+     */
     public ArrayList<Bid> getBids(){
         return bids;
+    }
+
+    public int getSize(){
+        return bids.size();
     }
 
     /**
@@ -86,6 +123,11 @@ public class BidList{
         return bids;
     }
 
+    /**
+     * Get a specific bid from a BidList, based on a index
+     * @param index The index of the Bid we are trying to return
+     * @return A Bid object found at index in the BidList
+     */
     public Bid get(int index){
         return bids.get(index);
     }

@@ -24,8 +24,9 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * SearchResultsActivity is a simple class that works with TaskListAdapter to generate a recyclerview
- * of tasks that match the users keyword search.
+ * SearchResultsActivity works with TaskListAdapter to generate a recyclerview of tasks from the
+ * database that match the users keyword search provided in mainactivy.
+ * @see TaskListAdapter
  *
  * @author spack
  */
@@ -37,14 +38,17 @@ public class SearchResultsActivity extends AppCompatActivity{
     private DataManager dm = DataManager.getInstance();
     private SearchResultsActivity activity = this;
 
-
+    /**
+     * Creates the Activity which includes initializing the RecyclerView with the appropriate
+     * adapter and using the adapter to fill tasks returned by querying the datamanager.
+     * @param savedInstanceState Get the saved state form the current device.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
-
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
@@ -52,6 +56,7 @@ public class SearchResultsActivity extends AppCompatActivity{
 
         Bundle extras = getIntent().getExtras();
 
+        //Initializes the keywords for the search, obtained from MainActivity.
         if (extras != null) {
             keywords = extras.getString("SearchKeywords");
         }else{
@@ -60,13 +65,14 @@ public class SearchResultsActivity extends AppCompatActivity{
 
         TaskList foundtasks = new TaskList();
 
+        //Try to conduct the search
         try {
             foundtasks = dm.searchTasks(keywords, activity);
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
 
-
+        //Initialize the Adapter and RecyclerView
         searchAdapter = new TaskListAdapter(activity, foundtasks);
         searchRecyclerView.setAdapter(searchAdapter);
     }

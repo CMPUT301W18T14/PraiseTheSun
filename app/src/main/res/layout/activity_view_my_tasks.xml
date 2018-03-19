@@ -33,16 +33,22 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+        <Spinner
+            android:id="@+id/filter_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/filter_options_array"/>
+
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_view_my_tasks" />
+    <include layout="@layout/content_view_my_tasks"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+    <ViewStub
+        android:id="@+id/emptyListMessage"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:layout_gravity="center"
+        android:layout="@layout/empty_task_list" />
 
 </android.support.design.widget.CoordinatorLayout>
