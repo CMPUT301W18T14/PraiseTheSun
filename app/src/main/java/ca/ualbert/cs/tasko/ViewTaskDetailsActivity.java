@@ -24,10 +24,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
+/**
+ * ViewMyTaskDetailsActivity takes the task information from the task selected from the recyclerview
+ * in ViewMyTasksActivity and displays that information and gives the user the option to select bid
+ *
+ * @author ryandromano
+ */
 public class ViewTaskDetailsActivity extends AppCompatActivity {
     private TextView taskDescription;
     private TextView taskName;
@@ -35,6 +40,12 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private Task currentTask;
     private DataManager dm = DataManager.getInstance();
 
+    /**
+     * On creation of the activity, fills the relevant displays with information selected from the
+     * task selected on ViewMyTasksActivity
+     *
+     * @param savedInstanceState the instance state of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +68,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             currentTask = dm.getTask(taskID, this);
             fillInformation();
         } catch (NullPointerException e) {
-            Log.i("Error", "TaskID from _____________ not properly passed");
+            Log.i("Error", "TaskID not properly passed");
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
@@ -105,7 +116,6 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                 startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
             }
         });
-
 
     }
 

@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.test.ActivityInstrumentationTestCase2;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +40,13 @@ import android.widget.Spinner;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
+/**
+ * ViewMyTasksActivity is a class that creates a recyclerview using TaskListAdapter filled with the
+ * tasks that the user has created. The user also has the option to filter theses tasks by each of
+ * their status
+ *
+ * @author ryandromano
+ */
 public class ViewMyTasksActivity extends RootActivity {
     private RecyclerView myTasksRecyclerView;
     private RecyclerView.Adapter myTasksAdapter;
@@ -46,11 +54,25 @@ public class ViewMyTasksActivity extends RootActivity {
     private DataManager dm = DataManager.getInstance();
     private ViewMyTasksActivity activity = this;
 
-
+    /**
+     * Called when the activity is created, fills the recyclerview  with the user's tasks they
+     * have posted recyclerview
+     *
+     * @param savedInstanceState the instance state of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_my_tasks);
+
+        if (CurrentUser.getInstance().getCurrentUser() == null) {
+            try {
+                CurrentUser.getInstance().setCurrentUser(dm.getUserByUsername("rromano", getApplicationContext()));
+            }
+            catch (NoInternetException e) {
+                e.printStackTrace();
+            }
+        }
 
         myTasksRecyclerView = (RecyclerView) findViewById(R.id.my_tasks_recycler_view);
         myTasksLayoutManager = new LinearLayoutManager(activity);
@@ -65,7 +87,10 @@ public class ViewMyTasksActivity extends RootActivity {
         final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
         emptyListMessage.setLayoutResource(R.layout.empty_task_list);
 
-
+        /**
+         * When the filter is selected, the recycle view displays only the users tasks that
+         * corresponds to the tasks status
+         */
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -109,7 +134,6 @@ public class ViewMyTasksActivity extends RootActivity {
 
                 myTasksAdapter = new TaskListAdapter(activity, myTasks);
                 myTasksRecyclerView.setAdapter(myTasksAdapter);
-
             }
 
             @Override
