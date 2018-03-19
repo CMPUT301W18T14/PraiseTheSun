@@ -40,10 +40,6 @@ public class User {
     private String name;
     private String phoneNumber;
     private String email;
-    //private BidList userBids;
-    //private TaskList myTasks;
-    //private TaskList assignments;
-    //private ArrayList<Notification> notifications;
     private float rating;
 
     @JestId
@@ -95,40 +91,6 @@ public class User {
 
     public void setEmail (String email) {
         this.email = email;
-    }
-
-    public void addBid(Bid bid, Context context) throws NoInternetException {
-        DataManager.getInstance().addBid(bid, context);
-    }
-
-    public BidList getBids() {
-        return new BidList();
-    }
-
-
-    public void addMyTask(Task task, Context context) throws NoInternetException {
-        DataManager.getInstance().putTask(task, context);
-    }
-
-    public TaskList getMyTasks() {
-        return new TaskList();
-    }
-
-    /*TODO: I Think all these add methods will be accounted for when they are created????
-    public void addAssignments(Task task) {
-        assignments.addTask(task);
-    }*/
-    public TaskList getAssignments () {
-        return new TaskList();
-    }
-
-    /*
-    public void addNotification(Notification notification) {
-        notifications.add(notification);
-    }*/
-
-    public ArrayList<Notification> getNotifications () {
-        return new ArrayList<>();
     }
 
     public float getRating() {
