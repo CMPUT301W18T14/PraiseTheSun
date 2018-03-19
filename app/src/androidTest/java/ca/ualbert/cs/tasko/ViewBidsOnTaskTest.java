@@ -30,6 +30,10 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * Created by op49o_000 on 2018-03-17.
  */
 
+/**
+ * This test will ensure that data on a task can be retrieved successfully from the database
+ * namely bidlist on a particular task.
+ */
 public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
@@ -57,11 +61,21 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
         dm.addBid(bid2, getActivity().getApplicationContext());
     }
 
+    /**
+     * Test to start the activity
+     *
+     * @throws Exception
+     */
     public void testStart() throws Exception {
         Activity activity = getActivity();
     }
 
-    public void testPlacingBids() throws NoInternetException {
+    /**
+     * Test to retrieve a task from the database and place it in a tasklist
+     *
+     * @throws NoInternetException
+     */
+    public void testGettingTask() throws NoInternetException {
         TaskList biddedTasks = new TaskList();
             try {
                 biddedTasks.addTask(dm.getTask(task1.getId(),getActivity().getApplicationContext()));
@@ -71,6 +85,10 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
         assertFalse(biddedTasks.getSize() == 0);
     }
 
+    /**
+     * Test to get the bidlist of bids on a particular task
+     * @throws NoInternetException
+     */
     public void testGetBidsOnTask() throws NoInternetException {
         BidList bids = new BidList();
         Task tasktest = dm.getTask(task1.getId(),getActivity().getApplicationContext());
@@ -83,6 +101,5 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
                 e.printStackTrace();
             }
         assertFalse(bids.getSize() == 0);
-        //assertEquals("Not correct bids", bids.get(0), bid1 );
     }
 }
