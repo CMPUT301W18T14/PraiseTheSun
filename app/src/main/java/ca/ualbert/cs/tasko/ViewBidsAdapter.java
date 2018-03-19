@@ -26,12 +26,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-//Todo: It would be nice to make the adapter more modular, can be reused but needs slight modifications each time
-
 /**
- * The class represents a Adapter that is specifically designed to display search results in an
- * AdapterView. Clicking on an element in the view will send the user to that tasks details where
- * they can place a Bid if they wish.
+ * The class represents a Adapter that is specifically designed to display bid of a particular
+ * task in an AdapterView. Allowing the user to accept or reject a particular bid.
+ *
+ * @author Alden Tan
  */
 public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidViewHolder> {
 
@@ -39,12 +38,26 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     private BidList bids;
     private Context thiscontext;
 
+    /**
+     * Constructor for the Adapter, Takes in the context which designates the activity that will use
+     * the adapter and a BidList which represents the Bids on a Tasks that will be displayed.
+     * @param context The context for the activity using the adapter.
+     * @param dmbids The BidList represnting the Bids on a Tasks to be displayed, from the DataManager.
+     */
     public ViewBidsAdapter(Context context, BidList dmbids){
         thiscontext = context;
         inflater = LayoutInflater.from(context);
         bids = dmbids;
     }
 
+    /**
+     * Creates the ViewHolder object that will display the Objects, in this case Bids on a
+     * Tasks matching a search query.
+     * @param parent parent means the View can contain other views
+     * @param viewType an enumeration that tracks the type of views, in this case since we only have
+     *                one view should be a constant value.
+     * @return The ViewHolder object that will be used.
+     */
     @Override
     public BidViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.bid_view, parent, false);
@@ -53,6 +66,11 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
         return holder;
     }
 
+    /**
+     * Binds The appropriate Data to the ViewHolder.
+     * @param holder The ViewHolder data will be bound too.
+     * @param position The position within the RecyclerView.
+     */
     @Override
     public void onBindViewHolder(BidViewHolder holder, int position) {
         Bid currentTask = bids.get(position);
@@ -61,23 +79,16 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
 
         String myBid = Float.toString(currentTask.getValue());
         holder.Bid.setText("My Bid: " + myBid);
-
-        //holder.taskDescription.setText(currentTask.getDescription());
-        //Needs more information then I currently have/ dont know how to implement.
-        //holder.taskBid.setText();
-        //holder.taskPhoto.setImageResource();
-
     }
 
+    /**
+     * Used to determine the number of ViewHolders the recyclerview will need to display.
+     * @return An int representing the number of objects to be Displayed.
+     */
     @Override
     public int getItemCount() {
         return bids.getSize();
     }
-
-    //@Override
-    //public int getItemCount(){
-        //return bids.getSize();
-    //}
 
     /**
      * The clickabale view holder that will get displayed in the recylcerview which displays
@@ -101,12 +112,6 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
         //TODO: Use case 15 & 16
         @Override
         public void onClick(View view) {
-            //Intent intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
-            //intent.putExtra("UserID", bids.get(getAdapterPosition()).get());
-            //thiscontext.startActivity(intent);
-
-
-
         }
     }
 

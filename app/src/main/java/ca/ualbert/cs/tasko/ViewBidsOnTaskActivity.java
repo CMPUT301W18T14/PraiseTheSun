@@ -45,9 +45,12 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Created by Aldentan1997 on 2018-03-12.
+ * Activity to view a list of bids on a particular task when the button "view bids" is
+ * clicked on the "ViewTaskDetailsActivity"
+ *
+ * @author Alden Tan
+ * @see ViewMyTasksActivity
  */
-
-    //TODO: MAKE TEST FOR THIS AND TEST FOR APPROPRIATE XML FILES!
 
 public class ViewBidsOnTaskActivity extends AppCompatActivity {
     public RecyclerView myBidList;
@@ -57,7 +60,6 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager searchLayoutManager;
     private ViewBidsOnTaskActivity activity = this;
 
-    //TODO: get bidlists involved in code
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
