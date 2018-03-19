@@ -64,13 +64,12 @@
         app:layout_constraintStart_toEndOf="@+id/deleteButton" />
 
     <TextView
-        android:id="@+id/searchTaskDescription"
+        android:id="@+id/taskDescription"
         android:layout_width="0dp"
         android:layout_height="121dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="184dp"
-        android:text="TASK DESCRIPTION"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -85,7 +84,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TASK NAME"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,13 +98,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TASK STATUS GOES HERE"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/placeBidButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchTaskDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/taskDescription" />
 
 </android.support.constraint.ConstraintLayout>

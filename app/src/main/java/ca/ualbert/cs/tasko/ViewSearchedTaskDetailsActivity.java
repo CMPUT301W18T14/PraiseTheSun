@@ -17,8 +17,6 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -51,7 +49,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         //Button and text boxes definitions
         placeBidButton = (Button) findViewById(R.id.placeBidButton);
         geolocationButton = (Button) findViewById(R.id.geolocationButton);
-        taskDescription = (TextView) findViewById(R.id.searchTaskDescription);
+        taskDescription = (TextView) findViewById(R.id.taskDescription);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
 
@@ -108,6 +106,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 dialog.show();
             }
         });
+
     }
 
 }

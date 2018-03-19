@@ -37,7 +37,6 @@ public class SearchResultsActivity extends AppCompatActivity{
     private DataManager dm = DataManager.getInstance();
     private SearchResultsActivity activity = this;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
