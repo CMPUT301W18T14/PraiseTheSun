@@ -18,6 +18,12 @@ package ca.ualbert.cs.tasko;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * UserActivity shows the user's information. Accessed from the menu
+ *
+ * @author imtihan
+ * @see RootActivity, User
+ */
 public class UserActivity extends AppCompatActivity {
 
     @Override
