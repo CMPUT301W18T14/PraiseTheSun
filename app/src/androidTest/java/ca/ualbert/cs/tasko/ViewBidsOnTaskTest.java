@@ -50,7 +50,7 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
         solo = new Solo(getInstrumentation(), getActivity());
         user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
         dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
-        task1 = new Task("test", "TestTask2", "Help me test code");
+        task1 = new Task("testidA", "TestTaskA", "Help me test");
         dm.putTask(task1, getActivity().getApplicationContext());
         bid1 = new Bid(dmuser.getId(), 10, task1.getId());
         bid2 = new Bid(dmuser.getId(), 10, task1.getId());
@@ -60,5 +60,29 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
 
     public void testStart() throws Exception {
         Activity activity = getActivity();
+    }
+
+    public void testPlacingBids() throws NoInternetException {
+        TaskList biddedTasks = new TaskList();
+            try {
+                biddedTasks.addTask(dm.getTask(task1.getId(),getActivity().getApplicationContext()));
+            } catch (NoInternetException e) {
+                e.printStackTrace();
+            }
+        assertFalse(biddedTasks.getSize() == 0);
+    }
+
+    public void testGetBidsOnTask() throws NoInternetException {
+        BidList bids = new BidList();
+        Task tasktest = dm.getTask(task1.getId(),getActivity().getApplicationContext());
+
+            try {
+                bids = dm.getTaskBids(tasktest.getId(),getActivity().getApplicationContext());
+            } catch (NullPointerException e) {
+                Log.i("Error", "Failed to get bid list properly");
+            } catch (NoInternetException e) {
+                e.printStackTrace();
+            }
+        assertFalse(bids.getSize() == 0);
     }
 }
