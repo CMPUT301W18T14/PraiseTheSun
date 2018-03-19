@@ -53,6 +53,9 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
 
+        //Dialog for choosing to make a bid on the task
+
+
         Bundle extras = getIntent().getExtras();
 
         try {
@@ -76,6 +79,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     //Dialog for choosing to make a bid on the task
     private void setupPlaceBidButton() {
+
         placeBidButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Confirm deletion and return to main page
