@@ -72,7 +72,7 @@ public class Task {
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
     }
-    
+
     public void addPhoto(Bitmap photo){
 
     }
