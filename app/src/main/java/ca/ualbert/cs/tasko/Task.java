@@ -211,7 +211,7 @@ public class Task {
      *
      * @param geolocation the location of this task
      */
-    public Location setGeolocation(Location geolocation) {
+    public void setGeolocation(Location geolocation) {
         this.geolocation = geolocation;
     }
 
