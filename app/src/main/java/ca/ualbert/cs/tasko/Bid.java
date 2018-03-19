@@ -47,29 +47,61 @@ public class Bid implements Comparable<Bid>{
         this.UserID = UserID;
         this.TaskID = TaskID;
         this.value = value;
-
     }
 
+    /**
+     * Method that returns the userID of the user that placed this bid.
+     *
+     * @return the userID of the user that placed this bid.
+     * @see #setUserID(String)
+     */
     public String getUserID(){
         return UserID;
     }
 
+    /**
+     * Method that sets the userID. This userID refers to the user who placed this bid
+     *
+     * @param UserID the userID of the user that placed this bid.
+     */
     public void setUserID(String UserID) {
         this.UserID = UserID;
     }
 
+    /**
+     * Method that returns the taskID of the task that this bid is placed on.
+     *
+     * @return the taskID of the task that this bid is placed on
+     * @see #setTaskID(String)
+     */
     public String getTaskID(){
         return TaskID;
     }
 
+    /**
+     * Method that sets the taskID. This taskId refers to the task that this bid is placed on.
+     *
+     * @param TaskID the taskID of the task that this is bid is placed on
+     */
     public void setTaskID(String TaskID){
         this.TaskID = TaskID;
     }
 
+    /**
+     * Method that returns the value of the bid in dollars.
+     *
+     * @return the value of the bid in dollars
+     * @see #setValue(float)
+     */
     public float getValue() {
         return value;
     }
 
+    /**
+     * Method that sets the value of the bid.
+     *
+     * @param value the value of the bid in dollars.
+     */
     public void setValue(float value) {
         this.value = value;
     }
@@ -84,10 +116,21 @@ public class Bid implements Comparable<Bid>{
         return Float.compare(this.value, bid.getValue());
     }
 
+    /**
+     * Method that returns the BidID of this bid object.
+     *
+     * @return the BidID of this bid object
+     * @see #setBidID(String)
+     */
     public String getBidID() {
         return BidID;
     }
 
+    /**
+     * Method that sets the ID for this bid object.
+     *
+     * @param bidID the bidID for this bid object.
+     */
     public void setBidID(String bidID) {
         BidID = bidID;
     }
