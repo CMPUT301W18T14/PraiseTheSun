@@ -84,11 +84,24 @@ public class AddPhotoActivity extends AppCompatActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte [] byteArray = stream.toByteArray();
-
-        Intent returnImage = new Intent();
-        returnImage.putExtra("image", byteArray);
-        setResult(RESULT_OK, returnImage);
-        finish();
+        // https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb-android
+        // taken on 2018-03-18
+        long imageLength = byteArray.length;
+        if (imageLength <= 65535) {
+            Intent returnImage = new Intent();
+            returnImage.putExtra("image", byteArray);
+            setResult(RESULT_OK, returnImage);
+            finish();
+        }
+        else {
+            Toast.makeText(this.getApplicationContext(), "Image file chosen is too big.",
+                    Toast.LENGTH_LONG).show();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
