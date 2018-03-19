@@ -72,15 +72,6 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
         assertEquals(Status.BIDDED,task.getStatus());
     }
 
-
-
-    public void testAcceptBid(){
-        Task task = new Task("bobismyID", "atask", "test");
-        Bid bid = new Bid("secondUser", 2.56f, "atask");
-        task.acceptBid(bid);
-        assertEquals(task.getStatus(),Status.ASSIGNED);
-    }
-
     public void testAddPhoto() {
         //TODO
         //we may not be able to use Image class for android studio

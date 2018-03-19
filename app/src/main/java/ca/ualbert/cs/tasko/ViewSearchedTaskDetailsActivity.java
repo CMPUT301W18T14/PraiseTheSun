@@ -161,6 +161,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 dialog.show();
             }
         });
+
     }
 
     private void placeBid(float value, Task task){

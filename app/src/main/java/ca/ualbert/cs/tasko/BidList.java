@@ -93,4 +93,8 @@ public class BidList{
         return bids.get(index);
     }
 
+    public int getSize(){
+        return bids.size();
+    }
+
 }

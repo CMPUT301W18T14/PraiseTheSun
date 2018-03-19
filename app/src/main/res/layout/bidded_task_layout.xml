@@ -16,29 +16,30 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:background="@drawable/task_background">
 
 
     <TextView
-        android:id="@+id/searchTaskTitle"
+        android:id="@+id/biddedTaskTitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="22dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
-        android:text="@string/search_task_title"
+        android:text="Task Title"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/searchTaskDescription"
-        app:layout_constraintStart_toEndOf="@+id/taskPhoto"
+        app:layout_constraintStart_toEndOf="@+id/biddedtaskPhoto"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_weight="1" />
 
     <ImageView
-        android:id="@+id/taskPhoto"
+        android:id="@+id/biddedtaskPhoto"
         android:layout_width="82dp"
         android:layout_height="79dp"
         android:layout_marginStart="8dp"
@@ -50,7 +51,7 @@
         app:srcCompat="@android:color/background_light" />
 
     <TextView
-        android:id="@+id/searchTaskStatus"
+        android:id="@+id/biddedTaskStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -63,19 +64,32 @@
         app:layout_constraintTop_toBottomOf="@+id/taskPhoto" />
 
     <TextView
-        android:id="@+id/searchTaskDescription"
-        android:layout_width="0dp"
+        android:id="@+id/biddedTaskDescription"
+        android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="100dp"
         android:text="@string/task_search_description"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.126"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@+id/taskPhoto"
         app:layout_constraintVertical_weight="2" />
+
+    <TextView
+        android:id="@+id/biddedTaskYourBid"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/your_bid"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/biddedTaskStatus"
+        app:layout_constraintTop_toBottomOf="@+id/searchTaskDescription" />
 
 
 </android.support.constraint.ConstraintLayout>

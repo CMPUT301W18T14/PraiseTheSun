@@ -73,16 +73,6 @@ public class Task {
         this.status = Status.REQUESTED;
     }
 
-
-    public void acceptBid(Bid bid){
-
-    }
-
-    /*
-    public BidList getBids(){
-        return bidList;
-    }*/
-
     public void addPhoto(Bitmap photo){
 
     }
