@@ -33,19 +33,13 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
-    /*
     private DataManager dm = DataManager.getInstance();
-    private String userID1 = "AWIEMxQnTFjKf1vhacZH";
-    private Bid bid1 = new Bid(userID1, 10, "TestID");
-    */
-    /*
-    private String userID2 = "NewId";
-    private Bid bid2 = new Bid(userID2, 20, "NewTask");
-    private Task task = new Task("requestorID", "TestTask4",
-            "Help me with recyclerview adapters ahhhhhhh," +
-                    "Help me find NullPointerErrors... :(");
-                    */
-
+    private Task task1;
+    private Task task2;
+    private User user;
+    private Bid bid1;
+    private Bid bid2;
+    private User dmuser;
 
 
     public ViewBidsOnTaskTest() {
@@ -56,15 +50,18 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
-
-        /*
-        try {
-            dm.addBid(bid1, getActivity().getApplicationContext());
-        } catch(NoInternetException e) {
-            Log.i("Error", "No internet connection");
-        }
-        */
-
+        solo = new Solo(getInstrumentation(), getActivity());
+        user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+        //dm.putUser(user, getActivity().getApplicationContext());
+        dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
+        task1 = new Task("test", "TestTask2", "Help me test code");
+        task2 = new Task("test", "TestTask3", "Help me test code");
+        dm.putTask(task1, getActivity().getApplicationContext());
+        dm.putTask(task2, getActivity().getApplicationContext());
+        bid1 = new Bid(dmuser.getId(), 10, task1.getId());
+        bid2 = new Bid(dmuser.getId(), 10, task2.getId());
+        dm.addBid(bid1, getActivity().getApplicationContext());
+        dm.addBid(bid2, getActivity().getApplicationContext());
     }
 
 
@@ -72,11 +69,4 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
     public void testStart() throws Exception {
         Activity activity = getActivity();
     }
-
-    /*
-
-    public void testRecyclerView() {
-        solo.assertCurrentActivity("Wrong Activity", ViewBidsOnTaskActivity.class);
-    }
-    */
 }
