@@ -90,7 +90,7 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
 
 
 
-        //gets current task that was selected
+        //gets bidlist for the current task that was selected
         try {
             String taskID = extras.getString("TaskID");
             bidsOnTask = dm.getTaskBids(taskID, this);
