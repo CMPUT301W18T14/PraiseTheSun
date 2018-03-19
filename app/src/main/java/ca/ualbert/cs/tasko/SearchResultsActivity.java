@@ -43,7 +43,6 @@ public class SearchResultsActivity extends AppCompatActivity{
         setContentView(R.layout.activity_search_results);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
-
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
