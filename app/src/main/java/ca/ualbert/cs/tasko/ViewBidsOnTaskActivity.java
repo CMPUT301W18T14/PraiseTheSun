@@ -60,6 +60,10 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager searchLayoutManager;
     private ViewBidsOnTaskActivity activity = this;
 
+    /**
+     * Creates the activity by setting the recyclerview.
+     * @param savedInstanceState Get the saved state form the current device.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
