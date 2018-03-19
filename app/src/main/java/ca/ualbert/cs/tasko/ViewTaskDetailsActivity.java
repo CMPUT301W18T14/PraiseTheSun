@@ -107,9 +107,10 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //Displays the bids on your activity
+                startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
             }
         });
+
 
     }
 
