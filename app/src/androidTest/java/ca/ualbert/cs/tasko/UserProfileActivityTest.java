@@ -22,8 +22,6 @@ import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
-import ca.ualbert.cs.tasko.data.DataManager;
-
 
 /**
  * Created by imtihan on 2018-03-19.
@@ -57,13 +55,19 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
             e.printStackTrace();
         }
         myActivity = this.getActivity();
-
-
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        usrname = (EditText)myActivity.findViewById(R.id.UserProfileActivityUsername);
+        email = (EditText)myActivity.findViewById(R.id.UserProfileActivityEmail);
+        phone = (EditText)myActivity.findViewById(R.id.UserProfileActivityPhoneNumber);
     }
 
     public void testName(){
 
-        usrname = (EditText)myActivity.findViewById(R.id.UserProfileActivityUsername);
+
         Log.i("CurrentUserName", CurrentUser.getInstance().getCurrentUser().getUsername().toString());
         Log.i("usrnameOnScreen", usrname.toString());
         assertEquals(CurrentUser.getInstance().getCurrentUser().getUsername(), usrname.getText().toString());
@@ -71,15 +75,15 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
 
     public void testEmail(){
 
-        email = (EditText)myActivity.findViewById(R.id.UserProfileActivityEmail);
+
         Log.i("CurrentUserEmail", CurrentUser.getInstance().getCurrentUser().getEmail());
-        Log.i("emailOnScreen", email.toString());
+        Log.i("emailOnScreen", email.getText().toString());
         assertEquals(CurrentUser.getInstance().getCurrentUser().getEmail(), email.getText().toString());
     }
 
     public void testPhone(){
 
-        phone = (EditText)myActivity.findViewById(R.id.UserProfileActivityPhoneNumber);
+
         Log.i("CurrentUserPhone", CurrentUser.getInstance().getCurrentUser().getPhoneNumber());
         Log.i("phoneOnScreen", phone.toString());
         assertEquals(CurrentUser.getInstance().getCurrentUser().getPhoneNumber(), phone.getText().toString());

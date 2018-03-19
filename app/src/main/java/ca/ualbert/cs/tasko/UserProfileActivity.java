@@ -47,11 +47,11 @@ public class UserProfileActivity extends RootActivity {
         User user = CurrentUser.getInstance().getCurrentUser();
 
         if(CurrentUser.getInstance().loggedIn()){
-            Log.i("User logged in", " " );
+
             emailAddress.setText(user.getEmail());
             username.setText(user.getUsername());
             phoneNumber.setText(user.getPhoneNumber());
-
+            Log.i("User logged in", emailAddress.getText().toString() );
 
         }
 
