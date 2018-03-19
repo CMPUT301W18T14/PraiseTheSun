@@ -117,7 +117,7 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
-    /**rromano
+    /**
      * Called when the user clicks on the "Post your task!" button in this activity. Creates a
      * task object from the fields taskNameText and descriptionText and then tries to store this
      * information in the database.
