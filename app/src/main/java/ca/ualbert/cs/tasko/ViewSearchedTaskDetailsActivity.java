@@ -55,7 +55,6 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
 
-        //diaglog for choosing a dick to suck ayeeeee
         //Dialog for choosing to make a bid on the task
 
 
@@ -103,7 +102,6 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                     @Override
                     public void onClick(View view) {
                         //Probably a better way to do this but it works for now
-                        //probably a better way to suck dick but I'll settle
                         finish();
                         startActivity(new Intent(ViewSearchedTaskDetailsActivity.this, ViewSearchedTaskDetailsActivity.class));
                     }
