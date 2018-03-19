@@ -41,30 +41,22 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
     private Bid bid2;
     private User dmuser;
 
-
     public ViewBidsOnTaskTest() {
         super(ViewBidsOnTaskActivity.class);
     }
 
-
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
-        solo = new Solo(getInstrumentation(), getActivity());
         user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        //dm.putUser(user, getActivity().getApplicationContext());
         dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
         task1 = new Task("test", "TestTask2", "Help me test code");
-        task2 = new Task("test", "TestTask3", "Help me test code");
         dm.putTask(task1, getActivity().getApplicationContext());
-        dm.putTask(task2, getActivity().getApplicationContext());
         bid1 = new Bid(dmuser.getId(), 10, task1.getId());
-        bid2 = new Bid(dmuser.getId(), 10, task2.getId());
+        bid2 = new Bid(dmuser.getId(), 10, task1.getId());
         dm.addBid(bid1, getActivity().getApplicationContext());
         dm.addBid(bid2, getActivity().getApplicationContext());
     }
-
-
 
     public void testStart() throws Exception {
         Activity activity = getActivity();
