@@ -61,13 +61,6 @@ public class CreateAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-        /*
-         * I used youtube to figure out how to put a back button on the action bar.
-         * https://www.youtube.com/watch?v=6rMQ7vBE-CU
-         * Accessed on 2018-02-03
-         * By user: Priya Kamble
-         */
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         usernameText = (EditText) findViewById(R.id.createAccountUsername);
         nameText = (EditText) findViewById(R.id.createAccountName);
