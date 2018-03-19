@@ -35,7 +35,6 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private DataManager dm = DataManager.getInstance();
     private Task task1;
-    private Task task2;
     private User user;
     private Bid bid1;
     private Bid bid2;
@@ -77,12 +76,13 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
         Task tasktest = dm.getTask(task1.getId(),getActivity().getApplicationContext());
 
             try {
-                bids = dm.getTaskBids(tasktest.getId(),getActivity().getApplicationContext());
+                bids = dm.getTaskBids(tasktest.getId(), getActivity().getApplicationContext());
             } catch (NullPointerException e) {
                 Log.i("Error", "Failed to get bid list properly");
             } catch (NoInternetException e) {
                 e.printStackTrace();
             }
         assertFalse(bids.getSize() == 0);
+        //assertEquals("Not correct bids", bids.get(0), bid1 );
     }
 }
