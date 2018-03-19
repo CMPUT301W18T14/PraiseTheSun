@@ -38,7 +38,7 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserBidsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
-import ca.ualbert.cs.tasko.Notification;
+import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
 import ca.ualbert.cs.tasko.User;

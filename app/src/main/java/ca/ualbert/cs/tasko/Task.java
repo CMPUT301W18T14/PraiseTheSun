@@ -24,7 +24,10 @@ import java.util.ArrayList;
 import io.searchbox.annotations.JestId;
 
 /**
- * Created by Chase on 2/23/2018.
+ * Represents a task object. Contains the name of the task (max 40 characters), its description
+ * (max 350 characters), the photos attached to it, its geolocation, the ID of the user who
+ * requested the task, ID of the user who provided the task as well as it's current status which
+ * can be one of requested, bidded, assigned or done.
  *
  */
 
@@ -42,26 +45,43 @@ public class Task {
     @JestId
     private String id;
 
+    /**
+     * Basic constructor of a task object that contains all the required information for any task
+     * object which is the userID of the task requester, name of the task and the tasks description.
+     *
+     * @param taskRequesterID userID of the task requester
+     * @param taskName name of the task
+     * @param description description of the task
+     */
     public Task(String taskRequesterID, String taskName, String description){
         this(taskRequesterID, taskName, description, null, null);
     }
 
+    /**
+     * More advanced constructor of a task object that contains all the required information for
+     * any task object which is the userID of the task requester, name of the task and the tasks
+     * description as well as the geolocation for this task.
+     *
+     * @param taskRequesterID userID of the task requester
+     * @param taskName name of the task
+     * @param description description of the task
+     * @param location geolocation of the task
+     */
     public Task(String taskRequesterID, String taskName, String description,
                 Location location){
         this(taskRequesterID, taskName, description, null, location);
     }
 
-    public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<Bitmap> photos, Location location){
-        this.taskRequesterID = taskRequesterID;
-        this.taskName = taskName;
-        this.description = description;
-        this.photos = photos;
-        this.geolocation = location;
-        this.taskProviderID = null;
-        this.status = Status.REQUESTED;
-    }
-
+    /**
+     * More advanced constructor of a task object that contains all the required information for
+     * any task object which is the userID of the task requester, name of the task and the tasks
+     * description as well as the photos attached to this task.
+     *
+     * @param taskRequesterID userID of the task requester
+     * @param taskName name of the task
+     * @param description description of the task
+     * @param photos photos attached to this task
+     */
     public Task(String taskRequesterID, String taskName, String description,
                 ArrayList<Bitmap> photos){
         this.taskRequesterID = taskRequesterID;
@@ -73,66 +93,170 @@ public class Task {
         this.status = Status.REQUESTED;
     }
 
+    /**
+     * Complete constructor of a task object that contains all the required information for
+     * any task object which is the userID of the task requester, name of the task and the tasks
+     * description as well as the geolocation for this task and the photos attached to this task.
+     *
+     * @param taskRequesterID userID of the task requester
+     * @param taskName name of the task
+     * @param description description of the task
+     * @param photos photos attached to this task
+     * @param location geolocation of the task
+     */
+    public Task(String taskRequesterID, String taskName, String description,
+                ArrayList<Bitmap> photos, Location location){
+        this.taskRequesterID = taskRequesterID;
+        this.taskName = taskName;
+        this.description = description;
+        this.photos = photos;
+        this.geolocation = location;
+        this.taskProviderID = null;
+        this.status = Status.REQUESTED;
+    }
+
+    // Not implemented yet
+    // Todo Part 5
     public void addPhoto(Bitmap photo){
 
     }
 
+    // Not implemented yet
+    // Todo Part 5
     public void removePhoto(int index){
 
     }
 
+    // Not implemented yet
+    // Todo Part 5
     public void addLocation(Location location){
 
     }
 
+    // Not implemented yet
+    // Todo Part 5
     public void removeLocation(){
 
     }
 
+    /**
+     * Method which sets the status for this Task.
+     *
+     * @param status status of the object
+     */
     public void setStatus(Status status){
         this.status = status;
     }
 
+    /**
+     * Method which returns the status of this task.
+     *
+     * @return the status of this task
+     * @see #setStatus(Status)
+     */
     public Status getStatus() {
         return status;
     }
 
+    /**
+     * Method which returns the name of this task.
+     *
+     * @return the name of this task
+     * @see #setTaskName(String)
+     */
     public String getTaskName() {
         return taskName;
     }
 
+    /**
+     * Method which sets the name of this task.
+     *
+     * @param taskName the name of this task
+     */
     public void setTaskName(String taskName) {
         this.taskName = taskName;
     }
 
+    /**
+     * Method which returns the description of this task.
+     *
+     * @return the description of this task
+     * @see #setDescription(String)
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Method which sets the description of this task.
+     *
+     * @param description the description of this task
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Method which returns the geolocation of this task.
+     *
+     * @return the geolocation of this task
+     * @see #setGeolocation(Location)
+     */
     public Location getGeolocation() {
         return geolocation;
     }
 
+    /**
+     * Method which sets the geolocation of this task
+     *
+     * @param geolocation the location of this task
+     */
+    public void setGeolocation(Location geolocation) {
+        this.geolocation = geolocation;
+    }
+
+    /**
+     * Method which returns the userID of the task requester
+     *
+     * @return userID of the task requester
+     */
     public String getTaskRequesterID() {
         return taskRequesterID;
     }
 
+    /**
+     * Method which return the id of this task
+     *
+     * @return the taskID for this task
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Method which sets the id of this task
+     *
+     * @param id the taskID for this task
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Method which returns the userID of the task provider
+     *
+     * @return userID of the task provider
+     * @see #assign(String)
+     */
     public String getTaskProviderID() {
         return taskProviderID;
     }
 
+    /**
+     * Method which assigns this task to a task provider
+     *
+     * @param taskProviderID the userID of the task provider
+     */
     public void assign(String taskProviderID) {
         this.taskProviderID = taskProviderID;
         this.status = Status.ASSIGNED;

@@ -43,6 +43,10 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
     private BidList userBids;
     private TaskList biddedTasks;
 
+    /**
+     * Creates the activity by setting the recyclerview.
+     * @param savedInstanceState Get the saved state form the current device.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,9 +67,8 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
     }
 
     /**
-     * Sets the current user. NOTE if the CurrentUser is null which occurs when testing,
-     * I have to hardcode in a value!
-     * @throws NoInternetException Elastic Search Does Not Work with no internet connection
+     * Sets the current User. Note we have to hardcode in a User for Testing.
+     * @throws NoInternetException
      */
     private void setUser() throws NoInternetException {
         if (CurrentUser.getInstance().getCurrentUser() == null){
@@ -89,6 +92,7 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Provides the TaskList for the Adapter and the Adapter for the RecyclerView.

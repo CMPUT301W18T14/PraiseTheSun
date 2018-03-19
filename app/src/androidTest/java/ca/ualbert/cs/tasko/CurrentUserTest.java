@@ -18,9 +18,12 @@ package ca.ualbert.cs.tasko;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
- * Created by spack on 2018-03-06.
  * Its important to setCurrentUser to null before the tests, otherwise CurrentUser was remembering
- * previous values which corrupted testing. Its a simple Singelton and everything seems to work.
+ * previous values which corrupted testing. Its a simple Singelton that allows any class in the app
+ * to access the currently logged in user.
+ * @see CurrentUser
+ *
+ * @author spack
  */
 
 public class CurrentUserTest extends ActivityInstrumentationTestCase2 {
@@ -31,19 +34,29 @@ public class CurrentUserTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
+    /**
+     * Test if a user is logged in.
+     */
     public void testLoggedIn(){
         CU.setCurrentUser(null);
         assertFalse("This should fail as no user has been added", CU.loggedIn());
     }
 
+    /**
+     * Make sure no errors arise when CurrentUser returns Null.
+     */
     public void testReturningNullUser(){
         CU.setCurrentUser(null);
         assertEquals(null, CU.getCurrentUser());
     }
 
+    /**
+     * Test setting a User in the Current User Singleton.
+     */
     public void testAddingUser(){
         CU.setCurrentUser(null);
-        User testUser = new User("jdoe", "John Doe", "123-456-9999", "jdoe@example.com");
+        User testUser = new User("jdoe", "John Doe", "123-456-9999"
+                , "jdoe@example.com");
         CU.setCurrentUser(testUser);
         assertEquals(testUser, CU.getCurrentUser());
     }

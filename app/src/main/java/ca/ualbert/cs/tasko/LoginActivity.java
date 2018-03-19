@@ -32,9 +32,12 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * LoginActivity should be the first Activity a user will see if they are not logged in.
- * Just contains a EditText that allows the user to Login, If the text in the EditText matches
- * a username in the database then access is granted. The user also has the option to navigate to
- * the create a new account activity if they do not already have an account.
+ * Contains an EditText that allows the user to input their username. If the text in the EditText
+ * matches a username in the database then access is granted, which will also set the User object
+ * associated with input username in the CurrentUser singleton. The user also has the option to
+ * navigate to the create new account activity if they do not already have an account.
+ * @see User
+ * @see CurrentUser
  *
  * @author spack
  */
@@ -49,6 +52,11 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private Button createAccountButton;
 
+    /**
+     * Creates the activity, which includes setting the layout, finding and binding all the widgets
+     * and setting up the buttons.
+     * @param savedInstanceState Get the saved state form the current device.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +72,9 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * The login button checks to make sure the username provided matches a username in the
-     * Database, if it does it sets that user to the current user using the CurrentUser singelton
-     * and also save the use to a local file so it does not have to login again.
-     * Otherwise the user is prompted to provide a valid username or create a new user profile.
+     * Database. If it does it sets that user to the current user using the CurrentUser singleton
+     * and also saves the user to a local file so it does not have to login again upon restarting
+     * the app. Otherwise the user is prompted to provide a valid username or create a new account.
      */
     public void setupLoginButton (){
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +110,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * The Create Account Activity simply sends the user to the create account activity.
+     * The Create Account Button simply sends the user to the CreateAccount Activity, where they
+     * can create a new account if they do not already have one.
      */
     public void setupCreateAccountButton (){
         createAccountButton.setOnClickListener(new View.OnClickListener() {

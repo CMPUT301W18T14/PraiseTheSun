@@ -31,8 +31,12 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * OpeningActivity is the first activity our app will open too, it checks in a local file if a
- * user string exsits and if it does it starts the app at the MainActivity. Otherwise, a user
+ * username string exists and if it does it starts the app at the MainActivity and sets the set
+ * the User object associated with username string in the CurrentUser singleton. Otherwise, a user
  * is directed to the LoginActivity.
+ * @see User
+ * @see LoginActivity
+ * @see MainActivity
  *
  * @author spack
  */
@@ -44,6 +48,10 @@ public class OpeningActivity extends AppCompatActivity {
     private static final String FILENAME = "nfile.sav";
     private String loggedInUser;
 
+    /**
+     * Standard OnCreate Method, note there is no layout associated with this activity.
+     * @param savedInstanceState Get the saved state form the current device.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +78,10 @@ public class OpeningActivity extends AppCompatActivity {
 
     /**
      * checkForUser is called when the app starts, it looks in a local file to see if a username
-     * string exsits and send the user to the appropriate activity depending on if the string
-     * exsits or not. If it does exsists it sets that user as the currently logged in user.
-     * @throws NoInternetException
+     * string exists and send the user to the appropriate activity depending on if the string
+     * exsits or not. If it does exists it sets that user as the currently logged in user and
+     * starts the app in MainActivity, otherwise the app starts in Login Activity.
+     * @throws NoInternetException Throws an exception if no Internet Connection is found.
      */
     private void checkForUser() throws NoInternetException {
         try {
