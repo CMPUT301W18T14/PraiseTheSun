@@ -64,7 +64,7 @@ public class ViewMyTasksActivity extends RootActivity {
 
         final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
         emptyListMessage.setLayoutResource(R.layout.empty_task_list);
-        emptyListMessage.inflate();
+
 
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

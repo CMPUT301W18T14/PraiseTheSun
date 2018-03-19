@@ -57,7 +57,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
-        holder.taskStatus.setText("Status:" + currentTask.getStatus());
+        holder.taskStatus.setText("Status: " + currentTask.getStatus());
         //Needs more information then I currently have/ dont know how to implement.
         //holder.taskPhoto.setImageResource();
 
@@ -92,10 +92,15 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
+            Intent intent;
+            if (thiscontext instanceof ViewMyTasksActivity) {
+                intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
+            }
+            else {
+                intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
+            }
             intent.putExtra("TaskID", tasks.get(getAdapterPosition()).getId());
             thiscontext.startActivity(intent);
-
         }
     }
 
