@@ -35,6 +35,7 @@ import io.searchbox.annotations.JestId;
  */
 
 public class User {
+    @JestId private String id;
 
     private String username;
     private String name;
@@ -46,8 +47,7 @@ public class User {
     //private ArrayList<Notification> notifications;
     private float rating;
 
-    @JestId
-    private String id;
+
 
     public User(){
 

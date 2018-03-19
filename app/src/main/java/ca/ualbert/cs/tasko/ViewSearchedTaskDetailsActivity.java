@@ -41,12 +41,14 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private TextView taskDescription;
     private TextView taskName;
     private TextView lowestBid;
+    private float lowbid = -1;
     private TextView requesterName;
     private Button placeBidButton;
     //private Button geolocationButton;
     private DataManager dm = DataManager.getInstance();
     private Task currentTask;
     private final Context context = this;
+    private User requesterUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         setContentView(R.layout.activity_view_searched_task_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         //Button and text boxes definitions
         requesterName = (TextView) findViewById(R.id.taskRequesterName);
@@ -68,6 +72,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         try {
             String taskID = extras.getString("TaskID");
             currentTask = dm.getTask(taskID, this);
+            requesterUser = dm.getUserById(currentTask.getTaskRequesterID(),
+                    getApplicationContext());
             populateFields();
         }catch(NullPointerException e){
             Log.i("Error", "TaskID from TaskListAdapter not properly passed");
@@ -89,13 +95,15 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         } catch (NoInternetException e){
             requesterName.setText("unknown user");
         }/**/
-        requesterName.setText(currentTask.getTaskRequesterID());
-        Bid lowbid;
+
+        requesterName.setText(requesterUser.getUsername());
+        Bid bid;
         try{
             BidList bids = dm.getTaskBids(currentTask.getId(), getApplicationContext());
-            lowbid = bids.getMinBid();
-            if(lowbid != null){
-                lowestBid.setText(getString(R.string.search_lowest_bid, lowbid.getValue()));
+            bid = bids.getMinBid();
+            if(bid != null){
+                lowbid = bid.getValue();
+                lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
             }
         } catch (NoInternetException e){
             Toast t = new Toast(this);
@@ -162,6 +170,10 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                     .getCurrentUser().getId(), value, currentTask.getId());
             try{
                 dm.addBid(bid, getApplicationContext());
+                if(value < lowbid || lowbid == -1){
+                    lowbid = value;
+                    lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
+                }
             } catch (NoInternetException e){
                 Toast t = new Toast(getApplicationContext());
                 t.setText("No connection");
@@ -172,8 +184,5 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
             t.setText("Not Logged In");
             t.show();
         }
-        populateFields();
-
     }
-
 }

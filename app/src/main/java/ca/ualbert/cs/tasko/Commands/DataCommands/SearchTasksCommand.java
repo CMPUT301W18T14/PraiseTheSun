@@ -58,9 +58,10 @@ public class SearchTasksCommand extends GetCommand<TaskList> {
      */
     @Override
     public void execute() {
-        String query = "{\"size\": 1000, \"query\":{\"match\":{\"description\": { \"query\" : \"" +
+        String query = "{\"size\": 1000, \"query\":{ \"bool\": { " +
+                "\"must\" : {\"match\":{\"description\": { \"query\" : \"" +
                 searchTerm +
-                "\", \"operator\" : \"and\" } } } }";
+                "\", \"operator\" : \"and\" } } }}}}";
         SearchTasks searchTask = new SearchTasks();
         searchTask.execute(query);
         try{
