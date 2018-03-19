@@ -151,6 +151,7 @@ public class AddTaskActivity extends AppCompatActivity {
     /**
      * Function that determines if there are any blank fields for name or description as both of
      * these fields must be provided.
+     *
      * @return returns a boolean. Returns false if there is at either name or description are
      * blank and true otherwise.
      */

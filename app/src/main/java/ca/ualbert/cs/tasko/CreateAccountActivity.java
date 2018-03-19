@@ -110,6 +110,7 @@ public class CreateAccountActivity extends AppCompatActivity {
      * Function that determines if there are any blank fields for username, name, email and phone
      * as all of these fields must be provided. Also, checks to see that the email given has a
      * valid email format and checks that the phone number is of format ***-***-****.
+     *
      * @return returns a boolean. Returns false if there is at least one field that does not
      * satisfy the requirements and true otherwise.
      */
@@ -128,10 +129,14 @@ public class CreateAccountActivity extends AppCompatActivity {
             nameText.setError("Name cannot be left blank");
             validInputs = false;
         }
-        // Retrieved from:
-        // https://stackoverflow.com/questions/12947620/email-address-validation-in-android-on
-        // -edittext
-        // taken on 2018-03-16
+        /*
+         * Code on determining whether a valid email was entered
+         * https://stackoverflow.com/questions/12947620/email-address-validation-in-android-on
+         * -edittext
+         * Taken on 2018-03-16
+         *
+         */
+
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("Invalid email address");
             validInputs = false;

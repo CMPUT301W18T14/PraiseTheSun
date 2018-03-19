@@ -43,7 +43,6 @@ import java.io.InputStream;
  */
 public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
-    private ImageView imageToUpload;
     private Bitmap image;
     private Button confirm;
 
@@ -58,7 +57,6 @@ public class AddPhotoActivity extends AppCompatActivity {
 
         confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
         confirm.setEnabled(false);
-        imageToUpload = (ImageView) findViewById(R.id.addPhotoTaskImage);
     }
 
     /**
@@ -67,6 +65,11 @@ public class AddPhotoActivity extends AppCompatActivity {
      *
      */
     public void onUploadClick(View view) {
+        /*
+         * Code on making an intent to the user's gallery
+         * https://www.youtube.com/watch?v=e8x-nu9-_BM
+         * Taken on 2018-03-17
+         */
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media
                 .EXTERNAL_CONTENT_URI);
         startActivityForResult(gallery, RESULT_LOAD_IMAGE);
@@ -79,13 +82,22 @@ public class AddPhotoActivity extends AppCompatActivity {
      *
      */
     public void onConfirmClick(View view) {
-        // https://stackoverflow.com/questions/11010386/passing-android-bitmap-data-within
-        // -activity-using-intent-in-android taken on 2018-03-17
+        /*
+         * Code on how to properly send a bitmap object through an intent was taken from
+         * https://stackoverflow.com/questions/11010386/passing-android-bitmap-data-within
+         * -activity-using-intent-in-android
+         * Taken on 2018-03-17
+         */
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte [] byteArray = stream.toByteArray();
-        // https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb-android
-        // taken on 2018-03-18
+        /*
+         * Code on checking the size of an image was taken from
+         * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
+         * -android
+         * Taken on 2018-03-18
+         */
         long imageLength = byteArray.length;
         if (imageLength <= 65535) {
             Intent returnImage = new Intent();
@@ -94,8 +106,8 @@ public class AddPhotoActivity extends AppCompatActivity {
             finish();
         }
         else {
-            Toast.makeText(this.getApplicationContext(), "Image file chosen is too big.",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getApplicationContext(), "Image file chosen is too big.", Toast
+                    .LENGTH_LONG).show();
         }
     }
 
@@ -114,18 +126,25 @@ public class AddPhotoActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RESULT_LOAD_IMAGE && data != null) {
+                /*
+                 * Code on retrieving an image from the gallery was taken from
+                 * https://www.youtube.com/watch?v=_xIWkCJZCu0 and
+                 * https://www.youtube.com/watch?v=e8x-nu9-_BM
+                 * Taken on 2018-03-16
+                 */
                 Uri selectedImage = data.getData();
 
                 InputStream inputStream;
                 try {
                     inputStream = getContentResolver().openInputStream(selectedImage);
                     image = BitmapFactory.decodeStream(inputStream);
-                    imageToUpload.setImageBitmap(image);
+                    ImageView imageView = (ImageView) findViewById(R.id.addPhotoTaskImage);
+                    imageView.setImageBitmap(image);
                     confirm.setEnabled(true);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    Toast.makeText(this.getApplicationContext(), "Image not found",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(this.getApplicationContext(), "Image not found", Toast
+                            .LENGTH_LONG).show();
                 }
             }
         }
