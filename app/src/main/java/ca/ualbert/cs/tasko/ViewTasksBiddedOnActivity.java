@@ -24,7 +24,7 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * This activity allows the user to view all of the tasks they have bidded on, Which will show up
+ * This activity allows the user to view all of the tasks they have bidded on, which will show up
  * as a recyclerview of tasks that includes all relevant information include your bid on the task.
  *
  * @author spack
@@ -41,6 +41,10 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     private BidList userBids;
     private TaskList biddedTasks;
 
+    /**
+     * Creates the activity by setting the recyclerview.
+     * @param savedInstanceState Get the saved state form the current device.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +56,16 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Populates the recyclerview with all task that a user has bid on.
+     */
     @Override
     protected void onStart() {
         super.onStart();
         //user = cu.getCurrentUser();
-        //Used for testing, setting the current user in test cases doe snot seem to work and thus
-        //gives a null pointer error.
+        //Used for testing, setting the current user in test cases does not seem to work and thus
+        //gives a null pointer error, to run normally comment out try catch block and uncomment
+        //the CuurrentUser Line
         try {
             user = dm.getUserByUsername("rromano", activity);
         } catch (NoInternetException e) {
@@ -82,7 +90,7 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-
+        //Initialize the Adapter and RecyclerView
         tasksBiddedAdapter = new TaskBiddedAdapter(activity, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }

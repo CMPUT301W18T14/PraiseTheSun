@@ -26,7 +26,8 @@ import android.widget.TextView;
 
 /**
  * A simple modification to the search adapter that displays the task you have bidded on, aswell
- * as the bid you have made on said task.
+ * as the bid you have made on said task. Please refer to TaskListAdapter for full documentation.
+ * @see TaskListAdapter
  *
  * @author spack
  */
@@ -44,6 +45,10 @@ public class TaskBiddedAdapter extends RecyclerView.Adapter<TaskBiddedAdapter.Ta
         myBids = dmBids;
     }
 
+    /**
+     * Uses a slightly different layout than regular Task List Adapter, includes a TextView to
+     * display the Current Users Bid on a Task.
+     */
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.bidded_task_layout, parent, false);
@@ -73,7 +78,8 @@ public class TaskBiddedAdapter extends RecyclerView.Adapter<TaskBiddedAdapter.Ta
 
     /**
      * The clickabale view holder that will get displayed in the recylcerview which displays
-     * relevant information about a task including name description and status.
+     * relevant information about a task including name description and status. Additionally,
+     * the current users bid on the task is displayed.
      */
     class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

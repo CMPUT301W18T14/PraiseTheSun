@@ -20,7 +20,9 @@ package ca.ualbert.cs.tasko;
  * activities to be able to get the current user. It also has a check to see if a user is logged
  * in, which can restrict the app functionality if false is returned. Set in either the Login or
  * OpeningActivity.
- * @see User, LoginActivity, OpeningActivity.
+ * @see User
+ * @see LoginActivity
+ * @see OpeningActivity
  *
  * @author spack
  */
