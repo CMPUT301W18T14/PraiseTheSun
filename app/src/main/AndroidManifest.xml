@@ -51,7 +51,8 @@
         <activity
             android:name=".ViewSearchedTaskDetailsActivity"
             android:label="@string/title_activity_view_searched_task_details"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".SearchResultsActivity"
+            android:theme="@style/AppTheme" />
         <activity android:name=".AddPhotoActivity"/>
         <activity
             android:name=".SearchResultsActivity"
@@ -59,6 +60,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ViewTasksBiddedOnActivity"></activity>
+        <activity android:name=".ViewBidsOnTaskActivity"></activity>
     </application>
 
 </manifest>
