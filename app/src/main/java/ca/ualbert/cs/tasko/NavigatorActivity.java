@@ -34,6 +34,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * NavigatorActivity implements a navigation menu for the app.
+ * It takes the menu elements and links to the relevant activities
+ *
+ * @author imtihan
+ * @version 1.0
+ */
 public class NavigatorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

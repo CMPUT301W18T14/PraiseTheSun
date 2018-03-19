@@ -15,10 +15,13 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -29,7 +32,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  *
  * @author spack
  */
-public class ViewTasksBiddedOnActivity extends AppCompatActivity {
+public class ViewTasksBiddedOnActivity extends RootActivity {
 
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter tasksBiddedAdapter;
@@ -44,8 +47,11 @@ public class ViewTasksBiddedOnActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_tasks_bidded_on);
-
+        //setContentView(R.layout.activity_view_tasks_bidded_on);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_view_tasks_bidded_on, null, false);
+        drawerLayout.addView(contentView, 0);
         searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);

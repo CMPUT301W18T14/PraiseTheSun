@@ -62,10 +62,9 @@ public class User {
         return username;
     }
 
-    public void setUsername (String name) {
-        this.name = name;
+    public void setUsername (String username) {
+        this.username = username;
     }
-
 
     public String getName() {
         return name;
@@ -75,7 +74,6 @@ public class User {
         this.name = name;
     }
 
-
     public String getPhoneNumber() {
         return phoneNumber ;
     }
@@ -83,7 +81,6 @@ public class User {
     public void setPhoneNumber (String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
 
     public String getEmail() {
         return email;
