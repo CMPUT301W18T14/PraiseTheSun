@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "446119642831",
+    "firebase_url": "https://cmput301w18t14.firebaseio.com",
+    "project_id": "cmput301w18t14",
+    "storage_bucket": "cmput301w18t14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446119642831:android:4153a975d90d7d9e",
+        "android_client_info": {
+          "package_name": "ca.ualbert.cs.tasko"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446119642831-gvuegukg6j1e52dodqqtms5erqqriin0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBckqKLZFfuC-bdZe8AXp58Uv2ViHt6pWk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
