@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 //Todo: Make the adapter more modular, can be reused but needs slight modifications each time
 
@@ -39,6 +44,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private LayoutInflater inflater;
     private TaskList tasks;
     private Context thiscontext;
+    private DataManager dm = DataManager.getInstance();
 
     /**
      * Constructor for the Adapter, Takes in the context which designates the activity that will use
@@ -62,7 +68,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
      */
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.task_view, parent, false);
+        View view = inflater.inflate(R.layout.task_cardview_layout, parent, false);
         TaskViewHolder holder = new TaskViewHolder(view);
 
         return holder;
@@ -73,6 +79,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
      * @param holder The ViewHolder data will be bound too.
      * @param position The position within the RecyclerView.
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
         Task currentTask = tasks.get(position);
@@ -80,9 +87,22 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
         holder.taskStatus.setText("Status: " + currentTask.getStatus());
+
+        try{
+            BidList bids = dm.getTaskBids(currentTask.getId(), thiscontext);
+            Bid lowbid = bids.getMinBid();
+            if(lowbid != null){
+                String lowbidValue = Float.toString(lowbid.getValue());
+                holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
+            }else holder.taskLowestBid.setText("Make the First Bid!");
+        } catch (NoInternetException e){
+            Toast t = new Toast(thiscontext);
+            t.setText("No Connection");
+            t.show();
+        }
+
         //Needs more information then I currently have/ dont know how to implement.
         //holder.taskPhoto.setImageResource();
-
     }
 
     /**
@@ -106,6 +126,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         TextView taskTitle;
         TextView taskStatus;
         TextView taskDescription;
+        TextView taskLowestBid;
         ImageView taskPhoto;
 
         public TaskViewHolder(View itemView) {
@@ -116,7 +137,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
             taskStatus = (TextView) itemView.findViewById(R.id.searchTaskStatus);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
-            taskPhoto = (ImageView) itemView.findViewById(R.id.taskPhoto);
+            taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);
+            taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
         }
 
         @Override
