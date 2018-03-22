@@ -37,8 +37,8 @@
 
             <TextView
                 android:id="@+id/searchTaskTitle"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/searchTaskPhoto"
                 android:text="@string/search_task_title"
@@ -66,7 +66,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/searchTaskPhoto"
                 android:text="@string/searchTaskStatus"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/searchTaskDescription"
@@ -77,7 +78,8 @@
                 android:layout_marginTop="25dp"
                 android:layout_toEndOf="@+id/searchTaskPhoto"
                 android:text="@string/task_search_description"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/searchTaskLowestBid"
@@ -85,9 +87,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/searchTaskStatus"
                 android:layout_alignBottom="@+id/searchTaskStatus"
-                android:layout_alignEnd="@+id/searchTaskTitle"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="34dp"
                 android:text="@string/lowest_bid"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
 
 
         </RelativeLayout>
