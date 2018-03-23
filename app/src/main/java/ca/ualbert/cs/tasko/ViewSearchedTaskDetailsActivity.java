@@ -31,6 +31,8 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
 
+import java.util.List;
+
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -102,7 +104,11 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
         status.setText(currentTask.getStatus().toString());
-        lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
+        if(lowbid == -1){
+            lowestBid.setText(R.string.ViewSearchedTaskDetailsNoBids);
+        } else {
+            lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
+        }
         requesterName.setText(requesterUser.getUsername());
     }
 
@@ -162,10 +168,27 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     private void placeBid(float value){
         if(CurrentUser.getInstance().loggedIn()) {
-            Bid bid = new Bid(CurrentUser.getInstance()
-                    .getCurrentUser().getId(), value, currentTask.getId());
-            try{
+
+            try {
+                BidList possibleCurrentBids = dm.getUserBids(
+                        CurrentUser.getInstance().getCurrentUser().getUsername(),
+                        getApplicationContext());
+                List<Bid> bids = possibleCurrentBids.getBids();
+                Bid bid = new Bid(CurrentUser.getInstance()
+                        .getCurrentUser().getId(), value, currentTask.getId());
+                for(Bid currentBid: bids){
+                    if(currentBid.getTaskID().equals(currentTask.getId())) {
+                        bid = currentBid;
+                        break;
+                    }
+                }
                 dm.addBid(bid, getApplicationContext());
+            } catch (NoInternetException e){
+                Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
+
+            }
+            try{
+
                 currentTask.setStatus(Status.BIDDED);
                 dm.putTask(currentTask, getApplicationContext());
                 if(value < lowbid || lowbid == -1){
