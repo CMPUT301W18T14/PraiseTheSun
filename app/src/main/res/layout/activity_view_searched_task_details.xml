@@ -185,6 +185,16 @@
                 android:layout_marginTop="16dp"
                 android:textSize="14sp" />
 
+            <TextView
+                android:id="@+id/ViewSearchedDetailsStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:textSize="14sp"/>
+
             <Button
                 android:id="@+id/placeBidButton"
                 android:layout_width="match_parent"

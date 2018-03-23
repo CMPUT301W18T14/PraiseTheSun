@@ -39,6 +39,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private TextView taskDescription;
     private TextView taskName;
     private TextView lowestBid;
+    private TextView status;
     private float lowbid = -1;
     private TextView requesterName;
     private Button placeBidButton;
@@ -64,17 +65,28 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         taskDescription = (TextView) findViewById(R.id.taskDescriptionView);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
+        status = (TextView) findViewById(R.id.ViewSearchedDetailsStatus);
 
         //Dialog for choosing to make a bid on the task
 
 
         Bundle extras = getIntent().getExtras();
-
+        Bid bid;
         try {
             String taskID = extras.getString("TaskID");
             currentTask = dm.getTask(taskID, this);
             requesterUser = dm.getUserById(currentTask.getTaskRequesterID(),
                     getApplicationContext());
+            try{
+                BidList bids = dm.getTaskBids(currentTask.getId(), getApplicationContext());
+                bid = bids.getMinBid();
+                if(bid != null){
+                    lowbid = bid.getValue();
+
+                }
+            } catch (NoInternetException e){
+                Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
+            }
             populateFields();
         }catch(NullPointerException e){
             Log.i("Error", "TaskID from TaskListAdapter not properly passed");
@@ -89,28 +101,9 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private void populateFields(){
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
-        /*
-        try {
-            requesterName.setText(dm.getUserById(currentTask.getTaskRequesterID(),
-                    getApplicationContext()).getUsername());
-        } catch (NoInternetException e){
-            requesterName.setText("unknown user");
-        }/**/
-
+        status.setText(currentTask.getStatus().toString());
+        lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
         requesterName.setText(requesterUser.getUsername());
-        Bid bid;
-        try{
-            BidList bids = dm.getTaskBids(currentTask.getId(), getApplicationContext());
-            bid = bids.getMinBid();
-            if(bid != null){
-                lowbid = bid.getValue();
-                lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
-            }
-        } catch (NoInternetException e){
-            Toast t = new Toast(this);
-            t.setText("No Connection");
-            t.show();
-        }
     }
 
     //Dialog for choosing to make a bid on the task
@@ -118,7 +111,6 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
         placeBidButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Confirm deletion and return to main page
                 AlertDialog.Builder builder = new AlertDialog.Builder(ViewSearchedTaskDetailsActivity.this);
                 final View bidView = getLayoutInflater().inflate(R.layout.place_bid_dialog, null);
                 final EditText bidAmount = (EditText) bidView.findViewById(R.id.bidAmount);
@@ -143,7 +135,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                                         if(bidAmount.getText().length() <= 0){
                                             bidAmount.setError("Must have a non-empty Bid!");
                                         } else {
-                                            placeBid(Float.valueOf(bidAmount.getText().toString()), currentTask);
+                                            placeBid(Float.valueOf(bidAmount.getText().toString()));
                                             dialog.cancel();
                                         }
                                     }
@@ -168,15 +160,17 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     }
 
-    private void placeBid(float value, Task task){
+    private void placeBid(float value){
         if(CurrentUser.getInstance().loggedIn()) {
             Bid bid = new Bid(CurrentUser.getInstance()
                     .getCurrentUser().getId(), value, currentTask.getId());
             try{
                 dm.addBid(bid, getApplicationContext());
+                currentTask.setStatus(Status.BIDDED);
+                dm.putTask(currentTask, getApplicationContext());
                 if(value < lowbid || lowbid == -1){
                     lowbid = value;
-                    lowestBid.setText(getString(R.string.search_lowest_bid, lowbid));
+                    populateFields();
                 }
             } catch (NoInternetException e){
                 Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
