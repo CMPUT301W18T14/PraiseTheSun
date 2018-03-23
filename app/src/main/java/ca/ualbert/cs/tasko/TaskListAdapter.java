@@ -123,6 +123,25 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         // Try to get the users bid on the Task if it exists
         if (myBids != null){
             holder.taskMyBid.setText("Your Bid: " + myBids.get(position).getValue());
+        } else{
+            holder.taskMyBid.setText("");
+        }
+
+        // Show the status of a task using an Icon instead of text, saves space and looks better??
+        Status status = currentTask.getStatus();
+        switch (status) {
+            case REQUESTED:
+                holder.taskStatusIcon.setImageResource(R.drawable.requested);
+                break;
+            case BIDDED:
+                holder.taskStatusIcon.setImageResource(R.drawable.bidded);
+                break;
+            case ASSIGNED:
+                holder.taskStatusIcon.setImageResource(R.drawable.assigned);
+                break;
+            case DONE:
+                holder.taskStatusIcon.setImageResource(R.drawable.done);
+                break;
         }
 
         //Needs more information then I currently have/ dont know how to implement.
@@ -149,6 +168,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         TextView taskTitle;
         TextView taskStatus;
+        ImageView taskStatusIcon;
         TextView taskDescription;
         TextView taskLowestBid;
         TextView taskMyBid;
@@ -161,6 +181,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
             taskStatus = (TextView) itemView.findViewById(R.id.searchTaskStatus);
+            taskStatusIcon = (ImageView) itemView.findViewById(R.id.searchedTaskStatusIcon);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
             taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);
             taskMyBid = (TextView) itemView.findViewById(R.id.searchedTasksMyBidOnTask);
