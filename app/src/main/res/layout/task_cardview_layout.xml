@@ -38,11 +38,12 @@
             <TextView
                 android:id="@+id/searchTaskTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="25dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/searchTaskPhoto"
+                android:layout_toStartOf="@id/searchedTaskStatusIcon"
                 android:text="@string/search_task_title"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -62,13 +63,15 @@
                 android:id="@+id/searchTaskDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_above="@id/searchTaskLowestBid"
                 android:layout_alignTop="@+id/searchTaskTitle"
                 android:layout_marginStart="13dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="29dp"
                 android:layout_toEndOf="@+id/searchTaskPhoto"
+                android:maxHeight="98dp"
                 android:text="@string/task_search_description"
                 android:textColor="@android:color/black"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/searchTaskLowestBid"
@@ -82,12 +85,12 @@
 
             <TextView
                 android:id="@+id/searchedTasksMyBidOnTask"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="33dp"
                 android:layout_toEndOf="@+id/searchTaskDescription"
-                android:text="My Bid:"
+                android:text="@string/my_bid"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
