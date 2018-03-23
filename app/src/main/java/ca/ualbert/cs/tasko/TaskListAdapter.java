@@ -62,9 +62,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     /**
      * Alternate Constructor for the Adapter, Takes in the context which designates the activity
      * that will use the adpater and a TaskList which represents the Tasks that will be displayed.
-     * This alternate Adapter includes a bidlist which represents a users bids.
+     * This alternate Adapter includes a bidlist which represents a users bids, will be included
+     * when the ViewTasksBiddedOnActivity is called.
      * @param context The context for the activity using the adapter.
-     * @param dmTasks The TaskList represnting the Tasks to be displayed, from the DataManager.
+     * @param dmTasks The TaskList representing all Tasks a user has bid on, from the DataManager.
+     * @param dmBids A BidList which represents all bids a user has made on the include TaskList.
      */
     public TaskListAdapter(Context context, TaskList dmTasks, BidList dmBids) {
         thiscontext = context;
@@ -90,7 +92,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     }
 
     /**
-     * Binds The appropriate Data to the ViewHolder.
+     * Binds The appropriate Data to the ViewHolder, this includes a TaskTitle, Description, Status,
+     * Minimum Bid, and potentially, a users Bid on a task and a Photo of the Task.
      * @param holder The ViewHolder data will be bound too.
      * @param position The position within the RecyclerView.
      */
@@ -118,6 +121,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
         // Try to get the users bid on the Task if it exists
+        if (myBids != null){
+            holder.taskMyBid.setText("Your Bid: " + myBids.get(position).getValue());
+        }
 
         //Needs more information then I currently have/ dont know how to implement.
         //holder.taskPhoto.setImageResource();
@@ -145,6 +151,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         TextView taskStatus;
         TextView taskDescription;
         TextView taskLowestBid;
+        TextView taskMyBid;
         ImageView taskPhoto;
 
         public TaskViewHolder(View itemView) {
@@ -156,6 +163,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskStatus = (TextView) itemView.findViewById(R.id.searchTaskStatus);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
             taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);
+            taskMyBid = (TextView) itemView.findViewById(R.id.searchedTasksMyBidOnTask);
             taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
         }
 

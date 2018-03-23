@@ -98,7 +98,7 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
      * Provides the TaskList for the Adapter and the Adapter for the RecyclerView.
      */
     private void setRecyclerView(){
-        tasksBiddedAdapter = new TaskBiddedAdapter(activity, biddedTasks, userBids);
+        tasksBiddedAdapter = new TaskListAdapter(activity, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
 

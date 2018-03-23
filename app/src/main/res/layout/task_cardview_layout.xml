@@ -93,6 +93,15 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/searchedTasksMyBidOnTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/searchTaskLowestBid"
+                android:layout_alignStart="@+id/searchTaskDescription"
+                android:layout_marginStart="39dp"
+                android:text="TextView" />
+
 
         </RelativeLayout>
 
