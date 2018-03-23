@@ -21,7 +21,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
+import ca.ualbert.cs.tasko.CurrentUser;
 import ca.ualbert.cs.tasko.R;
+import ca.ualbert.cs.tasko.data.DataManager;
 
 public class ViewNotificationActivity extends AppCompatActivity {
 
@@ -29,6 +31,8 @@ public class ViewNotificationActivity extends AppCompatActivity {
     private RecyclerView.Adapter notificationsAdapter;
     private RecyclerView.LayoutManager notificationsLayoutManager;
     private ViewNotificationActivity context = this;
+    private DataManager dm = DataManager.getInstance();
+    private CurrentUser cu = CurrentUser.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,7 @@ public class ViewNotificationActivity extends AppCompatActivity {
         notificationsLayoutManager = new LinearLayoutManager(context);
         notificationsRecyclerView.setLayoutManager(notificationsLayoutManager);
 
-        NotificationList myNotifications = ...
+        NotificationList myNotifications = dm.getNotifications(cu.getCurrentUser().getId(), context);
 
         notificationsAdapter = new NotificationListAdapter(context, myNotifications);
         notificationsRecyclerView.setAdapter(notificationsAdapter);

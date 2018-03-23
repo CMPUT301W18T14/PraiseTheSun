@@ -23,7 +23,7 @@ import ca.ualbert.cs.tasko.User;
 
 /**
  * Created by spack on 2018-02-23.
- * NotificationHandler deals with the creation of objects of the Notification Type. essentially
+ * NotificationHandler deals with the creation of objects of the Notification Type. Essentially
  * A middle man to communicate with the Factories.
  *
  * Currently I am using Users as parameters, I can change this to UserIDs pretty easily if we think
