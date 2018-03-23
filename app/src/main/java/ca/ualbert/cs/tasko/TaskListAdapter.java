@@ -44,18 +44,33 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private LayoutInflater inflater;
     private TaskList tasks;
     private Context thiscontext;
+    private BidList myBids;
     private DataManager dm = DataManager.getInstance();
 
     /**
      * Constructor for the Adapter, Takes in the context which designates the activity that will use
      * the adpater and a TaskList which represents the Tasks that will be displayed.
      * @param context The context for the activity using the adapter.
-     * @param dmtasks The TaskList represnting the Tasks to be displayed, from the DataManager.
+     * @param dmTasks The TaskList represnting the Tasks to be displayed, from the DataManager.
      */
-    public TaskListAdapter(Context context, TaskList dmtasks){
+    public TaskListAdapter(Context context, TaskList dmTasks){
         thiscontext = context;
         inflater = LayoutInflater.from(context);
-        tasks = dmtasks;
+        tasks = dmTasks;
+    }
+
+    /**
+     * Alternate Constructor for the Adapter, Takes in the context which designates the activity
+     * that will use the adpater and a TaskList which represents the Tasks that will be displayed.
+     * This alternate Adapter includes a bidlist which represents a users bids.
+     * @param context The context for the activity using the adapter.
+     * @param dmTasks The TaskList represnting the Tasks to be displayed, from the DataManager.
+     */
+    public TaskListAdapter(Context context, TaskList dmTasks, BidList dmBids) {
+        thiscontext = context;
+        inflater = LayoutInflater.from(context);
+        tasks = dmTasks;
+        myBids = dmBids;
     }
 
     /**
@@ -88,6 +103,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         holder.taskDescription.setText(currentTask.getDescription());
         holder.taskStatus.setText("Status: " + currentTask.getStatus());
 
+        // Tries to get the minimum bid on each task if it exists
         try{
             BidList bids = dm.getTaskBids(currentTask.getId(), thiscontext);
             Bid lowbid = bids.getMinBid();
@@ -100,6 +116,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             t.setText("No Connection");
             t.show();
         }
+
+        // Try to get the users bid on the Task if it exists
 
         //Needs more information then I currently have/ dont know how to implement.
         //holder.taskPhoto.setImageResource();
