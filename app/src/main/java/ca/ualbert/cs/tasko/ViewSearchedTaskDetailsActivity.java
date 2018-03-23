@@ -55,8 +55,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_searched_task_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 
