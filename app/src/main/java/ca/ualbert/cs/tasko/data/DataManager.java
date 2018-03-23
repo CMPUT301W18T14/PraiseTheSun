@@ -39,6 +39,7 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
 import ca.ualbert.cs.tasko.User;
@@ -311,8 +312,8 @@ public class DataManager {
     }
 
     //TODO
-    public ArrayList<Notification> getNotifications(String userId, Context context){
-        return new ArrayList<>();
+    public NotificationList getNotifications(String userId, Context context){
+        return new NotificationList();
     }
 
     //TODO

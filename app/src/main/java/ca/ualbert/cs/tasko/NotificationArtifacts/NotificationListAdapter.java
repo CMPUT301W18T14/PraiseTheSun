@@ -16,6 +16,7 @@
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
 
 /**
  * Created by spack on 2018-03-23.
@@ -23,5 +24,20 @@ import android.support.v7.widget.RecyclerView;
 
 class NotificationListAdapter extends RecyclerView.Adapter {
     public NotificationListAdapter(ViewNotificationActivity context, Object p1) {
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
     }
 }

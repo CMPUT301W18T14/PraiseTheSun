@@ -15,17 +15,16 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import android.support.v7.app.AppCompatActivity;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
- * Created by spack on 2018-03-23.
+ * A simple Variation of an ArrayList to store Notifications
+ * @see Notification
+ *
+ * @author spack
  */
-
-public class NotificationList extends AppCompatActivity {
+public class NotificationList{
 
     private ArrayList<Notification> NotificationList = new ArrayList<Notification>();
 
