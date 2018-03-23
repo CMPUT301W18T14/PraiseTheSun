@@ -104,7 +104,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
-        holder.taskStatus.setText("Status: " + currentTask.getStatus());
 
         // Tries to get the minimum bid on each task if it exists
         try{
@@ -144,7 +143,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 break;
         }
 
-        //Needs more information then I currently have/ dont know how to implement.
+        // Photos arent working properly.
         //holder.taskPhoto.setImageResource();
     }
 
@@ -167,7 +166,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView taskTitle;
-        TextView taskStatus;
         ImageView taskStatusIcon;
         TextView taskDescription;
         TextView taskLowestBid;
@@ -180,7 +178,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             itemView.setOnClickListener(this);
 
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
-            taskStatus = (TextView) itemView.findViewById(R.id.searchTaskStatus);
             taskStatusIcon = (ImageView) itemView.findViewById(R.id.searchedTaskStatusIcon);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
             taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);
