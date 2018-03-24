@@ -44,8 +44,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private LayoutInflater inflater;
     private TaskList tasks;
     private Context thiscontext;
+    private BidList lowBids;
     private BidList myBids;
-    private DataManager dm = DataManager.getInstance();
 
     /**
      * Constructor for the Adapter, Takes in the context which designates the activity that will use
@@ -72,7 +72,16 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         thiscontext = context;
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
-        myBids = dmBids;
+        lowBids = dmBids;
+    }
+
+    public TaskListAdapter(Context context, TaskList dmTasks, BidList dmLowBids, BidList dmMyBids){
+        thiscontext = context;
+        inflater = LayoutInflater.from(context);
+        tasks = dmTasks;
+        lowBids = dmLowBids;
+        myBids = dmMyBids;
+
     }
 
     /**
@@ -107,21 +116,17 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         // Tries to get the minimum bid on each task if it exists
         try{
-            BidList bids = dm.getTaskBids(currentTask.getId(), thiscontext);
-            Bid lowbid = bids.getMinBid();
-            if(lowbid != null){
-                String lowbidValue = Float.toString(lowbid.getValue());
-                holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
-            }else holder.taskLowestBid.setText("Make the First Bid!");
-        } catch (NoInternetException e){
-            Toast t = new Toast(thiscontext);
-            t.setText("No Connection");
-            t.show();
+            Bid lowBid = lowBids.get(position);
+            String lowbidValue = Float.toString(lowBid.getValue());
+            holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
+        }catch (NullPointerException e){
+            holder.taskLowestBid.setText("Make the First Bid!");
         }
 
-        // Try to get the users bid on the Task if it exists
+
+        // Checks see if to get the users bid on the Task if it exists
         if (myBids != null){
-            holder.taskMyBid.setText("Your Bid: " + myBids.get(position).getValue());
+            holder.taskMyBid.setText("Your Bid: " + lowBids.get(position).getValue());
         } else{
             holder.taskMyBid.setText("");
         }
