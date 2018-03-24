@@ -100,13 +100,14 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
 
     private void getMinBids() {
         lowBids = new BidList();
-        Task currentTask = null;
+        Task currentTask;
         try {
-            for (int i = 0; i < biddedTasks.getSize(); i++)
+            for (int i = 0; i < biddedTasks.getSize(); i++) {
                 currentTask = biddedTasks.get(i);
                 BidList bids = dm.getTaskBids(currentTask.getId(), context);
                 Bid lowbid = bids.getMinBid();
                 lowBids.addBid(lowbid);
+            }
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e){

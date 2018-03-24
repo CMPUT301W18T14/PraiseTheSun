@@ -60,7 +60,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         searchForBids();
 
         //Initialize the Adapter and RecyclerView
-        searchAdapter = new TaskListAdapter(context, foundtasks);
+        searchAdapter = new TaskListAdapter(context, foundtasks, lowBids);
         searchRecyclerView.setAdapter(searchAdapter);
 
     }
@@ -90,15 +90,16 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void searchForBids() {
         lowBids = new BidList();
-        Task currentTask = null;
+        Task currentTask;
         try {
-            for (int i = 0; i < foundtasks.getSize(); i++)
+            for (int i = 0; i < foundtasks.getSize(); i++) {
                 currentTask = foundtasks.get(i);
                 BidList bids = dm.getTaskBids(currentTask.getId(), context);
                 Bid lowbid = bids.getMinBid();
                 if (lowbid != null) {
                     lowBids.addBid(lowbid);
                 } else lowBids.addBid(null);
+            }
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
         }
