@@ -65,6 +65,7 @@ public class RootActivity extends AppCompatActivity {
         setContentView(R.layout.activity_root);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
+
         toolbar = (Toolbar) findViewById(R.id.navbar);
         setSupportActionBar(toolbar);
 
@@ -82,7 +83,7 @@ public class RootActivity extends AppCompatActivity {
             Log.i("Mock stuff:", mock.getUsername() + " \\ " + mock.getEmail()  );
         }
         user = CurrentUser.getInstance().getCurrentUser();
-        username = (TextView)findViewById(R.id.username);
+        username = (TextView) navigationView.getHeaderView(0).findViewById(R.id.MenuUsername);
         Log.i("User stuff:", user.getUsername() + " \\ " + user.getEmail()  );
         username.setText(user.getUsername());
         navigationView.setNavigationItemSelectedListener(
@@ -140,6 +141,8 @@ public class RootActivity extends AppCompatActivity {
                     }
                 }
         );
+
+
     }
 
     @Override
