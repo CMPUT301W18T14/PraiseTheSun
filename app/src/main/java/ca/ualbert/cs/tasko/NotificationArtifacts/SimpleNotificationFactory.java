@@ -24,7 +24,7 @@ import ca.ualbert.cs.tasko.User;
  * Created by spack on 2018-03-10.
  */
 
-public class NotificationFactory {
+public class SimpleNotificationFactory {
 
     public SimpleNotification createNotification(Status currentStatus, String taskName, User taskrequestor
             , User taskprovider) {

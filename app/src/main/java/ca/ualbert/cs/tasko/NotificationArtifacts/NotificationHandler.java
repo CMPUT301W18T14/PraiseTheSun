@@ -34,14 +34,14 @@ import ca.ualbert.cs.tasko.User;
 public class NotificationHandler {
 
     private ArrayList<RatingNotification> notifications = new ArrayList<>();
-    private NotificationFactory notificationFactory;
+    private SimpleNotificationFactory notificationFactory;
     private RatingNotificationFactory ratingNotificationFactory;
 
     /**
      * Currently there are 3 constructors. One for each possible factory combination we could use
      * @param nf This represents the Factory Object we pass in, a Notification Factory
      */
-    public NotificationHandler(NotificationFactory nf) {
+    public NotificationHandler(SimpleNotificationFactory nf) {
 
         this.notificationFactory = nf;
 
@@ -53,7 +53,7 @@ public class NotificationHandler {
 
     }
 
-    public NotificationHandler(NotificationFactory nf, RatingNotificationFactory rnf) {
+    public NotificationHandler(SimpleNotificationFactory nf, RatingNotificationFactory rnf) {
 
         this.notificationFactory = nf;
         this.ratingNotificationFactory = rnf;

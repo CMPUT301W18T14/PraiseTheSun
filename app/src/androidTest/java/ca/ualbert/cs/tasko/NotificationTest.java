@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
-import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 
 //Notifications Need to be reworked for part 5... Avoiding in depth documentation until then
@@ -32,7 +32,7 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
-    private NotificationFactory nf;
+    private SimpleNotificationFactory nf;
     private RatingNotificationFactory rnf;
     private NotificationHandler nh;
     private User provider;
@@ -40,7 +40,7 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
     private Task task;
 
     public void setUp() {
-        nf = new NotificationFactory();
+        nf = new SimpleNotificationFactory();
         rnf = new RatingNotificationFactory();
         nh = new NotificationHandler(nf, rnf);
         requestor = new User("StevieP", "Steve", "780-450-1000",

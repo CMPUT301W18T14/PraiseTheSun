@@ -19,7 +19,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import java.util.ArrayList;
 
-import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotification;
@@ -34,7 +34,7 @@ public class NotificationListTest extends ActivityInstrumentationTestCase2 {
     public NotificationListTest() {super(MainActivity.class);}
 
     private NotificationList nl;
-    private NotificationFactory nf;
+    private SimpleNotificationFactory nf;
     private RatingNotificationFactory rnf;
     private NotificationHandler nh;
     private User provider;
@@ -43,7 +43,7 @@ public class NotificationListTest extends ActivityInstrumentationTestCase2 {
 
     public void setUp() {
         nl = new NotificationList();
-        nf = new NotificationFactory();
+        nf = new SimpleNotificationFactory();
         rnf = new RatingNotificationFactory();
         nh = new NotificationHandler(nf, rnf);
         requestor = new User("StevieP", "Steve", "780-450-1000",
