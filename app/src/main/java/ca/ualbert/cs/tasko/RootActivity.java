@@ -25,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -72,7 +73,17 @@ public class RootActivity extends AppCompatActivity {
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         user = CurrentUser.getInstance().getCurrentUser();
+        try {user.getUsername();}
+        catch (Exception e){
+            Log.i("no user detected", "will make a mock user");
+            User mockUser = new User("testname", "name", "somenumber", "email@nowhere.universe");
+            CurrentUser.getInstance().setCurrentUser(mockUser);
+            User mock = CurrentUser.getInstance().getCurrentUser();
+            Log.i("Mock stuff:", mock.getUsername() + " \\ " + mock.getEmail()  );
+        }
+        user = CurrentUser.getInstance().getCurrentUser();
         username = (TextView)findViewById(R.id.username);
+        Log.i("User stuff:", user.getUsername() + " \\ " + user.getEmail()  );
         username.setText(user.getUsername());
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
