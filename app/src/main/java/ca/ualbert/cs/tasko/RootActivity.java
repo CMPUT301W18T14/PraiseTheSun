@@ -27,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 /**
  *
@@ -47,7 +48,8 @@ public class RootActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
-
+    TextView username;
+    User user;
     /**
      * Takes a navigation_view for the formatting of the navigator menu,
      * creates a toolbar object so that the items can be clicked,
@@ -69,7 +71,9 @@ public class RootActivity extends AppCompatActivity {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
-
+        user = CurrentUser.getInstance().getCurrentUser();
+        username = (TextView)findViewById(R.id.username);
+        username.setText(user.getUsername());
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
