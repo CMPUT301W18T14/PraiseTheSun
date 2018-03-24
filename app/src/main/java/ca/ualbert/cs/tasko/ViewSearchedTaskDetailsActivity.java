@@ -55,9 +55,6 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_searched_task_details);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
         //Button and text boxes definitions
         requesterName = (TextView) findViewById(R.id.taskRequesterName);
@@ -170,26 +167,28 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
             try {
                 BidList possibleCurrentBids = dm.getUserBids(
-                        CurrentUser.getInstance().getCurrentUser().getUsername(),
+                        CurrentUser.getInstance().getCurrentUser().getId(),
                         getApplicationContext());
                 List<Bid> bids = possibleCurrentBids.getBids();
                 Bid bid = new Bid(CurrentUser.getInstance()
                         .getCurrentUser().getId(), value, currentTask.getId());
                 for(Bid currentBid: bids){
-                    if(currentBid.getTaskID().equals(currentTask.getId())) {
+                    if(currentBid.getTaskID().compareTo(currentTask.getId()) == 0) {
                         bid = currentBid;
+                        bid.setValue(value);
                         break;
                     }
                 }
                 dm.addBid(bid, getApplicationContext());
             } catch (NoInternetException e){
                 Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
-
             }
             try{
 
-                currentTask.setStatus(Status.BIDDED);
-                dm.putTask(currentTask, getApplicationContext());
+                if(currentTask.getStatus() != Status.BIDDED) {
+                    currentTask.setStatus(Status.BIDDED);
+                    dm.putTask(currentTask, getApplicationContext());
+                }
                 if(value < lowbid || lowbid == -1){
                     lowbid = value;
                     populateFields();
