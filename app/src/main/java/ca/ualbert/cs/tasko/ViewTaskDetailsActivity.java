@@ -117,7 +117,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                 Context thiscontext = getApplicationContext();
                 Intent intent;
                 intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
-                intent.putExtra("TaskID", currentTask);
+                intent.putExtra("TaskID", currentTask.getId());
                 thiscontext.startActivity(intent);
                 //startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
             }
