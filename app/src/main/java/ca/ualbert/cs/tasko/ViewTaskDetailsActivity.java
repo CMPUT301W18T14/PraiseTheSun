@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -113,7 +114,12 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
+                Context thiscontext = getApplicationContext();
+                Intent intent;
+                intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
+                intent.putExtra("TaskID", currentTask);
+                thiscontext.startActivity(intent);
+                //startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
             }
         });
 
