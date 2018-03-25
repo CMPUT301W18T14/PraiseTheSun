@@ -64,10 +64,11 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ViewTasksBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
+
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
         <activity android:name=".LogOutActivity"></activity>
         <activity android:name=".ViewPhotoActivity"></activity>
-
+        <activity android:name=".EditTaskActivity"></activity>
     </application>
 
 </manifest>
