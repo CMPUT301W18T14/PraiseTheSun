@@ -109,7 +109,7 @@ public class DataManager {
      * @throws NoInternetException when the device has no internet.
      * @see GetUserByIdCommand
      */
-    public User getUserById(String id, RatingNotificationFactory context) throws NoInternetException{
+    public User getUserById(String id, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserByIdCommand command = new GetUserByIdCommand(id);
         if(isOnline(context)){
@@ -177,7 +177,7 @@ public class DataManager {
      * @return the found task object or null if not found
      * @throws NoInternetException when not connected to the internet
      */
-    public Task getTask(String taskId, RatingNotificationFactory context)
+    public Task getTask(String taskId, Context context)
             throws NoInternetException{
         context = context.getApplicationContext();
         GetTaskCommand command = new GetTaskCommand(taskId);
@@ -305,7 +305,7 @@ public class DataManager {
     }
 
     //TODO
-    public void putNotification(Notification notification, RatingNotificationFactory context){
+    public void putNotification(Notification notification, Context context){
 
     }
 
