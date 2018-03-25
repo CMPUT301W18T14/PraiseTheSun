@@ -38,7 +38,6 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotificationFactory;
-import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotificationFactory;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
 import ca.ualbert.cs.tasko.User;
@@ -110,7 +109,7 @@ public class DataManager {
      * @throws NoInternetException when the device has no internet.
      * @see GetUserByIdCommand
      */
-    public User getUserById(String id, SimpleNotificationFactory context) throws NoInternetException{
+    public User getUserById(String id, RatingNotificationFactory context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserByIdCommand command = new GetUserByIdCommand(id);
         if(isOnline(context)){
@@ -178,7 +177,7 @@ public class DataManager {
      * @return the found task object or null if not found
      * @throws NoInternetException when not connected to the internet
      */
-    public Task getTask(String taskId, SimpleNotificationFactory context)
+    public Task getTask(String taskId, RatingNotificationFactory context)
             throws NoInternetException{
         context = context.getApplicationContext();
         GetTaskCommand command = new GetTaskCommand(taskId);

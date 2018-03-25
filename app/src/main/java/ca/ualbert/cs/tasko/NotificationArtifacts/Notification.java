@@ -26,15 +26,24 @@ public abstract class Notification {
 
     private String message;
     private String recipient;
+    private String taskID;
 
 
-    public Notification(String message, String recipient) {
+    public Notification(String message, String recipient, String taskID) {
         this.message = message;
         this.recipient = recipient;
+        this.taskID = taskID;
     }
 
     public String getMessage(){
         return message;
+    }
 
+    public String getRecipient(){
+        return recipient;
+    }
+
+    public String getTaskID(){
+        return taskID;
     }
 }

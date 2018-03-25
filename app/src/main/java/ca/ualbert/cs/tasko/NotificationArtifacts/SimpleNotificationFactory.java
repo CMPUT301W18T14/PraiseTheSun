@@ -34,7 +34,7 @@ public class SimpleNotificationFactory {
             , String taskproviderID) throws NoInternetException {
 
 
-        SimpleNotification notification;
+        SimpleNotification notification = null;
         String message;
         String taskname = dm.getTask(taskID, this).getTaskName();
         String recipientID;
@@ -45,20 +45,21 @@ public class SimpleNotificationFactory {
             case REQUESTED:
                 recipientID = taskproviderID;
                 message = "Default Message for Testing";
-                notification = new SimpleNotification(message, recipientID);
+                notification = new SimpleNotification(message, recipientID, taskID);
                 break;
             case BIDDED:
                 recipientID = taskrequestorID;
                 message = "You have received a new Bid on" + taskname;
-                notification = new SimpleNotification(message, recipientID);
+                notification = new SimpleNotification(message, recipientID, taskID);
                 break;
             case ASSIGNED:
                 recipientID = taskproviderID;
                 message = "You have been assigned to complete" + taskname;
-                notification = new SimpleNotification(message, recipientID);
+                notification = new SimpleNotification(message, recipientID, taskID);
                 break;
         }
 
+        dm.putNotification(notification, this);
 
     }
 }
