@@ -22,12 +22,10 @@
     tools:context="ca.ualbert.cs.tasko.AddPhotoActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layou_addphoto"
+        android:id="@+id/app_bar_layout_addphoto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_constraintBottom_toTopOf="@+id/addPhotoTaskImage"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.Toolbar
@@ -38,6 +36,35 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+
+    <!--
+        https://stackoverflow.com/questions/23426113/how-to-select-multiple-images-from-gallery-in-android
+        accessed on 2018-03-25
+        -->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/add_photo_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/addPhotoUploadButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_layout_addphoto">
+
+        <LinearLayout
+            android:id="@+id/lnrImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </android.support.v7.widget.RecyclerView>
+
 
     <Button
         android:id="@+id/addPhotoUploadButton"
@@ -53,6 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!--
     <ImageView
         android:id="@+id/addPhotoTaskImage"
         android:layout_width="wrap_content"
@@ -66,6 +94,7 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layou_addphoto" />
+        -->
 
     <Button
         android:id="@+id/addPhotoConfirmButton"
