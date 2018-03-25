@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import android.content.Context;
+
 import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -29,6 +31,11 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 public class SimpleNotificationFactory {
 
     DataManager dm = DataManager.getInstance();
+    Context context;
+
+    public void setContext(Context context){
+        this.context = context;
+    }
 
     public void createNotification(String taskID, String taskrequestorID
             , String taskproviderID) throws NoInternetException {
@@ -36,10 +43,10 @@ public class SimpleNotificationFactory {
 
         SimpleNotification notification = null;
         String message;
-        String taskname = dm.getTask(taskID, this).getTaskName();
+        String taskname = dm.getTask(taskID, context).getTaskName();
         String recipientID;
 
-        Status status = dm.getTask(taskID, this).getStatus();
+        Status status = dm.getTask(taskID, context).getStatus();
 
         switch (status) {
             case REQUESTED:
@@ -59,7 +66,7 @@ public class SimpleNotificationFactory {
                 break;
         }
 
-        dm.putNotification(notification, this);
+        dm.putNotification(notification, context);
 
     }
 }

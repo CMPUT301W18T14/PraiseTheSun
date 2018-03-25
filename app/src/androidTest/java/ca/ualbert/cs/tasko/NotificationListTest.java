@@ -25,6 +25,8 @@ import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Created by spack on 2018-03-23.
@@ -33,38 +35,52 @@ import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
 public class NotificationListTest extends ActivityInstrumentationTestCase2 {
     public NotificationListTest() {super(MainActivity.class);}
 
+    private DataManager dm = DataManager.getInstance();
+
     private NotificationList nl;
     private SimpleNotificationFactory nf;
     private RatingNotificationFactory rnf;
     private NotificationHandler nh;
-    private User provider;
-    private User requestor;
+    private String providerID;
+    private String requestorID;
     private Task task;
 
-    public void setUp() {
-        nl = new NotificationList();
+    public void setUp() throws NoInternetException {
         nf = new SimpleNotificationFactory();
+        nf.setContext(getActivity().getApplicationContext());
         rnf = new RatingNotificationFactory();
+        rnf.setContext(getActivity().getApplicationContext());
         nh = new NotificationHandler(nf, rnf);
-        requestor = new User("StevieP", "Steve", "780-450-1000",
+
+        User requestor = new User("StevieP", "Steve", "780-450-1000",
                 "spacker@ualberta.ca");
-        provider = new User("Stevoo", "Stephen", "780-454-1054",
+        User provider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
-        task = new Task("requestorID", "TestTask1",
-                "Help me with the factory pattern ahhhhhhh");
+
+        if (dm.getUserByUsername("StevieP", getActivity().getApplicationContext()) == null) {
+            dm.putUser(requestor, getActivity().getApplicationContext());
+            dm.putUser(provider, getActivity().getApplicationContext());
+        }
+
+        requestorID = dm.getUserByUsername("StevieP",
+                getActivity().getApplicationContext()).getId();
+
+        providerID = dm.getUserByUsername("Stevoo",
+                getActivity().getApplicationContext()).getId();
+
+        task = new Task(requestorID, "TestTask for Notifications", "Notifications");
+        dm.putTask(task, getActivity().getApplicationContext());
     }
 
-    public void testAdd(){
+    public void testAdd() throws NoInternetException {
         ArrayList<RatingNotification> notifications;
 
 
-        SimpleNotification notification = nh.newSimpleNotification(task.getStatus(), task.getTaskName(),
-                requestor, provider);
+        nh.newSimpleNotification(task.getId(), requestorID, providerID);
 
-        notifications = nh.newRatingNotification(task.getTaskName(), requestor,
-                provider);
+        nh.newRatingNotification(task.getId(), requestorID, providerID);
 
-        nl.addNotification(notification);
-        nl.addNotification(notifications.get(0));
+        //nl.addNotification(notification);
+        //nl.addNotification(notifications.get(0));
     }
 }

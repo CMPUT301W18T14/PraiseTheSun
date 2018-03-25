@@ -29,7 +29,12 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class RatingNotificationFactory {
 
+    public void setContext(Context context){
+        this.context = context;
+    }
+
     private DataManager dm = DataManager.getInstance();
+    private Context context;
 
     public void createNotification(String taskID, String taskrequestorID, String taskproviderID)
             throws NoInternetException {
@@ -37,19 +42,19 @@ public class RatingNotificationFactory {
         RatingNotification providerNotification;
         RatingNotification requestorNotification;
         String message;
-        String taskname = dm.getTask(taskID, this).getTaskName();
-        User taskprovider = dm.getUserById(taskproviderID, this);
-        User taskrequestor = dm.getUserById(taskrequestorID, this);
+        String taskname = dm.getTask(taskID, context).getTaskName();
+        User taskprovider = dm.getUserById(taskproviderID, context);
+        User taskrequestor = dm.getUserById(taskrequestorID, context);
 
         message = taskprovider.getUsername() + " has completed " + taskname
                 + ". Please rate their services";
         providerNotification = new RatingNotification(message, taskrequestorID, taskID);
-        dm.putNotification(providerNotification, this);
+        dm.putNotification(providerNotification, context);
 
         message = "You have completed " + taskname + ". Please rate your experience with "
                 + taskrequestor.getUsername();
         requestorNotification = new RatingNotification(message, taskproviderID, taskID);
-        dm.putNotification(requestorNotification, this);
+        dm.putNotification(requestorNotification, context);
 
     }
 }
