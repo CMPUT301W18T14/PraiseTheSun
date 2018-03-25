@@ -28,6 +28,8 @@ import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
+import ca.ualbert.cs.tasko.Commands.Command;
+import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
@@ -164,9 +166,28 @@ public class DataManager {
         if(isOnline(context)){
             dcm.invokeCommand(command);
         } else {
+            dcm.addToQueue(command);
             throw new NoInternetException();
         }
 
+    }
+
+    /**
+     * Given a task with a non-null id, execute the command to remove that task
+     * from the elastic search database.
+     *
+     * @param task task to be deleted
+     * @param context application context
+     */
+    public void deleteTask(Task task, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        DeleteTaskCommand dtc = new DeleteTaskCommand(task);
+        if(isOnline(context)){
+            dcm.invokeCommand(dtc);
+        } else {
+            dcm.addToQueue(dtc);
+            throw new NoInternetException();
+        }
     }
 
     /**
