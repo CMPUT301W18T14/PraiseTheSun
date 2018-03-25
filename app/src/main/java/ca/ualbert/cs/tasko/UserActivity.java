@@ -15,11 +15,13 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.content.Intent;
 import android.provider.DocumentsContract;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -43,9 +45,11 @@ public class UserActivity extends RootActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
-        setContentView(R.layout.activity_user);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_user, null, false);
+        drawerLayout.addView(contentView, 0);
+
 
         username = (TextView)findViewById(R.id.UserActivityUsername);
         email = (TextView) findViewById(R.id.UserActivityUserEmail);
