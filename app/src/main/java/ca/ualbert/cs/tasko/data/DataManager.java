@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
 import ca.ualbert.cs.tasko.Commands.Command;
+import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
@@ -182,6 +183,9 @@ public class DataManager {
     public void deleteTask(Task task, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         DeleteTaskCommand dtc = new DeleteTaskCommand(task);
+
+        //TODO: DELETE ALL BIDS THAT ARE ON THIS TASK
+
         if(isOnline(context)){
             dcm.invokeCommand(dtc);
         } else {
@@ -322,8 +326,15 @@ public class DataManager {
     }
 
     //TODO Part 5
-    public void deleteBid(String bidId, Context context){
-
+    public void deleteBid(String bidId, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        DeleteBidCommand dbc = new DeleteBidCommand(bidId);
+        if(isOnline(context)){
+            dcm.invokeCommand(dbc);
+        } else {
+            dcm.addToQueue(dbc);
+            throw new NoInternetException();
+        }
     }
 
     //TODO

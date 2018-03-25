@@ -16,12 +16,11 @@
 package ca.ualbert.cs.tasko.Commands.DataCommands;
 
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.io.IOException;
 
-import ca.ualbert.cs.tasko.Task;
+import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.data.JestWrapper;
 import io.searchbox.core.Delete;
 
@@ -29,18 +28,18 @@ import io.searchbox.core.Delete;
  * Created by chase on 3/24/2018.
  */
 
-public class DeleteTaskCommand extends DeleteCommand {
+public class DeleteBidCommand extends DeleteCommand {
 
-    private Task task;
+    private String bid;
 
-    public DeleteTaskCommand(Task task){
-        this.task = task;
+    public DeleteBidCommand(String bid){
+        this.bid = bid;
     }
 
     @Override
     public void execute() {
-        DeleteTaskAsycTask delete = new DeleteTaskAsycTask();
-        delete.execute(task.getId());
+        DeleteBidAsycTask delete = new DeleteBidAsycTask();
+        delete.execute(bid);
     }
 
     @Override
@@ -48,18 +47,18 @@ public class DeleteTaskCommand extends DeleteCommand {
 
     }
 
-    private class DeleteTaskAsycTask extends AsyncTask<String, Void, Void>{
+    private class DeleteBidAsycTask extends AsyncTask<String, Void, Void> {
 
         @Override
         protected Void doInBackground(String... strings) {
             JestWrapper.verifySettings();
 
             Delete delete = new Delete.Builder(strings[0]).index(JestWrapper.getIndex()).type
-                    ("task").build();
+                    ("bid").build();
             try {
                 JestWrapper.getClient().execute(delete);
             } catch (IOException e){
-                Log.i("Delete Task Command", "Could not execute the delete task Jest");
+                Log.i("Delete Bid Command", "Could not execute the delete bid Jest statement");
             }
 
             return null;
