@@ -25,10 +25,10 @@ import ca.ualbert.cs.tasko.User;
 public abstract class Notification {
 
     private String message;
-    private User recipient;
+    private String recipient;
 
 
-    public Notification(String message, User recipient) {
+    public Notification(String message, String recipient) {
         this.message = message;
         this.recipient = recipient;
     }

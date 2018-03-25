@@ -25,7 +25,7 @@ import io.searchbox.annotations.JestId;
 public class SimpleNotification extends Notification{
 
 
-    public SimpleNotification(String message, User recipient){
+    public SimpleNotification(String message, String recipient){
         super(message, recipient);
     }
 

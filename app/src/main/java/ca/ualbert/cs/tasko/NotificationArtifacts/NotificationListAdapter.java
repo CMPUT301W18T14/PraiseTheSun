@@ -52,7 +52,9 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
 
     @Override
     public void onBindViewHolder(NotificationViewHolder holder, int position) {
+        Notification currentNotification = notifications.getNotification(position);
 
+        holder.notificationMessage.setText(currentNotification.getMessage());
     }
 
     @Override
@@ -70,17 +72,19 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
             itemView.setOnClickListener(this);
 
             notificationMessage = (TextView) itemView.findViewById(R.id.notificationBody);
-
         }
 
         @Override
         public void onClick(View view) {
             Intent intent;
             Notification clickedNotificatoin = notifications.getNotification(getAdapterPosition());
-            intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
-            intent.putExtra("TaskID", clickedNotificatoin.getMessage());
-            thiscontext.startActivity(intent);
-
+            if (clickedNotificatoin instanceof SimpleNotification){
+                intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
+                intent.putExtra("TaskID", clickedNotificatoin.getMessage());
+                thiscontext.startActivity(intent);
+            }else{
+                //Create the Rating popup and have it popup here!
+            }
         }
     }
 }
