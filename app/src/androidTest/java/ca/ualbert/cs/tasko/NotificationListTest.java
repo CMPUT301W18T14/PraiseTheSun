@@ -38,25 +38,20 @@ public class NotificationListTest extends ActivityInstrumentationTestCase2 {
     private DataManager dm = DataManager.getInstance();
 
     private NotificationList nl;
-    private SimpleNotificationFactory nf;
-    private RatingNotificationFactory rnf;
     private NotificationHandler nh;
     private String providerID;
     private String requestorID;
     private Task task;
 
     public void setUp() throws NoInternetException {
-        nf = new SimpleNotificationFactory();
-        nf.setContext(getActivity().getApplicationContext());
-        rnf = new RatingNotificationFactory();
-        rnf.setContext(getActivity().getApplicationContext());
-        nh = new NotificationHandler(nf, rnf);
+        nh = new NotificationHandler(getActivity().getApplicationContext());
 
         User requestor = new User("StevieP", "Steve", "780-450-1000",
                 "spacker@ualberta.ca");
         User provider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
 
+        //Dont keep putting in Users
         if (dm.getUserByUsername("StevieP", getActivity().getApplicationContext()) == null) {
             dm.putUser(requestor, getActivity().getApplicationContext());
             dm.putUser(provider, getActivity().getApplicationContext());
@@ -72,15 +67,27 @@ public class NotificationListTest extends ActivityInstrumentationTestCase2 {
         dm.putTask(task, getActivity().getApplicationContext());
     }
 
-    public void testAdd() throws NoInternetException {
-        ArrayList<RatingNotification> notifications;
-
+    public void testAddingSimpleNotifications() throws NoInternetException {
 
         nh.newSimpleNotification(task.getId(), requestorID, providerID);
 
+        nl = dm.getNotifications(requestorID, getActivity().getApplicationContext());
+
+        assertFalse(nl.getSize() == 0);
+
+    }
+
+    public void testAddingRatingNotifications() throws NoInternetException {
+
         nh.newRatingNotification(task.getId(), requestorID, providerID);
 
-        //nl.addNotification(notification);
-        //nl.addNotification(notifications.get(0));
+        nl = dm.getNotifications(requestorID, getActivity().getApplicationContext());
+
+        assertFalse(nl.getSize() == 0);
+
+        nl = dm.getNotifications(providerID, getActivity().getApplicationContext());
+
+        assertFalse(nl.getSize() == 0);
+
     }
 }
