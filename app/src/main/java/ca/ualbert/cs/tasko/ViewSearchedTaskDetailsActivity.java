@@ -18,6 +18,7 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
@@ -164,40 +165,62 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     private void placeBid(float value){
         if(CurrentUser.getInstance().loggedIn()) {
+            if(currentTask.getStatus() != Status.BIDDED) {
+                currentTask.setStatus(Status.BIDDED);
+            }
+            if(value < lowbid || lowbid == -1){
+                lowbid = value;
+                populateFields();
+            }
+            PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
+                    getApplicationContext());
+            new Thread(placeBid).start();
 
+        } else {
+            Toast.makeText(getApplicationContext(),"Not Logged In", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    class PlaceBidRunnable implements Runnable{
+        private User currentUser = CurrentUser.getInstance().getCurrentUser();
+        private DataManager dm = DataManager.getInstance();
+        private float value;
+        private Context appContext;
+        private Task currentTask;
+
+        public PlaceBidRunnable(float value, Task currentTask, Context appContext){
+            this.value = value;
+            this.currentTask = currentTask;
+            this.appContext = appContext;
+        }
+
+        @Override
+        public void run() {
+            android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             try {
                 BidList possibleCurrentBids = dm.getUserBids(
                         CurrentUser.getInstance().getCurrentUser().getId(),
-                        getApplicationContext());
+                        appContext);
                 List<Bid> bids = possibleCurrentBids.getBids();
                 Bid bid = new Bid(CurrentUser.getInstance()
                         .getCurrentUser().getId(), value, currentTask.getId());
-                for(Bid currentBid: bids){
-                    if(currentBid.getTaskID().compareTo(currentTask.getId()) == 0) {
+                for (Bid currentBid : bids) {
+                    if (currentBid.getTaskID().compareTo(currentTask.getId()) == 0) {
                         bid = currentBid;
                         bid.setValue(value);
                         break;
                     }
                 }
-                dm.addBid(bid, getApplicationContext());
-            } catch (NoInternetException e){
-                Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
+                dm.addBid(bid, appContext);
+                dm.putTask(currentTask, appContext);
+            } catch (NoInternetException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(appContext, "No connection.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-            try{
-
-                if(currentTask.getStatus() != Status.BIDDED) {
-                    currentTask.setStatus(Status.BIDDED);
-                    dm.putTask(currentTask, getApplicationContext());
-                }
-                if(value < lowbid || lowbid == -1){
-                    lowbid = value;
-                    populateFields();
-                }
-            } catch (NoInternetException e){
-                Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(),"Not Logged In", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -268,3 +291,5 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         }
     }
 }
+
+
