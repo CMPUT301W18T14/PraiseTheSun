@@ -17,6 +17,8 @@ package ca.ualbert.cs.tasko.NotificationArtifacts;
 
 import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.User;
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Used to create a simple notification, the body of which is dependent on the status of the task
@@ -26,35 +28,37 @@ import ca.ualbert.cs.tasko.User;
 
 public class SimpleNotificationFactory {
 
-    public SimpleNotification createNotification(Status currentStatus, String taskName, User taskrequestor
-            , User taskprovider) {
+    DataManager dm = DataManager.getInstance();
 
-        SimpleNotification notification = null;
-        String message = null;
-        String taskname = taskName;
-        User recipient;
+    public void createNotification(String taskID, String taskrequestorID
+            , String taskproviderID) throws NoInternetException {
 
-        Status status = currentStatus;
+
+        SimpleNotification notification;
+        String message;
+        String taskname = dm.getTask(taskID, this).getTaskName();
+        String recipientID;
+
+        Status status = dm.getTask(taskID, this).getStatus();
 
         switch (status) {
             case REQUESTED:
-                recipient = taskprovider;
+                recipientID = taskproviderID;
                 message = "Default Message for Testing";
-                notification = new SimpleNotification(message, recipient);
+                notification = new SimpleNotification(message, recipientID);
                 break;
             case BIDDED:
-                recipient = taskrequestor;
+                recipientID = taskrequestorID;
                 message = "You have received a new Bid on" + taskname;
-                notification = new SimpleNotification(message, recipient);
+                notification = new SimpleNotification(message, recipientID);
                 break;
             case ASSIGNED:
-                recipient = taskprovider;
+                recipientID = taskproviderID;
                 message = "You have been assigned to complete" + taskname;
-                notification = new SimpleNotification(message, recipient);
+                notification = new SimpleNotification(message, recipientID);
                 break;
-
         }
 
-        return notification;
+
     }
 }

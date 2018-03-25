@@ -22,9 +22,6 @@ package ca.ualbert.cs.tasko.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
-
-import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
@@ -40,6 +37,8 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
+import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotificationFactory;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
 import ca.ualbert.cs.tasko.User;
@@ -111,7 +110,7 @@ public class DataManager {
      * @throws NoInternetException when the device has no internet.
      * @see GetUserByIdCommand
      */
-    public User getUserById(String id, Context context) throws NoInternetException{
+    public User getUserById(String id, SimpleNotificationFactory context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserByIdCommand command = new GetUserByIdCommand(id);
         if(isOnline(context)){
@@ -179,7 +178,7 @@ public class DataManager {
      * @return the found task object or null if not found
      * @throws NoInternetException when not connected to the internet
      */
-    public Task getTask(String taskId, Context context)
+    public Task getTask(String taskId, SimpleNotificationFactory context)
             throws NoInternetException{
         context = context.getApplicationContext();
         GetTaskCommand command = new GetTaskCommand(taskId);
@@ -307,7 +306,7 @@ public class DataManager {
     }
 
     //TODO
-    public void putNotification(Notification notification, Context context){
+    public void putNotification(Notification notification, RatingNotificationFactory context){
 
     }
 

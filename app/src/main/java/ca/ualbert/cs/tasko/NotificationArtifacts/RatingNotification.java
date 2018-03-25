@@ -28,7 +28,7 @@ import io.searchbox.annotations.JestId;
 public class RatingNotification extends Notification{
 
 
-    public RatingNotification(String message, User recipient){
+    public RatingNotification(String message, String recipient){
         super(message, recipient);
     }
 
