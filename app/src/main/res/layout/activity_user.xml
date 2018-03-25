@@ -27,11 +27,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="48dp"
         android:text="Username"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,25 +40,12 @@
         android:id="@+id/UserActivityUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="56dp"
         android:text="johndoe@example.com"
-        android:textSize="18sp"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UserActivityUsername" />
-
-    <EditText
-        android:id="@+id/UserActivityUserPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="phone"
-        android:singleLine="true"
-        android:text="@string/phone_number"
-        android:textAlignment="center"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="95dp" />
 
     <Button
         android:id="@+id/UserActivityMyAssignmentButton"
@@ -68,26 +56,44 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UserActivityUserPhone"
-        app:layout_constraintVertical_bias="0.407" />
+        app:layout_constraintTop_toBottomOf="@+id/UserActivityMyTasksButton"
+        app:layout_constraintVertical_bias="0.158" />
 
     <Button
         android:id="@+id/UserActivityMyTasksButton"
         android:layout_width="233dp"
         android:layout_height="wrap_content"
         android:text="@string/my_tasks"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="350dp" />
+        tools:layout_editor_absoluteY="526dp" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/UserActivityEditProfileButton"
         android:layout_width="242dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/edit_profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UserActivityMyTasksButton" />
+        app:layout_constraintTop_toBottomOf="@+id/UserActivityMyAssignmentButton" />
+
+    <TextView
+        android:id="@+id/UserActivityPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/phone_number"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/UserActivityMyTasksButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UserActivityUserEmail"
+        app:layout_constraintVertical_bias="0.125" />
 </android.support.constraint.ConstraintLayout>
