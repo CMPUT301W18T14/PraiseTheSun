@@ -55,7 +55,7 @@
     <string name="confirm_upload">Confirm Upload</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
     <string name="search_task_title">Task Title</string>
-    <string name="search_lowest_bid">Lowest Bid: $%1$f</string>
+    <string name="search_lowest_bid">Lowest Bid: $%1$.2f</string>
     <string name="task_search_description">Description:</string>
     <string name="task_details_requested_by">Requested by:</string>
     <string name="phone_number_pattern">\\d{3}-(\\d{3})-(\\d{4})</string>
@@ -68,5 +68,6 @@
     </string-array>
     <string name="your_bid">Your Bid</string>
     <string name="bidded_task_title">Task Title</string>
+    <string name="ViewSearchedTaskDetailsNoBids">No bids</string>
 </resources>
 

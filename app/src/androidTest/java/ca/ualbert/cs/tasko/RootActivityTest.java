@@ -31,16 +31,16 @@ import ca.ualbert.cs.tasko.data.DataManager;
 public class RootActivityTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
-
+    private User user = new User("testname", "name", "somenumber", "email@nowhere.universe");
     public RootActivityTest(){super(MainActivity.class);}
 
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), getActivity());
 
         //here so the activities requiring a non-null CurrentUser have one
-        User testUser = DataManager.getInstance().getUserByUsername("imtihan",
-                getActivity().getApplicationContext());
-        CurrentUser.getInstance().setCurrentUser(testUser);
+        //testUser = DataManager.getInstance().getUserByUsername("imtihan",
+          //      getActivity().getApplicationContext());
+        //CurrentUser.getInstance().setCurrentUser(testUser);
     }
 
     public void testGoToMain(){
