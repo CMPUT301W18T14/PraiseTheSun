@@ -54,10 +54,11 @@
     <Button
         android:id="@+id/editButton"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="47dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="4dp"
+        android:onClick="onEditClick"
         android:text="Edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

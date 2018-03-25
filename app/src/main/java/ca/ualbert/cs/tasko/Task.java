@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -31,7 +32,7 @@ import io.searchbox.annotations.JestId;
  *
  */
 
-public class Task {
+public class Task implements Serializable{
 
     private String taskName;
     private String description;

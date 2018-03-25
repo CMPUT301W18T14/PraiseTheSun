@@ -53,14 +53,15 @@
             android:label="@string/title_activity_view_searched_task_details"
             android:parentActivityName=".SearchResultsActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".AddPhotoActivity"/>
+        <activity android:name=".AddPhotoActivity" />
         <activity
             android:name=".SearchResultsActivity"
             android:label="@string/title_activity_search_results"
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ViewTasksBiddedOnActivity"></activity>
-        <activity android:name=".ViewBidsOnTaskActivity"></activity>
+        <activity android:name=".ViewTasksBiddedOnActivity" />
+        <activity android:name=".ViewBidsOnTaskActivity" />
+        <activity android:name=".EditTaskActivity"></activity>
     </application>
 
 </manifest>

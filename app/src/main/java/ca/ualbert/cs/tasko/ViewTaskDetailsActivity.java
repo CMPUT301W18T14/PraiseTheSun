@@ -105,11 +105,13 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             }
         });
 
+        /*
         editButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //This should go to a pre-filled in version of the AddTaskActivity
             }
         });
+        */
 
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -123,6 +125,13 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
         taskStatus.setText(currentTask.getStatus().toString());
+    }
+
+    public void onEditClick(View view) {
+        Intent editTask = new Intent(this, AddTaskActivity.class);
+        editTask.putExtra("task", currentTask);
+        final int result = 19;
+        startActivityForResult(editTask, result);
     }
 
 }

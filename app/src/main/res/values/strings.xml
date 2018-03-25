@@ -69,5 +69,6 @@
     <string name="your_bid">Your Bid</string>
     <string name="bidded_task_title">Task Title</string>
     <string name="ViewSearchedTaskDetailsNoBids">No bids</string>
+    <string name="edit_your_task">Edit Your Task</string>
 </resources>
 

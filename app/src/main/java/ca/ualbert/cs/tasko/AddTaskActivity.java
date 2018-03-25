@@ -46,6 +46,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private User taskRequester;
     private ArrayList<Bitmap> photos;
     private Location geoLocation = null;
+    private Task currentTask;
 
     /**
      * Called when the activity is started. Initializes the taskNameText and descriptionText.
@@ -58,10 +59,18 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
+        Intent editTask = getIntent();
+        currentTask = (Task) editTask.getSerializableExtra("task");
+
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
         taskRequester = CurrentUser.getInstance().getCurrentUser();
         photos = new ArrayList<Bitmap>();
+
+        if (currentTask != null) {
+            taskNameText.setText(currentTask.getTaskName());
+            descriptionText.setText(currentTask.getDescription());
+        }
     }
 
     /**
@@ -139,6 +148,7 @@ public class AddTaskActivity extends AppCompatActivity {
             Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
+                Intent returnEdit = new Intent();
                 finish();
             } catch (NoInternetException e) {
                 Log.i("Error", "No internet connection in CreateAccountActivity");
