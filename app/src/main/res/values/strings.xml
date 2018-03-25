@@ -68,5 +68,6 @@
     </string-array>
     <string name="your_bid">Your Bid</string>
     <string name="bidded_task_title">Task Title</string>
+    <string name="confirm">Confirm</string>
 </resources>
 

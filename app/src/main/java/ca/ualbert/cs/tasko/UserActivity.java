@@ -64,6 +64,8 @@ public class UserActivity extends RootActivity {
         editProfile = (Button) findViewById(R.id.UserActivityEditProfileButton);
 
         myTasksButton();
+        myAssignmentsButton();
+        editProfileButton();
     }
 
     public void myTasksButton(){
