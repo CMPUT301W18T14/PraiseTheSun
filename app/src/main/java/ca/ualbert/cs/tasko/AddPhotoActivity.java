@@ -23,10 +23,14 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -45,6 +49,11 @@ public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private Bitmap image;
     private Button confirm;
+    private LinearLayout lnrImages;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
     /**
      * Called when the activity is started. Initializes the confirm button.
@@ -54,9 +63,16 @@ public class AddPhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
+        mRecyclerView = (RecyclerView) findViewById(R.id.add_photo_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new AddPhotoAdapter(null);
+        mRecyclerView.setAdapter(mAdapter);
 
         confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
         confirm.setEnabled(false);
+        lnrImages = (LinearLayout) findViewById(R.id.lnrImages);
     }
 
     /**
@@ -72,6 +88,7 @@ public class AddPhotoActivity extends AppCompatActivity {
          */
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media
                 .EXTERNAL_CONTENT_URI);
+        gallery.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         startActivityForResult(gallery, RESULT_LOAD_IMAGE);
     }
 
@@ -88,10 +105,10 @@ public class AddPhotoActivity extends AppCompatActivity {
          * -activity-using-intent-in-android
          * Taken on 2018-03-17
          */
-
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte [] byteArray = stream.toByteArray();
+
         /*
          * Code on checking the size of an image was taken from
          * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
@@ -132,19 +149,36 @@ public class AddPhotoActivity extends AppCompatActivity {
                  * https://www.youtube.com/watch?v=e8x-nu9-_BM
                  * Taken on 2018-03-16
                  */
-                Uri selectedImage = data.getData();
 
-                InputStream inputStream;
-                try {
-                    inputStream = getContentResolver().openInputStream(selectedImage);
-                    image = BitmapFactory.decodeStream(inputStream);
-                    ImageView imageView = (ImageView) findViewById(R.id.addPhotoTaskImage);
-                    imageView.setImageBitmap(image);
-                    confirm.setEnabled(true);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this.getApplicationContext(), "Image not found", Toast
-                            .LENGTH_LONG).show();
+                /*
+                 * https://stackoverflow.com/questions/19585815/select-multiple-images-from-android-gallery
+                 * accessed 2018-03-25
+                 */
+                if(data.getClipData() != null) {
+                    try{
+                        lnrImages.removeAllViews();
+                    }catch (Throwable e){
+                        e.printStackTrace();
+                    }
+                    int count = data.getClipData().getItemCount();
+                    for (int i = 0; i < count; i++) {
+                        Uri selectedImage = data.getClipData().getItemAt(i).getUri();
+                        InputStream inputStream;
+                        try {
+                            inputStream = getContentResolver().openInputStream(selectedImage);
+                            image = BitmapFactory.decodeStream(inputStream);
+                            ImageView imageView = new ImageView(this);
+                            imageView.setImageBitmap(image);
+                            lnrImages.addView(imageView);
+                            //ImageView imageView = (ImageView) findViewById(R.id.addPhotoTaskImage);
+                            //imageView.setImageBitmap(image);
+                            confirm.setEnabled(true);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            Toast.makeText(this.getApplicationContext(), "Image not found", Toast
+                                    .LENGTH_LONG).show();
+                        }
+                    }
                 }
             }
         }
