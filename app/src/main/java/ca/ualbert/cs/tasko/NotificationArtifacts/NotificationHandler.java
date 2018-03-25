@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Status;
@@ -23,43 +25,32 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 
 /**
- * Created by spack on 2018-02-23.
- * NotificationHandler deals with the creation of objects of the Notification Type. Essentially
- * A middle man to communicate with the Factories.
+ * NotificationHandler deals with the creation of objects of the Notification Type. It acts as a
+ * controller object that delgates all activities related to creating Notifications.
+ *@see Notification
  *
- * Currently I am using Users as parameters, I can change this to UserIDs pretty easily if we think
- * thats a good idea, I just was not sure the best way to integrate that with the data manager so
- * I kept it simple.
+ * @author spack
  */
 
 public class NotificationHandler {
 
-    private ArrayList<RatingNotification> notifications = new ArrayList<>();
     private SimpleNotificationFactory simpleNotificationFactory;
     private RatingNotificationFactory ratingNotificationFactory;
 
     /**
-     * Currently there are 3 constructors. One for each possible factory combination we could use
-     * @param nf This represents the Factory Object we pass in, a Notification Factory
+     * The constructor for NotificationHandler sets up the appropriate factories that will handle
+     * the creation of notifications.
+     * @param context Context is needed to set up the factories (Will be used to communicate with
+     *                the DataManager)
      */
-    public NotificationHandler(SimpleNotificationFactory nf) {
-
-        this.simpleNotificationFactory = nf;
-
-    }
-
-    public NotificationHandler(RatingNotificationFactory rnf) {
-
-        this.ratingNotificationFactory = rnf;
+    public NotificationHandler(Context context) {
+        this.simpleNotificationFactory = new SimpleNotificationFactory();
+        this.ratingNotificationFactory = new RatingNotificationFactory();
+        simpleNotificationFactory.setContext(context);
+        ratingNotificationFactory.setContext(context);
 
     }
 
-    public NotificationHandler(SimpleNotificationFactory nf, RatingNotificationFactory rnf) {
-
-        this.simpleNotificationFactory = nf;
-        this.ratingNotificationFactory = rnf;
-
-    }
 
     /**
      * This method is called to create notifications based on bidding, and assigning tasks.

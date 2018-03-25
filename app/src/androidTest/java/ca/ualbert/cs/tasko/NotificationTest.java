@@ -35,8 +35,6 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
-    private SimpleNotificationFactory nf;
-    private RatingNotificationFactory rnf;
     private NotificationHandler nh;
 
     private DataManager dm = DataManager.getInstance();
@@ -44,14 +42,9 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
     private String providerID;
     private String requestorID;
     private Task task;
-    private String taskID;
 
     public void setUp() throws NoInternetException {
-        nf = new SimpleNotificationFactory();
-        nf.setContext(getActivity().getApplicationContext());
-        rnf = new RatingNotificationFactory();
-        rnf.setContext(getActivity().getApplicationContext());
-        nh = new NotificationHandler(nf, rnf);
+        nh = new NotificationHandler(getActivity().getApplicationContext());
 
         User requestor = new User("StevieP", "Steve", "780-450-1000",
                 "spacker@ualberta.ca");

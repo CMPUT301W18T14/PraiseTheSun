@@ -80,7 +80,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
             Notification clickedNotificatoin = notifications.getNotification(getAdapterPosition());
             if (clickedNotificatoin instanceof SimpleNotification){
                 intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
-                intent.putExtra("TaskID", clickedNotificatoin.getMessage());
+                intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                 thiscontext.startActivity(intent);
             }else{
                 //Create the Rating popup and have it popup here!
