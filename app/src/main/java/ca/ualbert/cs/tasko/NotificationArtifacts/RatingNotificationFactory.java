@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -41,12 +43,12 @@ public class RatingNotificationFactory {
 
         message = taskprovider.getUsername() + " has completed " + taskname
                 + ". Please rate their services";
-        providerNotification = new RatingNotification(message, taskrequestor);
+        providerNotification = new RatingNotification(message, taskrequestorID, taskID);
         dm.putNotification(providerNotification, this);
 
         message = "You have completed " + taskname + ". Please rate your experience with "
                 + taskrequestor.getUsername();
-        requestorNotification = new RatingNotification(message, taskprovider);
+        requestorNotification = new RatingNotification(message, taskproviderID, taskID);
         dm.putNotification(requestorNotification, this);
 
     }

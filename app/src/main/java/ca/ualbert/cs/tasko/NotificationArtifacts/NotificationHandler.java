@@ -63,8 +63,6 @@ public class NotificationHandler {
 
     /**
      * This method is called to create notifications based on bidding, and assigning tasks.
-     * @param status the current status of the task the notification will be based on. Depending
-     *               on this status the body of the notification will change.
      * @param taskID the ID of the task the notification is related to.
      * @param taskrequestor the taskrequestor who posted the task
      * @param taskprovider the taskprovider who interacts with the task
