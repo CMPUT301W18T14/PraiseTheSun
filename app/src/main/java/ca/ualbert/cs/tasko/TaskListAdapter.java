@@ -116,7 +116,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
             taskStatus = (TextView) itemView.findViewById(R.id.searchTaskStatus);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
-            //taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
+            taskPhoto = (ImageView) itemView.findViewById(R.id.taskPhoto);
         }
 
         @Override

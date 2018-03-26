@@ -15,12 +15,8 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import android.content.Context;
-
 import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.User;
-import ca.ualbert.cs.tasko.data.DataManager;
-import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Used to create a simple notification, the body of which is dependent on the status of the task
@@ -28,45 +24,37 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * Created by spack on 2018-03-10.
  */
 
-public class SimpleNotificationFactory {
+public class NotificationFactory {
 
-    DataManager dm = DataManager.getInstance();
-    Context context;
-
-    public void setContext(Context context){
-        this.context = context;
-    }
-
-    public void createNotification(String taskID, String taskrequestorID
-            , String taskproviderID) throws NoInternetException {
-
+    public SimpleNotification createNotification(Status currentStatus, String taskName, User taskrequestor
+            , User taskprovider) {
 
         SimpleNotification notification = null;
-        String message;
-        String taskname = dm.getTask(taskID, context).getTaskName();
-        String recipientID;
+        String message = null;
+        String taskname = taskName;
+        User recipient;
 
-        Status status = dm.getTask(taskID, context).getStatus();
+        Status status = currentStatus;
 
         switch (status) {
             case REQUESTED:
-                recipientID = taskproviderID;
+                recipient = taskprovider;
                 message = "Default Message for Testing";
-                notification = new SimpleNotification(message, recipientID, taskID);
+                notification = new SimpleNotification(message, recipient);
                 break;
             case BIDDED:
-                recipientID = taskrequestorID;
+                recipient = taskrequestor;
                 message = "You have received a new Bid on" + taskname;
-                notification = new SimpleNotification(message, recipientID, taskID);
+                notification = new SimpleNotification(message, recipient);
                 break;
             case ASSIGNED:
-                recipientID = taskproviderID;
+                recipient = taskprovider;
                 message = "You have been assigned to complete" + taskname;
-                notification = new SimpleNotification(message, recipientID, taskID);
+                notification = new SimpleNotification(message, recipient);
                 break;
+
         }
 
-        dm.putNotification(notification, context);
-
+        return notification;
     }
 }
