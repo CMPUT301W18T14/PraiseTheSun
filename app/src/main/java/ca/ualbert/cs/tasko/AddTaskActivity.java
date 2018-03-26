@@ -79,6 +79,7 @@ public class AddTaskActivity extends AppCompatActivity {
         // Create an Intent to AddPhotoActivity
         Intent addPhotoIntent = new Intent(this, AddPhotoActivity.class);
         final int result = 19;
+        addPhotoIntent.putExtra("photos", photos);
         startActivityForResult(addPhotoIntent, result);
     }
 

@@ -86,6 +86,20 @@ public class AddPhotoActivity extends AppCompatActivity {
         confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
         confirm.setEnabled(false);
         lnrImages = (LinearLayout) findViewById(R.id.lnrImages);
+        ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
+        for (int i = 0; i < photos.size(); i++) {
+            byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+            Bitmap image = BitmapFactory.decodeByteArray(byteArray,0, byteArray
+                    .length);
+            ImageView imageView = new ImageView(this);
+            imageView.requestLayout();
+            // https://stackoverflow.com/questions/36340268/nullpointerexception-while-setting-layoutparams
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup
+                    .LayoutParams.WRAP_CONTENT, 200);
+            imageView.setLayoutParams(params);
+            imageView.setImageBitmap(image);
+            lnrImages.addView(imageView);
+        }
     }
 
     /**
@@ -120,8 +134,8 @@ public class AddPhotoActivity extends AppCompatActivity {
          * -activity-using-intent-in-android
          * Taken on 2018-03-17
          */
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         for (int i = 0; i < numImages; i++) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
             images.get(i).compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] byteArray = stream.toByteArray();
 
