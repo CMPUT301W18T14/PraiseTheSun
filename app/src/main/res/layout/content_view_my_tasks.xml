@@ -20,12 +20,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ca.ualbert.cs.tasko.SearchResultsActivity"
-    tools:showIn="@layout/activity_search_results">
+    tools:context="ca.ualbert.cs.tasko.ViewMyTasksActivity"
+    tools:showIn="@layout/activity_view_my_tasks">
+
+    <ViewStub
+        android:id="@+id/emptyListMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout="@layout/empty_task_list" />
+
+    <Spinner
+        android:id="@+id/filter_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:entries="@array/filter_options_array"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@android:color/black"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_spinner" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_tasks_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
 </android.support.constraint.ConstraintLayout>
