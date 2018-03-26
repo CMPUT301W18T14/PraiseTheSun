@@ -19,6 +19,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +95,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
      * The clickabale view holder that will get displayed in the recylcerview which displays
      * relevant information about a task.
      */
-    class BidViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class BidViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
 
         TextView bidTitle;
         TextView Bid;
@@ -102,17 +103,54 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
         public BidViewHolder(View itemView) {
             super(itemView);
 
-            itemView.setOnClickListener(this);
+            //itemView.setOnClickListener(this);
 
             bidTitle = (TextView) itemView.findViewById(R.id.bidTitle);
             Bid = (TextView) itemView.findViewById(R.id.LowBid);
+            Button acceptButton = (Button) itemView.findViewById(R.id.acceptButton);
+            Button rejectButton = (Button) itemView.findViewById(R.id.rejectButton);
+
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //CONFIRMATION DELETION OF TASK
+                    Log.d("ButtonClick", "Accept Button Clicked");
+                }
+            });
         }
 
 
+        /*
         //TODO: Use case 15 & 16
         @Override
         public void onClick(View view) {
-        }
+            // Confirm deletion and return to main page
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(ViewTaskDetailsActivity.this);
+            final View deleteView = getLayoutInflater().inflate(R.layout.delete_my_task_dialog, null);
+            Button confirmButton = (Button) deleteView.findViewById(R.id.confirmButton);
+            Button cancelButton = (Button) deleteView.findViewById(R.id.cancelButton);
+
+            confirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //CONFIRMATION DELETION OF TASK
+                }
+            });
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Probably a better way to do this but it works for now
+                    finish();
+                    startActivity(new Intent(ViewTaskDetailsActivity.this, ViewTaskDetailsActivity.class));
+                }
+            });
+
+            builder.setView(deleteView);
+            android.support.v7.app.AlertDialog dialog = builder.create();
+            dialog.show();
+        }*/
     }
+
 
 }
