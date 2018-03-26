@@ -130,8 +130,18 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     public void onEditClick(View view) {
         Intent editTask = new Intent(this, AddTaskActivity.class);
         editTask.putExtra("task", currentTask);
-        final int result = 19;
-        startActivityForResult(editTask, result);
+        startActivity(editTask);
+        try {
+            currentTask = DataManager.getInstance().getTask(currentTask.getId(), this);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            fillInformation();
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
     }
 
 }
