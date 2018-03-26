@@ -113,8 +113,16 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //CONFIRMATION DELETION OF TASK
+                    //prints to debug
                     Log.d("ButtonClick", "Accept Button Clicked");
+                }
+            });
+
+            rejectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //prints to debug
+                    Log.d("ButtonClick", "Reject Button Clicked");
                 }
             });
         }
