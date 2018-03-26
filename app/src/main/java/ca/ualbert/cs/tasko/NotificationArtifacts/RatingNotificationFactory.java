@@ -15,8 +15,12 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import ca.ualbert.cs.tasko.User;
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * A factory the creates the appropriate rating notifications and returns them in an arraylist.
@@ -24,26 +28,33 @@ import ca.ualbert.cs.tasko.User;
  */
 
 public class RatingNotificationFactory {
-    public ArrayList<RatingNotification> createNotification(String taskName, User taskrequestor
-            , User taskprovider) {
 
-        ArrayList<RatingNotification> notifications = new ArrayList<>();
-        RatingNotification providerNotification = null;
-        RatingNotification requestorNotification = null;
+    public void setContext(Context context){
+        this.context = context;
+    }
+
+    private DataManager dm = DataManager.getInstance();
+    private Context context;
+
+    public void createNotification(String taskID, String taskrequestorID, String taskproviderID)
+            throws NoInternetException {
+
+        RatingNotification providerNotification;
+        RatingNotification requestorNotification;
         String message;
-        String taskname = taskName;
+        String taskname = dm.getTask(taskID, context).getTaskName();
+        User taskprovider = dm.getUserById(taskproviderID, context);
+        User taskrequestor = dm.getUserById(taskrequestorID, context);
 
         message = taskprovider.getUsername() + " has completed " + taskname
                 + ". Please rate their services";
-        providerNotification = new RatingNotification(message, taskrequestor);
-        notifications.add(providerNotification);
+        providerNotification = new RatingNotification(message, taskrequestorID, taskID);
+        dm.putNotification(providerNotification, context);
 
         message = "You have completed " + taskname + ". Please rate your experience with "
                 + taskrequestor.getUsername();
-        requestorNotification = new RatingNotification(message, taskprovider);
-        notifications.add(requestorNotification);
-
-        return notifications;
+        requestorNotification = new RatingNotification(message, taskproviderID, taskID);
+        dm.putNotification(requestorNotification, context);
 
     }
 }

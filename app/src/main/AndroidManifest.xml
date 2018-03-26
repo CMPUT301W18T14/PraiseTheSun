@@ -62,6 +62,9 @@
         <activity android:name=".ViewTasksBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
         <activity android:name=".OtherUsersProfileActivity"></activity>
+        <activity android:name=".NotificationArtifacts.ViewNotificationActivity"></activity>
+        <activity android:name=".NotificationArtifacts.NotificationList" />
+
     </application>
 
 </manifest>
