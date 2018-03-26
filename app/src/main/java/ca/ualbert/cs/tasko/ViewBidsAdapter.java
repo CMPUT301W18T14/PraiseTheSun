@@ -124,6 +124,8 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                 public void onClick(View view) {
                     //prints to debug
                     Log.d("ButtonClick", "Reject Button Clicked");
+                    bids.removeBid(bids.get(getAdapterPosition()));
+                    notifyDataSetChanged();
                 }
             });
         }
