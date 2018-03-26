@@ -22,9 +22,13 @@ import android.location.Location;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -44,7 +48,8 @@ public class AddTaskActivity extends AppCompatActivity {
     private String taskName;
     private String description;
     private User taskRequester;
-    private ArrayList<Bitmap> photos;
+    private LinearLayout addTaskImagesLayout;
+    private ArrayList<String> photos;
     private Location geoLocation = null;
 
     /**
@@ -58,10 +63,11 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
+        addTaskImagesLayout = (LinearLayout) findViewById(R.id.addTaskImagesLayout);
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
         taskRequester = CurrentUser.getInstance().getCurrentUser();
-        photos = new ArrayList<Bitmap>();
+        photos = new ArrayList<String>();
     }
 
     /**
@@ -106,9 +112,20 @@ public class AddTaskActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 19:
-                    byte[] byteArray = data.getByteArrayExtra("image");
-                    Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                    photos.add(image);
+                    photos = data.getStringArrayListExtra("photos");
+                    for (int i = 0; i < photos.size(); i++) {
+                        byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                        Bitmap image = BitmapFactory.decodeByteArray(byteArray,0, byteArray
+                                .length);
+                        ImageView imageView = new ImageView(this);
+                        imageView.requestLayout();
+                        // https://stackoverflow.com/questions/36340268/nullpointerexception-while-setting-layoutparams
+                        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup
+                                .LayoutParams.WRAP_CONTENT, 200);
+                        imageView.setLayoutParams(params);
+                        imageView.setImageBitmap(image);
+                        addTaskImagesLayout.addView(imageView);
+                    }
                     break;
                 case 2:
                     // Handle add location Intent result
