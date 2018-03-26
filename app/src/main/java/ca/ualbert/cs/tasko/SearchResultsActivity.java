@@ -57,7 +57,8 @@ public class SearchResultsActivity extends AppCompatActivity {
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
         searchForTasks();
-        searchForBids();
+        //searchForBids();
+        lowBids = null;
 
         //Initialize the Adapter and RecyclerView
         searchAdapter = new TaskListAdapter(context, foundtasks, lowBids);
@@ -88,6 +89,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     }
 
+    //Needs to be optimized!!!
     private void searchForBids() {
         lowBids = new BidList();
         Task currentTask;

@@ -86,10 +86,10 @@
             <TextView
                 android:id="@+id/searchedTasksMyBidOnTask"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="33dp"
                 android:layout_toEndOf="@+id/searchTaskDescription"
+                android:layout_toLeftOf="@id/searchTaskLowestBid"
                 android:text="@string/my_bid"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
