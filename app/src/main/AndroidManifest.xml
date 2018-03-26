@@ -28,7 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".AddTaskActivity" />
+        <activity android:name=".AddTaskActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".NavigatorActivity"
             android:label="@string/title_activity_navigator"
