@@ -41,7 +41,7 @@ public class AddPhotoAdapter extends RecyclerView.Adapter<AddPhotoAdapter.ImageV
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        holder.mImageView.setImageBitmap(mDataset[position]);
+        //holder.mImageView.setImageBitmap(mDataset[position]);
     }
 
     @Override

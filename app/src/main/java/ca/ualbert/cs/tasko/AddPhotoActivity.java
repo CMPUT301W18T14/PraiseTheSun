@@ -25,9 +25,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +39,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+
+// https://stackoverflow.com/questions/19585815/select-multiple-images-from-android-gallery
+// https://stackoverflow.com/questions/23426113/how-to-select-multiple-images-from-gallery-in-android
 
 /**
  * Activity that adds a photo to a task. Is called by AddTaskActivity when the user presses the
@@ -47,12 +53,16 @@ import java.io.InputStream;
  */
 public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
-    private Bitmap image;
+    private ArrayList<Bitmap> images;
     private Button confirm;
     private LinearLayout lnrImages;
+    private int numImages;
+    /*
+    https://developer.android.com/guide/topics/ui/layout/recyclerview.html#java
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    */
 
 
     /**
@@ -63,13 +73,16 @@ public class AddPhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
+        /*
         mRecyclerView = (RecyclerView) findViewById(R.id.add_photo_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new AddPhotoAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
+        */
 
+        images = new ArrayList<Bitmap>();
         confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
         confirm.setEnabled(false);
         lnrImages = (LinearLayout) findViewById(R.id.lnrImages);
@@ -99,6 +112,8 @@ public class AddPhotoActivity extends AppCompatActivity {
      *
      */
     public void onConfirmClick(View view) {
+        boolean passed = true;
+        ArrayList<String> imgStrings = new ArrayList<String>();
         /*
          * Code on how to properly send a bitmap object through an intent was taken from
          * https://stackoverflow.com/questions/11010386/passing-android-bitmap-data-within
@@ -106,25 +121,34 @@ public class AddPhotoActivity extends AppCompatActivity {
          * Taken on 2018-03-17
          */
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte [] byteArray = stream.toByteArray();
+        for (int i = 0; i < numImages; i++) {
+            images.get(i).compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
 
-        /*
-         * Code on checking the size of an image was taken from
-         * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
-         * -android
-         * Taken on 2018-03-18
-         */
-        long imageLength = byteArray.length;
-        if (imageLength <= 65535) {
-            Intent returnImage = new Intent();
-            returnImage.putExtra("image", byteArray);
-            setResult(RESULT_OK, returnImage);
-            finish();
+            /*
+             * Code on checking the size of an image was taken from
+             * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
+             * -android
+             * Taken on 2018-03-18
+             */
+            long imageLength = byteArray.length;
+            if (imageLength > 65535) {
+                String message = "Image file #" + Integer.toString(i + 1) + " is too big.";
+                Toast.makeText(this.getApplicationContext(), message, Toast
+                        .LENGTH_LONG).show();
+                passed = false;
+            }
+            else {
+                // https://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
+                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                imgStrings.add(encodedImage);
+            }
         }
-        else {
-            Toast.makeText(this.getApplicationContext(), "Image file chosen is too big.", Toast
-                    .LENGTH_LONG).show();
+        if (passed) {
+            Intent returnImages = new Intent();
+            returnImages.putExtra("photos", imgStrings);
+            setResult(RESULT_OK, returnImages);
+            finish();
         }
     }
 
@@ -160,15 +184,20 @@ public class AddPhotoActivity extends AppCompatActivity {
                     }catch (Throwable e){
                         e.printStackTrace();
                     }
-                    int count = data.getClipData().getItemCount();
-                    for (int i = 0; i < count; i++) {
+                    numImages = data.getClipData().getItemCount();
+                    for (int i = 0; i < numImages; i++) {
                         Uri selectedImage = data.getClipData().getItemAt(i).getUri();
                         InputStream inputStream;
                         try {
                             inputStream = getContentResolver().openInputStream(selectedImage);
-                            image = BitmapFactory.decodeStream(inputStream);
+                            images.add(BitmapFactory.decodeStream(inputStream));
                             ImageView imageView = new ImageView(this);
-                            imageView.setImageBitmap(image);
+                            imageView.requestLayout();
+                            // https://stackoverflow.com/questions/36340268/nullpointerexception-while-setting-layoutparams
+                            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup
+                                    .LayoutParams.WRAP_CONTENT, 200);
+                            imageView.setLayoutParams(params);
+                            imageView.setImageBitmap(images.get(i));
                             lnrImages.addView(imageView);
                             //ImageView imageView = (ImageView) findViewById(R.id.addPhotoTaskImage);
                             //imageView.setImageBitmap(image);
