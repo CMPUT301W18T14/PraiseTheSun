@@ -28,6 +28,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
 /**
  * The class represents a Adapter that is specifically designed to display bid of a particular
  * task in an AdapterView. Allowing the user to accept or reject a particular bid.
@@ -39,6 +42,8 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     private LayoutInflater inflater;
     private BidList bids;
     private Context thiscontext;
+
+    private DataManager dm = DataManager.getInstance();
 
     /**
      * Constructor for the Adapter, Takes in the context which designates the activity that will use
@@ -116,6 +121,15 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                 public void onClick(View view) {
                     //prints to debug
                     Log.d("ButtonClick", "Accept Button Clicked");
+                    try {
+                        Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
+                        thisTask.setStatus(Status.ASSIGNED);
+                    } catch (NullPointerException e) {
+                        Log.i("Error", "TaskID not properly passed");
+                    } catch (NoInternetException e) {
+                        Log.d("Error", "TaskID not properly passed");
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -124,6 +138,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                 public void onClick(View view) {
                     //prints to debug
                     Log.d("ButtonClick", "Reject Button Clicked");
+                    //todo: delete bid (need deleteBid)
                     bids.removeBid(bids.get(getAdapterPosition()));
                     notifyDataSetChanged();
                 }
