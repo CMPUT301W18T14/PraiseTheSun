@@ -16,7 +16,6 @@
 package ca.ualbert.cs.tasko;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -57,7 +56,7 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
         View contentView = inflater.inflate(R.layout.activity_view_tasks_bidded_on, null, false);
         drawerLayout.addView(contentView, 0);
 
-        searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
+        searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         searchLayoutManager = new LinearLayoutManager(activity);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
         try {setUser();

@@ -15,30 +15,30 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 
 import java.util.ArrayList;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
-import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotificationFactory;
-import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-//Notifications Need to be reworked for part 5... Avoiding in depth documentation until then
+/**
+ * Created by spack on 2018-03-23.
+ */
 
-public class NotificationTest extends ActivityInstrumentationTestCase2 {
-    public NotificationTest() {
-        super(MainActivity.class);
-    }
-
-    private NotificationHandler nh;
+public class NotificationListTest extends ActivityInstrumentationTestCase2 {
+    public NotificationListTest() {super(MainActivity.class);}
 
     private DataManager dm = DataManager.getInstance();
 
+    private NotificationList nl;
+    private NotificationHandler nh;
     private String providerID;
     private String requestorID;
     private Task task;
@@ -51,6 +51,7 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         User provider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
 
+        //Dont keep putting in Users
         if (dm.getUserByUsername("StevieP", getActivity().getApplicationContext()) == null) {
             dm.putUser(requestor, getActivity().getApplicationContext());
             dm.putUser(provider, getActivity().getApplicationContext());
@@ -66,32 +67,27 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         dm.putTask(task, getActivity().getApplicationContext());
     }
 
-    public void testCreateSimpleNotification() throws NoInternetException {
+    public void testAddingSimpleNotifications() throws NoInternetException {
 
         nh.newSimpleNotification(task.getId(), requestorID, providerID);
 
-        //Test to see if notification handler is properly communicating with the factory.
-        //assertEquals("Default Message for Testing", notification.getMessage());
+        nl = dm.getNotifications(requestorID, getActivity().getApplicationContext());
 
-        task.setStatus(Status.BIDDED);
+        assertFalse(nl.getSize() == 0);
 
-        nh.newSimpleNotification(task.getId(), requestorID, providerID);
-
-        //Test to see if notification factory logic is working.
-        //assertEquals("You have received a new Bid on" + task.getTaskName(), notification2.getMessage());
     }
 
-    //Test checks that RatiingNotificationFactory creates rating notifications for both parties
-    public void testCreateRatingNotification() throws NoInternetException {
+    public void testAddingRatingNotifications() throws NoInternetException {
 
         nh.newRatingNotification(task.getId(), requestorID, providerID);
 
-        //assertEquals(notifications.size(), 2);
+        nl = dm.getNotifications(requestorID, getActivity().getApplicationContext());
 
-        //assertEquals("Stevoo has completed TestTask1. Please rate their services", notifications.get(0).getMessage());
+        assertFalse(nl.getSize() == 0);
 
-        //assertEquals("You have completed TestTask1. Please rate your experience with StevieP", notifications.get(1).getMessage());
+        nl = dm.getNotifications(providerID, getActivity().getApplicationContext());
+
+        assertFalse(nl.getSize() == 0);
 
     }
-
 }
