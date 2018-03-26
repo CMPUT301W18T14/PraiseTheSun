@@ -231,7 +231,6 @@ public class AddTaskActivity extends AppCompatActivity {
             newTask.setTaskRequesterUsername(taskRequester.getUsername());
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
-                Intent returnEdit = new Intent();
                 finish();
             } catch (NoInternetException e) {
                 Log.i("Error", "No internet connection in CreateAccountActivity");
