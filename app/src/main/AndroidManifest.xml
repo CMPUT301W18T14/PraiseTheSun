@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".OpeningActivity"
+            android:name=".NotificationArtifacts.TestCreateNotificationsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -62,8 +62,7 @@
         <activity android:name=".ViewTasksBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
-        <activity android:name=".NotificationArtifacts.NotificationList" />
-        <activity android:name=".NotificationArtifacts.AndroidNotificationActivity"></activity>
+        <activity android:name=".NotificationArtifacts.AndroidNotificationActivity" />
     </application>
 
 </manifest>

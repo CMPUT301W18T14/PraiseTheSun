@@ -20,14 +20,14 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.RemoteViews;
+import android.view.View;
+import android.widget.Button;
 
 import ca.ualbert.cs.tasko.R;
 
-public class AndroidNotificationActivity extends AppCompatActivity {
+public class TestCreateNotificationsActivity extends AppCompatActivity {
 
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
@@ -35,9 +35,14 @@ public class AndroidNotificationActivity extends AppCompatActivity {
     private Context context;
     private String CHANNEL_ID;
 
+    private Button testButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_test_create_notifications);
+
+        testButton = (Button) findViewById(R.id.notificationCreateButton);
 
         context = this;
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -46,7 +51,17 @@ public class AndroidNotificationActivity extends AppCompatActivity {
         CHANNEL_ID = getPackageName();
 
         setupChannel();
-        createAndriodNotification();
+        setupButton();
+    }
+
+    private void setupButton(){
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_OK);
+                createAndriodNotification();
+            }
+        });
     }
 
     private void setupChannel(){
@@ -54,7 +69,6 @@ public class AndroidNotificationActivity extends AppCompatActivity {
             String name = "MyChannel";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.enableLights(true);
             notificationManager.createNotificationChannel(channel);
         }
     }
