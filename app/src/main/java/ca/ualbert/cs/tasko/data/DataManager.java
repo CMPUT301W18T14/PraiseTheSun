@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
+
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
