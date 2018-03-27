@@ -60,28 +60,4 @@ public class NotificationListTest extends ActivityInstrumentationTestCase2 {
         task = new Task(requestorID, "TestTask for Notifications", "Notifications");
         dm.putTask(task, getActivity().getApplicationContext());
     }
-
-    public void testAddingSimpleNotifications() throws NoInternetException {
-
-        nh.newSimpleNotification(task.getId(), requestorID, providerID);
-
-        nl = dm.getNotifications(requestorID, getActivity().getApplicationContext());
-
-        assertFalse(nl.getSize() == 0);
-
-    }
-
-    public void testAddingRatingNotifications() throws NoInternetException {
-
-        nh.newRatingNotification(task.getId(), requestorID, providerID);
-
-        nl = dm.getNotifications(requestorID, getActivity().getApplicationContext());
-
-        assertFalse(nl.getSize() == 0);
-
-        nl = dm.getNotifications(providerID, getActivity().getApplicationContext());
-
-        assertFalse(nl.getSize() == 0);
-
-    }
 }

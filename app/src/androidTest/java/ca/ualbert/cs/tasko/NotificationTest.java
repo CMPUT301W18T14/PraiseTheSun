@@ -59,32 +59,4 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         dm.putTask(task, getActivity().getApplicationContext());
     }
 
-    public void testCreateSimpleNotification() throws NoInternetException {
-
-        nh.newSimpleNotification(task.getId(), requestorID, providerID);
-
-        //Test to see if notification handler is properly communicating with the factory.
-        //assertEquals("Default Message for Testing", notification.getMessage());
-
-        task.setStatus(Status.BIDDED);
-
-        nh.newSimpleNotification(task.getId(), requestorID, providerID);
-
-        //Test to see if notification factory logic is working.
-        //assertEquals("You have received a new Bid on" + task.getTaskName(), notification2.getMessage());
-    }
-
-    //Test checks that RatiingNotificationFactory creates rating notifications for both parties
-    public void testCreateRatingNotification() throws NoInternetException {
-
-        nh.newRatingNotification(task.getId(), requestorID, providerID);
-
-        //assertEquals(notifications.size(), 2);
-
-        //assertEquals("Stevoo has completed TestTask1. Please rate their services", notifications.get(0).getMessage());
-
-        //assertEquals("You have completed TestTask1. Please rate your experience with StevieP", notifications.get(1).getMessage());
-
-    }
-
 }

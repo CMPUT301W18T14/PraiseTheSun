@@ -17,6 +17,7 @@ package ca.ualbert.cs.tasko.NotificationArtifacts;
 
 import android.content.Context;
 
+import ca.ualbert.cs.tasko.BidList;
 import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.User;
@@ -26,9 +27,11 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 import static ca.ualbert.cs.tasko.Status.REQUESTED;
 
 /**
- * Used to create a simple notification, the body of which is dependent on the status of the task
- * its related to.
- * Created by spack on 2018-03-10.
+ * Handles the creation of all notifications by using a switch block to create unique messages and
+ * send the notifications to specific users via the DataManager
+ * @see Notification
+ *
+ * @author spack
  */
 
 public class NotificationFactory {
@@ -46,7 +49,6 @@ public class NotificationFactory {
         Notification notification = null;
         Task task = dm.getTask(taskID, context);
 
-        String TaskID = task.getId();
         String message;
         String taskname = task.getTaskName();
         String recipientID;
@@ -69,23 +71,35 @@ public class NotificationFactory {
                 dm.putNotification(notification, context);
                 break;
             case Rating:
-
                 User taskprovider = dm.getUserById(task.getTaskProviderID(), context);
                 User taskrequestor = dm.getUserById(task.getTaskRequesterID(), context);
 
                 message = taskprovider.getUsername() + " has completed " + taskname
                         + ". Please rate their services";
-                notification = new Notification(message, taskrequestor.getId(), taskID);
+                notification = new Notification(message, taskrequestor.getId(), taskprovider.getId(), taskID, NotificationType.Rating);
                 dm.putNotification(notification, context);
 
                 message = "You have completed " + taskname + ". Please rate your experience with "
                         + taskrequestor.getUsername();
-                notification = new Notification(message, taskprovider.getId(), taskID);
+                notification = new Notification(message, taskprovider.getId(), taskrequestor.getId(), taskID, NotificationType.Rating);
                 dm.putNotification(notification, context);
                 break;
-        }
+            case TaskProviderBidDeclined:
+                recipientID = task.getTaskProviderID();
+                message = "Your Bid on " + taskname + " has been Declined. Try making a lower Bid ";
+                notification = new Notification(message, recipientID, null, taskID,
+                        NotificationType.TaskProviderBidDeclined);
+                dm.putNotification(notification, context);
+            case TaskDeleted:
+                BidList deletedBids = dm.getTaskBids(taskID, context);
+                for(int i = 0; i < deletedBids.getSize(); i++){
+                    message = taskname + "Has been deleted by the poster. Sorry for the inconvience.";
+                    notification = new Notification(message, deletedBids.get(i).getUserID(), null, taskID,
+                            NotificationType.TaskDeleted);
+                    dm.putNotification(notification, context);
 
-        dm.putNotification(notification, context);
+                }
+        }
 
     }
 }
