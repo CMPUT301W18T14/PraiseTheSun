@@ -51,6 +51,7 @@
                 android:id="@+id/searchTaskPhoto"
                 android:layout_width="82dp"
                 android:layout_height="82dp"
+                android:layout_above="@+id/searchTaskLowestBid"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/searchedTaskUsername"
                 android:layout_marginStart="13dp"
@@ -64,9 +65,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/searchTaskLowestBid"
-                android:layout_alignTop="@+id/searchTaskTitle"
+                android:layout_alignTop="@+id/searchTaskPhoto"
                 android:layout_marginStart="13dp"
-                android:layout_marginTop="29dp"
                 android:layout_toEndOf="@+id/searchTaskPhoto"
                 android:maxHeight="98dp"
                 android:text="@string/task_search_description"
@@ -98,12 +98,12 @@
 
             <ImageView
                 android:id="@+id/searchedTaskStatusIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:paddingEnd="5dp"
-                android:paddingTop="1dp" />
+                android:paddingEnd="2dp"
+                android:paddingTop="2dp" />
 
             <TextView
                 android:id="@+id/searchedTaskUsername"
