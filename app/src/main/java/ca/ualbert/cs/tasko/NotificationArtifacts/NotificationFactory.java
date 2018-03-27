@@ -18,9 +18,12 @@ package ca.ualbert.cs.tasko.NotificationArtifacts;
 import android.content.Context;
 
 import ca.ualbert.cs.tasko.Status;
+import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
+
+import static ca.ualbert.cs.tasko.Status.REQUESTED;
 
 /**
  * Used to create a simple notification, the body of which is dependent on the status of the task
@@ -37,31 +40,48 @@ public class NotificationFactory {
         this.context = context;
     }
 
-    public void createNotification(String taskID) throws NoInternetException {
+    public void createNotification(String taskID, NotificationType Type) throws NoInternetException{
 
 
-        SimpleNotification notification = null;
+        Notification notification = null;
+        Task task = dm.getTask(taskID, context);
+
+        String TaskID = task.getId();
         String message;
-        String taskname = dm.getTask(taskID, context).getTaskName();
+        String taskname = task.getTaskName();
         String recipientID;
 
-        Status status = dm.getTask(taskID, context).getStatus();
+        NotificationType notificationType = Type;
 
-        switch (status) {
-            case REQUESTED:
-                recipientID = taskproviderID;
-                message = "Default Message for Testing";
-                notification = new SimpleNotification(message, recipientID, taskID);
-                break;
-            case BIDDED:
-                recipientID = taskrequestorID;
+        switch (notificationType){
+            case TaskRequesterRecievedBidOnTask:
+                recipientID = task.getTaskRequesterID();
                 message = "You have received a new Bid on" + taskname;
-                notification = new SimpleNotification(message, recipientID, taskID);
+                notification = new Notification(message, recipientID, null, taskID
+                        , NotificationType.TaskRequesterRecievedBidOnTask);
+                dm.putNotification(notification, context);
                 break;
-            case ASSIGNED:
-                recipientID = taskproviderID;
+            case TaskProviderBidAccepted:
+                recipientID = task.getTaskProviderID();
                 message = "You have been assigned to complete" + taskname;
-                notification = new SimpleNotification(message, recipientID, taskID);
+                notification = new Notification(message, recipientID, null, taskID,
+                        NotificationType.TaskProviderBidAccepted);
+                dm.putNotification(notification, context);
+                break;
+            case Rating:
+
+                User taskprovider = dm.getUserById(task.getTaskProviderID(), context);
+                User taskrequestor = dm.getUserById(task.getTaskRequesterID(), context);
+
+                message = taskprovider.getUsername() + " has completed " + taskname
+                        + ". Please rate their services";
+                notification = new Notification(message, taskrequestor.getId(), taskID);
+                dm.putNotification(notification, context);
+
+                message = "You have completed " + taskname + ". Please rate your experience with "
+                        + taskrequestor.getUsername();
+                notification = new Notification(message, taskprovider.getId(), taskID);
+                dm.putNotification(notification, context);
                 break;
         }
 
