@@ -187,7 +187,9 @@
                 android:id="@+id/placeBidButton"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_below="@+id/lowestBid"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="74dp"
                 android:text="Place Bid" />
 
         </RelativeLayout>

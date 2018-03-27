@@ -83,7 +83,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 User retrievedUser = DataManager.getInstance().getUserByUsername(username, this
                         .getApplicationContext());
                 if (retrievedUser.getUsername() == null) {
-                    User newUser = new User(username, name, email, phone);
+                    User newUser = new User(username, name, phone, email);
                     Log.i("NotError", "ERROR IS HERE");
                     try {
                         DataManager.getInstance().putUser(newUser, this.getApplicationContext());
