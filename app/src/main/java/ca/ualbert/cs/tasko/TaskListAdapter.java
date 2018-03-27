@@ -43,6 +43,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  */
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
 
+    private DataManager dm = DataManager.getInstance();
     private LayoutInflater inflater;
     private TaskList tasks;
     private Context thiscontext;
@@ -105,6 +106,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
+        holder.taskRequestorUsername.setText(currentTask.getTaskRequesterUsername());
 
         //Taken From https://stackoverflow.com/questions/2538787/
         //how-to-display-an-output-of-float-data-with-2-decimal-places-in-java
@@ -146,7 +148,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
 
-
         // Photos arent working properly.
         //holder.taskPhoto.setImageResource();
     }
@@ -174,6 +175,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         TextView taskDescription;
         TextView taskLowestBid;
         TextView taskMyBid;
+        TextView taskRequestorUsername;
         ImageView taskPhoto;
 
         public TaskViewHolder(View itemView) {
@@ -182,7 +184,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             itemView.setOnClickListener(this);
 
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
-            taskRequestorUsername = (TextView)
+            taskRequestorUsername = (TextView) itemView.findViewById(R.id.searchedTaskUsername);
             taskStatusIcon = (ImageView) itemView.findViewById(R.id.searchedTaskStatusIcon);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
             taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);
