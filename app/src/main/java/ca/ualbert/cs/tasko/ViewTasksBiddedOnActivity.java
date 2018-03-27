@@ -16,11 +16,9 @@
 package ca.ualbert.cs.tasko;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -43,7 +41,6 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
     public ViewTasksBiddedOnActivity context = this;
     private User User;
     private BidList userBids;
-    private BidList lowBids;
     private TaskList biddedTasks;
 
     /**
