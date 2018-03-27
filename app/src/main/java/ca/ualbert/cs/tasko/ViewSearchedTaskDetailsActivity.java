@@ -170,7 +170,9 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
             }
             if(value < lowbid || lowbid == -1){
                 lowbid = value;
+                currentTask.setMinBid(value);
                 populateFields();
+
             }
             PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
                     getApplicationContext());

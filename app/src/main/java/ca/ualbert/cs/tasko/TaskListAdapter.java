@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -44,7 +46,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private LayoutInflater inflater;
     private TaskList tasks;
     private Context thiscontext;
-    private BidList lowBids;
     private BidList myBids;
 
     /**
@@ -66,22 +67,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
      * when the ViewTasksBiddedOnActivity is called.
      * @param context The context for the activity using the adapter.
      * @param dmTasks The TaskList representing all Tasks a user has bid on, from the DataManager.
-     * @param dmBids A BidList which represents all bids a user has made on the include TaskList.
+     * @param dmMyBids A BidList which represents all bids a user has made on the include TaskList.
      */
-    public TaskListAdapter(Context context, TaskList dmTasks, BidList dmBids) {
+    public TaskListAdapter(Context context, TaskList dmTasks, BidList dmMyBids){
         thiscontext = context;
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
-        lowBids = dmBids;
-    }
-
-    public TaskListAdapter(Context context, TaskList dmTasks, BidList dmLowBids, BidList dmMyBids){
-        thiscontext = context;
-        inflater = LayoutInflater.from(context);
-        tasks = dmTasks;
-        lowBids = dmLowBids;
         myBids = dmMyBids;
-
     }
 
     /**
@@ -114,19 +106,24 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
 
+        //Taken From https://stackoverflow.com/questions/2538787/
+        //how-to-display-an-output-of-float-data-with-2-decimal-places-in-java
+        //2018-03-26
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
+
         // Tries to get the minimum bid on each task if it exists
-        try{
-            Bid lowBid = lowBids.get(position);
-            String lowbidValue = Float.toString(lowBid.getValue());
+        if (currentTask.getMinBid() != null){
+            String lowbidValue = df.format(currentTask.getMinBid());
             holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
-        }catch (NullPointerException e){
+        }else{
             holder.taskLowestBid.setText("Make the First Bid!");
         }
 
-
         // Checks see if to get the users bid on the Task if it exists
         if (myBids != null){
-            holder.taskMyBid.setText("Your Bid: " + lowBids.get(position).getValue());
+            holder.taskMyBid.setText("My Bid: " + df.format(myBids.get(position).getValue()));
         } else{
             holder.taskMyBid.setText("");
         }
@@ -147,6 +144,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 holder.taskStatusIcon.setImageResource(R.drawable.done);
                 break;
         }
+
+
 
         // Photos arent working properly.
         //holder.taskPhoto.setImageResource();
@@ -183,6 +182,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             itemView.setOnClickListener(this);
 
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
+            taskRequestorUsername = (TextView)
             taskStatusIcon = (ImageView) itemView.findViewById(R.id.searchedTaskStatusIcon);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
             taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);

@@ -39,7 +39,7 @@ public class Task {
     private Location geolocation;
     private String taskRequesterID;
     private String taskProviderID;
-    //private BidList bidList;
+    private Float minBid;
     private Status status;
 
     @JestId
@@ -91,6 +91,7 @@ public class Task {
         this.geolocation = null;
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
+        this.minBid = null;
     }
 
     /**
@@ -113,6 +114,23 @@ public class Task {
         this.geolocation = location;
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
+    }
+
+    /**
+     * Returns the minimum bid on a Task (Makes TaskViews where minBids are displayed much faster)
+     * @return A Float representing the minimum bid.
+     */
+    public Float getMinBid(){
+        return minBid;
+    }
+
+    /**
+     * Sets the minimum bid on the task if it is less then the current minimum
+     * @param value The value we compare to minBid
+     */
+    public void setMinBid(Float value) {
+        if (minBid == null || value < minBid)
+            minBid = value;
     }
 
     // Not implemented yet

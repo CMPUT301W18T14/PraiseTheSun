@@ -65,9 +65,11 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
         searchRecyclerView.setLayoutManager(searchLayoutManager);
         try {setUser();
         } catch (NoInternetException e) {e.printStackTrace();}
+
         getTasks();
-        getMinBids();
-        setRecyclerView();
+
+        tasksBiddedAdapter = new TaskListAdapter(context, biddedTasks, userBids);
+        searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
 
     /**
@@ -90,39 +92,12 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
         try {
             userBids = dm.getUserBids(User.getId(), context);
             biddedTasks = new TaskList();
-            for (int i = 0; i < userBids.getSize(); i++)
+            for (int i = 0; i < 10 /*userBids.getSize()*/; i++)
                 biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
 
         }
-    }
-
-    private void getMinBids() {
-        lowBids = new BidList();
-        Task currentTask;
-        try {
-            for (int i = 0; i < biddedTasks.getSize(); i++) {
-                currentTask = biddedTasks.get(i);
-                BidList bids = dm.getTaskBids(currentTask.getId(), context);
-                Bid lowbid = bids.getMinBid();
-                lowBids.addBid(lowbid);
-            }
-        } catch (NoInternetException e) {
-            Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
-        } catch (NullPointerException e){
-            Log.i("Error", "Getting Wierd Null Pointer Error");
-        }
-
-    }
-
-
-    /**
-     * Provides the TaskList for the Adapter and the Adapter for the RecyclerView.
-     */
-    private void setRecyclerView(){
-        tasksBiddedAdapter = new TaskListAdapter(context, biddedTasks, lowBids, userBids);
-        searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
 
 }

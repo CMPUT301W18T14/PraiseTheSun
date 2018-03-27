@@ -39,7 +39,6 @@ public class SearchResultsActivity extends AppCompatActivity {
     private DataManager dm = DataManager.getInstance();
     private SearchResultsActivity context = this;
     private TaskList foundtasks;
-    private BidList lowBids;
 
     /**
      * Creates the Activity which includes initializing the RecyclerView with the appropriate
@@ -57,11 +56,9 @@ public class SearchResultsActivity extends AppCompatActivity {
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
         searchForTasks();
-        //searchForBids();
-        lowBids = null;
 
         //Initialize the Adapter and RecyclerView
-        searchAdapter = new TaskListAdapter(context, foundtasks, lowBids);
+        searchAdapter = new TaskListAdapter(context, foundtasks);
         searchRecyclerView.setAdapter(searchAdapter);
 
     }
@@ -87,24 +84,6 @@ public class SearchResultsActivity extends AppCompatActivity {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
         }
 
-    }
-
-    //Needs to be optimized!!!
-    private void searchForBids() {
-        lowBids = new BidList();
-        Task currentTask;
-        try {
-            for (int i = 0; i < foundtasks.getSize(); i++) {
-                currentTask = foundtasks.get(i);
-                BidList bids = dm.getTaskBids(currentTask.getId(), context);
-                Bid lowbid = bids.getMinBid();
-                if (lowbid != null) {
-                    lowBids.addBid(lowbid);
-                } else lowBids.addBid(null);
-            }
-        } catch (NoInternetException e) {
-            Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
-        }
     }
 }
 
