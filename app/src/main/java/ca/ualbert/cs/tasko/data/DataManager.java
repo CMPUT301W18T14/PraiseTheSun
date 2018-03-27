@@ -22,13 +22,11 @@ package ca.ualbert.cs.tasko.data;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
-import ca.ualbert.cs.tasko.Commands.Command;
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
@@ -326,15 +324,21 @@ public class DataManager {
     }
 
     //TODO Part 5
-    public void deleteBid(String bidId, Context context) throws NoInternetException{
+    public void deleteBid(Bid bid, Context context) throws NoInternetException{
         context = context.getApplicationContext();
-        DeleteBidCommand dbc = new DeleteBidCommand(bidId);
+        checkNewMinBid(bid, context);
+        DeleteBidCommand dbc = new DeleteBidCommand(bid.getBidID());
         if(isOnline(context)){
             dcm.invokeCommand(dbc);
         } else {
             dcm.addToQueue(dbc);
             throw new NoInternetException();
         }
+    }
+
+    private void checkNewMinBid(Bid bid, Context context) throws NoInternetException{
+        Task task = getTask(bid.getTaskID(), context);
+        //TODO WHEN I GET MINBID ADDED if(task.getMin)
     }
 
     //TODO

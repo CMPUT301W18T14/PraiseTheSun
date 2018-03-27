@@ -70,7 +70,7 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
         assertEquals(returnedBids.getBid(userID1).getValue(), bid1.getValue());
         assertEquals(returnedBids.getBid(userID1).getTaskID(), bid1.getTaskID());
         try {
-            dm.deleteBid(bid1.getBidID(), getActivity().getApplicationContext());
+            dm.deleteBid(bid1, getActivity().getApplicationContext());
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
