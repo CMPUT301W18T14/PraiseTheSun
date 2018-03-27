@@ -28,7 +28,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * Created by spack on 2018-03-10.
  */
 
-public class SimpleNotificationFactory {
+public class NotificationFactory {
 
     DataManager dm = DataManager.getInstance();
     Context context;
@@ -37,8 +37,7 @@ public class SimpleNotificationFactory {
         this.context = context;
     }
 
-    public void createNotification(String taskID, String taskrequestorID
-            , String taskproviderID) throws NoInternetException {
+    public void createNotification(String taskID) throws NoInternetException {
 
 
         SimpleNotification notification = null;

@@ -15,15 +15,8 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 
-import java.util.ArrayList;
-
-import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotification;
-import ca.ualbert.cs.tasko.NotificationArtifacts.RatingNotificationFactory;
-import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotification;
-import ca.ualbert.cs.tasko.NotificationArtifacts.SimpleNotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
