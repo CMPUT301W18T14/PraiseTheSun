@@ -23,12 +23,16 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.io.NotActiveException;
+
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetNotificationsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutNotificationCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskBidsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserBidsCommand;
@@ -303,14 +307,26 @@ public class DataManager {
 
     }
 
-    //TODO
-    public void putNotification(Notification notification, Context context){
-
+    public void putNotification(Notification notification, Context context)
+            throws NoInternetException{
+        context = context.getApplicationContext();
+        if(isOnline(context)){
+            PutNotificationCommand pnc = new PutNotificationCommand(notification);
+            dcm.invokeCommand(pnc);
+        } else {
+            throw new NoInternetException();
+        }
     }
 
-    //TODO
-    public NotificationList getNotifications(String userId, Context context){
-        return new NotificationList();
+    public NotificationList getNotifications(String userId, Context context)
+            throws NoInternetException{
+        if(isOnline(context)){
+            GetNotificationsCommand gnc = new GetNotificationsCommand(userId);
+            dcm.invokeCommand(gnc);
+            return gnc.getResult();
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     //TODO
