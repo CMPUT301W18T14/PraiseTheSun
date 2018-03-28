@@ -28,8 +28,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".AddTaskActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".AddTaskActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".NavigatorActivity"
             android:label="@string/title_activity_navigator"
@@ -63,6 +64,7 @@
         <activity android:name=".ViewTasksBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
+        <activity android:name=".ViewPhotoActivity"></activity>
     </application>
 
 </manifest>

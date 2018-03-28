@@ -154,8 +154,13 @@ public class Task {
 
     // Not implemented yet
     // Todo Part 5
-    public void addPhoto(String photo){
-
+    public boolean hasPhoto(){
+        if (photos.size() > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     // Not implemented yet
