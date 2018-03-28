@@ -20,5 +20,6 @@ package ca.ualbert.cs.tasko.NotificationArtifacts;
  */
 
 public enum NotificationType {
-    TaskRequesterRecievedBidOnTask, TaskProviderBidAccepted, TaskProviderBidDeclined, Rating, TaskDeleted
+    TASK_REQUESTOR_RECIEVED_BID_ON_TASK, TASK_PROVIDER_BID_ACCEPTED, TASK_PROVIDER_BID_DECLINED, RATING, TASK_DELETED
 }
+
