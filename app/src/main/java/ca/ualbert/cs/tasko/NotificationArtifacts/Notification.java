@@ -22,19 +22,46 @@ import ca.ualbert.cs.tasko.User;
  * Created by spack on 2018-03-10.
  */
 
-public abstract class Notification {
+public class Notification {
 
+    private NotificationType type;
     private String message;
-    private User recipient;
+    private String recipientID;
+    private String senderID;
+    private String taskID;
+    private Boolean hasSeen;
 
 
-    public Notification(String message, User recipient) {
+    public Notification(String message, String recipient, String sender,
+                        String taskID, NotificationType Type){
+        this.type = Type;
         this.message = message;
-        this.recipient = recipient;
+        this.recipientID = recipient;
+        this.senderID = sender;
+        this.taskID = taskID;
+        this.hasSeen = false;
+
     }
 
     public String getMessage(){
         return message;
+    }
 
+    public String getRecipientID(){
+        return recipientID;
+    }
+
+    public String getTaskID(){
+        return taskID;
+    }
+
+    public String getSenderID() {return senderID;}
+
+    public NotificationType getType() {return type;}
+
+    public Boolean getHasSeen() {return hasSeen;}
+
+    public void hasSeen(){
+        hasSeen = false;
     }
 }
