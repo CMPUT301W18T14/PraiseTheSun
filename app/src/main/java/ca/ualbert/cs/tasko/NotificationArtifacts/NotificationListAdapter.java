@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import ca.ualbert.cs.tasko.R;
 import ca.ualbert.cs.tasko.ViewSearchedTaskDetailsActivity;
+import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
 
 /**
  * A Notification Adpater.
@@ -78,7 +79,31 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
         public void onClick(View view) {
             Intent intent;
             Notification clickedNotificatoin = notifications.getNotification(getAdapterPosition());
-            //TODO Handle the diffrent behaviour depending on the type of Notification Clicked on...
+            NotificationType Type = clickedNotificatoin.getType();
+
+            switch (Type){
+                case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
+                    intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
+                    intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
+                    thiscontext.startActivity(intent);
+                    break;
+                case TASK_PROVIDER_BID_ACCEPTED:
+                    //TODO REDIRECT TO TASKS ASSIGNED ACTIVITY
+                    break;
+                case RATING:
+                    //TODO IMPLEMENT RATING ACTIVITY
+                    break;
+                case TASK_PROVIDER_BID_DECLINED:
+                    intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
+                    intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
+                    thiscontext.startActivity(intent);
+                    break;
+                case TASK_DELETED:
+                    // Dont think this would do anything.
+                    break;
+
+                    }
+            }
         }
     }
-}
+

@@ -90,6 +90,7 @@ public class NotificationFactory {
                 notification = new Notification(message, recipientID, null, taskID,
                         NotificationType.TASK_PROVIDER_BID_DECLINED);
                 dm.putNotification(notification, context);
+                break;
             case TASK_DELETED:
                 BidList deletedBids = dm.getTaskBids(taskID, context);
                 for(int i = 0; i < deletedBids.getSize(); i++){
@@ -97,8 +98,9 @@ public class NotificationFactory {
                     notification = new Notification(message, deletedBids.get(i).getUserID(), null, taskID,
                             NotificationType.TASK_DELETED);
                     dm.putNotification(notification, context);
-
                 }
+
+                break;
         }
 
     }
