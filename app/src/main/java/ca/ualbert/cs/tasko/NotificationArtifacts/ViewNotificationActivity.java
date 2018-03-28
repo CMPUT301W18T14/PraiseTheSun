@@ -20,10 +20,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.CurrentUser;
 import ca.ualbert.cs.tasko.R;
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class ViewNotificationActivity extends AppCompatActivity {
 
@@ -43,7 +45,13 @@ public class ViewNotificationActivity extends AppCompatActivity {
         notificationsLayoutManager = new LinearLayoutManager(context);
         notificationsRecyclerView.setLayoutManager(notificationsLayoutManager);
 
-        NotificationList myNotifications = dm.getNotifications(cu.getCurrentUser().getId(), context);
+        NotificationList myNotifications = new NotificationList();
+        try {
+            myNotifications.addAll(
+                    dm.getNotifications(cu.getCurrentUser().getId(), context).getNotifications());
+        } catch (NoInternetException e){
+            Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT);
+        }
 
         notificationsAdapter = new NotificationListAdapter(context, myNotifications);
         notificationsRecyclerView.setAdapter(notificationsAdapter);
