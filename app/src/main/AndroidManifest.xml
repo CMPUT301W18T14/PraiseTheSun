@@ -59,14 +59,11 @@
             android:label="@string/title_activity_search_results"
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
-<<<<<<< HEAD
         <activity android:name=".ViewTasksBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
-=======
         <activity android:name=".ViewTasksBiddedOnActivity"></activity>
         <activity android:name=".ViewBidsOnTaskActivity"></activity>
->>>>>>> origin
     </application>
 
 </manifest>
