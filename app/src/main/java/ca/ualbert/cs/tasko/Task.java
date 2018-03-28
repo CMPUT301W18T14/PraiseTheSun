@@ -20,6 +20,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.util.Base64;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ import io.searchbox.annotations.JestId;
  *
  */
 
-public class Task {
+public class Task implements Serializable {
 
     private String taskName;
     private String description;
@@ -163,16 +164,31 @@ public class Task {
         }
     }
 
+    public Bitmap getCoverPhoto() {
+        if (hasPhoto()) {
+            byte[] byteArray = Base64.decode(photos.get(0), Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        }
+        else {
+            return null;
+        }
+    }
+
     // Not implemented yet
     // Todo Part 5
     public ArrayList<Bitmap> getPhotos(){
-        ArrayList<Bitmap> images = new ArrayList<Bitmap>();
-        for (int i = 0; i < photos.size(); i++) {
-            byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
-            Bitmap image = BitmapFactory.decodeByteArray(byteArray,0, byteArray.length);
-            images.add(image);
+        if (hasPhoto()) {
+            ArrayList<Bitmap> images = new ArrayList<Bitmap>();
+            for (int i = 0; i < photos.size(); i++) {
+                byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                images.add(image);
+            }
+            return images;
         }
-        return images;
+        else {
+            return null;
+        }
     }
 
     // Not implemented yet
