@@ -78,4 +78,13 @@ public class Notification {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Notification)){
+            return false;
+        } else {
+            return ((Notification) o).getId().equals(this.getId());
+        }
+    }
 }
