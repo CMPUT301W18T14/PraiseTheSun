@@ -18,20 +18,21 @@ package ca.ualbert.cs.tasko;
 import android.test.ActivityInstrumentationTestCase2;
 
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-//Notifications Need to be reworked for part 5... Avoiding in depth documentation until then
+/**
+ * Created by spack on 2018-03-23.
+ */
 
-public class NotificationTest extends ActivityInstrumentationTestCase2 {
-    public NotificationTest() {
-        super(MainActivity.class);
-    }
-
-    private NotificationHandler nh;
+public class NotificationListTest extends ActivityInstrumentationTestCase2 {
+    public NotificationListTest() {super(MainActivity.class);}
 
     private DataManager dm = DataManager.getInstance();
 
+    private NotificationList nl;
+    private NotificationHandler nh;
     private String providerID;
     private String requestorID;
     private Task task;
@@ -44,6 +45,7 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         User provider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
 
+        //Dont keep putting in Users
         if (dm.getUserByUsername("StevieP", getActivity().getApplicationContext()) == null) {
             dm.putUser(requestor, getActivity().getApplicationContext());
             dm.putUser(provider, getActivity().getApplicationContext());
@@ -58,5 +60,4 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         task = new Task(requestorID, "TestTask for Notifications", "Notifications");
         dm.putTask(task, getActivity().getApplicationContext());
     }
-
 }
