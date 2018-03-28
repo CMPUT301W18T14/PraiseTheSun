@@ -27,12 +27,20 @@ import android.support.v4.app.NotificationCompat;
 import ca.ualbert.cs.tasko.MainActivity;
 import ca.ualbert.cs.tasko.R;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
+//This class was inspired by a tutorial from
+// https://code.tutsplus.com/tutorials/android-o-how-to-use-notification-channels--cms-28616
 
 /**
- * Created by spack on 2018-03-27.
+ * This object will be used when the DataManger finds a New Notification message for a user.
+ * When this Object is created, It creates an Android Notification that when clicked will send the
+ * user to the ViewNotifications Activity where all their Notifications can be seen. This notifies
+ * the User that something has happened in Tasko, without this, A user outside of the app would never
+ * know if something has occured without physically navigating to the ViewMyNotifications Activity.
+ *@see Notification
+ *@see ViewNotificationActivity
+ *
+ * @author spack
  */
-
 public class AndroidNotificationCreator extends ContextWrapper {
 
     private NotificationCompat.Builder notificationBuilder;
@@ -47,6 +55,9 @@ public class AndroidNotificationCreator extends ContextWrapper {
         setup();
     }
 
+    /**
+     * Sets up the Notification Manager, Id, and checks to see if channels need to be created.
+     */
     private void setup(){
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
