@@ -57,8 +57,9 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
         View contentView = inflater.inflate(R.layout.activity_view_tasks_bidded_on, null, false);
         drawerLayout.addView(contentView, 0);
 
-        searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
+        searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         searchLayoutManager = new LinearLayoutManager(context);
+
         searchRecyclerView.setLayoutManager(searchLayoutManager);
         try {setUser();
         } catch (NoInternetException e) {e.printStackTrace();}

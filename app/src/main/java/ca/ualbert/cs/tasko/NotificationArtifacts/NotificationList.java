@@ -18,7 +18,7 @@ package ca.ualbert.cs.tasko.NotificationArtifacts;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**g
+/**
  * A simple Variation of an ArrayList to store Notifications
  * @see Notification
  *

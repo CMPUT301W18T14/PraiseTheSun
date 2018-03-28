@@ -26,7 +26,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * SearchResultsActivity works with TaskListAdapter to generate a recyclerview of tasks from the
- * database that match the users keyword search provided in mainactivy.
+ * database that match the users keyword search provided in mainactivity.
  * @see TaskListAdapter
  *
  * @author spack
@@ -44,6 +44,13 @@ public class SearchResultsActivity extends AppCompatActivity {
      * Creates the Activity which includes initializing the RecyclerView with the appropriate
      * adapter and using the adapter to fill tasks returned by querying the datamanager.
      *
+=======
+
+    /**
+     * Creates the Activity which includes initializing the RecyclerView with the appropriate
+     * adapter and using the adapter to fill the recyclerView with tasks returned by querying the
+     * datamanager.
+>>>>>>> dev
      * @param savedInstanceState Get the saved state form the current device.
      */
     @Override
@@ -51,7 +58,8 @@ public class SearchResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
-        searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
+        searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
+
         searchLayoutManager = new LinearLayoutManager(context);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 

@@ -15,88 +15,44 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import java.util.ArrayList;
+import android.content.Context;
 
-import ca.ualbert.cs.tasko.Status;
-import ca.ualbert.cs.tasko.User;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 
 /**
- * Created by spack on 2018-02-23.
- * NotificationHandler deals with the creation of objects of the Notification Type. essentially
- * A middle man to communicate with the Factories.
+ * NotificationHandler deals with the creation of objects of the Notification Type. It acts as a
+ * controller object that delegates all activities related to creating Notifications.
+ * @see Notification
  *
- * Currently I am using Users as parameters, I can change this to UserIDs pretty easily if we think
- * thats a good idea, I just was not sure the best way to integrate that with the data manager so
- * I kept it simple.
+ * @author spack
  */
 
-public class NotificationHandler {
+public class NotificationHandler{
 
-    private ArrayList<RatingNotification> notifications = new ArrayList<>();
-    private SimpleNotificationFactory notificationFactory;
-    private RatingNotificationFactory ratingNotificationFactory;
+    private NotificationFactory NotificationFactory;
 
     /**
-     * Currently there are 3 constructors. One for each possible factory combination we could use
-     * @param nf This represents the Factory Object we pass in, a Notification Factory
+     * The constructor for NotificationHandler sets up the appropriate factories that will handle
+     * the creation of notifications.
+     * @param context Context is needed to set up the factories (Will be used to communicate with
+     *                the DataManager)
      */
-    public NotificationHandler(SimpleNotificationFactory nf) {
-
-        this.notificationFactory = nf;
-
+    public NotificationHandler(Context context) {
+        this.NotificationFactory = new NotificationFactory();
+        NotificationFactory.setContext(context);
     }
 
-    public NotificationHandler(RatingNotificationFactory rnf) {
-
-        this.ratingNotificationFactory = rnf;
-
-    }
-
-    public NotificationHandler(SimpleNotificationFactory nf, RatingNotificationFactory rnf) {
-
-        this.notificationFactory = nf;
-        this.ratingNotificationFactory = rnf;
-
-    }
 
     /**
-     * This method is called to create notifications based on bidding, and assigning tasks.
-     * @param status the current status of the task the notification will be based on. Depending
-     *               on this status the body of the notification will change.
-     * @param taskname the name of the task the notification is related to.
-     * @param taskrequestor the taskrequestor who posted the task
-     * @param taskprovider the taskprovider who interacts with the task
-     * @return This Function will return a notification object
+     * This method is called to create all notifications, this includes notification based on bidding
+     * assigning tasks, rejecting bids, deleting bids or creating rating messages. The type of
+     * notification that will be created by the factory.
+     * @param taskID the ID of the task the notification is related to.
+     * @param Type The type of the notification that will be created, An enumeration.
      */
-    public SimpleNotification newSimpleNotification(Status status, String taskname, User taskrequestor
-            , User taskprovider){
+    public void newNotification(String taskID, NotificationType Type) throws NoInternetException{
 
-        SimpleNotification notification;
-
-        notification = notificationFactory.createNotification(status, taskname, taskrequestor,
-                    taskprovider);
-
-        return notification;
+        NotificationFactory.createNotification(taskID, Type);
     }
-
-    /**
-     * This method is called to create rating notifications sent to both parties upon a tasks completion
-     * @param taskname the name of the task the notification is related to.
-     * @param taskrequestor the taskrequestor who posted the task
-     * @param taskprovider the taskprovider who interacts with the task
-     * @return This function contains an arraylist of two notifications, one to be sent to the
-     * task requestor and one to the task provider
-     */
-    public ArrayList<RatingNotification> newRatingNotification(String taskname, User taskrequestor
-            , User taskprovider){
-
-        ArrayList<RatingNotification> notifications;
-
-        notifications = ratingNotificationFactory.createNotification(taskname, taskrequestor,
-                taskprovider);
-
-        return notifications;
-    }
-
 }
