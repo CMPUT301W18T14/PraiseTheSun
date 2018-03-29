@@ -61,7 +61,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ViewTasksBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
-
+        <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
     </application>
 
 </manifest>

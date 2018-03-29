@@ -13,22 +13,13 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko;
-
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+package ca.ualbert.cs.tasko.NotificationArtifacts;
 
 /**
- * UserActivity shows the user's information. Accessed from the menu
- *
- * @author imtihan
- * @see RootActivity, User
+ * Created by spack on 2018-03-27.
  */
-public class UserActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
-    }
+public enum NotificationType {
+    TASK_REQUESTOR_RECIEVED_BID_ON_TASK, TASK_PROVIDER_BID_ACCEPTED, TASK_PROVIDER_BID_DECLINED, RATING, TASK_DELETED
 }
+

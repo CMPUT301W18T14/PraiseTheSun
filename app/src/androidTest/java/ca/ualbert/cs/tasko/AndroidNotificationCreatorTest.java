@@ -15,20 +15,24 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.test.ActivityInstrumentationTestCase2;
+
+import ca.ualbert.cs.tasko.NotificationArtifacts.AndroidNotificationCreator;
 
 /**
- * UserActivity shows the user's information. Accessed from the menu
- *
- * @author imtihan
- * @see RootActivity, User
+ * Basic Test to make sure AndroidNotificationCreator doe snot produce any crashes. Robotium cannot
+ * click on the notification bar so Im a little hamstrung.
  */
-public class UserActivity extends AppCompatActivity {
+public class AndroidNotificationCreatorTest extends ActivityInstrumentationTestCase2 {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+    private AndroidNotificationCreator anc;
+
+    public AndroidNotificationCreatorTest() {
+        super(MainActivity.class);
+    }
+
+    public void testCreate(){
+        anc = new AndroidNotificationCreator(getActivity().getApplicationContext());
+        anc.createAndriodNotification();
     }
 }

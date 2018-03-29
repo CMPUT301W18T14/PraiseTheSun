@@ -130,7 +130,7 @@ public class RootActivity extends AppCompatActivity {
                                 break;
 */
                             case R.id.view_profile:
-                                i = new Intent(getApplicationContext(), UserActivity.class);
+                                i = new Intent(getApplicationContext(), UserProfileActivity.class);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
