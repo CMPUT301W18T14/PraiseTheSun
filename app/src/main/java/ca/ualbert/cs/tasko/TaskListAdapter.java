@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DecimalFormat;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 //Todo: Make the adapter more modular, can be reused but needs slight modifications each time
 
@@ -36,20 +43,38 @@ import android.widget.TextView;
  */
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
 
+    private DataManager dm = DataManager.getInstance();
     private LayoutInflater inflater;
     private TaskList tasks;
     private Context thiscontext;
+    private BidList myBids;
 
     /**
      * Constructor for the Adapter, Takes in the context which designates the activity that will use
      * the adpater and a TaskList which represents the Tasks that will be displayed.
      * @param context The context for the activity using the adapter.
-     * @param dmtasks The TaskList represnting the Tasks to be displayed, from the DataManager.
+     * @param dmTasks The TaskList represnting the Tasks to be displayed, from the DataManager.
      */
-    public TaskListAdapter(Context context, TaskList dmtasks){
+    public TaskListAdapter(Context context, TaskList dmTasks){
         thiscontext = context;
         inflater = LayoutInflater.from(context);
-        tasks = dmtasks;
+        tasks = dmTasks;
+    }
+
+    /**
+     * Alternate Constructor for the Adapter, Takes in the context which designates the activity
+     * that will use the adpater and a TaskList which represents the Tasks that will be displayed.
+     * This alternate Adapter includes a bidlist which represents a users bids, will be included
+     * when the ViewTasksBiddedOnActivity is called.
+     * @param context The context for the activity using the adapter.
+     * @param dmTasks The TaskList representing all Tasks a user has bid on, from the DataManager.
+     * @param dmMyBids A BidList which represents all bids a user has made on the include TaskList.
+     */
+    public TaskListAdapter(Context context, TaskList dmTasks, BidList dmMyBids){
+        thiscontext = context;
+        inflater = LayoutInflater.from(context);
+        tasks = dmTasks;
+        myBids = dmMyBids;
     }
 
     /**
@@ -62,27 +87,69 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
      */
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.task_view, parent, false);
+        View view = inflater.inflate(R.layout.task_cardview_layout, parent, false);
         TaskViewHolder holder = new TaskViewHolder(view);
 
         return holder;
     }
 
     /**
-     * Binds The appropriate Data to the ViewHolder.
+     * Binds The appropriate Data to the ViewHolder, this includes a TaskTitle, Description, Status,
+     * Minimum Bid, and potentially, a users Bid on a task and a Photo of the Task.
      * @param holder The ViewHolder data will be bound too.
      * @param position The position within the RecyclerView.
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
         Task currentTask = tasks.get(position);
 
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
-        holder.taskStatus.setText("Status: " + currentTask.getStatus());
-        //Needs more information then I currently have/ dont know how to implement.
-        //holder.taskPhoto.setImageResource();
+        holder.taskRequestorUsername.setText(currentTask.getTaskRequesterUsername());
 
+        //Taken From https://stackoverflow.com/questions/2538787/
+        //how-to-display-an-output-of-float-data-with-2-decimal-places-in-java
+        //2018-03-26
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
+
+        // Tries to get the minimum bid on each task if it exists
+        if (currentTask.getMinBid() != null){
+            String lowbidValue = df.format(currentTask.getMinBid());
+            holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
+        }else{
+            holder.taskLowestBid.setText("Make the First Bid!");
+        }
+
+        // Checks see if to get the users bid on the Task if it exists
+        if (myBids != null){
+            holder.taskMyBid.setText("My Bid: " + df.format(myBids.get(position).getValue()));
+        } else{
+            holder.taskMyBid.setText("");
+        }
+
+        // Show the status of a task using an Icon instead of text, saves space and looks better??
+        Status status = currentTask.getStatus();
+        switch (status) {
+            case REQUESTED:
+                holder.taskStatusIcon.setImageResource(R.drawable.requested);
+                break;
+            case BIDDED:
+                holder.taskStatusIcon.setImageResource(R.drawable.bidded);
+                break;
+            case ASSIGNED:
+                holder.taskStatusIcon.setImageResource(R.drawable.assigned);
+                break;
+            case DONE:
+                holder.taskStatusIcon.setImageResource(R.drawable.done);
+                break;
+        }
+
+
+        // Photos arent working properly.
+        //holder.taskPhoto.setImageResource();
     }
 
     /**
@@ -104,8 +171,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView taskTitle;
-        TextView taskStatus;
+        ImageView taskStatusIcon;
         TextView taskDescription;
+        TextView taskLowestBid;
+        TextView taskMyBid;
+        TextView taskRequestorUsername;
         ImageView taskPhoto;
 
         public TaskViewHolder(View itemView) {
@@ -114,9 +184,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             itemView.setOnClickListener(this);
 
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
-            taskStatus = (TextView) itemView.findViewById(R.id.searchTaskStatus);
+            taskRequestorUsername = (TextView) itemView.findViewById(R.id.searchedTaskUsername);
+            taskStatusIcon = (ImageView) itemView.findViewById(R.id.searchedTaskStatusIcon);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
-            //taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
+            taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);
+            taskMyBid = (TextView) itemView.findViewById(R.id.searchedTasksMyBidOnTask);
+            taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
         }
 
         @Override

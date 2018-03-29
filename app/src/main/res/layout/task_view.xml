@@ -33,12 +33,12 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/searchTaskDescription"
-        app:layout_constraintStart_toEndOf="@+id/taskPhoto"
+        app:layout_constraintStart_toEndOf="@+id/searchTaskPhoto"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_weight="1" />
 
     <ImageView
-        android:id="@+id/taskPhoto"
+        android:id="@+id/searchTaskPhoto"
         android:layout_width="82dp"
         android:layout_height="79dp"
         android:layout_marginStart="8dp"
@@ -60,7 +60,7 @@
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskPhoto" />
+        app:layout_constraintTop_toBottomOf="@+id/searchTaskPhoto" />
 
     <TextView
         android:id="@+id/searchTaskDescription"
@@ -74,7 +74,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toEndOf="@+id/taskPhoto"
+        app:layout_constraintStart_toEndOf="@+id/searchTaskPhoto"
         app:layout_constraintVertical_weight="2" />
 
 

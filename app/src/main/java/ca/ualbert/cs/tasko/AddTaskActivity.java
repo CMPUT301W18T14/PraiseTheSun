@@ -137,6 +137,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 finish();
             }
             Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
+            newTask.setTaskRequesterUsername(taskRequester.getUsername());
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
                 finish();

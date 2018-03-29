@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2018 Chase Buhler, Imtihan Ahmed, Thomas Lafrance, Ryan Romano, Stephen Packer,
+  ~ Alden Emerson Ern Tan
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the License
+  ~ is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied. See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:viewportWidth="210"
+    android:viewportHeight="297"
+    android:width="744.09447dp"
+    android:height="1052.362179dp">
+    <path
+        android:pathData="M121.44 148.06a20 20 0 0 1 -20 20 20 20 0 0 1 -19.999998 -20 20 20 0 0 1 19.999998 -20 20 20 0 0 1 20 20z"
+        android:fillColor="#000000" />
+    <path
+        android:pathData="M118.63 147.92A17.25 17.25 0 0 1 101.38 165.17 17.25 17.25 0 0 1 84.129997 147.92 17.25 17.25 0 0 1 101.38 130.67a17.25 17.25 0 0 1 17.25 17.25z"
+        android:fillColor="#ffffff" />
+    <group
+        android:scaleX="1"
+        android:scaleY="1">
+        <path
+            android:pathData="M95.332075 185.2236l-3.611523 0 -3.503716 -7.51053q-0.395291 -0.86245 -0.808549 -1.41945 -0.413259 -0.57497 -0.898389 -0.89839 -0.467162 -0.34139 -1.042131 -0.48513 -0.557001 -0.14374 -1.257744 -0.14374l-1.509293 0 0 10.45724 -3.198264 0 0 -23.48388 6.288721 0q2.048326 0 3.521684 0.4492 1.473357 0.44919 2.407681 1.25774 0.952292 0.80855 1.383519 1.95849 0.449194 1.13197 0.449194 2.51549 0 1.09603 -0.32342 2.08426 -0.32342 0.97026 -0.97026 1.77881 -0.628872 0.79058 -1.581164 1.38352 -0.934324 0.57496 -2.156132 0.86245 0.988227 0.34139 1.671002 1.20384 0.700744 0.84449 1.419455 2.26394l3.719329 7.72614zm-5.120816 -17.03345q0 -1.88661 -1.185873 -2.82094 -1.167905 -0.93432 -3.30607 -0.93432l-3.018586 0 0 7.76208 2.587359 0q1.13197 0 2.030359 -0.25155 0.916356 -0.26952 1.545228 -0.77262 0.64684 -0.52106 0.988228 -1.25774 0.359355 -0.75465 0.359355 -1.72491z"
+            android:fillColor="#000000" />
+    </group>
+</vector>
