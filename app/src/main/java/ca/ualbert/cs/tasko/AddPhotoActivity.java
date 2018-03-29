@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,9 +29,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -55,51 +58,92 @@ public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private ArrayList<Bitmap> images;
     private Button confirm;
-    private LinearLayout lnrImages;
-    private int numImages;
-    /*
-    https://developer.android.com/guide/topics/ui/layout/recyclerview.html#java
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    */
+    private ImageSwitcher switcher;
+    private ImageView imageView;
+    private int numImages = 0;
 
 
     /**
      * Called when the activity is started. Initializes the confirm button.
      *
      */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
-        /*
-        mRecyclerView = (RecyclerView) findViewById(R.id.add_photo_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new AddPhotoAdapter(null);
-        mRecyclerView.setAdapter(mAdapter);
-        */
 
+        imageView = (ImageView) findViewById(R.id.addPhotoImageView);
+        switcher = (ImageSwitcher) findViewById(R.id.addPhotoImageSwitcher);
         images = new ArrayList<Bitmap>();
         confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
         confirm.setEnabled(false);
-        lnrImages = (LinearLayout) findViewById(R.id.lnrImages);
+
         ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
-        for (int i = 0; i < photos.size(); i++) {
-            byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
-            Bitmap image = BitmapFactory.decodeByteArray(byteArray,0, byteArray
-                    .length);
-            ImageView imageView = new ImageView(this);
-            imageView.requestLayout();
-            // https://stackoverflow.com/questions/36340268/nullpointerexception-while-setting-layoutparams
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup
-                    .LayoutParams.WRAP_CONTENT, 200);
-            imageView.setLayoutParams(params);
-            imageView.setImageBitmap(image);
-            lnrImages.addView(imageView);
+        if (photos.size() > 0) {
+            numImages = photos.size();
+            for (int i = 0; i < numImages; i++) {
+                byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                images.add(image);
+                confirm.setEnabled(true);
+            }
+            imageView.setImageBitmap(images.get(0));
         }
+
+        /*
+         * https://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
+         * http://codetheory.in/android-ontouchevent-ontouchlistener-motionevent-to-detect-common-gestures/
+         * https://developer.android.com/training/gestures/detector.html
+         *
+         */
+        switcher.setOnTouchListener(new View.OnTouchListener() {
+            private float initialX;
+            private int position = 0;
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                //Log.i("Not Error", Integer.toString(numImages));
+                if (numImages > 0) {
+                    float finalX;
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            initialX = event.getX();
+                            return true;
+                        case MotionEvent.ACTION_UP:
+                            finalX = event.getX();
+                            if (initialX > finalX) {
+                                if (position < (numImages - 1)) {
+                                    position++;
+                                    imageView.setImageBitmap(images.get(position));
+                                    switcher.showNext();
+                                    Toast.makeText(getApplicationContext(), "Next Image",
+                                            Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                if (position > 0) {
+                                    position--;
+                                    imageView.setImageBitmap(images.get(position));
+                                    switcher.showNext();
+                                    Toast.makeText(getApplicationContext(), "previous Image",
+                                            Toast.LENGTH_LONG).show();
+                                    switcher.showPrevious();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            break;
+                    }
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        });
     }
 
     /**
@@ -193,28 +237,13 @@ public class AddPhotoActivity extends AppCompatActivity {
                  * accessed 2018-03-25
                  */
                 if(data.getClipData() != null) {
-                    try{
-                        lnrImages.removeAllViews();
-                    }catch (Throwable e){
-                        e.printStackTrace();
-                    }
-                    numImages = data.getClipData().getItemCount();
-                    for (int i = 0; i < numImages; i++) {
+                    int numNewImages = data.getClipData().getItemCount();
+                    for (int i = 0; i < numNewImages; i++) {
                         Uri selectedImage = data.getClipData().getItemAt(i).getUri();
                         InputStream inputStream;
                         try {
                             inputStream = getContentResolver().openInputStream(selectedImage);
                             images.add(BitmapFactory.decodeStream(inputStream));
-                            ImageView imageView = new ImageView(this);
-                            imageView.requestLayout();
-                            // https://stackoverflow.com/questions/36340268/nullpointerexception-while-setting-layoutparams
-                            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup
-                                    .LayoutParams.WRAP_CONTENT, 200);
-                            imageView.setLayoutParams(params);
-                            imageView.setImageBitmap(images.get(i));
-                            lnrImages.addView(imageView);
-                            //ImageView imageView = (ImageView) findViewById(R.id.addPhotoTaskImage);
-                            //imageView.setImageBitmap(image);
                             confirm.setEnabled(true);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -222,6 +251,8 @@ public class AddPhotoActivity extends AppCompatActivity {
                                     .LENGTH_LONG).show();
                         }
                     }
+                    numImages += numNewImages;
+                    imageView.setImageBitmap(images.get(0));
                 }
             }
         }

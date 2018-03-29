@@ -65,51 +65,50 @@ public class ViewPhotoActivity extends AppCompatActivity {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float finalX;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                initialX = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                finalX = event.getX();
-                /*
-                Log.i("Not Error", Integer.toString(position));
-                Log.i("Not Error", Integer.toString(photos.size()));
-                Log.i("Not Error", Float.toString(initialX));
-                Log.i("Not Error", Float.toString(finalX));
-                */
-                if (initialX > finalX) {
-                    if (position < (photos.size() - 1)) {
-                        position++;
-                        imageView.setImageBitmap(photos.get(position));
-                        switcher.showNext();
-                        Toast.makeText(getApplicationContext(), "Next Image",
-                                Toast.LENGTH_LONG).show();
+        if (currentTask.hasPhoto()) {
+            float finalX;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    initialX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    finalX = event.getX();
+                    /*
+                    Log.i("Not Error", Integer.toString(position));
+                    Log.i("Not Error", Integer.toString(photos.size()));
+                    Log.i("Not Error", Float.toString(initialX));
+                    Log.i("Not Error", Float.toString(finalX));
+                    */
+                    if (initialX > finalX) {
+                        if (position < (photos.size() - 1)) {
+                            position++;
+                            imageView.setImageBitmap(photos.get(position));
+                            switcher.showNext();
+                            Toast.makeText(getApplicationContext(), "Next Image",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        if (position > 0) {
+                            position--;
+                            imageView.setImageBitmap(photos.get(position));
+                            switcher.showNext();
+                            Toast.makeText(getApplicationContext(), "previous Image",
+                                    Toast.LENGTH_LONG).show();
+                            switcher.showPrevious();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
-                    else {
-                        Toast.makeText(getApplicationContext(), "No More Images To Swipe",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-                else
-                {
-                    if(position > 0)
-                    {
-                        position--;
-                        imageView.setImageBitmap(photos.get(position));
-                        switcher.showNext();
-                        Toast.makeText(getApplicationContext(), "previous Image",
-                                Toast.LENGTH_LONG).show();
-                        switcher.showPrevious();
-                    }
-                    else
-                    {
-                        Toast.makeText(getApplicationContext(), "No More Images To Swipe",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-                break;
+                    break;
+            }
+            return false;
         }
-        return false;
+        else {
+            return true;
+        }
     }
 }

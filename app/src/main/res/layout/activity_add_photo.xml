@@ -42,28 +42,29 @@
         accessed on 2018-03-25
         -->
 
-    <ScrollView
-        android:id="@+id/add_photo_scroll"
-        android:layout_width="wrap_content"
+    <ImageSwitcher
+        android:id="@+id/addPhotoImageSwitcher"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:scrollbars="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_layout_addphoto">
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout_addphoto">
 
-        <LinearLayout
-            android:id="@+id/lnrImages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="vertical">
+        <ImageView
+            android:id="@+id/addPhotoImageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@android:color/background_light" />
 
-        </LinearLayout>
-    </ScrollView>
-
+    </ImageSwitcher>
 
     <Button
         android:id="@+id/addPhotoUploadButton"
