@@ -42,15 +42,8 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     /**
      * Creates the Activity which includes initializing the RecyclerView with the appropriate
-     * adapter and using the adapter to fill tasks returned by querying the datamanager.
-     *
-=======
-
-    /**
-     * Creates the Activity which includes initializing the RecyclerView with the appropriate
      * adapter and using the adapter to fill the recyclerView with tasks returned by querying the
      * datamanager.
->>>>>>> dev
      * @param savedInstanceState Get the saved state form the current device.
      */
     @Override
