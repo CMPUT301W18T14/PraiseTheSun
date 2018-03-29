@@ -22,13 +22,13 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * NotificationHandler deals with the creation of objects of the Notification Type. It acts as a
- * controller object that delgates all activities related to creating Notifications.
- *@see Notification
+ * controller object that delegates all activities related to creating Notifications.
+ * @see Notification
  *
  * @author spack
  */
 
-public class NotificationHandler {
+public class NotificationHandler{
 
     private NotificationFactory NotificationFactory;
 
@@ -46,11 +46,12 @@ public class NotificationHandler {
 
     /**
      * This method is called to create all notifications, this includes notification based on bidding
-     * assigning tasks, rejecting bids, deleting bids or creating rating messages.
+     * assigning tasks, rejecting bids, deleting bids or creating rating messages. The type of
+     * notification that will be created by the factory.
      * @param taskID the ID of the task the notification is related to.
-     * @return This method will return a notification object
+     * @param Type The type of the notification that will be created, An enumeration.
      */
-    public void newSimpleNotification(String taskID, NotificationType Type) throws NoInternetException {
+    public void newNotification(String taskID, NotificationType Type) throws NoInternetException{
 
         NotificationFactory.createNotification(taskID, Type);
     }

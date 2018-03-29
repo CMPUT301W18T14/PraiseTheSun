@@ -28,13 +28,12 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         super(MainActivity.class);
     }
 
-    private NotificationHandler nh;
-
     private DataManager dm = DataManager.getInstance();
 
     private String providerID;
     private String requestorID;
     private Task task;
+    private NotificationHandler nh;
 
     public void setUp() throws NoInternetException {
         nh = new NotificationHandler(getActivity().getApplicationContext());

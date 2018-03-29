@@ -38,8 +38,9 @@ public class Task {
     private ArrayList<Bitmap> photos;
     private Location geolocation;
     private String taskRequesterID;
+    private String taskRequesterUsername;
     private String taskProviderID;
-    //private BidList bidList;
+    private Float minBid;
     private Status status;
 
     @JestId
@@ -91,6 +92,7 @@ public class Task {
         this.geolocation = null;
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
+        this.minBid = null;
     }
 
     /**
@@ -113,6 +115,39 @@ public class Task {
         this.geolocation = location;
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
+    }
+
+    /**
+     * Returns a String representing the UserName of the Task Requester (Used for TaskList Displays)
+     * @return String representing the UserName of the Task Requester.
+     */
+    public String getTaskRequesterUsername() {
+        return taskRequesterUsername;
+    }
+
+    /**
+     * Sets the Task Requester UserName in the Task. Occurs when Task is created.
+     * @param taskRequesterUsername The Task Requester UserName
+     */
+    public void setTaskRequesterUsername(String taskRequesterUsername) {
+        this.taskRequesterUsername = taskRequesterUsername;
+    }
+
+    /**
+     * Returns the minimum bid on a Task (Makes TaskViews where minBids are displayed much faster)
+     * @return A Float representing the minimum bid.
+     */
+    public Float getMinBid(){
+        return minBid;
+    }
+
+    /**
+     * Sets the minimum bid on the task if it is less then the current minimum
+     * @param value The value we compare to minBid
+     */
+    public void setMinBid(Float value) {
+        if (minBid == null || value < minBid)
+            this.minBid = value;
     }
 
     // Not implemented yet
