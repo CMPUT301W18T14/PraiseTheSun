@@ -15,10 +15,17 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+
+import ca.ualbert.cs.tasko.data.DataManager;
 
 /**
  * Shows user information in an editable format
@@ -26,8 +33,14 @@ import android.widget.EditText;
  * @see User, UserActivity, RootActivity
  */
 public class UserProfileActivity extends RootActivity {
-    EditText username, phoneNumber, emailAddress;
 
+    EditText username;
+    EditText phoneNumber;
+    EditText emailAddress;
+
+    Button confirmButton;
+    Button cancelButton;
+    private Activity activity = this;
     /**
      * Extends the menu into this activity
      * Checks if a user is logged in
@@ -44,16 +57,47 @@ public class UserProfileActivity extends RootActivity {
         username = (EditText)findViewById(R.id.UserProfileActivityUsername);
         phoneNumber = (EditText)findViewById(R.id.UserProfileActivityPhoneNumber);
         emailAddress = (EditText)findViewById(R.id.UserProfileActivityEmail);
+
+        confirmButton = (Button) findViewById(R.id.UserProfileConfirmButton);
+        cancelButton = (Button) findViewById(R.id.UserProfileCancelButton);
         User user = CurrentUser.getInstance().getCurrentUser();
 
         if(CurrentUser.getInstance().loggedIn()){
 
             emailAddress.setText(user.getEmail());
-            username.setText(user.getUsername());
+            username.setText(user.getName());
             phoneNumber.setText(user.getPhoneNumber());
             Log.i("User logged in", emailAddress.getText().toString() );
-
         }
 
+        ConfirmButtonClick();
+        CancelButtonClick();
+    }
+
+    public void ConfirmButtonClick(){
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                setResult(RESULT_OK);
+                CurrentUser.getInstance().getCurrentUser().setName(username.getText().toString());
+                CurrentUser.getInstance().getCurrentUser().setEmail(emailAddress.getText().toString());
+                CurrentUser.getInstance().getCurrentUser().setPhoneNumber(phoneNumber.getText().toString());
+                //TODO edit in database
+                Intent intent = new Intent(activity, UserActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void CancelButtonClick(){
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                Intent intent = new Intent(activity, UserActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

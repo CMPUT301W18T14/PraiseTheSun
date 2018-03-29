@@ -21,6 +21,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -37,7 +38,7 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
     private RecyclerView.Adapter tasksBiddedAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
     public DataManager dm = DataManager.getInstance();
-    public ViewTasksBiddedOnActivity activity = this;
+    public ViewTasksBiddedOnActivity context = this;
     private User User;
     private BidList userBids;
     private TaskList biddedTasks;
@@ -57,12 +58,16 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
         drawerLayout.addView(contentView, 0);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
-        searchLayoutManager = new LinearLayoutManager(activity);
+        searchLayoutManager = new LinearLayoutManager(context);
+
         searchRecyclerView.setLayoutManager(searchLayoutManager);
         try {setUser();
         } catch (NoInternetException e) {e.printStackTrace();}
+
         getTasks();
-        setRecyclerView();
+
+        tasksBiddedAdapter = new TaskListAdapter(context, biddedTasks, userBids);
+        searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
 
     /**
@@ -71,7 +76,7 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
      */
     private void setUser() throws NoInternetException {
         if (CurrentUser.getInstance().getCurrentUser() == null){
-            User = dm.getUserByUsername("rromano", activity);
+            User = dm.getUserByUsername("rromano", context);
         }else{
             User = CurrentUser.getInstance().getCurrentUser();
         }
@@ -83,22 +88,14 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
     private void getTasks(){
         userBids = new BidList();
         try {
-            userBids = dm.getUserBids(User.getId(), activity);
+            userBids = dm.getUserBids(User.getId(), context);
             biddedTasks = new TaskList();
-            for (int i = 0; i < userBids.getSize(); i++)
-                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), activity));
+            for (int i = 0; i < 10 /*userBids.getSize()*/; i++)
+                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));
         } catch (NoInternetException e) {
-            e.printStackTrace();
+            Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
+
         }
-    }
-
-
-    /**
-     * Provides the TaskList for the Adapter and the Adapter for the RecyclerView.
-     */
-    private void setRecyclerView(){
-        tasksBiddedAdapter = new TaskBiddedAdapter(activity, biddedTasks, userBids);
-        searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
 
 }
