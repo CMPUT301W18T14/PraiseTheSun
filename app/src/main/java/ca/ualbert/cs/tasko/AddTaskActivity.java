@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private ArrayList<Bitmap> images;
     private ImageSwitcher switcher;
     private ImageView imageView;
+    private TextView textView;
     private int numImages;
 
     /**
@@ -74,6 +76,7 @@ public class AddTaskActivity extends AppCompatActivity {
         images = new ArrayList<Bitmap>();
         imageView = (ImageView) findViewById(R.id.addTaskImageView);
         switcher = (ImageSwitcher) findViewById(R.id.addTaskImageSwitcher);
+        textView = (TextView) findViewById(R.id.addTaskTextView);
 
         /*
          * https://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
@@ -100,8 +103,9 @@ public class AddTaskActivity extends AppCompatActivity {
                                     position++;
                                     imageView.setImageBitmap(images.get(position));
                                     switcher.showNext();
-                                    Toast.makeText(getApplicationContext(), "Next Image",
-                                            Toast.LENGTH_LONG).show();
+                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
+                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                            .toString(numImages));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                             Toast.LENGTH_LONG).show();
@@ -111,9 +115,10 @@ public class AddTaskActivity extends AppCompatActivity {
                                     position--;
                                     imageView.setImageBitmap(images.get(position));
                                     switcher.showNext();
-                                    Toast.makeText(getApplicationContext(), "previous Image",
-                                            Toast.LENGTH_LONG).show();
                                     switcher.showPrevious();
+                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
+                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                            .toString(numImages));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                             Toast.LENGTH_LONG).show();
@@ -182,8 +187,9 @@ public class AddTaskActivity extends AppCompatActivity {
                             images.add(image);
                         }
                         imageView.setImageBitmap(images.get(0));
+                        textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
+                                .toString(numImages));
                     }
-                    imageView.setImageBitmap(images.get(0));
                     break;
                 case 2:
                     // Handle add location Intent result
