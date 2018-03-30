@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -60,6 +61,7 @@ public class AddPhotoActivity extends AppCompatActivity {
     private Button confirm;
     private ImageSwitcher switcher;
     private ImageView imageView;
+    private TextView textView;
     private int numImages = 0;
 
 
@@ -75,6 +77,7 @@ public class AddPhotoActivity extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.addPhotoImageView);
         switcher = (ImageSwitcher) findViewById(R.id.addPhotoImageSwitcher);
+        textView = (TextView) findViewById(R.id.addPhotoTextView);
         images = new ArrayList<Bitmap>();
         confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
         confirm.setEnabled(false);
@@ -89,6 +92,8 @@ public class AddPhotoActivity extends AppCompatActivity {
                 confirm.setEnabled(true);
             }
             imageView.setImageBitmap(images.get(0));
+            textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
+                    .toString(numImages));
         }
 
         /*
@@ -116,8 +121,9 @@ public class AddPhotoActivity extends AppCompatActivity {
                                     position++;
                                     imageView.setImageBitmap(images.get(position));
                                     switcher.showNext();
-                                    Toast.makeText(getApplicationContext(), "Next Image",
-                                            Toast.LENGTH_LONG).show();
+                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
+                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                            .toString(numImages));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                             Toast.LENGTH_LONG).show();
@@ -127,9 +133,10 @@ public class AddPhotoActivity extends AppCompatActivity {
                                     position--;
                                     imageView.setImageBitmap(images.get(position));
                                     switcher.showNext();
-                                    Toast.makeText(getApplicationContext(), "previous Image",
-                                            Toast.LENGTH_LONG).show();
                                     switcher.showPrevious();
+                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
+                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                            .toString(numImages));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                             Toast.LENGTH_LONG).show();
@@ -253,6 +260,8 @@ public class AddPhotoActivity extends AppCompatActivity {
                     }
                     numImages += numNewImages;
                     imageView.setImageBitmap(images.get(0));
+                    textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
+                            .toString(numImages));
                 }
             }
         }

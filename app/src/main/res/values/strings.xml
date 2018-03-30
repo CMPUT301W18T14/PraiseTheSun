@@ -73,5 +73,6 @@
     <string name="my_bid">My Bid:</string>
     <string name="create_notification">Create Notification</string>
     <string name="view_photo_message">This task currently has no images.</string>
+    <string name="image_message">No images currently added.</string>
 </resources>
 
