@@ -80,7 +80,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         confirm.setEnabled(false);
 
         ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
-        if (photos.size() > 0) {
+        if (photos != null) {
             numImages = photos.size();
             for (int i = 0; i < numImages; i++) {
                 byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);

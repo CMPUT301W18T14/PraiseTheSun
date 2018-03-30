@@ -83,33 +83,39 @@
         android:textAlignment="textStart"
         android:textSize="20sp"
         android:maxLength="350"
+        android:maxLines="7"
+        android:scrollHorizontally="false"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical"
+        android:overScrollMode="always"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addTaskName" />
 
-    <ScrollView
-        android:id="@+id/add_task_scroll"
-        android:layout_width="wrap_content"
+    <ImageSwitcher
+        android:id="@+id/addTaskImageSwitcher"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:scrollbars="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         app:layout_constraintBottom_toTopOf="@+id/addTaskPhoto"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addTaskDescription">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:id="@+id/addTaskImagesLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="vertical">
+        <ImageView
+            android:id="@+id/addTaskImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@android:color/background_light" />
 
-        </LinearLayout>
-    </ScrollView>
+    </ImageSwitcher>
 
     <Button
         android:id="@+id/addTaskPhoto"
@@ -129,15 +135,14 @@
         android:id="@+id/addTaskLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="4dp"
         android:onClick="onAddLocationClick"
         android:text="@string/add_location"
-        app:layout_constraintBottom_toTopOf="@+id/addTask"
-        app:layout_constraintStart_toEndOf="@+id/addTaskPhoto"
+        app:layout_constraintBaseline_toBaselineOf="@+id/addTaskPhoto"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/addTaskPhoto" />
 
     <Button
         android:id="@+id/addTask"

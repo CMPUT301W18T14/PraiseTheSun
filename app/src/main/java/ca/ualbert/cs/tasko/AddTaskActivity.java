@@ -24,9 +24,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -48,9 +50,12 @@ public class AddTaskActivity extends AppCompatActivity {
     private String taskName;
     private String description;
     private User taskRequester;
-    private LinearLayout addTaskImagesLayout;
-    private ArrayList<String> photos;
     private Location geoLocation = null;
+    private ArrayList<String> photos;
+    private ArrayList<Bitmap> images;
+    private ImageSwitcher switcher;
+    private ImageView imageView;
+    private int numImages;
 
     /**
      * Called when the activity is started. Initializes the taskNameText and descriptionText.
@@ -63,11 +68,66 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
-        addTaskImagesLayout = (LinearLayout) findViewById(R.id.addTaskImagesLayout);
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
         taskRequester = CurrentUser.getInstance().getCurrentUser();
-        photos = new ArrayList<String>();
+        images = new ArrayList<Bitmap>();
+        imageView = (ImageView) findViewById(R.id.addTaskImageView);
+        switcher = (ImageSwitcher) findViewById(R.id.addTaskImageSwitcher);
+
+        /*
+         * https://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
+         * http://codetheory.in/android-ontouchevent-ontouchlistener-motionevent-to-detect-common-gestures/
+         * https://developer.android.com/training/gestures/detector.html
+         *
+         */
+        switcher.setOnTouchListener(new View.OnTouchListener() {
+            private float initialX;
+            private int position = 0;
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                //Log.i("Not Error", Integer.toString(numImages));
+                if (numImages > 0) {
+                    float finalX;
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            initialX = event.getX();
+                            return true;
+                        case MotionEvent.ACTION_UP:
+                            finalX = event.getX();
+                            if (initialX > finalX) {
+                                if (position < (numImages - 1)) {
+                                    position++;
+                                    imageView.setImageBitmap(images.get(position));
+                                    switcher.showNext();
+                                    Toast.makeText(getApplicationContext(), "Next Image",
+                                            Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                if (position > 0) {
+                                    position--;
+                                    imageView.setImageBitmap(images.get(position));
+                                    switcher.showNext();
+                                    Toast.makeText(getApplicationContext(), "previous Image",
+                                            Toast.LENGTH_LONG).show();
+                                    switcher.showPrevious();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            break;
+                    }
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        });
     }
 
     /**
@@ -114,19 +174,16 @@ public class AddTaskActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 19:
                     photos = data.getStringArrayListExtra("photos");
-                    for (int i = 0; i < photos.size(); i++) {
-                        byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
-                        Bitmap image = BitmapFactory.decodeByteArray(byteArray,0, byteArray
-                                .length);
-                        ImageView imageView = new ImageView(this);
-                        imageView.requestLayout();
-                        // https://stackoverflow.com/questions/36340268/nullpointerexception-while-setting-layoutparams
-                        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup
-                                .LayoutParams.WRAP_CONTENT, 200);
-                        imageView.setLayoutParams(params);
-                        imageView.setImageBitmap(image);
-                        addTaskImagesLayout.addView(imageView);
+                    if (photos.size() > 0) {
+                        numImages = photos.size();
+                        for (int i = 0; i < numImages; i++) {
+                            byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                            Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                            images.add(image);
+                        }
+                        imageView.setImageBitmap(images.get(0));
                     }
+                    imageView.setImageBitmap(images.get(0));
                     break;
                 case 2:
                     // Handle add location Intent result
