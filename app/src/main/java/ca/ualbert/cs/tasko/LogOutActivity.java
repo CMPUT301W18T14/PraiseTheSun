@@ -15,25 +15,58 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * The LogOutActivity logs the user out by deleting their login information form the internal
+ * storage and setting the CurrentUser's user object to null.
+ */
 public class LogOutActivity extends AppCompatActivity {
 
+    private static final String FILENAME = "nfile.sav";
+
+    /**
+     * Standard OnCreate Method, note there is no layout associated with this activity.
+     * @param savedInstanceState Get the saved state form the current device.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Open starting the Activity, attempt to log the Current User out.
+     */
     @Override
     protected void onStart() {
         super.onStart();
-        logout();
+        try {
+            logout();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void logout(){
-        CurrentUser.getInstance().setCurrentUser(null);
+    /**
+     * Handles all necessary steps to Log a user out.
+     * @throws IOException Catch errors if the file we try to Overwrite is not found.
+     */
+    private void logout() throws IOException {
 
+        CurrentUser.getInstance().setCurrentUser(null);
+        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+        fos.write("".getBytes());
+        fos.close();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
 
     }
 

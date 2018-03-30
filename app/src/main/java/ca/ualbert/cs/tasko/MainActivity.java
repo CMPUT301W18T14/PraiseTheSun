@@ -49,7 +49,15 @@ public class MainActivity extends RootActivity {
         setSupportActionBar(toolbar);
         Button postTaskButton = (Button)findViewById(R.id.postTaskButton);
         Button searchTaskButton = (Button)findViewById(R.id.SearchButton);
+        Button LogOut = (Button) findViewById(R.id.testLogOut);
         final EditText searchQuery = (EditText)findViewById(R.id.searchQuery);
+
+        LogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LogOutActivity.class));
+            }
+        });
 
         /**
          * Go to the AddTaskActivity to create a new task
