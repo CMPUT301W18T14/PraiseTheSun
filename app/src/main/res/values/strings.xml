@@ -74,5 +74,6 @@
     <string name="create_notification">Create Notification</string>
     <string name="view_photo_message">This task currently has no images.</string>
     <string name="image_message">No images currently added.</string>
+    <string name="add_photo_title">Add Photos</string>
 </resources>
 
