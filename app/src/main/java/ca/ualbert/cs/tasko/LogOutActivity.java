@@ -65,7 +65,7 @@ public class LogOutActivity extends AppCompatActivity {
         fos.write("".getBytes());
         fos.close();
 
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, OpeningActivity.class);
         startActivity(intent);
 
     }
