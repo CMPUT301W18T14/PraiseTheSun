@@ -63,17 +63,17 @@
             android:label="@string/title_activity_search_results"
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ViewTasksBiddedOnActivity"></activity>
-        <activity android:name=".ViewBidsOnTaskActivity"></activity>
+        <activity android:name=".ViewTasksBiddedOnActivity"/>
+        <activity android:name=".ViewBidsOnTaskActivity"/>
         <receiver android:name=".NotificationArtifacts.NotificationService">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
         <service android:name=".NotificationArtifacts.NotificationService$NotificationPoll"
             android:enabled="true"/>
-        <activity android:name=".LogOutActivity"></activity>
-        <activity android:name=".ViewPhotoActivity"></activity>
+        <activity android:name=".LogOutActivity"/>
+        <activity android:name=".ViewPhotoActivity"/>
 
     </application>
 

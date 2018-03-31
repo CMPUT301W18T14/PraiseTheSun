@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationService;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -102,6 +103,8 @@ public class OpeningActivity extends AppCompatActivity {
                 startActivity(intent);
             } else {
                 cu.setCurrentUser(curr);
+                Intent i = new Intent(this, NotificationService.class);
+                startService(i);
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }

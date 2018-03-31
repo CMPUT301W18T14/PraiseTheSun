@@ -27,6 +27,7 @@ import android.widget.EditText;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationService;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -100,6 +101,8 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    Intent i = new Intent(activity, NotificationService.class);
+                    startService(i);
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);
                 } else {

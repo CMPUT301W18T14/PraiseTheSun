@@ -20,55 +20,70 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+
+import ca.ualbert.cs.tasko.CurrentUser;
+import ca.ualbert.cs.tasko.User;
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 
 /**
  * Created by chase on 3/25/2018.
  */
 
-public class NotificationService extends BroadcastReceiver {
-    /*
-    Referenced
-    https://stackoverflow.com/questions/39169469/creating-an-android-background-service-that-continuously-polls-a-rest-api-for-da
-    retrieved on March 25, 2018
-     */
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
-            Intent i = new Intent(context, NotificationPoll.class);
-            context.startService(i);
+public class NotificationService extends IntentService {
 
+
+    public static final long NOTIFICATION_POLL_RATE = 10 * 1000;
+
+    private Handler mHandler;
+    private Runnable pollRunnable = new Runnable() {
+        @Override
+        public void run() {
+            poll();
+            mHandler.postDelayed(pollRunnable, NOTIFICATION_POLL_RATE);
         }
+    };
+
+    public NotificationService(){
+        super("Poll Notifications");
     }
 
-    public class NotificationPoll extends IntentService {
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        mHandler = new Handler();
 
-        public static final long NOTIFICATION_POLL_RATE = 10 * 1000;
+        mHandler.post(pollRunnable);
+    }
 
-        private Handler mHandler;
-
-        public NotificationPoll(){
-            super("Poll Notifications");
-        }
-
-        private Runnable pollRunnable = new Runnable() {
-            @Override
-            public void run() {
-                poll();
-                mHandler.postDelayed(pollRunnable, NOTIFICATION_POLL_RATE);
+    private synchronized void poll(){
+        User user = CurrentUser.getInstance().getCurrentUser();
+        DataManager dm = DataManager.getInstance();
+        Boolean alert = false;
+        try {
+            NotificationList nl = dm.getNotifications(user.getId(), getApplicationContext());
+            for(Notification n: nl.getNotifications()){
+                if(!n.getHasSeen()){
+                    n.hasSeen();
+                    dm.putNotification(n, getApplicationContext());
+                    alert = true;
+                }
             }
-        };
-
-        @Override
-        protected void onHandleIntent(@Nullable Intent intent) {
-            mHandler = new Handler();
-
-            mHandler.post(pollRunnable);
+        } catch (NoInternetException e){
+            //Do nothing. Just Skip this poll
         }
-
-        private synchronized void poll(){
-            //TODO: ACtually Poll
+        if(alert){
+            Intent i = new Intent(getApplicationContext(),
+                    CreateAndroidNotificationsActivity.class);
+            startActivity(i);
         }
     }
 }
+
+/*
+ADD THIS TO START POLL:
+Intent i = new Intent(context, NotificationService.class);
+context.startService(i);
+ */
