@@ -15,16 +15,19 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
-import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationService;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -103,8 +106,15 @@ public class OpeningActivity extends AppCompatActivity {
                 startActivity(intent);
             } else {
                 cu.setCurrentUser(curr);
+
+                //Begin Notification Alarm
+                Log.i("POLL", "I am About to begin Polling");
                 Intent i = new Intent(this, NotificationService.class);
-                startService(i);
+                PendingIntent p = PendingIntent.getService(getApplicationContext(), 0, i, 0);
+                AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+                am.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), 5000, p);
+                //End notification alarm
+
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }

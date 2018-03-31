@@ -65,6 +65,7 @@ public class CreateAndroidNotificationsActivity extends AppCompatActivity {
         CHANNEL_ID = getPackageName();
 
         setupChannel();
+        createAndriodNotification();
         setupButton();
 
         finish();

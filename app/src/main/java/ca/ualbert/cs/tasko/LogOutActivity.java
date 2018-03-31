@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -60,6 +59,7 @@ public class LogOutActivity extends AppCompatActivity {
      */
     private void logout() throws IOException {
 
+        stopService(new Intent(getApplicationContext(), NotificationService.class));
         CurrentUser.getInstance().setCurrentUser(null);
         FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
         fos.write("".getBytes());
@@ -67,6 +67,7 @@ public class LogOutActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, OpeningActivity.class);
         startActivity(intent);
+        finish();
 
     }
 

@@ -13,52 +13,46 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko.NotificationArtifacts;
+package ca.ualbert.cs.tasko;
 
-import android.app.IntentService;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
-import android.provider.ContactsContract;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import ca.ualbert.cs.tasko.CurrentUser;
+import ca.ualbert.cs.tasko.NotificationArtifacts.CreateAndroidNotificationsActivity;
+import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 
 /**
- * Created by chase on 3/25/2018.
+ * @author Chase Buhler
  */
 
-public class NotificationService extends IntentService {
-
-
-    public static final long NOTIFICATION_POLL_RATE = 10 * 1000;
-
-    private Handler mHandler;
-    private Runnable pollRunnable = new Runnable() {
-        @Override
-        public void run() {
-            poll();
-            mHandler.postDelayed(pollRunnable, NOTIFICATION_POLL_RATE);
-        }
-    };
+public class NotificationService extends Service {
 
     public NotificationService(){
-        super("Poll Notifications");
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        mHandler = new Handler();
-
-        mHandler.post(pollRunnable);
+    public void onCreate(){
+        super.onCreate();
     }
 
-    private synchronized void poll(){
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         User user = CurrentUser.getInstance().getCurrentUser();
         DataManager dm = DataManager.getInstance();
         Boolean alert = false;
@@ -72,13 +66,14 @@ public class NotificationService extends IntentService {
                 }
             }
         } catch (NoInternetException e){
-            //Do nothing. Just Skip this poll
+            Log.i("Notification Poll", "No Internet Connection!");
         }
         if(alert){
             Intent i = new Intent(getApplicationContext(),
                     CreateAndroidNotificationsActivity.class);
             startActivity(i);
         }
+        return START_NOT_STICKY;
     }
 }
 

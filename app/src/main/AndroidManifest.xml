@@ -65,15 +65,11 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ViewTasksBiddedOnActivity"/>
         <activity android:name=".ViewBidsOnTaskActivity"/>
-        <receiver android:name=".NotificationArtifacts.NotificationService">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
-        <service android:name=".NotificationArtifacts.NotificationService$NotificationPoll"
+        <service android:name=".NotificationService"
             android:enabled="true"/>
         <activity android:name=".LogOutActivity"/>
         <activity android:name=".ViewPhotoActivity"/>
+        <activity android:name=".NotificationArtifacts.CreateAndroidNotificationsActivity"/>
 
     </application>
 
