@@ -34,8 +34,10 @@ public class ViewPhotoActivity extends AppCompatActivity {
 
     private ImageSwitcher switcher;
     private ImageView imageView;
+    private TextView imageText;
     private Task currentTask;
     private int position = 0;
+    private int numImages;
     private ArrayList<Bitmap> photos;
     private Float initialX;
 
@@ -46,15 +48,18 @@ public class ViewPhotoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_photo);
         switcher = (ImageSwitcher) findViewById(R.id.viewPhotoImageSwitcher);
         imageView = (ImageView) findViewById(R.id.viewPhotoImageView);
+        imageText = (TextView) findViewById(R.id.viewPhotoTextView);
         Intent intent = getIntent();
         currentTask = (Task) intent.getSerializableExtra("photos");
 
         if (currentTask.hasPhoto()) {
             photos = currentTask.getPhotos();
             imageView.setImageBitmap(photos.get(0));
+            numImages = photos.size();
+            imageText.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
+                    .toString(numImages));
         }
         else {
-            TextView imageText = (TextView) findViewById(R.id.viewPhotoTextView);
             imageText.setText(R.string.view_photo_message);
         }
     }
@@ -80,12 +85,13 @@ public class ViewPhotoActivity extends AppCompatActivity {
                     Log.i("Not Error", Float.toString(finalX));
                     */
                     if (initialX > finalX) {
-                        if (position < (photos.size() - 1)) {
+                        if (position < (numImages - 1)) {
                             position++;
                             imageView.setImageBitmap(photos.get(position));
                             switcher.showNext();
-                            Toast.makeText(getApplicationContext(), "Next Image",
-                                    Toast.LENGTH_LONG).show();
+                            imageText.setText("Swipe to view other photos.\n Viewing photo " +
+                                    Integer.toString(position + 1) + "/" + Integer.toString
+                                    (numImages));
                         } else {
                             Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                     Toast.LENGTH_LONG).show();
@@ -95,9 +101,10 @@ public class ViewPhotoActivity extends AppCompatActivity {
                             position--;
                             imageView.setImageBitmap(photos.get(position));
                             switcher.showNext();
-                            Toast.makeText(getApplicationContext(), "previous Image",
-                                    Toast.LENGTH_LONG).show();
                             switcher.showPrevious();
+                            imageText.setText("Swipe to view other photos.\n Viewing photo " +
+                                    Integer.toString(position + 1) + "/" + Integer.toString
+                                    (numImages));
                         } else {
                             Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                     Toast.LENGTH_LONG).show();
