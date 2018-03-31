@@ -74,14 +74,6 @@ public class AddPhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
-        /*
-        mRecyclerView = (RecyclerView) findViewById(R.id.add_photo_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new AddPhotoAdapter(null);
-        mRecyclerView.setAdapter(mAdapter);
-        */
 
         imageView = (ImageView) findViewById(R.id.addPhotoImageView);
         switcher = (ImageSwitcher) findViewById(R.id.addPhotoImageSwitcher);
