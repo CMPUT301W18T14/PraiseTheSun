@@ -25,7 +25,6 @@
         https://stackoverflow.com/questions/23426113/how-to-select-multiple-images-from-gallery-in-android
         accessed on 2018-03-25
         -->
-
     <ImageSwitcher
         android:id="@+id/addPhotoImageSwitcher"
         android:layout_width="match_parent"
@@ -77,7 +76,7 @@
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_consztraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/addPhotoTextView"
