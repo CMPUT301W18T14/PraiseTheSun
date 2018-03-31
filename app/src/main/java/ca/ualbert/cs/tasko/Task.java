@@ -19,7 +19,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.util.Base64;
-
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
