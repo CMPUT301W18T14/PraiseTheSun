@@ -51,6 +51,7 @@ public class MainActivity extends RootActivity {
         Button searchTaskButton = (Button)findViewById(R.id.SearchButton);
         final EditText searchQuery = (EditText)findViewById(R.id.searchQuery);
 
+
         /**
          * Go to the AddTaskActivity to create a new task
          */

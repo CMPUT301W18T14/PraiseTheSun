@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     CU.setCurrentUser(usernameInput);
                     try {
                         FileOutputStream fos = openFileOutput(FILENAME,
-                                Context.MODE_APPEND);
+                                Context.MODE_PRIVATE);
                         fos.write(usernameInput.getUsername().getBytes());
                         fos.close();
                     } catch (IOException e) {
