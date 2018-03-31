@@ -49,7 +49,6 @@ public class MainActivity extends RootActivity {
         setSupportActionBar(toolbar);
         Button postTaskButton = (Button)findViewById(R.id.postTaskButton);
         Button searchTaskButton = (Button)findViewById(R.id.SearchButton);
-        Button LogOut = (Button) findViewById(R.id.testLogOut);
         final EditText searchQuery = (EditText)findViewById(R.id.searchQuery);
 
 
