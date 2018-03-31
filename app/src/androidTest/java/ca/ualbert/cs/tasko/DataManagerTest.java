@@ -22,6 +22,9 @@ import junit.framework.TestCase;
 
 import java.io.IOException;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.JestWrapper;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -42,12 +45,15 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
 
     private User user1;
     private User user2;
+    private Notification n;
     private DataManager dm;
 
     public void setUp(){
         user1 = new User("jdoe999", "John Doe", "555-333-1234", "jdoe7@example.com");
         user2 = new User("jdoe63", "John Doe", "555-333-1234", "jdoe7@example.com");
         dm = DataManager.getInstance();
+        n = new Notification("This is a notification", "jdoe999", "jdoe63", "ThisIsTask",
+                NotificationType.TASK_PROVIDER_BID_ACCEPTED);
     }
 
     public void testPutUser(){
@@ -114,5 +120,29 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         assertFalse(returnedUser == null);
         assertNotNull(returnedUser.getId());
         assertEquals(user1.getUsername(), returnedUser.getUsername());
+    }
+
+    public void testNotifications(){
+        NotificationList nl = null;
+        try {
+            dm.putNotification(n, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } catch (NoInternetException e){
+            Log.i("Error", "No internet connection, can not add the notification to elasticsearch");
+        }
+
+        try {
+            nl = dm.getNotifications(n.getRecipientID(), getActivity()
+                    .getApplicationContext());
+        } catch (NoInternetException e){
+            Log.i("Error", "No internet connection, can not get the user from elasticsearch");
+        }
+        assertFalse(nl == null);
+        assertNotNull(n.getId());
+        assertTrue(nl.hasNotification(n));
     }
 }
