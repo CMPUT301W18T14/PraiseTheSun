@@ -190,7 +190,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskMyBid = (TextView) itemView.findViewById(R.id.searchedTasksMyBidOnTask);
             taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
 
-            //setupPhotoClick();
+            setupPhotoClick();
             //setupUserNameClick();
 
         }
@@ -199,9 +199,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Intent viewPhotosIntent = new Intent(thiscontext, ViewPhotoActivity.class);
-                    //viewPhotosIntent.putExtra("photos", tasks.get(getAdapterPosition()));
-                    Intent intent = new Intent(thiscontext, MainActivity.class);
+                    Intent intent = new Intent(thiscontext, ViewPhotoActivity.class);
+                    intent.putExtra("photos", tasks.get(getAdapterPosition()));
                     thiscontext.startActivity(intent);
                 }
             });
@@ -211,9 +210,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(thiscontext, MainActivity.class);
-                    intent.putExtra("UserID", tasks.get(getAdapterPosition()).getTaskRequesterID());
-                    thiscontext.startActivity(intent);
+                    //Intent intent = new Intent(thiscontext, OtherUserActivity.class);
+                    ///intent.putExtra("UserID", tasks.get(getAdapterPosition()).getTaskRequesterID());
+                    //thiscontext.startActivity(intent);
                 }
             });
         }
