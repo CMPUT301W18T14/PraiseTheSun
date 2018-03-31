@@ -148,8 +148,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
 
-        // Photos arent working properly.
-        //holder.taskPhoto.setImageResource();
+        //holder.taskPhoto.setImageBitmap(currentTask.getCoverPhoto());
     }
 
     /**
@@ -190,6 +189,33 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);
             taskMyBid = (TextView) itemView.findViewById(R.id.searchedTasksMyBidOnTask);
             taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
+
+            //setupPhotoClick();
+            //setupUserNameClick();
+
+        }
+
+        private void setupPhotoClick(){
+            taskPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Intent viewPhotosIntent = new Intent(thiscontext, ViewPhotoActivity.class);
+                    //viewPhotosIntent.putExtra("photos", tasks.get(getAdapterPosition()));
+                    Intent intent = new Intent(thiscontext, MainActivity.class);
+                    thiscontext.startActivity(intent);
+                }
+            });
+        }
+
+        private void setupUserNameClick(){
+            taskPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(thiscontext, MainActivity.class);
+                    intent.putExtra("UserID", tasks.get(getAdapterPosition()).getTaskRequesterID());
+                    thiscontext.startActivity(intent);
+                }
+            });
         }
 
         @Override
