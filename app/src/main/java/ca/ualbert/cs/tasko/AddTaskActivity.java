@@ -179,6 +179,7 @@ public class AddTaskActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 19:
                     photos = data.getStringArrayListExtra("photos");
+                    images = new ArrayList<Bitmap>();
                     if (photos.size() > 0) {
                         numImages = photos.size();
                         for (int i = 0; i < numImages; i++) {
