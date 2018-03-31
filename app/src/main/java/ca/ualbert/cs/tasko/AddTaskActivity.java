@@ -22,9 +22,16 @@ import android.location.Location;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -44,8 +51,13 @@ public class AddTaskActivity extends AppCompatActivity {
     private String taskName;
     private String description;
     private User taskRequester;
-    private ArrayList<Bitmap> photos;
     private Location geoLocation = null;
+    private ArrayList<String> photos;
+    private ArrayList<Bitmap> images;
+    private ImageSwitcher switcher;
+    private ImageView imageView;
+    private TextView textView;
+    private int numImages;
 
     /**
      * Called when the activity is started. Initializes the taskNameText and descriptionText.
@@ -61,7 +73,66 @@ public class AddTaskActivity extends AppCompatActivity {
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
         taskRequester = CurrentUser.getInstance().getCurrentUser();
-        photos = new ArrayList<Bitmap>();
+        images = new ArrayList<Bitmap>();
+        imageView = (ImageView) findViewById(R.id.addTaskImageView);
+        switcher = (ImageSwitcher) findViewById(R.id.addTaskImageSwitcher);
+        textView = (TextView) findViewById(R.id.addTaskTextView);
+
+        /*
+         * https://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
+         * http://codetheory.in/android-ontouchevent-ontouchlistener-motionevent-to-detect-common-gestures/
+         * https://developer.android.com/training/gestures/detector.html
+         *
+         */
+        switcher.setOnTouchListener(new View.OnTouchListener() {
+            private float initialX;
+            private int position = 0;
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                //Log.i("Not Error", Integer.toString(numImages));
+                if (numImages > 0) {
+                    float finalX;
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            initialX = event.getX();
+                            return true;
+                        case MotionEvent.ACTION_UP:
+                            finalX = event.getX();
+                            if (initialX > finalX) {
+                                if (position < (numImages - 1)) {
+                                    position++;
+                                    imageView.setImageBitmap(images.get(position));
+                                    switcher.showNext();
+                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
+                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                            .toString(numImages));
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                if (position > 0) {
+                                    position--;
+                                    imageView.setImageBitmap(images.get(position));
+                                    switcher.showNext();
+                                    switcher.showPrevious();
+                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
+                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                            .toString(numImages));
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            break;
+                    }
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        });
     }
 
     /**
@@ -73,6 +144,7 @@ public class AddTaskActivity extends AppCompatActivity {
         // Create an Intent to AddPhotoActivity
         Intent addPhotoIntent = new Intent(this, AddPhotoActivity.class);
         final int result = 19;
+        addPhotoIntent.putExtra("photos", photos);
         startActivityForResult(addPhotoIntent, result);
     }
 
@@ -106,9 +178,19 @@ public class AddTaskActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 19:
-                    byte[] byteArray = data.getByteArrayExtra("image");
-                    Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                    photos.add(image);
+                    photos = data.getStringArrayListExtra("photos");
+                    images = new ArrayList<Bitmap>();
+                    if (photos.size() > 0) {
+                        numImages = photos.size();
+                        for (int i = 0; i < numImages; i++) {
+                            byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                            Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                            images.add(image);
+                        }
+                        imageView.setImageBitmap(images.get(0));
+                        textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
+                                .toString(numImages));
+                    }
                     break;
                 case 2:
                     // Handle add location Intent result
