@@ -30,6 +30,7 @@ public class OtherUsersProfileActivity extends RootActivity {
     TextView name;
     TextView email;
     TextView phone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
