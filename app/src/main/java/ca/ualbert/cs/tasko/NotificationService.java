@@ -23,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import ca.ualbert.cs.tasko.CurrentUser;
+import ca.ualbert.cs.tasko.NotificationArtifacts.AndroidNotificationCreator;
 import ca.ualbert.cs.tasko.NotificationArtifacts.CreateAndroidNotificationsActivity;
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
@@ -69,9 +70,9 @@ public class NotificationService extends Service {
             Log.i("Notification Poll", "No Internet Connection!");
         }
         if(alert){
-            Intent i = new Intent(getApplicationContext(),
-                    CreateAndroidNotificationsActivity.class);
-            startActivity(i);
+            AndroidNotificationCreator anc =
+                    new AndroidNotificationCreator(getApplicationContext());
+            anc.createAndriodNotification();
         }
         return START_NOT_STICKY;
     }
