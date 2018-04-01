@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -59,7 +61,9 @@ public class LogOutActivity extends AppCompatActivity {
      */
     private void logout() throws IOException {
 
-        stopService(new Intent(getApplicationContext(), NotificationService.class));
+        Intent i = new Intent(getApplicationContext(), NotificationService.class);
+        PendingIntent p = PendingIntent.getService(this, 0, i, 0);
+        ((AlarmManager)getSystemService(ALARM_SERVICE)).cancel(p);
         CurrentUser.getInstance().setCurrentUser(null);
         FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
         fos.write("".getBytes());
