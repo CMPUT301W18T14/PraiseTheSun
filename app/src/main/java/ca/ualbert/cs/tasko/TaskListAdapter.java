@@ -144,8 +144,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 break;
         }
 
-
         holder.taskPhoto.setImageBitmap(currentTask.getCoverPhoto());
+
     }
 
     /**
