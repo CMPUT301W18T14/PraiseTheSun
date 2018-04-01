@@ -33,6 +33,7 @@ import io.searchbox.annotations.JestId;
  *
  */
 
+
 public class Task implements Serializable {
 
     private String taskName;
@@ -155,8 +156,8 @@ public class Task implements Serializable {
     // Not implemented yet
     // Todo Part 5
     public boolean hasPhoto(){
-        if (photos.size() > 0) {
-            return true;
+        if (photos != null) {
+            return photos.size() > 0;
         }
         else {
             return false;
@@ -188,6 +189,10 @@ public class Task implements Serializable {
         else {
             return null;
         }
+    }
+
+    public ArrayList<String> getPhotoStrings() {
+        return this.photos;
     }
 
     // Not implemented yet

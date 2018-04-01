@@ -133,23 +133,6 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
     }
 
-    public void onEditClick(View view) {
-        Intent editTask = new Intent(this, AddTaskActivity.class);
-        editTask.putExtra("task", currentTask);
-        startActivity(editTask);
-        try {
-            currentTask = DataManager.getInstance().getTask(currentTask.getId(), this);
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            fillInformation();
-        } catch (NoInternetException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void fillInformation() {
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
@@ -160,5 +143,20 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
         viewPhotosIntent.putExtra("photos", currentTask);
         startActivity(viewPhotosIntent);
+    }
+
+    public void onEditClick(View view) {
+        Intent editTask = new Intent(this, AddTaskActivity.class);
+        editTask.putExtra("task", currentTask);
+        startActivityForResult(editTask, 19);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 19) {
+            currentTask = (Task) getIntent().getSerializableExtra("task");
+            fillInformation();
+        }
     }
 }

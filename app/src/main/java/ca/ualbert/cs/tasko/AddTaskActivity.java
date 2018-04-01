@@ -71,16 +71,32 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
-        Intent editTask = getIntent();
-        currentTask = (Task) editTask.getSerializableExtra("task");
-
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
-        taskRequester = CurrentUser.getInstance().getCurrentUser();
-        images = new ArrayList<Bitmap>();
         imageView = (ImageView) findViewById(R.id.addTaskImageView);
         switcher = (ImageSwitcher) findViewById(R.id.addTaskImageSwitcher);
         textView = (TextView) findViewById(R.id.addTaskTextView);
+
+        Intent editTask = getIntent();
+        currentTask = (Task) editTask.getSerializableExtra("task");
+        taskRequester = CurrentUser.getInstance().getCurrentUser();
+
+        if (currentTask != null) {
+            taskNameText.setText(currentTask.getTaskName());
+            descriptionText.setText(currentTask.getDescription());
+        }
+
+        if (currentTask != null && currentTask.hasPhoto()) {
+            photos = currentTask.getPhotoStrings();
+            images = currentTask.getPhotos();
+            numImages = images.size();
+            imageView.setImageBitmap(images.get(0));
+            textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
+                    .toString(numImages));
+        }
+        else {
+            images = new ArrayList<Bitmap>();
+        }
 
         /*
          * https://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
@@ -137,11 +153,6 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
             }
         });
-
-        if (currentTask != null) {
-            taskNameText.setText(currentTask.getTaskName());
-            descriptionText.setText(currentTask.getDescription());
-        }
     }
 
     /**
@@ -227,8 +238,17 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 finish();
             }
+
             Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
             newTask.setTaskRequesterUsername(taskRequester.getUsername());
+            if (currentTask != null) {
+                //DataManager.getInstance().deleteTask(currentTask.getId(), this
+                // .getApplicationContext());
+                Intent editIntent = new Intent();
+                editIntent.putExtra("task", newTask);
+                setResult(RESULT_OK, editIntent);
+            }
+
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
                 finish();
