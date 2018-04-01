@@ -28,7 +28,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".AddTaskActivity" />
+        <activity
+            android:name=".AddTaskActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".NavigatorActivity"
             android:label="@string/title_activity_navigator"
@@ -53,7 +55,8 @@
             android:label="@string/title_activity_view_searched_task_details"
             android:parentActivityName=".SearchResultsActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".AddPhotoActivity" />
+        <activity android:name=".AddPhotoActivity"
+            android:parentActivityName=".AddTaskActivity"/>
         <activity
             android:name=".SearchResultsActivity"
             android:label="@string/title_activity_search_results"
@@ -62,6 +65,9 @@
         <activity android:name=".ViewTasksBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
+        <activity android:name=".LogOutActivity"></activity>
+        <activity android:name=".ViewPhotoActivity"></activity>
+
     </application>
 
 </manifest>

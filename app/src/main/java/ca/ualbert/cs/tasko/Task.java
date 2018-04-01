@@ -18,7 +18,9 @@ package ca.ualbert.cs.tasko;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-
+import android.util.Base64;
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -31,11 +33,11 @@ import io.searchbox.annotations.JestId;
  *
  */
 
-public class Task {
+public class Task implements Serializable {
 
     private String taskName;
     private String description;
-    private ArrayList<Bitmap> photos;
+    private ArrayList<String> photos;
     private Location geolocation;
     private String taskRequesterID;
     private String taskRequesterUsername;
@@ -84,7 +86,7 @@ public class Task {
      * @param photos photos attached to this task
      */
     public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<Bitmap> photos){
+                ArrayList<String> photos){
         this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
@@ -107,7 +109,7 @@ public class Task {
      * @param location geolocation of the task
      */
     public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<Bitmap> photos, Location location){
+                ArrayList<String> photos, Location location){
         this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
@@ -152,14 +154,40 @@ public class Task {
 
     // Not implemented yet
     // Todo Part 5
-    public void addPhoto(Bitmap photo){
+    public boolean hasPhoto(){
+        if (photos.size() > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
+    public Bitmap getCoverPhoto() {
+        if (hasPhoto()) {
+            byte[] byteArray = Base64.decode(photos.get(0), Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        }
+        else {
+            return null;
+        }
     }
 
     // Not implemented yet
     // Todo Part 5
-    public void removePhoto(int index){
-
+    public ArrayList<Bitmap> getPhotos(){
+        if (hasPhoto()) {
+            ArrayList<Bitmap> images = new ArrayList<Bitmap>();
+            for (int i = 0; i < photos.size(); i++) {
+                byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                images.add(image);
+            }
+            return images;
+        }
+        else {
+            return null;
+        }
     }
 
     // Not implemented yet

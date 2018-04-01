@@ -16,6 +16,7 @@
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
 import ca.ualbert.cs.tasko.User;
+import io.searchbox.annotations.JestId;
 
 /**
  * The super class representing a generic notification object.
@@ -23,6 +24,11 @@ import ca.ualbert.cs.tasko.User;
  */
 
 public class Notification {
+
+
+
+    @JestId
+    private String id;
 
     private NotificationType type;
     private String message;
@@ -63,5 +69,22 @@ public class Notification {
 
     public void hasSeen(){
         hasSeen = false;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Notification)){
+            return false;
+        } else {
+            return ((Notification) o).getId().equals(this.getId());
+        }
     }
 }
