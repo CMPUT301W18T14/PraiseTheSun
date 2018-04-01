@@ -24,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -72,6 +73,11 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             Log.i("Error", "TaskID not properly passed");
         } catch (NoInternetException e) {
             e.printStackTrace();
+        }
+
+        ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+        if (currentTask.hasPhoto()) {
+            imageView.setImageBitmap(currentTask.getCoverPhoto());
         }
 
         //Dialog for choosing to make a bid on the task
@@ -131,4 +137,9 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         taskStatus.setText(currentTask.getStatus().toString());
     }
 
+    public void onPhotoClick(View view) {
+        Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
+        viewPhotosIntent.putExtra("photos", currentTask);
+        startActivity(viewPhotosIntent);
+    }
 }

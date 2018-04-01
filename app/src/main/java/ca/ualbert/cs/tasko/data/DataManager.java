@@ -23,17 +23,19 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import java.util.ArrayList;
+import java.io.NotActiveException;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
 
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetNotificationsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutNotificationCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskBidsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserBidsCommand;
@@ -41,6 +43,7 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
 import ca.ualbert.cs.tasko.User;
@@ -271,6 +274,11 @@ public class DataManager {
      */
     public void addBid(Bid bid, Context context) throws NoInternetException{
         context = context.getApplicationContext();
+        Task task = getTask(bid.getTaskID(), context);
+        if(task.getMinBid() > bid.getValue()){
+            task.setMinBid(bid.getValue());
+            putTask(task, context);
+        }
         PutBidCommand putBidCommand = new PutBidCommand(bid);
         if (isOnline(context)) {
             dcm.invokeCommand(putBidCommand);
@@ -327,7 +335,13 @@ public class DataManager {
     //TODO Part 5
     public void deleteBid(Bid bid, Context context) throws NoInternetException{
         context = context.getApplicationContext();
-        checkNewMinBid(bid, context);
+        Task task = getTask(bid.getTaskID(), context);
+        if(bid.getValue() == task.getMinBid()){
+            BidList bids = getTaskBids(task.getId(), context);
+            bids.removeBid(bid);
+            task.setMinBid(bids.getMinBid().getValue());
+            putTask(task, context);
+        }
         DeleteBidCommand dbc = new DeleteBidCommand(bid.getBidID());
         if(isOnline(context)){
             dcm.invokeCommand(dbc);
@@ -337,19 +351,26 @@ public class DataManager {
         }
     }
 
-    private void checkNewMinBid(Bid bid, Context context) throws NoInternetException{
-        Task task = getTask(bid.getTaskID(), context);
-        //TODO WHEN I GET MINBID ADDED if(task.getMin)
+    public void putNotification(Notification notification, Context context)
+            throws NoInternetException{
+        context = context.getApplicationContext();
+        if(isOnline(context)){
+            PutNotificationCommand pnc = new PutNotificationCommand(notification);
+            dcm.invokeCommand(pnc);
+        } else {
+            throw new NoInternetException();
+        }
     }
 
-    //TODO
-    public void putNotification(Notification notification, Context context){
-
-    }
-
-    //TODO
-    public ArrayList<Notification> getNotifications(String userId, Context context){
-        return new ArrayList<>();
+    public NotificationList getNotifications(String userId, Context context)
+            throws NoInternetException{
+        if(isOnline(context)){
+            GetNotificationsCommand gnc = new GetNotificationsCommand(userId);
+            dcm.invokeCommand(gnc);
+            return gnc.getResult();
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     //TODO

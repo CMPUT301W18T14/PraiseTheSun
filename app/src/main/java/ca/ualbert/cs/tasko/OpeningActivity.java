@@ -96,9 +96,15 @@ public class OpeningActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }else{
-            cu.setCurrentUser(dm.getUserByUsername(loggedInUser, this));
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            User curr = dm.getUserByUsername(loggedInUser, this);
+            if(curr.getId() == null){
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            } else {
+                cu.setCurrentUser(curr);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
         }
 
     }
