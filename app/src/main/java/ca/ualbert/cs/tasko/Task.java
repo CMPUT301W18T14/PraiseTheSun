@@ -155,8 +155,8 @@ public class Task implements Serializable {
     // Not implemented yet
     // Todo Part 5
     public boolean hasPhoto(){
-        if (photos.size() > 0) {
-            return true;
+        if (photos != null) {
+            return photos.size() > 0;
         }
         else {
             return false;
