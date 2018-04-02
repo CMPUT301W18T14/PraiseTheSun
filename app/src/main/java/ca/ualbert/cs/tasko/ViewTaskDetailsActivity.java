@@ -162,7 +162,6 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                 intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
                 intent.putExtra("TaskID", currentTask.getId());
                 thiscontext.startActivity(intent);
-                //startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
             }
         });
 
@@ -171,7 +170,12 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private void fillInformation() {
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
-        taskStatus.setText(currentTask.getStatus().toString() + ": Lowest bid of " + currentTask.getMinBid().toString() + "by " + currentTask.getMinBid().ge.toString());
+        if (currentTask.getStatus() == Status.BIDDED) {
+            taskStatus.setText(currentTask.getStatus().toString() + ": Lowest bid of $" + currentTask.getMinBid().toString());
+        }
+        else {
+            taskStatus.setText(currentTask.getStatus().toString());
+        }
     }
 
     public void onPhotoClick(View view) {
