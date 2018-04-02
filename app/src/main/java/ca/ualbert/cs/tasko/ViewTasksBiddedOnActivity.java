@@ -19,6 +19,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -51,9 +52,7 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.activity_view_tasks_bidded_on);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_view_tasks_bidded_on, null, false);
         drawerLayout.addView(contentView, 0);
 
@@ -66,6 +65,14 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
 
         getTasks();
 
+        tasksBiddedAdapter = new TaskListAdapter(context, biddedTasks, userBids);
+        searchRecyclerView.setAdapter(tasksBiddedAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getTasks();
         tasksBiddedAdapter = new TaskListAdapter(context, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
     }
@@ -90,7 +97,7 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
         try {
             userBids = dm.getUserBids(User.getId(), context);
             biddedTasks = new TaskList();
-            for (int i = 0; i < 10 /*userBids.getSize()*/; i++)
+            for (int i = 0; i < userBids.getSize(); i++)
                 biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
