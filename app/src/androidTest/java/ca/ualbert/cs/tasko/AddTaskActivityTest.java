@@ -49,12 +49,10 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
             User taskRequester = DataManager.getInstance().getUserByUsername("jdoe62",
                     getActivity().getApplicationContext());
             CurrentUser.getInstance().setCurrentUser(taskRequester);
-            Log.i("Not Error", CurrentUser.getInstance().getCurrentUser().toString());
-            Log.i("Not Error", CurrentUser.getInstance().getCurrentUser().getUsername());
             nameText = (EditText) solo.getView(R.id.addTaskName);
             descriptionText = (EditText) solo.getView(R.id.addTaskDescription);
         } catch (NoInternetException e) {
-            Log.i("Not Error", "What is going on");
+            Log.i("Not Error", "No internet connection");
         }
     }
 
