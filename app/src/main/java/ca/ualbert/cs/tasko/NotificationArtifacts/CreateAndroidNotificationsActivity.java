@@ -65,6 +65,7 @@ public class CreateAndroidNotificationsActivity extends AppCompatActivity {
         CHANNEL_ID = getPackageName();
 
         setupChannel();
+        createAndriodNotification();
         setupButton();
 
         finish();
@@ -99,7 +100,7 @@ public class CreateAndroidNotificationsActivity extends AppCompatActivity {
      * Creates the Android Notification that will go to the Users Device.
      */
     private void createAndriodNotification(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ViewNotificationActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, 0);
 
