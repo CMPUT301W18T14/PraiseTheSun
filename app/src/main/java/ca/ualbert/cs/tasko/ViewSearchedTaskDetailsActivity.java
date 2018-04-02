@@ -17,6 +17,8 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v7.app.AlertDialog;
@@ -26,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.text.SpannableStringBuilder;
@@ -34,6 +37,8 @@ import android.text.method.DigitsKeyListener;
 
 import java.util.List;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -93,8 +98,12 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
             e.printStackTrace();
         }
 
-        setupPlaceBidButton();
+        ImageView imageView = (ImageView) findViewById(R.id.searchedTaskImageView);
+        if (currentTask.hasPhoto()) {
+            imageView.setImageBitmap(currentTask.getCoverPhoto());
+        }
 
+        setupPlaceBidButton();
     }
 
     private void populateFields(){
@@ -170,7 +179,9 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
             }
             if(value < lowbid || lowbid == -1){
                 lowbid = value;
+                currentTask.setMinBid(value);
                 populateFields();
+
             }
             PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
                     getApplicationContext());
@@ -179,6 +190,12 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         } else {
             Toast.makeText(getApplicationContext(),"Not Logged In", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onPhotoClick(View view) {
+        Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
+        viewPhotosIntent.putExtra("photos", currentTask);
+        startActivity(viewPhotosIntent);
     }
 
     class PlaceBidRunnable implements Runnable{
@@ -213,6 +230,9 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 }
                 dm.addBid(bid, appContext);
                 dm.putTask(currentTask, appContext);
+                NotificationFactory nf = new NotificationFactory();
+                nf.setContext(getApplicationContext());
+                nf.createNotification(currentTask.getId(), NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
             } catch (NoInternetException e) {
                 runOnUiThread(new Runnable() {
                     @Override

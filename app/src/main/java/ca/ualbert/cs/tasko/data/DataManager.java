@@ -24,21 +24,30 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import java.util.ArrayList;
+import java.io.NotActiveException;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
+
+import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteBidCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetNotificationsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.PutNotificationCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskBidsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserBidsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
+import ca.ualbert.cs.tasko.CurrentUser;
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
 import ca.ualbert.cs.tasko.User;
@@ -84,14 +93,7 @@ public class DataManager {
     public void putUser(User user, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         PutUserCommand command = new PutUserCommand(user);
-        GetUserByUsernameCommand isDuplicate =
-                new GetUserByUsernameCommand(user.getUsername());
         if(isOnline(context)){
-            dcm.invokeCommand(isDuplicate);
-            if(isDuplicate.getResult().getId() != user.getId()){
-                throw new IllegalArgumentException(
-                        "Can not add duplicate users");
-            }
             dcm.invokeCommand(command);
 
         } else {
@@ -164,9 +166,48 @@ public class DataManager {
         if(isOnline(context)){
             dcm.invokeCommand(command);
         } else {
+            dcm.addToQueue(command);
             throw new NoInternetException();
         }
 
+    }
+
+    /**
+     * Given a task with a non-null id, execute the command to remove that task
+     * from the elastic search database.
+     *
+     * @param task task to be deleted
+     * @param context application context
+     */
+    public void deleteTask(final Task task, Context context) throws NoInternetException{
+        final Context context2 = context.getApplicationContext();
+        DeleteTaskCommand dtc = new DeleteTaskCommand(task);
+
+        //Update Bids related to this task on another thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BidList bids = getTaskBids(task.getId(), context2);
+                    for(Bid bid: bids.getBids()){
+                        NotificationFactory nf = new NotificationFactory();
+                        nf.setContext(context2);
+                        nf.createNotification(task.getId(), NotificationType.TASK_DELETED);
+                        deleteBid(bid, context2);
+                    }
+                } catch (NoInternetException e){
+                    Log.i("Delete Task Error", "Unable to remove bids from task due to lost " +
+                            "connection");
+                }
+            }
+        }).run();
+
+        if(isOnline(context)){
+            dcm.invokeCommand(dtc);
+        } else {
+            dcm.addToQueue(dtc);
+            throw new NoInternetException();
+        }
     }
 
     /**
@@ -209,8 +250,16 @@ public class DataManager {
         SearchTasksCommand command = new SearchTasksCommand(searchTerm);
         if(isOnline(context)){
             dcm.invokeCommand(command);
-
-            return command.getResult();
+            TaskList tl = command.getResult();
+            TaskList toRemove = new TaskList();
+            for(Task t: tl.getTasks()){
+                if(CurrentUser.getInstance().getCurrentUser().getId()
+                        .equals(t.getTaskRequesterID())){
+                    toRemove.addTask(t);
+                }
+            }
+            tl.getTasks().removeAll(toRemove.getTasks());
+            return tl;
         } else {
             throw new NoInternetException();
         }
@@ -247,6 +296,11 @@ public class DataManager {
      */
     public void addBid(Bid bid, Context context) throws NoInternetException{
         context = context.getApplicationContext();
+        Task task = getTask(bid.getTaskID(), context);
+        if(task.getMinBid() > bid.getValue()){
+            task.setMinBid(bid.getValue());
+            putTask(task, context);
+        }
         PutBidCommand putBidCommand = new PutBidCommand(bid);
         if (isOnline(context)) {
             dcm.invokeCommand(putBidCommand);
@@ -301,18 +355,46 @@ public class DataManager {
     }
 
     //TODO Part 5
-    public void deleteBid(String bidId, Context context){
-
+    public void deleteBid(Bid bid, Context context) throws NoInternetException{
+        context = context.getApplicationContext();
+        Task task = getTask(bid.getTaskID(), context);
+        if(task != null) {
+            if (bid.getValue() == task.getMinBid()) {
+                BidList bids = getTaskBids(task.getId(), context);
+                bids.removeBid(bid);
+                task.setMinBid(bids.getMinBid().getValue());
+                putTask(task, context);
+            }
+        }
+        DeleteBidCommand dbc = new DeleteBidCommand(bid.getBidID());
+        if(isOnline(context)){
+            dcm.invokeCommand(dbc);
+        } else {
+            dcm.addToQueue(dbc);
+            throw new NoInternetException();
+        }
     }
 
-    //TODO
-    public void putNotification(Notification notification, Context context){
-
+    public void putNotification(Notification notification, Context context)
+            throws NoInternetException{
+        context = context.getApplicationContext();
+        if(isOnline(context)){
+            PutNotificationCommand pnc = new PutNotificationCommand(notification);
+            dcm.invokeCommand(pnc);
+        } else {
+            throw new NoInternetException();
+        }
     }
 
-    //TODO
-    public ArrayList<Notification> getNotifications(String userId, Context context){
-        return new ArrayList<>();
+    public NotificationList getNotifications(String userId, Context context)
+            throws NoInternetException{
+        if(isOnline(context)){
+            GetNotificationsCommand gnc = new GetNotificationsCommand(userId);
+            dcm.invokeCommand(gnc);
+            return gnc.getResult();
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     //TODO

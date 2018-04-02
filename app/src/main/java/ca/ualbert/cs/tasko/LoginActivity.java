@@ -15,8 +15,11 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,12 +97,22 @@ public class LoginActivity extends AppCompatActivity {
                     CU.setCurrentUser(usernameInput);
                     try {
                         FileOutputStream fos = openFileOutput(FILENAME,
-                                Context.MODE_APPEND);
+                                Context.MODE_PRIVATE);
                         fos.write(usernameInput.getUsername().getBytes());
                         fos.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+                    //Begin Notification Alarm
+                    Log.i("POLL", "I am About to begin Polling");
+                    Intent i = new Intent(getApplicationContext(), NotificationService.class);
+                    PendingIntent p = PendingIntent.getService(LoginActivity.this, 0, i, 0);
+                    AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+                    am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock
+                            .elapsedRealtime() + 5000, 5000, p);
+                    //End notification alarm
+
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);
                 } else {

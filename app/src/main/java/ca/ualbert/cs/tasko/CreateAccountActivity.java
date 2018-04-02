@@ -66,6 +66,29 @@ public class CreateAccountActivity extends AppCompatActivity {
         nameText = (EditText) findViewById(R.id.createAccountName);
         emailText = (EditText) findViewById(R.id.createAccountEmail);
         phoneText = (EditText) findViewById(R.id.createAccountPhone);
+        phoneText.addTextChangedListener(new TextWatcher() {
+            /*
+             * https://stackoverflow.com/questions/4886858/android-edittext-deletebackspace-key-event
+             * https://stackoverflow.com/questions/20682865/disable-button-when-edit-text-fields-empty
+             */
+            private boolean backspace;
+            private int previousLength;
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                previousLength = phoneText.length();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                backspace = phoneText.length() < previousLength;
+                formatPhoneEntry(backspace);
+            }
+        });
     }
 
     /**
@@ -83,7 +106,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 User retrievedUser = DataManager.getInstance().getUserByUsername(username, this
                         .getApplicationContext());
                 if (retrievedUser.getUsername() == null) {
-                    User newUser = new User(username, name, email, phone);
+                    User newUser = new User(username, name, phone, email);
                     Log.i("NotError", "ERROR IS HERE");
                     try {
                         DataManager.getInstance().putUser(newUser, this.getApplicationContext());
@@ -136,7 +159,6 @@ public class CreateAccountActivity extends AppCompatActivity {
          * Taken on 2018-03-16
          *
          */
-
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("Invalid email address");
             validInputs = false;
@@ -154,5 +176,21 @@ public class CreateAccountActivity extends AppCompatActivity {
             validInputs = false;
         }
         return validInputs;
+    }
+
+    private void formatPhoneEntry(boolean backspace) {
+        phone = phoneText.getText().toString();
+        if (phone.length() == 3 || phone.length() == 7) {
+            if (backspace) {
+                String newPhone = phoneText.getText().toString().substring(0, phoneText.length() - 1);
+                phoneText.setText(newPhone);
+                phoneText.setSelection(phoneText.getText().length());
+            }
+            else {
+                String newPhone = phoneText.getText() + "-";
+                phoneText.setText(newPhone);
+                phoneText.setSelection(phoneText.getText().length());
+            }
+        }
     }
 }

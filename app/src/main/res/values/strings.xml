@@ -69,5 +69,13 @@
     <string name="your_bid">Your Bid</string>
     <string name="bidded_task_title">Task Title</string>
     <string name="ViewSearchedTaskDetailsNoBids">No bids</string>
+    <string name="lowest_bid">Lowest Bid:</string>
+    <string name="my_bid">My Bid:</string>
+    <string name="create_notification">Create Notification</string>
+    <string name="view_photo_message">This task currently has no images.</string>
+    <string name="image_message">No images currently added.</string>
+    <string name="add_photo_title">Add Photos</string>
+    <string name="view_photos_title">View Photos</string>
+    <string name="title_activity_accepted_task">AcceptedTaskActivity</string>
 </resources>
 

@@ -18,7 +18,9 @@ package ca.ualbert.cs.tasko;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-
+import android.util.Base64;
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -31,15 +33,16 @@ import io.searchbox.annotations.JestId;
  *
  */
 
-public class Task {
+public class Task implements Serializable {
 
     private String taskName;
     private String description;
-    private ArrayList<Bitmap> photos;
+    private ArrayList<String> photos;
     private Location geolocation;
     private String taskRequesterID;
+    private String taskRequesterUsername;
     private String taskProviderID;
-    //private BidList bidList;
+    private Float minBid;
     private Status status;
 
     @JestId
@@ -54,7 +57,7 @@ public class Task {
      * @param description description of the task
      */
     public Task(String taskRequesterID, String taskName, String description){
-        this(taskRequesterID, taskName, description, null, null);
+        this(taskRequesterID, taskName, description, new ArrayList<String>(), null);
     }
 
     /**
@@ -69,7 +72,7 @@ public class Task {
      */
     public Task(String taskRequesterID, String taskName, String description,
                 Location location){
-        this(taskRequesterID, taskName, description, null, location);
+        this(taskRequesterID, taskName, description, new ArrayList<String>(), location);
     }
 
     /**
@@ -83,7 +86,7 @@ public class Task {
      * @param photos photos attached to this task
      */
     public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<Bitmap> photos){
+                ArrayList<String> photos){
         this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
@@ -91,6 +94,7 @@ public class Task {
         this.geolocation = null;
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
+        this.minBid = null;
     }
 
     /**
@@ -105,7 +109,7 @@ public class Task {
      * @param location geolocation of the task
      */
     public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<Bitmap> photos, Location location){
+                ArrayList<String> photos, Location location){
         this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
@@ -115,16 +119,75 @@ public class Task {
         this.status = Status.REQUESTED;
     }
 
-    // Not implemented yet
-    // Todo Part 5
-    public void addPhoto(Bitmap photo){
+    /**
+     * Returns a String representing the UserName of the Task Requester (Used for TaskList Displays)
+     * @return String representing the UserName of the Task Requester.
+     */
+    public String getTaskRequesterUsername() {
+        return taskRequesterUsername;
+    }
 
+    /**
+     * Sets the Task Requester UserName in the Task. Occurs when Task is created.
+     * @param taskRequesterUsername The Task Requester UserName
+     */
+    public void setTaskRequesterUsername(String taskRequesterUsername) {
+        this.taskRequesterUsername = taskRequesterUsername;
+    }
+
+    /**
+     * Returns the minimum bid on a Task (Makes TaskViews where minBids are displayed much faster)
+     * @return A Float representing the minimum bid.
+     */
+    public Float getMinBid(){
+        return minBid;
+    }
+
+    /**
+     * Sets the minimum bid on the task if it is less then the current minimum
+     * @param value The value we compare to minBid
+     */
+    public void setMinBid(Float value) {
+        if (minBid == null || value < minBid)
+            this.minBid = value;
     }
 
     // Not implemented yet
     // Todo Part 5
-    public void removePhoto(int index){
+    public boolean hasPhoto(){
+        if (photos != null) {
+            return photos.size() > 0;
+        }
+        else {
+            return false;
+        }
+    }
 
+    public Bitmap getCoverPhoto() {
+        if (hasPhoto()) {
+            byte[] byteArray = Base64.decode(photos.get(0), Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        }
+        else {
+            return null;
+        }
+    }
+
+    // Not implemented yet
+    // Todo Part 5
+    public ArrayList<Bitmap> getPhotos(){
+        if (hasPhoto()) {
+            ArrayList<Bitmap> images = new ArrayList<Bitmap>();
+            for (int i = 0; i < photos.size(); i++) {
+                byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                images.add(image);
+            }
+            return images;
+        }
+        else {
+            return null;
+        }
     }
 
     // Not implemented yet

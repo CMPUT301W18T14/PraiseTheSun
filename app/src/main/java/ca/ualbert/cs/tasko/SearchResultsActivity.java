@@ -19,28 +19,31 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * SearchResultsActivity works with TaskListAdapter to generate a recyclerview of tasks from the
- * database that match the users keyword search provided in mainactivy.
+ * database that match the users keyword search provided in mainactivity.
  * @see TaskListAdapter
  *
  * @author spack
  */
-public class SearchResultsActivity extends AppCompatActivity{
+public class SearchResultsActivity extends AppCompatActivity {
 
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter searchAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
     private DataManager dm = DataManager.getInstance();
-    private SearchResultsActivity activity = this;
+    private SearchResultsActivity context = this;
+    private TaskList foundtasks;
 
     /**
      * Creates the Activity which includes initializing the RecyclerView with the appropriate
-     * adapter and using the adapter to fill tasks returned by querying the datamanager.
+     * adapter and using the adapter to fill the recyclerView with tasks returned by querying the
+     * datamanager.
      * @param savedInstanceState Get the saved state form the current device.
      */
     @Override
@@ -48,10 +51,20 @@ public class SearchResultsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
-        searchRecyclerView = (RecyclerView) findViewById(R.id.search_task_recycler_view);
-        searchLayoutManager = new LinearLayoutManager(activity);
+        searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
+
+        searchLayoutManager = new LinearLayoutManager(context);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
+        searchForTasks();
+
+        //Initialize the Adapter and RecyclerView
+        searchAdapter = new TaskListAdapter(context, foundtasks);
+        searchRecyclerView.setAdapter(searchAdapter);
+
+    }
+
+    private void searchForTasks() {
         String keywords;
 
         Bundle extras = getIntent().getExtras();
@@ -59,22 +72,20 @@ public class SearchResultsActivity extends AppCompatActivity{
         //Initializes the keywords for the search, obtained from MainActivity.
         if (extras != null) {
             keywords = extras.getString("SearchKeywords");
-        }else{
+        } else {
             keywords = null;
         }
 
-        TaskList foundtasks = new TaskList();
+        foundtasks = new TaskList();
 
         //Try to conduct the search
         try {
-            foundtasks = dm.searchTasks(keywords, activity);
+            foundtasks = dm.searchTasks(keywords, context);
         } catch (NoInternetException e) {
-            e.printStackTrace();
+            Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
         }
 
-        //Initialize the Adapter and RecyclerView
-        searchAdapter = new TaskListAdapter(activity, foundtasks);
-        searchRecyclerView.setAdapter(searchAdapter);
     }
-
 }
+
+
