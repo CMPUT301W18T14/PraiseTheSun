@@ -53,7 +53,7 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
 
     }
 
-    public void testPutTask(){
+    public void testPutGetDeleteTask(){
         boolean isConnected = true;
         try {
             dm.putTask(task1, getActivity().getApplicationContext());
@@ -81,6 +81,24 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         assertTrue(isConnected);
         assertNotNull(retTask);
         assertEquals(task1.getId(), retTask.getId());
+        try{
+            dm.deleteTask(task1, getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            retTask = dm.getTask(task1.getId(), getActivity().getApplicationContext());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } catch (NoInternetException e){
+            isConnected = false;
+        }
+        assertTrue(isConnected);
+        assertNull(retTask);
     }
 
     public void testSearchTasks(){
@@ -107,14 +125,10 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         }
         assertTrue(isConnected);
         assertTrue(!results.getTasks().isEmpty());
-        /*for(Task task: results.getTasks()){
-            System.out.println("This task id is: " + task.getId());
-            System.out.println("THE REAL task id is: " + task1.getId());
-        }/**/
         assertTrue(results.getTasks().contains(task1));
         assertFalse(results.getTasks().contains(task2));
 
-        //TODO: Make assert False
+        //TODO: Make assert False to test that your own tasks are not returned
         assertTrue(results.getTasks().contains(task3));
     }
 

@@ -58,7 +58,7 @@ public class Task implements Serializable {
      * @param description description of the task
      */
     public Task(String taskRequesterID, String taskName, String description){
-        this(taskRequesterID, taskName, description, null, null);
+        this(taskRequesterID, taskName, description, new ArrayList<String>(), null);
     }
 
     /**
@@ -73,7 +73,7 @@ public class Task implements Serializable {
      */
     public Task(String taskRequesterID, String taskName, String description,
                 Location location){
-        this(taskRequesterID, taskName, description, null, location);
+        this(taskRequesterID, taskName, description, new ArrayList<String>(), location);
     }
 
     /**
