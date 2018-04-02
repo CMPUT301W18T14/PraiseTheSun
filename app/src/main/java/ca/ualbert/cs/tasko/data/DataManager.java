@@ -92,14 +92,7 @@ public class DataManager {
     public void putUser(User user, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         PutUserCommand command = new PutUserCommand(user);
-        GetUserByUsernameCommand isDuplicate =
-                new GetUserByUsernameCommand(user.getUsername());
         if(isOnline(context)){
-            dcm.invokeCommand(isDuplicate);
-            if(isDuplicate.getResult().getId() != user.getId()){
-                throw new IllegalArgumentException(
-                        "Can not add duplicate users");
-            }
             dcm.invokeCommand(command);
 
         } else {
