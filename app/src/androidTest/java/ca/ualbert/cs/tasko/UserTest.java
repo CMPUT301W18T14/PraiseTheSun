@@ -17,8 +17,6 @@ package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import ca.ualbert.cs.tasko.data.NoInternetException;
-
 /**
  * Created by ryan on 2018-02-24.
  * Edited by chase on 2018-03-05
