@@ -95,42 +95,49 @@ public class RootActivity extends AppCompatActivity {
                         switch (item.getItemId()){
                             case R.id.get_home:
                                 i = new Intent(getApplicationContext(), MainActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 
                             case R.id.add_new_task:
                                 i = new Intent(getApplicationContext(), AddTaskActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 
                             case R.id.my_tasks:
                                 i = new Intent(getApplicationContext(), ViewMyTasksActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 
                             case R.id.my_bids:
                                 i = new Intent(getApplicationContext(), ViewTasksBiddedOnActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 /*
                             case R.id.my_assignments:
                                 i = new Intent(getApplicationContext(), MyAssignmentsActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 
                             case R.id.find_nearby_tasks:
                                 i = new Intent(getApplicationContext(), FindNearbyTasksActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 */
                             case R.id.view_profile:
-                                i = new Intent(getApplicationContext(), UserActivity.class);
+                                i = new Intent(getApplicationContext(), UserProfileActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
