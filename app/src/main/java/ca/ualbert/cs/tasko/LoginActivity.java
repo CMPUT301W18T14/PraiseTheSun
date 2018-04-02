@@ -104,7 +104,6 @@ public class LoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    /*
                     //Begin Notification Alarm
                     Log.i("POLL", "I am About to begin Polling");
                     Intent i = new Intent(getApplicationContext(), NotificationService.class);
@@ -113,7 +112,6 @@ public class LoginActivity extends AppCompatActivity {
                     am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock
                             .elapsedRealtime() + 5000, 5000, p);
                     //End notification alarm
-                    */
 
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);

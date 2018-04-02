@@ -79,6 +79,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
         Bid currentTask = bids.get(position);
         DataManager dm = DataManager.getInstance();
         User biduser = new User();
+        
         try {
             biduser = dm.getUserById(currentTask.getUserID(),thiscontext);
         } catch (NoInternetException e) {
