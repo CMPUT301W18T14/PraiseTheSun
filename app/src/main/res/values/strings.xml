@@ -78,5 +78,7 @@
     <string name="view_photos_title">View Photos</string>
     <string name="confirm">Confirm</string>
     <string name="profile">Profile</string>
+    <string name="title_activity_accepted_task">AcceptedTaskActivity</string>
+
 </resources>
 

@@ -68,7 +68,7 @@ public class Notification {
     public Boolean getHasSeen() {return hasSeen;}
 
     public void hasSeen(){
-        hasSeen = false;
+        hasSeen = true;
     }
 
     public String getId() {
