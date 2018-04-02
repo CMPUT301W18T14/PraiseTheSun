@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Shows user information in an editable format
@@ -85,8 +86,14 @@ public class UserProfileActivity extends RootActivity {
                 CurrentUser.getInstance().getCurrentUser().setEmail(emailAddress.getText().toString());
                 CurrentUser.getInstance().getCurrentUser().setPhoneNumber(phoneNumber.getText().toString());
                 //TODO edit in database
-                Intent intent = new Intent(activity, UserActivity.class);
-                startActivity(intent);
+                try {
+                    DataManager.getInstance().putUser(CurrentUser.getInstance().getCurrentUser(), activity);
+                    Intent intent = new Intent(activity, UserActivity.class);
+                    startActivity(intent);
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }

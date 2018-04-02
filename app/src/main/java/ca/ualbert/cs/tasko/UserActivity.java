@@ -55,7 +55,7 @@ public class UserActivity extends RootActivity {
         email = (TextView) findViewById(R.id.UserActivityUserEmail);
         phone = (TextView) findViewById(R.id.UserActivityPhone);
 
-        username.setText(CurrentUser.getInstance().getCurrentUser().getUsername());
+        username.setText(CurrentUser.getInstance().getCurrentUser().getName());
         email.setText(CurrentUser.getInstance().getCurrentUser().getEmail());
         phone.setText(CurrentUser.getInstance().getCurrentUser().getPhoneNumber());
 
