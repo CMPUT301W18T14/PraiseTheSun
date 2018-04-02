@@ -126,6 +126,8 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
                         //assigns it to the appropriate provider
                         thisTask.assign((bids.get(getAdapterPosition())).getUserID());
+                        //updates the task
+                        dm.putTask(thisTask, thiscontext);
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");
                     } catch (NoInternetException e) {
