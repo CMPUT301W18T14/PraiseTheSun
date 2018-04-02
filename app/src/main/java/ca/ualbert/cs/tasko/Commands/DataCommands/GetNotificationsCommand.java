@@ -49,7 +49,8 @@ public class GetNotificationsCommand extends GetCommand<NotificationList> {
      */
     @Override
     public void execute() {
-        String query = "{\"size\": 1000, \"query\":{\"term\":{\"recipientID\":\"" + userId + "\" } } }";
+        String query = "{\"size\": 1000, \"query\":{\"match\":{\"recipientID\":\"" + userId + "\"" +
+                " } } }";
         GetNotificationsTask gnt = new GetNotificationsTask();
         gnt.execute(query);
         try {
