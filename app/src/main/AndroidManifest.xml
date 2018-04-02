@@ -56,8 +56,9 @@
             android:label="@string/title_activity_view_searched_task_details"
             android:parentActivityName=".SearchResultsActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".AddPhotoActivity"
-            android:parentActivityName=".AddTaskActivity"/>
+        <activity
+            android:name=".AddPhotoActivity"
+            android:parentActivityName=".AddTaskActivity" />
         <activity
             android:name=".SearchResultsActivity"
             android:label="@string/title_activity_search_results"
@@ -70,7 +71,10 @@
         <activity android:name=".LogOutActivity"/>
         <activity android:name=".ViewPhotoActivity"/>
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity"/>
-
+        <activity
+            android:name=".AcceptedMyTaskActivity"
+            android:label="@string/title_activity_accepted_task"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
