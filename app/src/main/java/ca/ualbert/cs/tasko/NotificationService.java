@@ -31,7 +31,6 @@ import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-
 /**
  * @author Chase Buhler
  */
