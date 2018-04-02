@@ -107,6 +107,7 @@ public class OpeningActivity extends AppCompatActivity {
             } else {
                 cu.setCurrentUser(curr);
 
+                /*
                 //Begin Notification Alarm
                 Log.i("POLL", "I am About to begin Polling");
                 Intent i = new Intent(this, NotificationService.class);
@@ -114,6 +115,7 @@ public class OpeningActivity extends AppCompatActivity {
                 AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
                 am.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), 5000, p);
                 //End notification alarm
+                */
 
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
