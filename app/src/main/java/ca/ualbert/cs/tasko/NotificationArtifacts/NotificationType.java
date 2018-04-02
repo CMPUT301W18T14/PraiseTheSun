@@ -15,29 +15,11 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import ca.ualbert.cs.tasko.User;
-import io.searchbox.annotations.JestId;
-
 /**
- * Created by spack on 2018-03-10.
+ * Created by spack on 2018-03-27.
  */
 
-public class SimpleNotification extends Notification{
-
-
-    public SimpleNotification(String message, User recipient){
-        super(message, recipient);
-    }
-
-    @JestId
-    private String id;
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
+public enum NotificationType {
+    TASK_REQUESTOR_RECIEVED_BID_ON_TASK, TASK_PROVIDER_BID_ACCEPTED, TASK_PROVIDER_BID_DECLINED, RATING, TASK_DELETED
 }
+

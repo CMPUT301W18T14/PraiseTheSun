@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -73,6 +75,11 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+        if (currentTask.hasPhoto()) {
+            imageView.setImageBitmap(currentTask.getCoverPhoto());
+        }
+
         //Dialog for choosing to make a bid on the task
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -113,7 +120,12 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
+                Context thiscontext = getApplicationContext();
+                Intent intent;
+                intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
+                intent.putExtra("TaskID", currentTask.getId());
+                thiscontext.startActivity(intent);
+                //startActivity(new Intent(ViewTaskDetailsActivity.this, ViewBidsOnTaskActivity.class));
             }
         });
 
@@ -125,4 +137,9 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         taskStatus.setText(currentTask.getStatus().toString());
     }
 
+    public void onPhotoClick(View view) {
+        Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
+        viewPhotosIntent.putExtra("photos", currentTask);
+        startActivity(viewPhotosIntent);
+    }
 }

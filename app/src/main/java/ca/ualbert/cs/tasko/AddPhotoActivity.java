@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,16 +24,29 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+
+// https://stackoverflow.com/questions/19585815/select-multiple-images-from-android-gallery
+// https://stackoverflow.com/questions/23426113/how-to-select-multiple-images-from-gallery-in-android
 
 /**
  * Activity that adds a photo to a task. Is called by AddTaskActivity when the user presses the
@@ -43,20 +57,100 @@ import java.io.InputStream;
  */
 public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
-    private Bitmap image;
+    private ArrayList<Bitmap> images;
     private Button confirm;
+    private ImageSwitcher switcher;
+    private ImageView imageView;
+    private TextView textView;
+    private int numImages = 0;
+
 
     /**
      * Called when the activity is started. Initializes the confirm button.
      *
      */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
 
+        imageView = (ImageView) findViewById(R.id.addPhotoImageView);
+        switcher = (ImageSwitcher) findViewById(R.id.addPhotoImageSwitcher);
+        textView = (TextView) findViewById(R.id.addPhotoTextView);
+        images = new ArrayList<Bitmap>();
         confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
         confirm.setEnabled(false);
+
+        ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
+        if (photos != null) {
+            numImages = photos.size();
+            for (int i = 0; i < numImages; i++) {
+                byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                images.add(image);
+                confirm.setEnabled(true);
+            }
+            imageView.setImageBitmap(images.get(0));
+            textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
+                    .toString(numImages));
+        }
+
+        /*
+         * https://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
+         * http://codetheory.in/android-ontouchevent-ontouchlistener-motionevent-to-detect-common-gestures/
+         * https://developer.android.com/training/gestures/detector.html
+         *
+         */
+        switcher.setOnTouchListener(new View.OnTouchListener() {
+            private float initialX;
+            private int position = 0;
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                //Log.i("Not Error", Integer.toString(numImages));
+                if (numImages > 0) {
+                    float finalX;
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            initialX = event.getX();
+                            return true;
+                        case MotionEvent.ACTION_UP:
+                            finalX = event.getX();
+                            if (initialX > finalX) {
+                                if (position < (numImages - 1)) {
+                                    position++;
+                                    imageView.setImageBitmap(images.get(position));
+                                    switcher.showNext();
+                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
+                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                            .toString(numImages));
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                if (position > 0) {
+                                    position--;
+                                    imageView.setImageBitmap(images.get(position));
+                                    switcher.showNext();
+                                    switcher.showPrevious();
+                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
+                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                            .toString(numImages));
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No More Images To Swipe",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            break;
+                    }
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        });
     }
 
     /**
@@ -72,6 +166,7 @@ public class AddPhotoActivity extends AppCompatActivity {
          */
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media
                 .EXTERNAL_CONTENT_URI);
+        gallery.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         startActivityForResult(gallery, RESULT_LOAD_IMAGE);
     }
 
@@ -82,32 +177,43 @@ public class AddPhotoActivity extends AppCompatActivity {
      *
      */
     public void onConfirmClick(View view) {
+        boolean passed = true;
+        ArrayList<String> imgStrings = new ArrayList<String>();
         /*
          * Code on how to properly send a bitmap object through an intent was taken from
          * https://stackoverflow.com/questions/11010386/passing-android-bitmap-data-within
          * -activity-using-intent-in-android
          * Taken on 2018-03-17
          */
+        for (int i = 0; i < numImages; i++) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            images.get(i).compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte [] byteArray = stream.toByteArray();
-        /*
-         * Code on checking the size of an image was taken from
-         * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
-         * -android
-         * Taken on 2018-03-18
-         */
-        long imageLength = byteArray.length;
-        if (imageLength <= 65535) {
-            Intent returnImage = new Intent();
-            returnImage.putExtra("image", byteArray);
-            setResult(RESULT_OK, returnImage);
-            finish();
+            /*
+             * Code on checking the size of an image was taken from
+             * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
+             * -android
+             * Taken on 2018-03-18
+             */
+            long imageLength = byteArray.length;
+            if (imageLength > 65535) {
+                String message = "Image file #" + Integer.toString(i + 1) + " is too big.";
+                Toast.makeText(this.getApplicationContext(), message, Toast
+                        .LENGTH_LONG).show();
+                passed = false;
+            }
+            else {
+                // https://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
+                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                imgStrings.add(encodedImage);
+            }
         }
-        else {
-            Toast.makeText(this.getApplicationContext(), "Image file chosen is too big.", Toast
-                    .LENGTH_LONG).show();
+        if (passed) {
+            Intent returnImages = new Intent();
+            returnImages.putExtra("photos", imgStrings);
+            setResult(RESULT_OK, returnImages);
+            finish();
         }
     }
 
@@ -132,19 +238,30 @@ public class AddPhotoActivity extends AppCompatActivity {
                  * https://www.youtube.com/watch?v=e8x-nu9-_BM
                  * Taken on 2018-03-16
                  */
-                Uri selectedImage = data.getData();
 
-                InputStream inputStream;
-                try {
-                    inputStream = getContentResolver().openInputStream(selectedImage);
-                    image = BitmapFactory.decodeStream(inputStream);
-                    ImageView imageView = (ImageView) findViewById(R.id.addPhotoTaskImage);
-                    imageView.setImageBitmap(image);
-                    confirm.setEnabled(true);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this.getApplicationContext(), "Image not found", Toast
-                            .LENGTH_LONG).show();
+                /*
+                 * https://stackoverflow.com/questions/19585815/select-multiple-images-from-android-gallery
+                 * accessed 2018-03-25
+                 */
+                if(data.getClipData() != null) {
+                    int numNewImages = data.getClipData().getItemCount();
+                    for (int i = 0; i < numNewImages; i++) {
+                        Uri selectedImage = data.getClipData().getItemAt(i).getUri();
+                        InputStream inputStream;
+                        try {
+                            inputStream = getContentResolver().openInputStream(selectedImage);
+                            images.add(BitmapFactory.decodeStream(inputStream));
+                            confirm.setEnabled(true);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            Toast.makeText(this.getApplicationContext(), "Image not found", Toast
+                                    .LENGTH_LONG).show();
+                        }
+                    }
+                    numImages += numNewImages;
+                    imageView.setImageBitmap(images.get(0));
+                    textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
+                            .toString(numImages));
                 }
             }
         }
