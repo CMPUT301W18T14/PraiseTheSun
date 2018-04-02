@@ -43,6 +43,7 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserBidsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutUserCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
+import ca.ualbert.cs.tasko.CurrentUser;
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
@@ -249,8 +250,16 @@ public class DataManager {
         SearchTasksCommand command = new SearchTasksCommand(searchTerm);
         if(isOnline(context)){
             dcm.invokeCommand(command);
-
-            return command.getResult();
+            TaskList tl = command.getResult();
+            TaskList toRemove = new TaskList();
+            for(Task t: tl.getTasks()){
+                if(CurrentUser.getInstance().getCurrentUser().getId()
+                        .equals(t.getTaskRequesterID())){
+                    toRemove.addTask(t);
+                }
+            }
+            tl.getTasks().removeAll(toRemove.getTasks());
+            return tl;
         } else {
             throw new NoInternetException();
         }
