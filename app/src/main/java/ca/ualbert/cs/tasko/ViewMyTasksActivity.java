@@ -35,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -51,6 +52,7 @@ public class ViewMyTasksActivity extends RootActivity {
     private RecyclerView myTasksRecyclerView;
     private RecyclerView.Adapter myTasksAdapter;
     private RecyclerView.LayoutManager myTasksLayoutManager;
+    private ProgressBar loadingCircle;
     private DataManager dm = DataManager.getInstance();
     private ViewMyTasksActivity activity = this;
 
@@ -77,6 +79,7 @@ public class ViewMyTasksActivity extends RootActivity {
         myTasksRecyclerView = (RecyclerView) findViewById(R.id.my_tasks_recycler_view);
         myTasksLayoutManager = new LinearLayoutManager(activity);
         myTasksRecyclerView.setLayoutManager(myTasksLayoutManager);
+        loadingCircle = (ProgressBar) findViewById(R.id.loadingCircle);
 
         Spinner filterSpinner = (Spinner) findViewById(R.id.filter_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -96,8 +99,7 @@ public class ViewMyTasksActivity extends RootActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 TaskList myTasks = new TaskList();
-
-                //Get all of the user's current tasks
+                loadingCircle.setVisibility(View.VISIBLE);
                 try {
                     myTasks = dm.getUserTasks(CurrentUser.getInstance().getCurrentUser().getId(),
                             activity);
@@ -139,6 +141,7 @@ public class ViewMyTasksActivity extends RootActivity {
                 }
 
                 myTasksAdapter = new TaskListAdapter(activity, myTasks);
+                loadingCircle.setVisibility(View.GONE);
                 myTasksRecyclerView.setAdapter(myTasksAdapter);
             }
 
@@ -147,7 +150,6 @@ public class ViewMyTasksActivity extends RootActivity {
 
             }
         });
-
     }
 
 }

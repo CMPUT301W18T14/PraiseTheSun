@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -170,7 +171,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private void fillInformation() {
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
-        taskStatus.setText(currentTask.getStatus().toString());
+        taskStatus.setText(currentTask.getStatus().toString() + ": Lowest bid of " + currentTask.getMinBid().toString() + "by " + currentTask.getMinBid().ge.toString());
     }
 
     public void onPhotoClick(View view) {
