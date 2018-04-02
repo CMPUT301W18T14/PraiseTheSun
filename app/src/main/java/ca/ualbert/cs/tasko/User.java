@@ -61,7 +61,9 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.ratings = new ArrayList<>(5);
-
+        for(int i = 0; i < ratings.size(); i++){
+            ratings.add(i, 2.5f);
+        }
     }
 
     /**
