@@ -99,7 +99,6 @@ public class NotificationFactory {
                             NotificationType.TASK_DELETED);
                     dm.putNotification(notification, context);
                 }
-
                 break;
         }
 

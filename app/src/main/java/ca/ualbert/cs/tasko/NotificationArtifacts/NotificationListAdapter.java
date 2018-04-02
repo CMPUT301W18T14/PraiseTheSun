@@ -15,17 +15,20 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ca.ualbert.cs.tasko.R;
 import ca.ualbert.cs.tasko.ViewSearchedTaskDetailsActivity;
 import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
+import ca.ualbert.cs.tasko.data.DataManager;
 
 /**
  * A Notification Adpater.
@@ -52,11 +55,32 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
         return holder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(NotificationViewHolder holder, int position) {
         Notification currentNotification = notifications.getNotification(position);
 
         holder.notificationMessage.setText(currentNotification.getMessage());
+
+        //Set the Title depending on the type of Notification
+        NotificationType type = currentNotification.getType();
+        switch (type){
+            case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
+                holder.notificationTitle.setText("New Bid Received!");
+                break;
+            case TASK_PROVIDER_BID_ACCEPTED:
+                holder.notificationTitle.setText("You Have been Assigned a new Task!");
+                break;
+            case RATING:
+                holder.notificationTitle.setText("Please Provide a Rating!");
+                break;
+            case TASK_PROVIDER_BID_DECLINED:
+                holder.notificationTitle.setText("One of your bids has been declined");
+                break;
+            case TASK_DELETED:
+                holder.notificationTitle.setText("A Task you have bidded in has been Deleted!");
+                break;
+        }
     }
 
     @Override
@@ -67,6 +91,8 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
     class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView notificationMessage;
+        TextView notificationTitle;
+        ImageView Delete;
 
         public NotificationViewHolder(View itemView){
             super(itemView);
@@ -74,6 +100,10 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
             itemView.setOnClickListener(this);
 
             notificationMessage = (TextView) itemView.findViewById(R.id.notificationBody);
+            notificationTitle = (TextView) itemView.findViewById(R.id.notificationTitle);
+            Delete = (ImageView) itemView.findViewById(R.id.notificationDeleteOption);
+
+            setupDelete();
         }
 
         @Override
@@ -104,6 +134,16 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     break;
 
                     }
+            }
+
+            private void setupDelete(){
+                Delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DataManager.getInstance().deleteNotification(notifications.getNotification
+                                (getAdapterPosition()).getId(), thiscontext);
+                    }
+                });
             }
         }
     }
