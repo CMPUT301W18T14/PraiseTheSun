@@ -15,7 +15,6 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import ca.ualbert.cs.tasko.User;
 import io.searchbox.annotations.JestId;
 
 /**
@@ -24,8 +23,6 @@ import io.searchbox.annotations.JestId;
  */
 
 public class Notification {
-
-
 
     @JestId
     private String id;
