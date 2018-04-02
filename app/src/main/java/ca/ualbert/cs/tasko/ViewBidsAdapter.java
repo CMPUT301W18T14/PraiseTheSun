@@ -122,7 +122,9 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                     //prints to debug
                     Log.d("ButtonClick", "Accept Button Clicked");
                     try {
+                        //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
+                        //assigns it to the appropriate provider
                         thisTask.assign((bids.get(getAdapterPosition())).getUserID());
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");
