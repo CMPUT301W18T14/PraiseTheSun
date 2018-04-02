@@ -35,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -51,6 +52,7 @@ public class ViewMyTasksActivity extends RootActivity {
     private RecyclerView myTasksRecyclerView;
     private RecyclerView.Adapter myTasksAdapter;
     private RecyclerView.LayoutManager myTasksLayoutManager;
+    private ProgressBar loadingCircle;
     private DataManager dm = DataManager.getInstance();
     private ViewMyTasksActivity activity = this;
 
@@ -77,6 +79,7 @@ public class ViewMyTasksActivity extends RootActivity {
         myTasksRecyclerView = (RecyclerView) findViewById(R.id.my_tasks_recycler_view);
         myTasksLayoutManager = new LinearLayoutManager(activity);
         myTasksRecyclerView.setLayoutManager(myTasksLayoutManager);
+        loadingCircle = (ProgressBar) findViewById(R.id.loadingCircle);
 
         Spinner filterSpinner = (Spinner) findViewById(R.id.filter_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -87,6 +90,7 @@ public class ViewMyTasksActivity extends RootActivity {
         final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
         emptyListMessage.setLayoutResource(R.layout.empty_task_list);
 
+
         /**
          * When the filter is selected, the recycle view displays only the users tasks that
          * corresponds to the tasks status
@@ -95,31 +99,35 @@ public class ViewMyTasksActivity extends RootActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 TaskList myTasks = new TaskList();
+                loadingCircle.setVisibility(View.VISIBLE);
                 try {
                     myTasks = dm.getUserTasks(CurrentUser.getInstance().getCurrentUser().getId(),
-                                              activity);
+                            activity);
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }
 
                 if (parent.getItemAtPosition(pos).equals("Requested")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (!myTasks.get(i).getStatus().equals(Status.REQUESTED)) {
+                        if (myTasks.get(i).getStatus() != Status.REQUESTED) {
                             myTasks.removeTask(myTasks.get(i));
+                            --i;
                         }
                     }
                 }
                 else if (parent.getItemAtPosition(pos).equals("Bidded")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (!myTasks.get(i).getStatus().equals(Status.BIDDED)) {
+                        if (myTasks.get(i).getStatus() != Status.BIDDED) {
                             myTasks.removeTask(myTasks.get(i));
+                            --i;
                         }
                     }
                 }
                 else if (parent.getItemAtPosition(pos).equals("Assigned")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (!myTasks.get(i).getStatus().equals(Status.ASSIGNED)) {
+                        if (myTasks.get(i).getStatus() != Status.ASSIGNED) {
                             myTasks.removeTask(myTasks.get(i));
+                            --i;
                         }
                     }
                 }
@@ -133,6 +141,7 @@ public class ViewMyTasksActivity extends RootActivity {
                 }
 
                 myTasksAdapter = new TaskListAdapter(activity, myTasks);
+                loadingCircle.setVisibility(View.GONE);
                 myTasksRecyclerView.setAdapter(myTasksAdapter);
             }
 
@@ -141,7 +150,6 @@ public class ViewMyTasksActivity extends RootActivity {
 
             }
         });
-
     }
 
 }
