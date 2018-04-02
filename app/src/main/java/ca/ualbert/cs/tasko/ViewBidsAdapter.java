@@ -26,6 +26,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
 /**
  * The class represents a Adapter that is specifically designed to display bid of a particular
  * task in an AdapterView. Allowing the user to accept or reject a particular bid.
@@ -74,8 +77,16 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     @Override
     public void onBindViewHolder(BidViewHolder holder, int position) {
         Bid currentTask = bids.get(position);
+        DataManager dm = DataManager.getInstance();
+        User biduser = new User();
+        
+        try {
+            biduser = dm.getUserById(currentTask.getUserID(),thiscontext);
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
 
-        holder.bidTitle.setText("Posted by: " + currentTask.getUserID());
+        holder.bidTitle.setText("Posted by: " + biduser.getUsername());
 
         String myBid = Float.toString(currentTask.getValue());
         holder.Bid.setText("My Bid: " + myBid);

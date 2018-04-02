@@ -15,12 +15,14 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -60,6 +62,7 @@ public class LogOutActivity extends AppCompatActivity {
      */
     private void logout() throws IOException {
 
+        ((JobScheduler)getSystemService(Context.JOB_SCHEDULER_SERVICE)).cancelAll();
         CurrentUser.getInstance().setCurrentUser(null);
         FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
         fos.write("".getBytes());
@@ -67,6 +70,7 @@ public class LogOutActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, OpeningActivity.class);
         startActivity(intent);
+        finish();
 
     }
 
