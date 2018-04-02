@@ -33,7 +33,6 @@ import io.searchbox.annotations.JestId;
  *
  */
 
-
 public class Task implements Serializable {
 
     private String taskName;

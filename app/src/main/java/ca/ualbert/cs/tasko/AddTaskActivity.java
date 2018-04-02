@@ -71,15 +71,14 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
+        Intent editTask = getIntent();
+        currentTask = (Task) editTask.getSerializableExtra("task");
+
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
         imageView = (ImageView) findViewById(R.id.addTaskImageView);
         switcher = (ImageSwitcher) findViewById(R.id.addTaskImageSwitcher);
         textView = (TextView) findViewById(R.id.addTaskTextView);
-
-        Intent editTask = getIntent();
-        currentTask = (Task) editTask.getSerializableExtra("task");
-        taskRequester = CurrentUser.getInstance().getCurrentUser();
 
         if (currentTask != null) {
             taskNameText.setText(currentTask.getTaskName());
