@@ -85,12 +85,12 @@ public class AndroidNotificationCreator extends ContextWrapper {
      * Creates the Android Notification that will go to the Users Device.
      */
     public void createAndriodNotification(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ViewNotificationActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, 0);
 
         notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
-        notificationBuilder.setSmallIcon(R.drawable.ic_info_outline_black_24dp)
+        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Tasko")
                 .setContentText("You have New Notifications in Tasko!")
                 .setContentIntent(pendingIntent)
