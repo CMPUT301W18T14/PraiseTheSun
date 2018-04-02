@@ -155,7 +155,8 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 19) {
-            currentTask = (Task) getIntent().getSerializableExtra("task");
+            currentTask = (Task) data.getSerializableExtra("task");
+            Log.i("Not Error", currentTask.toString());
             fillInformation();
         }
     }
