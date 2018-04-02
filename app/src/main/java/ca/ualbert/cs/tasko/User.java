@@ -43,8 +43,6 @@ public class User {
     private String email;
     private ArrayList<Float> ratings;
 
-
-
     public User(){
 
     }
@@ -149,7 +147,6 @@ public class User {
      * Method that returns the rating of the user
      *
      * @return the rating of the user
-     * @see #setRating(float)
      */
     public float getRating() {
 
@@ -157,15 +154,15 @@ public class User {
         for (int i = 0; i < ratings.size(); i++){
             sum += ratings.get(i);
         }
-        return sum/ratings.size();
+        return ratings.size() == 0 ? sum : sum/ratings.size();
     }
 
     /**
-     * Method that sets the rating of the user
+     * Method that adds a float to the users rating
      *
      * @param rating the rating of the user
      */
-    public void setRating (float rating){
+    public void addRating (float rating){
         if (ratings.size() == 4){
             ratings.remove(0);
             ratings.add(rating);
