@@ -87,6 +87,7 @@ public class ViewMyTasksActivity extends RootActivity {
         final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
         emptyListMessage.setLayoutResource(R.layout.empty_task_list);
 
+
         /**
          * When the filter is selected, the recycle view displays only the users tasks that
          * corresponds to the tasks status
@@ -95,31 +96,36 @@ public class ViewMyTasksActivity extends RootActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 TaskList myTasks = new TaskList();
+
+                //Get all of the user's current tasks
                 try {
                     myTasks = dm.getUserTasks(CurrentUser.getInstance().getCurrentUser().getId(),
-                                              activity);
+                            activity);
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }
 
                 if (parent.getItemAtPosition(pos).equals("Requested")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (!myTasks.get(i).getStatus().equals(Status.REQUESTED)) {
+                        if (myTasks.get(i).getStatus() != Status.REQUESTED) {
                             myTasks.removeTask(myTasks.get(i));
+                            --i;
                         }
                     }
                 }
                 else if (parent.getItemAtPosition(pos).equals("Bidded")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (!myTasks.get(i).getStatus().equals(Status.BIDDED)) {
+                        if (myTasks.get(i).getStatus() != Status.BIDDED) {
                             myTasks.removeTask(myTasks.get(i));
+                            --i;
                         }
                     }
                 }
                 else if (parent.getItemAtPosition(pos).equals("Assigned")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (!myTasks.get(i).getStatus().equals(Status.ASSIGNED)) {
+                        if (myTasks.get(i).getStatus() != Status.ASSIGNED) {
                             myTasks.removeTask(myTasks.get(i));
+                            --i;
                         }
                     }
                 }

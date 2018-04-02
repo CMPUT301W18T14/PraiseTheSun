@@ -27,6 +27,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -41,6 +43,10 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private TextView taskName;
     private TextView taskStatus;
     private Task currentTask;
+    private Button deleteButton;
+    private Button editButton;
+    private Button viewBidsButton;
+    private final Context context = this;
     private DataManager dm = DataManager.getInstance();
 
     /**
@@ -57,9 +63,9 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Button and TextView definitions
-        Button deleteButton = (Button) findViewById(R.id.deleteButton);
-        Button editButton = (Button) findViewById(R.id.editButton);
-        Button viewBidsButton = (Button) findViewById(R.id.placeBidButton);
+        deleteButton = (Button) findViewById(R.id.deleteButton);
+        editButton = (Button) findViewById(R.id.editButton);
+        viewBidsButton = (Button) findViewById(R.id.placeBidButton);
         taskName = (TextView) findViewById(R.id.taskName);
         taskDescription = (TextView) findViewById(R.id.taskDescription);
         taskStatus = (TextView) findViewById(R.id.taskStatus);
@@ -81,27 +87,34 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             imageView.setImageBitmap(currentTask.getCoverPhoto());
         }
 
+        setupDeleteButton();
+
+        setupEditButton();
+
+        setupViewBidsButton();
+    }
+
+    private void setupDeleteButton() {
         //Dialog for choosing to make a bid on the task
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Confirm deletion and return to main page
                 AlertDialog.Builder builder = new AlertDialog.Builder(ViewTaskDetailsActivity.this);
                 final View deleteView = getLayoutInflater().inflate(R.layout.delete_my_task_dialog, null);
-                Button confirmButton = (Button) deleteView.findViewById(R.id.confirmButton);
-                Button cancelButton = (Button) deleteView.findViewById(R.id.cancelButton);
 
-                confirmButton.setOnClickListener(new View.OnClickListener() {
+                //confirmButton.setOnClickListener(new View.OnClickListener() {
+                builder.setView(deleteView).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-                        builder1.setMessage("Are you sure you want to make a bid?");
+                        builder1.setMessage("Are you positive you want to delete this task?");
                         builder1.setCancelable(true);
 
                         builder1.setPositiveButton(
                                 "Yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-
+                                        //Here's where the task deletion code goes
                                     }
                                 });
 
@@ -118,15 +131,6 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                     }
                 });
 
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //Probably a better way to do this but it works for now
-                        finish();
-                        startActivity(new Intent(ViewTaskDetailsActivity.this, ViewTaskDetailsActivity.class));
-                    }
-                });
-
                 builder.setView(deleteView);
                 AlertDialog dialog = builder.create();
                 dialog.show();
@@ -134,12 +138,22 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setupEditButton() {
         editButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //This should go to a pre-filled in version of the AddTaskActivity
+                if(currentTask.getStatus() != Status.REQUESTED) {
+                    Toast.makeText(getApplicationContext(),"This task already has bids on it. This task can no longer be edited.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //This should go to a pre-filled in version of the AddTaskActivity
+                }
             }
         });
+    }
 
+    private void setupViewBidsButton() {
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Context thiscontext = getApplicationContext();
