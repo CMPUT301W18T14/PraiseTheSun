@@ -66,7 +66,7 @@
         <activity android:name=".ViewTasksBiddedOnActivity"/>
         <activity android:name=".ViewBidsOnTaskActivity"/>
         <service android:name=".NotificationService"
-            android:enabled="true"/>
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity android:name=".LogOutActivity"/>
         <activity android:name=".ViewPhotoActivity"/>
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity"/>

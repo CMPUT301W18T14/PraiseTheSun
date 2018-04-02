@@ -200,7 +200,7 @@ public class DataManager {
                             "connection");
                 }
             }
-        }).run();
+        }).start();
 
         if(isOnline(context)){
             dcm.invokeCommand(dtc);
