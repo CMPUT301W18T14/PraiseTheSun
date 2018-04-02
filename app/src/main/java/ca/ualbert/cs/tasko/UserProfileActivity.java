@@ -29,6 +29,7 @@ import ca.ualbert.cs.tasko.data.DataManager;
 
 /**
  * Shows user information in an editable format
+ * This activity is for the user using the app
  * @author imtihan
  * @see User, UserActivity, RootActivity
  */

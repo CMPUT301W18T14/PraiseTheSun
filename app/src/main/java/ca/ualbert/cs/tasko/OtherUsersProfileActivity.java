@@ -25,11 +25,24 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
+/**
+ * Shows the user profile of a user clicked in a any of the relevant fields
+ * Requires Intent to be passed with a string field called "id"
+ *
+ * @author imtihan
+ * @see DataManager
+ *
+ *
+ */
 public class OtherUsersProfileActivity extends RootActivity {
 
     TextView name;
     TextView email;
     TextView phone;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +57,13 @@ public class OtherUsersProfileActivity extends RootActivity {
         phone = (TextView) findViewById(R.id.OtherUsersProfilePhone);
 
         Intent intent = getIntent();
-        name.setText(intent.getStringExtra("name"));
-        email.setText(intent.getStringExtra("email"));
-        phone.setText(intent.getStringExtra("phoneNumber"));
+        try {
+            user = DataManager.getInstance().getUserById(intent.getStringExtra("id"), OtherUsersProfileActivity.this);
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
+        name.setText(user.getName());
+        email.setText(user.getEmail());
+        phone.setText(user.getPhoneNumber());
     }
 }
