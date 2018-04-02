@@ -194,8 +194,11 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 19) {
             currentTask = (Task) data.getSerializableExtra("task");
-            Log.i("Not Error", currentTask.toString());
             fillInformation();
+            if (currentTask.hasPhoto()) {
+                ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+                imageView.setImageBitmap(currentTask.getCoverPhoto());
+            }
         }
     }
 }

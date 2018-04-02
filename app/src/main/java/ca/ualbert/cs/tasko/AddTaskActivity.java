@@ -242,8 +242,11 @@ public class AddTaskActivity extends AppCompatActivity {
             Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
             newTask.setTaskRequesterUsername(taskRequester.getUsername());
             if (currentTask != null) {
-                //DataManager.getInstance().deleteTask(currentTask.getId(), this
-                // .getApplicationContext());
+                try {
+                    DataManager.getInstance().deleteTask(currentTask, this.getApplicationContext());
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
                 Intent editIntent = new Intent();
                 editIntent.putExtra("task", newTask);
                 setResult(RESULT_OK, editIntent);
