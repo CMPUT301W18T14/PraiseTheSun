@@ -69,7 +69,7 @@
             android:enabled="true"/>
         <activity android:name=".LogOutActivity"/>
         <activity android:name=".ViewPhotoActivity"/>
-        <activity android:name=".NotificationArtifacts.CreateAndroidNotificationsActivity"/>
+        <activity android:name=".NotificationArtifacts.ViewNotificationActivity"/>
 
     </application>
 

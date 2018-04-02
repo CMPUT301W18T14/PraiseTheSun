@@ -255,7 +255,7 @@ public class DataManager {
             for(Task t: tl.getTasks()){
                 if(CurrentUser.getInstance().getCurrentUser().getId()
                         .equals(t.getTaskRequesterID())){
-                    toRemove.addTask(t);
+                    //toRemove.addTask(t);
                 }
             }
             tl.getTasks().removeAll(toRemove.getTasks());
@@ -297,7 +297,12 @@ public class DataManager {
     public void addBid(Bid bid, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         Task task = getTask(bid.getTaskID(), context);
-        if(task.getMinBid() > bid.getValue()){
+        if(task.getMinBid() != null) {
+            if (task.getMinBid() > bid.getValue()) {
+                task.setMinBid(bid.getValue());
+                putTask(task, context);
+            }
+        } else {
             task.setMinBid(bid.getValue());
             putTask(task, context);
         }
