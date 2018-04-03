@@ -127,14 +127,16 @@ public class RootActivity extends AppCompatActivity {
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-
+*/
                             case R.id.find_nearby_tasks:
+
                                 i = new Intent(getApplicationContext(), FindNearbyTasksActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-*/
+
                             case R.id.view_profile:
                                 i = new Intent(getApplicationContext(), UserProfileActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
