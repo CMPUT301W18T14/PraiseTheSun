@@ -45,6 +45,7 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1111;
+    private static final float DEFAULT_ZOOM = 15f;
     private Boolean mLocationPermission = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -62,7 +63,7 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
 
     }
 
-    public void initMap(){
+    public void initMap() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -83,10 +84,23 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
         Toast.makeText(this, "Map online", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
 
+        if (mLocationPermission) {
+            getDeviceLocation();
+
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                return;
+            }
+            mMap.setMyLocationEnabled(true);
+        }
         // Add a marker in Sydney and move the camera
+        /*
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 
     private void getLocationPermission(){
@@ -139,6 +153,12 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
                         if(task.isSuccessful()){
                             Log.d("onComplete", "location found");
                             Location currentLocation = (Location) task.getResult();
+
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                        }else{
+                            Log.d("onComplete","current location is null");
+                            Toast.makeText(NearbyTasksActivity.this,
+                                    "Current location unavailable", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -147,5 +167,10 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
         }catch (SecurityException e){
             Log.e("getDeviceLocation", "Security Exception: " + e.getMessage());
         }
+    }
+
+    private void moveCamera(LatLng latlng, float zoom){
+        Log.e("moveCamera", "move camera to current location");
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom));
     }
 }
