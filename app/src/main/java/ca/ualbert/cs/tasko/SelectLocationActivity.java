@@ -15,6 +15,8 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -59,6 +61,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,11 +92,13 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
     private Boolean mLocationPermission = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-
-
+    private ImageButton addButton;
+    private LatLng marker=null;
     //widgets
     private EditText mSearchText;
     private ImageView mGps;
+    private Activity activity = this;
+    Intent resultIntent = new Intent();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +109,7 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
         setContentView(R.layout.activity_select_location);
         mSearchText = (EditText)  findViewById(R.id.local_search);
         mGps = (ImageView) findViewById(R.id.ic_gps_select);
+        addButton = (ImageButton) findViewById(R.id.addLocation);
         getLocationPermission();
 
     }
@@ -130,20 +136,19 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
             }
         });
 
-
-    }
-
-    public void displayNearbyTasks() {
-        TaskList tasks = new TaskList();
-        ArrayList<Task> listOfTasks = new ArrayList();
-        try {
-            tasks = DataManager.getInstance().searchTasks("", SelectLocationActivity.this);
-            listOfTasks = tasks.getTasks();
-        } catch (Exception e){
-            Toast.makeText(this, "Could not get tasks", Toast.LENGTH_SHORT).show();
-        }
-
-        //TODO
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(marker.equals(null)){
+                    Toast.makeText(activity, "Pick a location", Toast.LENGTH_SHORT).show();
+                }else{
+                    resultIntent.putExtra("lat", marker.latitude);
+                    resultIntent.putExtra("lng", marker.longitude);
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish();
+                }
+            }
+        });
     }
 
     private void geoLocate(){
@@ -170,8 +175,35 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
                 .findFragmentById(R.id.select_location_map);
         mapFragment.getMapAsync(this);
 
-        //puts the tasks on the map
-        displayNearbyTasks();
+        //creates map listener
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+    // Creating a marker
+                MarkerOptions markerOptions = new MarkerOptions();
+                //save marker value
+                marker = latLng;
+    // Setting the position for the marker
+                markerOptions.position(latLng);
+
+    // Setting the title for the marker.
+    // This will be displayed on taping the marker
+                markerOptions.title(latLng.latitude + ":" + latLng.longitude);
+
+    // Clears the previously touched position
+                mMap.clear();
+
+    // Animating to the touched position
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+    // Placing a marker on the touched position
+                mMap.addMarker(markerOptions);
+
+            }
+        });
+
     }
 
     /**
