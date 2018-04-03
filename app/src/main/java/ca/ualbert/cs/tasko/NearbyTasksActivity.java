@@ -132,10 +132,10 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try{
             if(mLocationPermission){
-                java.lang.Object.Task location = mFusedLocationProviderClient.getLastLocation();
+                com.google.android.gms.tasks.Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener(){
                     @Override
-                    public void onComplete(@NonNull Task task){
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task task){
                         if(task.isSuccessful()){
                             Log.d("onComplete", "location found");
                             Location currentLocation = (Location) task.getResult();
