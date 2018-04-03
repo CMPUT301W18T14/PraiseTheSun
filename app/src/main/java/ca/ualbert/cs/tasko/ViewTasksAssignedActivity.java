@@ -52,7 +52,7 @@ public class ViewTasksAssignedActivity extends RootActivity {
         super.onCreate(savedInstanceState);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity_view_tasks_bidded_on, null, false);
+        View contentView = inflater.inflate(R.layout.activity_view_tasks_assigned, null, false);
         drawerLayout.addView(contentView, 0);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
