@@ -194,14 +194,19 @@ public class Task implements Serializable {
         }
     }
 
-    // Not implemented yet
-    // Todo Part 5
+    /**
+     * Sets the location of the task
+     * @see LatLng, NearbyTasksActivity
+     * @param location
+     */
     public void addLocation(LatLng location){
         this.location = location;
     }
 
-    // Not implemented yet
-    // Todo Part 5
+    /**
+     * Removes the location of the task
+     * @see NearbyTasksActivity
+     */
     public void removeLocation(){
         this.location = null;
     }
