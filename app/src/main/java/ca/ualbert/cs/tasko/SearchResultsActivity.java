@@ -15,10 +15,13 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -31,7 +34,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  *
  * @author spack
  */
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends RootActivity {
 
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter searchAdapter;
@@ -49,7 +52,10 @@ public class SearchResultsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_view_tasks_bidded_on, null, false);
+        drawerLayout.addView(contentView, 0);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
 
@@ -62,6 +68,14 @@ public class SearchResultsActivity extends AppCompatActivity {
         searchAdapter = new TaskListAdapter(context, foundtasks);
         searchRecyclerView.setAdapter(searchAdapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        searchForTasks();
+        searchAdapter = new TaskListAdapter(context, foundtasks);
+        searchRecyclerView.setAdapter(searchAdapter);
     }
 
     private void searchForTasks() {

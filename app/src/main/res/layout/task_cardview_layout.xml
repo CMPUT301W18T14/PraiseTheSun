@@ -57,8 +57,7 @@
                 android:layout_marginStart="13dp"
                 android:adjustViewBounds="false"
                 android:background="@drawable/image_border"
-                android:cropToPadding="false"
-                app:srcCompat="@android:color/background_light" />
+                android:cropToPadding="false" />
 
             <TextView
                 android:id="@+id/searchTaskDescription"
