@@ -43,6 +43,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
 
     public NotificationListAdapter(Context context, NotificationList nl) {
         thiscontext = context;
+        inflater = LayoutInflater.from(context);
         notifications = nl;
     }
 

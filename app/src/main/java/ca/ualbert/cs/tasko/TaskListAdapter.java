@@ -31,8 +31,6 @@ import java.text.DecimalFormat;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-//Todo: Make the adapter more modular, can be reused but needs slight modifications each time
-
 /**
  * The class represents a Adapter that is specifically designed to display search results in an
  * AdapterView. Clicking on an element in the view will send the user to that tasks details where
@@ -43,7 +41,6 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  */
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
 
-    private DataManager dm = DataManager.getInstance();
     private LayoutInflater inflater;
     private TaskList tasks;
     private Context thiscontext;
@@ -147,9 +144,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 break;
         }
 
+        holder.taskPhoto.setImageBitmap(currentTask.getCoverPhoto());
 
-        // Photos arent working properly.
-        //holder.taskPhoto.setImageResource();
     }
 
     /**
@@ -190,6 +186,32 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);
             taskMyBid = (TextView) itemView.findViewById(R.id.searchedTasksMyBidOnTask);
             taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
+
+            setupPhotoClick();
+            //setupUserNameClick();
+
+        }
+
+        private void setupPhotoClick(){
+            taskPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(thiscontext, ViewPhotoActivity.class);
+                    intent.putExtra("photos", tasks.get(getAdapterPosition()));
+                    thiscontext.startActivity(intent);
+                }
+            });
+        }
+
+        private void setupUserNameClick(){
+            taskPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Intent intent = new Intent(thiscontext, OtherUserActivity.class);
+                    ///intent.putExtra("UserID", tasks.get(getAdapterPosition()).getTaskRequesterID());
+                    //thiscontext.startActivity(intent);
+                }
+            });
         }
 
         @Override

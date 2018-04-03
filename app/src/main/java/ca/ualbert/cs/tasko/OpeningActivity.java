@@ -17,6 +17,10 @@ package ca.ualbert.cs.tasko;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -108,11 +112,12 @@ public class OpeningActivity extends AppCompatActivity {
                 cu.setCurrentUser(curr);
 
                 //Begin Notification Alarm
-                Log.i("POLL", "I am About to begin Polling");
-                Intent i = new Intent(this, NotificationService.class);
-                PendingIntent p = PendingIntent.getService(getApplicationContext(), 0, i, 0);
-                AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-                am.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), 5000, p);
+                JobScheduler mJobScheduler = (JobScheduler) getSystemService(Context
+                        .JOB_SCHEDULER_SERVICE);
+                JobInfo.Builder infoBuilder = new JobInfo.Builder(1, new ComponentName
+                        (getPackageName(), NotificationService.class.getName()));
+                infoBuilder.setMinimumLatency(5000); //Every 5 secods
+                mJobScheduler.schedule(infoBuilder.build());
                 //End notification alarm
 
                 Intent intent = new Intent(this, MainActivity.class);
