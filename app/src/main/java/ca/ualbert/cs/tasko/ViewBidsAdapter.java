@@ -17,6 +17,7 @@ package ca.ualbert.cs.tasko;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -124,6 +125,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
             Button acceptButton = (Button) itemView.findViewById(R.id.acceptButton);
             Button rejectButton = (Button) itemView.findViewById(R.id.rejectButton);
 
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(thiscontext);
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -134,6 +136,18 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
                         if (thisTask.getStatus() == Status.ASSIGNED) {
                             //make a pop up to tell the user that task is already assigned
+                            android.support.v7.app.AlertDialog.Builder builder1 = new android.support.v7.app.AlertDialog.Builder(thiscontext);
+                            builder1.setMessage("This Task is already Assigned");
+                            builder1.setCancelable(true);
+
+                            builder1.setPositiveButton(
+                                    "Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
                             Log.d("Error", "Task already assigned");
                         } else {
                             //assigns it to the appropriate provider
