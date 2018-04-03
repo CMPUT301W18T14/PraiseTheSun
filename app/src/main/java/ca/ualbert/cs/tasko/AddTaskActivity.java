@@ -34,6 +34,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -51,7 +53,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private String taskName;
     private String description;
     private User taskRequester;
-    private Location geoLocation = null;
+    private LatLng geoLocation = null;
     private ArrayList<String> photos;
     private ArrayList<Bitmap> images;
     private ImageSwitcher switcher;
@@ -155,11 +157,11 @@ public class AddTaskActivity extends AppCompatActivity {
      */
     public void onAddLocationClick(View view){
         // Create an Intent to AddLocationActivity
-        /*
-        Intent addLocationIntent = new Intent(this, AddLocationActivity.class);
-        final int result = 1;
+
+        Intent addLocationIntent = new Intent(this, SelectLocationActivity.class);
+        final int result = 2;
         startActivityForResult(addLocationIntent, result);
-         */
+
     }
 
     /**
@@ -194,6 +196,11 @@ public class AddTaskActivity extends AppCompatActivity {
                     break;
                 case 2:
                     // Handle add location Intent result
+                    if(requestCode == 1 && resultCode == RESULT_OK){
+                        double lat = data.getDoubleExtra("lat", 0.00);
+                        double lng = data.getDoubleExtra("lng", 0.00);
+                        geoLocation = new LatLng(lat, lng);
+                    }
                     break;
             }
         }
