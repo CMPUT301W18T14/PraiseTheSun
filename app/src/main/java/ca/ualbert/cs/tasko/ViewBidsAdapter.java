@@ -142,10 +142,13 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
 
                             Log.d("Error", "Task already assigned");
                         } else {
+                            //Make all other bids rejected
+                            
                             //assigns it to the appropriate provider
                             thisTask.assign((bids.get(getAdapterPosition())).getUserID());
                             //updates the task
                             dm.putTask(thisTask, thiscontext);
+
                         }
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");
