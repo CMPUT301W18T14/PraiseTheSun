@@ -77,5 +77,6 @@
     <string name="add_photo_title">Add Photos</string>
     <string name="view_photos_title">View Photos</string>
     <string name="title_activity_accepted_task">AcceptedTaskActivity</string>
+    <string name="title_activity_nearby_tasks">Map</string>
 </resources>
 
