@@ -16,10 +16,12 @@
 package ca.ualbert.cs.tasko;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -52,7 +54,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         //Button and TextView definitions
 
         completedButton = (Button) findViewById(R.id.taskCompleteButton);
-        repostButton = (Button) findViewById(R.id.repostButton);
+        repostButton = (Button) findViewById(R.id.taskRepostButton);
         assignedTaskName = (TextView) findViewById(R.id.assignedTaskName);
         assignedTaskDescription = (TextView) findViewById(R.id.assignedTaskDescription);
         assignedTaskStatus = (TextView) findViewById(R.id.assignedTaskStatusAndProvider);
@@ -95,18 +97,71 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     private void setupCompleteButton() {
         completedButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                assignedCurrentTask.setStatus(Status.DONE);
-                finish();
+                //confirmButton.setOnClickListener(new View.OnClickListener() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Was this task successfully completed?");
+                builder.setCancelable(true);
+
+                builder.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Set this task's status to DONE
+                                assignedCurrentTask.setStatus(Status.DONE);
+                                finish();
+                            }
+                        });
+
+                builder.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
+
     }
+
 
     private void setupRepostButton() {
         repostButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                
-                //Remove currently set bid and repost the task
-                //Unhide the previous bids that were on the task and notify the
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("This will repost your task, declining your currently accepted" +
+                        " bid. Would you like to continue?");
+                builder.setCancelable(true);
+
+                builder.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Set this task's status to REQUESTED if there were not other bids
+                                //on this task prior to the assignment
+                                assignedCurrentTask.setStatus(Status.REQUESTED);
+                                finish();
+
+                                //Set this task's status to BIDDED if there were other bids on this
+                                //task prior to the assignment
+                                assignedCurrentTask.setStatus(Status.BIDDED);
+                                finish();
+                            }
+                        });
+
+                builder.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
     }
