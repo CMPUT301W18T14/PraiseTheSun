@@ -46,8 +46,9 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
 
         // Taken from https://stackoverflow.com/questions/28960898/getting-context-in-androidtestcase-or-instrumentationtestcase-in-android-studio/29063736#29063736
         // 2018-03-06
-        // DM.putUser(testUser, InstrumentationRegistry.getTargetContext());
-
+        try {
+            dm.putUser(testUser, InstrumentationRegistry.getTargetContext());
+        }catch(IllegalArgumentException e){}
     }
 
     public void testStart() throws Exception {
@@ -62,10 +63,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
 
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
         solo.enterText((EditText) solo.getView(R.id.usernameEditText), "username1");
-        User usernameInput = dm.getUserByUsername("username1",
-                InstrumentationRegistry.getTargetContext());
-        //assertEquals(testUser, usernameInput);
-        //More than one testUser in the Database so this only works for the first test!
         solo.clickOnButton("LOGIN");
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
     }
