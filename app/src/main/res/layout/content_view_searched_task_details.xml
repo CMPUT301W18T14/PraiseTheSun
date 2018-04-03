@@ -24,7 +24,7 @@
     tools:showIn="@layout/activity_view_searched_task_details">
 
     <Button
-        android:id="@+id/taskCompleteButton"
+        android:id="@+id/placeBidButton"
         android:layout_width="0dp"
         android:layout_height="69dp"
         android:layout_marginBottom="8dp"

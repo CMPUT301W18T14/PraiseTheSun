@@ -147,8 +147,8 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
                                 //Set this task's status to BIDDED if there were other bids on this
                                 //task prior to the assignment
-                                assignedCurrentTask.setStatus(Status.BIDDED);
-                                finish();
+                                //assignedCurrentTask.setStatus(Status.BIDDED);
+                                //finish();
                             }
                         });
 

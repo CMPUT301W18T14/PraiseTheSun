@@ -119,6 +119,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                                         try {
                                             dm.deleteTask(currentTask, context);
                                             finish();
+                                            Toast.makeText(getApplicationContext(),"Your task has successfully been deleted.", Toast.LENGTH_SHORT).show();
                                         }
                                         catch (NoInternetException e) {
                                             Log.i("Error", "No internet connection in " +
