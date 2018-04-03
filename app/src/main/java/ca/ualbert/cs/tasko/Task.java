@@ -19,6 +19,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.util.Base64;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ public class Task implements Serializable {
     private String taskProviderID;
     private Float minBid;
     private Status status;
+    private LatLng location;
 
     @JestId
     private String id;
@@ -192,14 +196,14 @@ public class Task implements Serializable {
 
     // Not implemented yet
     // Todo Part 5
-    public void addLocation(Location location){
-
+    public void addLocation(LatLng location){
+        this.location = location;
     }
 
     // Not implemented yet
     // Todo Part 5
     public void removeLocation(){
-
+        this.location = null;
     }
 
     /**

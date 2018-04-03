@@ -52,6 +52,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
+
 public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -101,6 +104,21 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                 getDeviceLocation();
             }
         });
+
+
+    }
+
+    public void displayNearbyTasks() {
+        TaskList tasks = new TaskList();
+        ArrayList<Task> listOfTasks = new ArrayList();
+        try {
+            tasks = DataManager.getInstance().searchTasks("", NearbyTasksActivity.this);
+            listOfTasks = tasks.getTasks();
+        } catch (Exception e){
+            Toast.makeText(this, "Could not get tasks", Toast.LENGTH_SHORT).show();
+        }
+
+        //TODO
     }
 
     private void geoLocate(){
@@ -126,6 +144,9 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //puts the tasks on the map
+        displayNearbyTasks();
     }
 
     /**
@@ -212,7 +233,6 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                         if(task.isSuccessful()){
                             Log.d("onComplete", "location found");
                             Location currentLocation = (Location) task.getResult();
-
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My location");
                         }else{
                             Log.d("onComplete","current location is null");
@@ -232,12 +252,6 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         Log.e("moveCamera", "move camera to current location");
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom));
 
-        /*
-        MarkerOptions options = new MarkerOptions()
-                .position(latlng)
-                .title(title);
 
-        mMap.addMarker(options);
-        */
     }
 }
