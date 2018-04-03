@@ -99,7 +99,7 @@
 
         <activity
             android:name=".NearbyTasksActivity"
-            android:label="@string/title_activity_nearby_tasks"></activity>
+            android:label="@string/title_activity_nearby_tasks" />
     </application>
 
 </manifest>

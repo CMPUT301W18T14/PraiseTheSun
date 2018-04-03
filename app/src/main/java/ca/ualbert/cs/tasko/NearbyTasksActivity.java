@@ -40,7 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 
-public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallback {
+public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -53,11 +53,11 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+       // LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //inflate your activity layout here!
-        View contentView = inflater.inflate(R.layout.activity_nearby_tasks, null, false);
-        drawerLayout.addView(contentView, 0);
-
+        //View contentView = inflater.inflate(R.layout.activity_nearby_tasks, null, false);
+        //drawerLayout.addView(contentView, 0);
+        setContentView(R.layout.activity_nearby_tasks);
         getLocationPermission();
 
 
@@ -67,7 +67,7 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(NearbyTasksActivity.this);
+        mapFragment.getMapAsync(this);
     }
 
     /**
@@ -95,6 +95,7 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
                 return;
             }
             mMap.setMyLocationEnabled(true);
+
         }
         // Add a marker in Sydney and move the camera
         /*
