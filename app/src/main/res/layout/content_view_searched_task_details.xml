@@ -24,7 +24,7 @@
     tools:showIn="@layout/activity_view_searched_task_details">
 
     <Button
-        android:id="@+id/placeBidButton"
+        android:id="@+id/taskCompleteButton"
         android:layout_width="0dp"
         android:layout_height="69dp"
         android:layout_marginBottom="8dp"
@@ -88,7 +88,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="LOWEST BID DISPLAY"
-        app:layout_constraintBottom_toTopOf="@+id/placeBidButton"
+        app:layout_constraintBottom_toTopOf="@+id/taskCompleteButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/geolocationButton" />

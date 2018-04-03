@@ -18,11 +18,9 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
@@ -64,7 +62,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
         //Button and text boxes definitions
         requesterName = (TextView) findViewById(R.id.taskRequesterName);
-        placeBidButton = (Button) findViewById(R.id.placeBidButton);
+        placeBidButton = (Button) findViewById(R.id.taskCompleteButton);
         //geolocationButton = (Button) findViewById(R.id.geolocationButton);
         taskDescription = (TextView) findViewById(R.id.taskDescriptionView);
         taskName = (TextView) findViewById(R.id.taskName);
