@@ -85,7 +85,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
         holder.bidTitle.setText("Posted by: " + currentTask.getUserID());
 
         String myBid = Float.toString(currentTask.getValue());
-        holder.Bid.setText("My Bid: " + myBid);
+        holder.Bid.setText("Bid: " + myBid);
     }
 
     /**
