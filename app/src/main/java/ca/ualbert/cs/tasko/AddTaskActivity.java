@@ -76,6 +76,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
+        taskRequester = CurrentUser.getInstance().getCurrentUser();
         imageView = (ImageView) findViewById(R.id.addTaskImageView);
         switcher = (ImageSwitcher) findViewById(R.id.addTaskImageSwitcher);
         textView = (TextView) findViewById(R.id.addTaskTextView);
