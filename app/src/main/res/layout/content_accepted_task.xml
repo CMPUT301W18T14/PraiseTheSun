@@ -46,7 +46,7 @@ tools:showIn="@layout/activity_accepted_task">
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/taskName"
+                android:id="@+id/assignedTaskName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -113,7 +113,7 @@ tools:showIn="@layout/activity_accepted_task">
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/taskDescription"
+                android:id="@+id/assignedTaskDescription"
                 android:layout_width="match_parent"
                 android:layout_height="121dp"
                 android:layout_marginBottom="53dp"
@@ -147,7 +147,7 @@ tools:showIn="@layout/activity_accepted_task">
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/taskStatusAndProvider"
+                android:id="@+id/assignedTaskStatusAndProvider"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
