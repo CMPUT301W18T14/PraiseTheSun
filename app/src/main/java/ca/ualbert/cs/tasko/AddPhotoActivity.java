@@ -307,7 +307,22 @@ public class AddPhotoActivity extends AppCompatActivity {
                         InputStream inputStream;
                         try {
                             inputStream = getContentResolver().openInputStream(selectedImage);
-                            images.add(BitmapFactory.decodeStream(inputStream));
+                            Bitmap image = BitmapFactory.decodeStream(inputStream);
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                            byte[] byteArray = stream.toByteArray();
+                            long imageLength = byteArray.length;
+                            if (imageLength > 65535) {
+                                Float num = ((float) 64000 / imageLength) * 100;
+                                Integer size = Math.round(num);
+                                Log.d("Not Error", Integer.toString(size));
+                                stream = new ByteArrayOutputStream();
+                                image.compress(Bitmap.CompressFormat.PNG, size, stream);
+                                byteArray = stream.toByteArray();
+                                Log.d("Not Error", Integer.toString(byteArray.length));
+                                image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                            }
+                            images.add(image);
                             confirm.setEnabled(true);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
