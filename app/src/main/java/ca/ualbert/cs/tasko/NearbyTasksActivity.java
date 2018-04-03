@@ -26,8 +26,12 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -50,6 +54,9 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
+
+    //widgets
+    private EditText mSearchText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +65,24 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         //View contentView = inflater.inflate(R.layout.activity_nearby_tasks, null, false);
         //drawerLayout.addView(contentView, 0);
         setContentView(R.layout.activity_nearby_tasks);
+        mSearchText = (EditText)  findViewById(R.id.nearby_tasks_location_search_text);
         getLocationPermission();
+    }
 
-
+    private void init(){
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH ||
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                        actionId == KeyEvent.ACTION_DOWN ||
+                        actionId == KeyEvent.KEYCODE_ENTER){
+                    //execute search
+                    
+                }
+                return false;
+            }
+        });
     }
 
     public void initMap() {
