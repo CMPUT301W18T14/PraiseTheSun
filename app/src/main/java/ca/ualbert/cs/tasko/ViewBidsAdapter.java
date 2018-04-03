@@ -17,14 +17,18 @@ package ca.ualbert.cs.tasko;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -40,6 +44,8 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     private LayoutInflater inflater;
     private BidList bids;
     private Context thiscontext;
+
+    private DataManager dm = DataManager.getInstance();
 
     /**
      * Constructor for the Adapter, Takes in the context which designates the activity that will use
@@ -89,7 +95,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
         holder.bidTitle.setText("Posted by: " + biduser.getUsername());
 
         String myBid = Float.toString(currentTask.getValue());
-        holder.Bid.setText("My Bid: " + myBid);
+        holder.Bid.setText("Bid: " + myBid);
     }
 
     /**
@@ -105,7 +111,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
      * The clickabale view holder that will get displayed in the recylcerview which displays
      * relevant information about a task.
      */
-    class BidViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class BidViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
 
         TextView bidTitle;
         TextView Bid;
@@ -113,17 +119,99 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
         public BidViewHolder(View itemView) {
             super(itemView);
 
-            itemView.setOnClickListener(this);
+            //itemView.setOnClickListener(this);
 
             bidTitle = (TextView) itemView.findViewById(R.id.bidTitle);
             Bid = (TextView) itemView.findViewById(R.id.LowBid);
-        }
+            Button acceptButton = (Button) itemView.findViewById(R.id.acceptButton);
+            Button rejectButton = (Button) itemView.findViewById(R.id.rejectButton);
 
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //prints to debug
+                    Log.d("ButtonClick", "Accept Button Clicked");
+                    try {
+                        //gets the current task
+                        Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
+                        if (thisTask.getStatus() == Status.ASSIGNED) {
+                            //tell the user that task is already assigned
+                            CharSequence toasttext = "Task already Assigned";
+                            Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
+                            toast.show();
 
-        //TODO: Use case 15 & 16
-        @Override
-        public void onClick(View view) {
+                            Log.d("Error", "Task already assigned");
+
+                            //testing stuff
+                            if ((bids.get(getAdapterPosition())).getStatus() == Status.ACCEPTED ) {
+                                Log.d("Message", "Bid status is ACCEPTED!");
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.REJECTED ) {
+                                Log.d("Message", "Bid status is REJECTED!");
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.PENDING) {
+                                Log.d("Message", "Bid status is PENDING!");
+                            }
+                        } else {
+                            //Make all other bids rejected
+                            for(int i = 0; i < bids.getSize(); i++){
+                                bids.get(i).setStatus(Status.REJECTED);
+                            }
+                            //Make accepted bid status accepted
+                            (bids.get(getAdapterPosition())).setStatus(Status.ACCEPTED);
+
+                            //assigns it to the appropriate provider
+                            thisTask.assign((bids.get(getAdapterPosition())).getUserID());
+                            //updates the task
+                            dm.putTask(thisTask, thiscontext);
+
+                        }
+                    } catch (NullPointerException e) {
+                        Log.i("Error", "TaskID not properly passed");
+                    } catch (NoInternetException e) {
+                        Log.d("Error", "TaskID not properly passed");
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            rejectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //prints to debug
+                    Log.d("ButtonClick", "Reject Button Clicked");
+
+                    try {
+                        //gets the current task
+                        Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
+                        if (thisTask.getStatus() == Status.ASSIGNED) {
+                            //tell the user that task is already assigned
+                            CharSequence toasttext = "Task already Assigned";
+                            Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
+                            toast.show();
+
+                            Log.d("Error", "Task already assigned");
+
+                            //testing stuff
+                            if ((bids.get(getAdapterPosition())).getStatus() == Status.ACCEPTED ) {
+                                Log.d("Message", "Bid status is ACCEPTED!");
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.REJECTED ) {
+                                Log.d("Message", "Bid status is REJECTED!");
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.PENDING) {
+                                Log.d("Message", "Bid status is PENDING!");
+                            }
+                        } else {
+                            //Make bid status REJECTED
+                            (bids.get(getAdapterPosition())).setStatus(Status.REJECTED);
+                        }
+                    } catch (NullPointerException e) {
+                        Log.i("Error", "TaskID not properly passed");
+                    } catch (NoInternetException e) {
+                        Log.d("Error", "TaskID not properly passed");
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
+
 
 }
