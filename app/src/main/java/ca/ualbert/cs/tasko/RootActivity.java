@@ -130,8 +130,10 @@ public class RootActivity extends AppCompatActivity {
 */
                             case R.id.find_nearby_tasks:
 
+
                                 i = new Intent(getApplicationContext(), NearbyTasksActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
 
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
