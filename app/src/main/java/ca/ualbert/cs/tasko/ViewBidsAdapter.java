@@ -81,8 +81,16 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     @Override
     public void onBindViewHolder(BidViewHolder holder, int position) {
         Bid currentTask = bids.get(position);
+        DataManager dm = DataManager.getInstance();
+        User biduser = new User();
+        
+        try {
+            biduser = dm.getUserById(currentTask.getUserID(),thiscontext);
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
 
-        holder.bidTitle.setText("Posted by: " + currentTask.getUserID());
+        holder.bidTitle.setText("Posted by: " + biduser.getUsername());
 
         String myBid = Float.toString(currentTask.getValue());
         holder.Bid.setText("Bid: " + myBid);

@@ -63,9 +63,7 @@ public class AndroidNotificationCreator extends ContextWrapper {
 
         notificationID = (int) System.currentTimeMillis();
         CHANNEL_ID = getPackageName();
-
-        if (CHANNEL_ID == null)
-            setupChannel();
+        setupChannel();
     }
 
     /**
