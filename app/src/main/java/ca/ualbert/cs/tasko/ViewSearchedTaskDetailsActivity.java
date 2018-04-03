@@ -62,7 +62,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
         //Button and text boxes definitions
         requesterName = (TextView) findViewById(R.id.taskRequesterName);
-        placeBidButton = (Button) findViewById(R.id.taskCompleteButton);
+        placeBidButton = (Button) findViewById(R.id.placeBidButton);
         //geolocationButton = (Button) findViewById(R.id.geolocationButton);
         taskDescription = (TextView) findViewById(R.id.taskDescriptionView);
         taskName = (TextView) findViewById(R.id.taskName);
