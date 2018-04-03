@@ -18,21 +18,27 @@ package ca.ualbert.cs.tasko;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 
 public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallback {
 
@@ -41,6 +47,7 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1111;
     private Boolean mLocationPermission = false;
     private GoogleMap mMap;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +97,7 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED){
                 mLocationPermission = true;
+                initMap();
             }else {
                 ActivityCompat.requestPermissions(this,permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
@@ -116,6 +124,28 @@ public class NearbyTasksActivity extends RootActivity implements OnMapReadyCallb
 
 
             }
+        }
+    }
+
+    private void getDeviceLocation(){
+        Log.d("DeviceLocation", "Getting user location");
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        try{
+            if(mLocationPermission){
+                java.lang.Object.Task location = mFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener(){
+                    @Override
+                    public void onComplete(@NonNull Task task){
+                        if(task.isSuccessful()){
+                            Log.d("onComplete", "location found");
+                            Location currentLocation = (Location) task.getResult();
+                        }
+                    }
+                });
+            }
+
+        }catch (SecurityException e){
+            Log.e("getDeviceLocation", "Security Exception: " + e.getMessage());
         }
     }
 }
