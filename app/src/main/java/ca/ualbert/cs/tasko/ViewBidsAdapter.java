@@ -178,9 +178,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                 public void onClick(View view) {
                     //prints to debug
                     Log.d("ButtonClick", "Reject Button Clicked");
-                    //todo: delete bid (need deleteBid)
-                    //bids.removeBid(bids.get(getAdapterPosition()));
-                    //notifyDataSetChanged();
+
                     try {
                         //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
@@ -213,38 +211,6 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                 }
             });
         }
-
-
-        /*
-        //TODO: Use case 15 & 16
-        @Override
-        public void onClick(View view) {
-            // Confirm deletion and return to main page
-            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(ViewTaskDetailsActivity.this);
-            final View deleteView = getLayoutInflater().inflate(R.layout.delete_my_task_dialog, null);
-            Button confirmButton = (Button) deleteView.findViewById(R.id.confirmButton);
-            Button cancelButton = (Button) deleteView.findViewById(R.id.cancelButton);
-
-            confirmButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //CONFIRMATION DELETION OF TASK
-                }
-            });
-
-            cancelButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Probably a better way to do this but it works for now
-                    finish();
-                    startActivity(new Intent(ViewTaskDetailsActivity.this, ViewTaskDetailsActivity.class));
-                }
-            });
-
-            builder.setView(deleteView);
-            android.support.v7.app.AlertDialog dialog = builder.create();
-            dialog.show();
-        }*/
     }
 
 
