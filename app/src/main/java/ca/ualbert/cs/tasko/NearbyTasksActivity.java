@@ -18,6 +18,8 @@ package ca.ualbert.cs.tasko;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
@@ -44,6 +46,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -67,6 +73,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         setContentView(R.layout.activity_nearby_tasks);
         mSearchText = (EditText)  findViewById(R.id.nearby_tasks_location_search_text);
         getLocationPermission();
+
     }
 
     private void init(){
@@ -78,13 +85,30 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                         actionId == KeyEvent.ACTION_DOWN ||
                         actionId == KeyEvent.KEYCODE_ENTER){
                     //execute search
-                    
+                    geoLocate();
                 }
                 return false;
             }
         });
     }
 
+    private void geoLocate(){
+
+        String searchString = mSearchText.getText().toString();
+
+        Geocoder geocoder = new Geocoder(NearbyTasksActivity.this);
+        List<Address> list = new ArrayList<>();
+        try{
+            list = geocoder.getFromLocationName(searchString, 1);
+        }catch (IOException e){
+            Log.e("NearbyTasksActivity", "geolocate IOException" + e.getMessage());
+        }
+
+        if (list.size() > 0){
+            Address address = list.get(0);
+            Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
     public void initMap() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -117,7 +141,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                 return;
             }
             mMap.setMyLocationEnabled(true);
-
+            init();
         }
         // Add a marker in Sydney and move the camera
         /*
