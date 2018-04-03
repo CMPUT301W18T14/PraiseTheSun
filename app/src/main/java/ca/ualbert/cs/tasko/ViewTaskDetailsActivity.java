@@ -92,6 +92,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         setupEditButton();
 
         setupViewBidsButton();
+
     }
 
     private void setupDeleteButton() {

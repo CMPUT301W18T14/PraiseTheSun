@@ -50,7 +50,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Button and TextView definitions
-        repostButton = (Button) findViewById(R.id.repostButton);
+
         completedButton = (Button) findViewById(R.id.taskCompleteButton);
         assignedTaskName = (TextView) findViewById(R.id.assignedTaskName);
         assignedTaskDescription = (TextView) findViewById(R.id.assignedTaskDescription);
