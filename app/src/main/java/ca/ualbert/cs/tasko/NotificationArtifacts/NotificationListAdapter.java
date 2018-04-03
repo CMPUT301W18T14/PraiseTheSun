@@ -129,10 +129,6 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                     thiscontext.startActivity(intent);
                     break;
-                case TASK_DELETED:
-                    // Dont think this would do anything.
-                    break;
-
                     }
             }
 

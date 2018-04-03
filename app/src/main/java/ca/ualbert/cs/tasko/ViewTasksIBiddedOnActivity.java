@@ -19,7 +19,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -33,13 +32,13 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  *
  * @author spack
  */
-public class ViewTasksBiddedOnActivity extends RootActivity {
+public class ViewTasksIBiddedOnActivity extends RootActivity {
 
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter tasksBiddedAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
     public DataManager dm = DataManager.getInstance();
-    public ViewTasksBiddedOnActivity context = this;
+    public ViewTasksIBiddedOnActivity context = this;
     private User User;
     private BidList userBids;
     private TaskList biddedTasks;

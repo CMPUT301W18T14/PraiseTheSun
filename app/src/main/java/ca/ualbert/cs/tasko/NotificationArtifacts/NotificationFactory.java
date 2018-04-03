@@ -58,14 +58,14 @@ public class NotificationFactory {
         switch (notificationType){
             case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
                 recipientID = task.getTaskRequesterID();
-                message = "You have received a new Bid on" + taskname;
+                message = "You have received a new Bid on " + taskname.toUpperCase();
                 notification = new Notification(message, recipientID, null, taskID
                         , NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
                 dm.putNotification(notification, context);
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
                 recipientID = task.getTaskProviderID();
-                message = "You have been assigned to complete" + taskname;
+                message = "You have been assigned to complete " + taskname.toUpperCase();
                 notification = new Notification(message, recipientID, null, taskID,
                         NotificationType.TASK_PROVIDER_BID_ACCEPTED);
                 dm.putNotification(notification, context);
@@ -74,19 +74,19 @@ public class NotificationFactory {
                 User taskprovider = dm.getUserById(task.getTaskProviderID(), context);
                 User taskrequestor = dm.getUserById(task.getTaskRequesterID(), context);
 
-                message = taskprovider.getUsername() + " has completed " + taskname
+                message = taskprovider.getUsername() + " has completed " + taskname.toUpperCase()
                         + ". Please rate their services";
                 notification = new Notification(message, taskrequestor.getId(), taskprovider.getId(), taskID, NotificationType.RATING);
                 dm.putNotification(notification, context);
 
-                message = "You have completed " + taskname + ". Please rate your experience with "
+                message = "You have completed " + taskname.toUpperCase() + ". Please rate your experience with "
                         + taskrequestor.getUsername();
                 notification = new Notification(message, taskprovider.getId(), taskrequestor.getId(), taskID, NotificationType.RATING);
                 dm.putNotification(notification, context);
                 break;
             case TASK_PROVIDER_BID_DECLINED:
                 recipientID = task.getTaskProviderID();
-                message = "Your Bid on " + taskname + " has been Declined. Try making a lower Bid ";
+                message = "Your Bid on " + taskname.toUpperCase() + " has been Declined. Try making a lower Bid ";
                 notification = new Notification(message, recipientID, null, taskID,
                         NotificationType.TASK_PROVIDER_BID_DECLINED);
                 dm.putNotification(notification, context);
@@ -94,7 +94,7 @@ public class NotificationFactory {
             case TASK_DELETED:
                 BidList deletedBids = dm.getTaskBids(taskID, context);
                 for(int i = 0; i < deletedBids.getSize(); i++){
-                    message = taskname + "Has been deleted by the poster. Sorry for the inconvience.";
+                    message = taskname.toUpperCase() + "Has been deleted by the poster. Sorry for the inconvience.";
                     notification = new Notification(message, deletedBids.get(i).getUserID(), null, taskID,
                             NotificationType.TASK_DELETED);
                     dm.putNotification(notification, context);
