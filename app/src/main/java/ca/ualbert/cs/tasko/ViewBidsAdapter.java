@@ -141,6 +141,15 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             toast.show();
 
                             Log.d("Error", "Task already assigned");
+
+                            //debug
+                            if ((bids.get(getAdapterPosition())).getStatus() == Status.ACCEPTED ) {
+                                Log.d("Message", "Bid status is ACCEPTED!");
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.REJECTED ) {
+                                Log.d("Message", "Bid status is REJECTED!");
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.PENDING) {
+                                Log.d("Message", "Bid status is PENDING!");
+                            }
                         } else {
                             //Make all other bids rejected
                             for(int i = 0; i < bids.getSize(); i++){
