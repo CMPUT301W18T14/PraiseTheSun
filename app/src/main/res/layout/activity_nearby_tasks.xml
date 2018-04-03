@@ -59,4 +59,15 @@
             android:background="@null"
             android:hint="Enter Address, City, or Postal Code"/>
         </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ic_gps"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/nearby_tasks_search_bar"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_gps_round" />
 </RelativeLayout>

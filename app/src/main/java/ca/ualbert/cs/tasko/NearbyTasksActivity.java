@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.media.Image;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -33,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +65,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
 
     //widgets
     private EditText mSearchText;
+    private ImageView mGps;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +75,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         //drawerLayout.addView(contentView, 0);
         setContentView(R.layout.activity_nearby_tasks);
         mSearchText = (EditText)  findViewById(R.id.nearby_tasks_location_search_text);
+        mGps = (ImageView) findViewById(R.id.ic_gps);
         getLocationPermission();
 
     }
@@ -88,6 +92,13 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                     geoLocate();
                 }
                 return false;
+            }
+        });
+
+        mGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDeviceLocation();
             }
         });
     }
@@ -107,6 +118,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         if (list.size() > 0){
             Address address = list.get(0);
             Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
     }
     public void initMap() {
@@ -201,7 +213,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                             Log.d("onComplete", "location found");
                             Location currentLocation = (Location) task.getResult();
 
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My location");
                         }else{
                             Log.d("onComplete","current location is null");
                             Toast.makeText(NearbyTasksActivity.this,
@@ -216,8 +228,16 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         }
     }
 
-    private void moveCamera(LatLng latlng, float zoom){
+    private void moveCamera(LatLng latlng, float zoom, String title){
         Log.e("moveCamera", "move camera to current location");
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom));
+
+        /*
+        MarkerOptions options = new MarkerOptions()
+                .position(latlng)
+                .title(title);
+
+        mMap.addMarker(options);
+        */
     }
 }
