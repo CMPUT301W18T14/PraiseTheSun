@@ -84,7 +84,7 @@ tools:showIn="@layout/activity_accepted_task">
             android:padding="16dp">
 
             <ImageView
-                android:id="@+id/myTasksImageView"
+                android:id="@+id/myAssignedTasksImageView"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_weight="1"
@@ -197,7 +197,7 @@ tools:showIn="@layout/activity_accepted_task">
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/repostButton"
+                android:id="@+id/taskRepostButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:text="Repost Task"

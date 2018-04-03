@@ -63,9 +63,9 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Button and TextView definitions
-        deleteButton = (Button) findViewById(R.id.repostButton);
+        deleteButton = (Button) findViewById(R.id.deleteButton);
         editButton = (Button) findViewById(R.id.editButton);
-        viewBidsButton = (Button) findViewById(R.id.taskCompleteButton);
+        viewBidsButton = (Button) findViewById(R.id.viewBidsButton);
         taskName = (TextView) findViewById(R.id.taskName);
         taskDescription = (TextView) findViewById(R.id.taskDescription);
         taskStatus = (TextView) findViewById(R.id.taskStatus);
@@ -173,6 +173,8 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     }
 
     private void fillInformation() {
+        //String minBidAmount = df.format(currentTask.getMinBid());
+        //String taskStatusString = currentTask.getStatus().toString();
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
         if (currentTask.getStatus() == Status.BIDDED) {

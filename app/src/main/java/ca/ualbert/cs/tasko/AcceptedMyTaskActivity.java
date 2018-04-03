@@ -52,6 +52,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         //Button and TextView definitions
 
         completedButton = (Button) findViewById(R.id.taskCompleteButton);
+        repostButton = (Button) findViewById(R.id.repostButton);
         assignedTaskName = (TextView) findViewById(R.id.assignedTaskName);
         assignedTaskDescription = (TextView) findViewById(R.id.assignedTaskDescription);
         assignedTaskStatus = (TextView) findViewById(R.id.assignedTaskStatusAndProvider);
@@ -103,6 +104,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     private void setupRepostButton() {
         repostButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                
                 //Remove currently set bid and repost the task
                 //Unhide the previous bids that were on the task and notify the
             }
