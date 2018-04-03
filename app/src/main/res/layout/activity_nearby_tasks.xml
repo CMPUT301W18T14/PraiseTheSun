@@ -69,5 +69,5 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_gps_round" />
+        android:src="@android:drawable/ic_menu_mylocation" />
 </RelativeLayout>
