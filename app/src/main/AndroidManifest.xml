@@ -100,6 +100,9 @@
         <activity
             android:name=".NearbyTasksActivity"
             android:label="@string/title_activity_nearby_tasks" />
+        <activity
+            android:name=".SelectLocationActivity"
+            android:label="@string/title_activity_select_location"></activity>
     </application>
 
 </manifest>
