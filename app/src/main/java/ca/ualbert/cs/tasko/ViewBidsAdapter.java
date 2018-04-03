@@ -143,7 +143,12 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             Log.d("Error", "Task already assigned");
                         } else {
                             //Make all other bids rejected
-                            
+                            for(int i = 0; i < bids.getSize(); i++){
+                                bids.get(i).setStatus(Status.REJECTED);
+                            }
+                            //Make accepted bid status accepted
+                            (bids.get(getAdapterPosition())).setStatus(Status.ACCEPTED);
+
                             //assigns it to the appropriate provider
                             thisTask.assign((bids.get(getAdapterPosition())).getUserID());
                             //updates the task
