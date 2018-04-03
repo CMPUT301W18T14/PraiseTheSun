@@ -133,6 +133,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                         //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
                         if (thisTask.getStatus() == Status.ASSIGNED) {
+                            //make a pop up to tell the user that task is already assigned
                             Log.d("Error", "Task already assigned");
                         } else {
                             //assigns it to the appropriate provider
