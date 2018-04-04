@@ -17,13 +17,11 @@ package ca.ualbert.cs.tasko;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -41,13 +39,15 @@ public class Task implements Serializable {
     private String taskName;
     private String description;
     private ArrayList<String> photos;
-    private Location geolocation;
+    //private Location geolocation;
     private String taskRequesterID;
     private String taskRequesterUsername;
     private String taskProviderID;
     private Float minBid;
     private Status status;
-    private LatLng location;
+    private double lat;
+    private double lng;
+
 
     @JestId
     private String id;
@@ -75,8 +75,10 @@ public class Task implements Serializable {
      * @param location geolocation of the task
      */
     public Task(String taskRequesterID, String taskName, String description,
-                Location location){
+                LatLng location){
         this(taskRequesterID, taskName, description, new ArrayList<String>(), location);
+        this.lat = location.latitude;
+        this.lng = location.longitude;
     }
 
     /**
@@ -95,7 +97,7 @@ public class Task implements Serializable {
         this.taskName = taskName;
         this.description = description;
         this.photos = photos;
-        this.geolocation = null;
+       // this.geolocation = null;
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
         this.minBid = null;
@@ -113,14 +115,16 @@ public class Task implements Serializable {
      * @param location geolocation of the task
      */
     public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<String> photos, Location location){
+                ArrayList<String> photos, LatLng location){
         this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
         this.photos = photos;
-        this.geolocation = location;
+       // this.geolocation = location;
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
+        this.lat = location.latitude;
+        this.lng = location.longitude;
     }
 
     /**
@@ -200,7 +204,9 @@ public class Task implements Serializable {
      * @param location
      */
     public void addLocation(LatLng location){
-        this.location = location;
+        lat = location.latitude;
+        lng = location.longitude;
+
     }
 
     /**
@@ -208,7 +214,8 @@ public class Task implements Serializable {
      * @see NearbyTasksActivity
      */
     public void removeLocation(){
-        this.location = null;
+        this.lat = 0.00f;
+        this.lng = 0.00f;
     }
 
     /**
@@ -272,21 +279,22 @@ public class Task implements Serializable {
      * Method which returns the geolocation of this task.
      *
      * @return the geolocation of this task
-     * @see #setGeolocation(Location)
-     */
-    public Location getGeolocation() {
+     * @see #addLocation(LatLng)
+        */
+    public LatLng getGeolocation() {
+        LatLng geolocation = new LatLng(lat, lng);
         return geolocation;
     }
-
+/*
     /**
      * Method which sets the geolocation of this task
      *
      * @param geolocation the location of this task
      */
-    public void setGeolocation(Location geolocation) {
+/*    public void setGeolocation(Location geolocation) {
         this.geolocation = geolocation;
     }
-
+*/
     /**
      * Method which returns the userID of the task requester
      *
