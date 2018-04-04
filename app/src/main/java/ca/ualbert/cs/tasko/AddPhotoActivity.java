@@ -264,6 +264,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                 // https://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
                 String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
                 imgStrings.add(encodedImage);
+                Log.d("Not Error", Integer.toString(byteArray.length));
             }
         }
         if (passed) {
@@ -312,16 +313,10 @@ public class AddPhotoActivity extends AppCompatActivity {
                             image.compress(Bitmap.CompressFormat.PNG, 100, stream);
                             byte[] byteArray = stream.toByteArray();
                             long imageLength = byteArray.length;
-                            if (imageLength > 65535) {
-                                Float size = ((float) 64000 / imageLength);
-                                Log.d("Not Error", Integer.toString(Math.round(size)));
-                                image = Bitmap.createScaledBitmap(image, Math.round(image.getWidth
-                                        () * size), Math.round(image.getHeight() * size), false);
-                                stream = new ByteArrayOutputStream();
-                                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                byteArray = stream.toByteArray();
-                                Log.d("Not Error", Integer.toString(byteArray.length));
-                            }
+
+                            double size = findSize(imageLength, 1.0);
+                            image = Bitmap.createScaledBitmap(image, (int) Math.round(image.getWidth
+                                    () * size), (int) Math.round(image.getHeight() * size), false);
                             images.add(image);
                             confirm.setEnabled(true);
                         } catch (FileNotFoundException e) {
@@ -336,6 +331,19 @@ public class AddPhotoActivity extends AppCompatActivity {
                             "chosen.\nViewing photo 1/" + Integer.toString(numImages));
                 }
             }
+        }
+    }
+
+    private double findSize(double imageLength, double size) {
+        Log.d("Not Error", Double.toString(size));
+        Log.d("Not Error", Double.toString(imageLength * size));
+        if (imageLength * size > 65535) {
+            Log.d("Not Error", Double.toString(size));
+            Log.d("Not Error", Double.toString(imageLength * size));
+            return findSize(imageLength, size * (4.0/5.0));
+        }
+        else {
+            return size;
         }
     }
 }
