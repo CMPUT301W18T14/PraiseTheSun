@@ -157,7 +157,6 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             //Make all other bids rejected
                             for(int i = 0; i < bids.getSize(); i++){
                                 bids.get(i).setStatus(Status.REJECTED);
-                                nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_DECLINED);
                             }
                             //Make accepted bid status accepted
                             (bids.get(getAdapterPosition())).setStatus(Status.ACCEPTED);
