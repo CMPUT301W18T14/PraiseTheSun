@@ -255,6 +255,7 @@ public class AddPhotoActivity extends AppCompatActivity {
              */
             long imageLength = byteArray.length;
             if (imageLength > 65535) {
+                Log.d("Not Error", Long.toString(imageLength));
                 String message = "Image file #" + Integer.toString(i + 1) + " is too big.";
                 Toast.makeText(this.getApplicationContext(), message, Toast
                         .LENGTH_LONG).show();
@@ -309,14 +310,8 @@ public class AddPhotoActivity extends AppCompatActivity {
                         try {
                             inputStream = getContentResolver().openInputStream(selectedImage);
                             Bitmap image = BitmapFactory.decodeStream(inputStream);
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                            byte[] byteArray = stream.toByteArray();
-                            long imageLength = byteArray.length;
 
-                            double size = findSize(imageLength, 1.0);
-                            image = Bitmap.createScaledBitmap(image, (int) Math.round(image.getWidth
-                                    () * size), (int) Math.round(image.getHeight() * size), false);
+                            image = findSize(image, 1.0);
                             images.add(image);
                             confirm.setEnabled(true);
                         } catch (FileNotFoundException e) {
@@ -334,16 +329,18 @@ public class AddPhotoActivity extends AppCompatActivity {
         }
     }
 
-    private double findSize(double imageLength, double size) {
-        Log.d("Not Error", Double.toString(size));
-        Log.d("Not Error", Double.toString(imageLength * size));
-        if (imageLength * size > 65535) {
-            Log.d("Not Error", Double.toString(size));
-            Log.d("Not Error", Double.toString(imageLength * size));
-            return findSize(imageLength, size * (4.0/5.0));
+    private Bitmap findSize(Bitmap image, double size) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        long imageLength = stream.toByteArray().length;
+        if (imageLength > 65535) {
+            size = size * (1.0/3.0);
+            image = Bitmap.createScaledBitmap(image, (int) Math.round(image.getWidth
+                    () * size), (int) Math.round(image.getHeight() * size), false);
+            return findSize(image, size);
         }
         else {
-            return size;
+            return image;
         }
     }
 }
