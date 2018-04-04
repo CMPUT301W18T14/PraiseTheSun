@@ -21,6 +21,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -39,6 +40,7 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
     private RecyclerView.LayoutManager searchLayoutManager;
     public DataManager dm = DataManager.getInstance();
     public ViewTasksIBiddedOnActivity context = this;
+    private ProgressBar loadingCircle;
     private User User;
     private BidList userBids;
     private TaskList biddedTasks;
@@ -57,6 +59,9 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         searchLayoutManager = new LinearLayoutManager(context);
+        loadingCircle = (ProgressBar) findViewById(R.id.taskIBiddedOnProgressBar);
+
+        loadingCircle.setVisibility(View.VISIBLE);
 
         searchRecyclerView.setLayoutManager(searchLayoutManager);
         try {setUser();
@@ -66,6 +71,9 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
 
         tasksBiddedAdapter = new TaskListAdapter(context, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
+
+        loadingCircle.setVisibility(View.GONE);
+
     }
 
     @Override
