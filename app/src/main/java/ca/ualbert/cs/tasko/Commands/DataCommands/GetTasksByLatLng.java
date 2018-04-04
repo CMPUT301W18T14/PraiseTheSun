@@ -53,14 +53,14 @@ public class GetTasksByLatLng extends GetCommand<TaskList> {
                 "      \"bool\": { " +
                 "          \"must\": [ " +
                 "              {\"range\": { " +
-                "                  \"x\" : { " +
+                "                  \"lat\" : { " +
                 "                      \"gte\": " + Double.toString(lat - 10000) + ", " +
                 "                      \"lte\": " + Double.toString(lat + 10000) +
                 "                      }" +
                 "                  }" +
                 "              }," +
                 "              {\"range\": { " +
-                "                  \"y\" : { " +
+                "                  \"lng\" : { " +
                 "                      \"gte\": " + Double.toString(lng - 10000) + ", " +
                 "                      \"lte\": " + Double.toString(lng + 10000) +
                 "                      }" +
