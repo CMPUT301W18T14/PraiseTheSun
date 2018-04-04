@@ -29,6 +29,7 @@ import ca.ualbert.cs.tasko.R;
 import ca.ualbert.cs.tasko.ViewSearchedTaskDetailsActivity;
 import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * A Notification Adpater.
@@ -136,8 +137,13 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                 Delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DataManager.getInstance().deleteNotification(notifications.getNotification
-                                (getAdapterPosition()).getId(), thiscontext);
+                        try {
+                            DataManager.getInstance().deleteNotification(notifications
+                                    .getNotification
+                                            (getAdapterPosition()).getId(), thiscontext);
+                        } catch (NoInternetException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
