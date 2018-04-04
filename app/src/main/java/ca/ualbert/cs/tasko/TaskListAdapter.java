@@ -218,8 +218,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         public void onClick(View view) {
             Intent intent;
             if (thiscontext instanceof ViewMyTasksActivity) {
-                intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
-            }
+                if (tasks.get(getAdapterPosition()).getStatus() == Status.ASSIGNED) {
+                    intent = new Intent(thiscontext, AcceptedMyTaskActivity.class);
+                }
+                else {
+                    intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
+                }
+        }
             else {
                 intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
             }
