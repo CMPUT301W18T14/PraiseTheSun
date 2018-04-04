@@ -45,6 +45,37 @@ public class GetTasksByLatLng extends GetCommand<TaskList> {
     private static class GetTaskListTask extends AsyncTask<ArrayList<Double>, Void, TaskList> {
         @Override
         protected TaskList doInBackground(ArrayList<Double>... params) {
+            Double lat = params[0].get(0);
+            Double lng = params[0].get(1);
+            String query = "{\"size\": 1000," +
+                    "\"query\" : { " +
+                    "      \"bool\": { " +
+                    "          \"must\": [ " +
+                    "              {\"range\": { " +
+                    "                  \"x\" : { " +
+                    "                      \"gte\": " + Double.toString(lat + 10000) + ", " +
+                    "                      \"lte\": " + Double.toString(lat + 10000) +
+                    "                      }" +
+                    "                  }" +
+                    "              }," +
+                    "              {\"range\": { " +
+                    "                  \"y\" : { " +
+                    "                      \"gte\": " + Double.toString(lng + 10000) + ", " +
+                    "                      \"lte\": " + Double.toString(lng + 10000) +
+                    "                      }" +
+                    "                  }" +
+                    "              }" +
+                    "               {\"match\": {" +
+                    "                   \"taskName\": {" +
+                    "                       \"query\" : \"" + searchTerm + "\"," +
+                    "                       \"operator\" : \"and\" " +
+                    "                       }" +
+                    "                   }" +
+                    "               }" +
+                    "           ]" +
+                    "       }" +
+                    "   }" +
+                    "}";
             return new TaskList();
         }
     }
