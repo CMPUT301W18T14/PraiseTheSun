@@ -188,7 +188,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
 
             setupPhotoClick();
-            //setupUserNameClick();
+            setupUserNameClick();
 
         }
 
@@ -207,9 +207,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Intent intent = new Intent(thiscontext, OtherUserActivity.class);
-                    ///intent.putExtra("UserID", tasks.get(getAdapterPosition()).getTaskRequesterID());
-                    //thiscontext.startActivity(intent);
+                    Intent intent = new Intent(thiscontext, OtherUsersProfileActivity.class);
+                    intent.putExtra("id", tasks.get(getAdapterPosition()).getTaskRequesterID());
+                    thiscontext.startActivity(intent);
                 }
             });
         }

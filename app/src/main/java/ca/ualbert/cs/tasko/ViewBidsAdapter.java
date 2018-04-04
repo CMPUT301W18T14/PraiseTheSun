@@ -30,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -44,6 +46,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     private LayoutInflater inflater;
     private BidList bids;
     private Context thiscontext;
+    private NotificationHandler nh = new NotificationHandler(thiscontext);
 
     private DataManager dm = DataManager.getInstance();
 
@@ -154,12 +157,14 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             //Make all other bids rejected
                             for(int i = 0; i < bids.getSize(); i++){
                                 bids.get(i).setStatus(Status.REJECTED);
+                                nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_DECLINED);
                             }
                             //Make accepted bid status accepted
                             (bids.get(getAdapterPosition())).setStatus(Status.ACCEPTED);
 
                             //assigns it to the appropriate provider
                             thisTask.assign((bids.get(getAdapterPosition())).getUserID());
+                            nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);
                             //updates the task
                             dm.putTask(thisTask, thiscontext);
 

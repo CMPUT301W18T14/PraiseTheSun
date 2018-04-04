@@ -138,6 +138,9 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     public void onClick(View view) {
                         DataManager.getInstance().deleteNotification(notifications.getNotification
                                 (getAdapterPosition()).getId(), thiscontext);
+                        notifications.delete(getAdapterPosition());
+                        notifyItemRemoved(getAdapterPosition());
+                        notifyItemRangeChanged(getAdapterPosition(), notifications.getSize());
                     }
                 });
             }

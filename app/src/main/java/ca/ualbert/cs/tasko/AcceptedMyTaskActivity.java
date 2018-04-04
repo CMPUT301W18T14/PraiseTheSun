@@ -31,6 +31,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -43,6 +45,8 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     private Button completedButton;
     private final Context context = this;
     private DataManager dm = DataManager.getInstance();
+    private NotificationHandler nh = new NotificationHandler(context);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +126,12 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
                 AlertDialog alert = builder.create();
                 alert.show();
+                try {
+                    nh.newNotification(assignedCurrentTask.getId(), NotificationType.RATING);
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
