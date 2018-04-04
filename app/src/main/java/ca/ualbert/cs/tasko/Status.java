@@ -21,5 +21,6 @@ package ca.ualbert.cs.tasko;
  * @see Task
  */
 public enum Status {
-    REQUESTED, BIDDED, ASSIGNED, DONE
+    //Alden's additions : PENDING, ACCEPTED, REJECTED
+    REQUESTED, BIDDED, ASSIGNED, DONE, PENDING, ACCEPTED, REJECTED
 }

@@ -65,13 +65,12 @@
             android:label="@string/title_activity_search_results"
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ViewTasksBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
         <activity android:name=".LogOutActivity"></activity>
         <activity android:name=".ViewPhotoActivity"></activity>
         <activity android:name=".EditTaskActivity"></activity>
-        <activity android:name=".NotificationArtifacts.CreateAndroidNotificationsActivity" />
+        <activity android:name=".ViewTasksIBiddedOnActivity"/>
         <service android:name=".NotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity

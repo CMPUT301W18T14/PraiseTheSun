@@ -26,10 +26,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -66,7 +66,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         //Button and TextView definitions
         deleteButton = (Button) findViewById(R.id.deleteButton);
         editButton = (Button) findViewById(R.id.editButton);
-        viewBidsButton = (Button) findViewById(R.id.placeBidButton);
+        viewBidsButton = (Button) findViewById(R.id.viewBidsButton);
         taskName = (TextView) findViewById(R.id.taskName);
         taskDescription = (TextView) findViewById(R.id.taskDescription);
         taskStatus = (TextView) findViewById(R.id.taskStatus);
@@ -91,6 +91,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         setupDeleteButton();
 
         setupViewBidsButton();
+
     }
 
     private void setupDeleteButton() {
@@ -113,7 +114,17 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                                 "Yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        //Here's where the task deletion code goes
+                                        try {
+                                            dm.deleteTask(currentTask, context);
+                                            finish();
+                                            Toast.makeText(getApplicationContext(),"Your task has successfully been deleted.", Toast.LENGTH_SHORT).show();
+                                        }
+                                        catch (NoInternetException e) {
+                                            Log.i("Error", "No internet connection in " +
+                                                    "ViewTaskDetailsActivity");
+                                            Toast.makeText(context, "No Internet Connection!",
+                                                    Toast.LENGTH_LONG).show();
+                                        }
                                     }
                                 });
 
@@ -156,17 +167,24 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private void setupViewBidsButton() {
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Context thiscontext = getApplicationContext();
-                Intent intent;
-                intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
-                intent.putExtra("TaskID", currentTask.getId());
-                thiscontext.startActivity(intent);
+                if(currentTask.getStatus() == Status.REQUESTED) {
+                    Toast.makeText(getApplicationContext(),"This task is still requested and has no bids on it.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Context thiscontext = getApplicationContext();
+                    Intent intent;
+                    intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
+                    intent.putExtra("TaskID", currentTask.getId());
+                    thiscontext.startActivity(intent);
+                }
             }
         });
 
     }
 
     private void fillInformation() {
+        //String minBidAmount = df.format(currentTask.getMinBid());
+        //String taskStatusString = currentTask.getStatus().toString();
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
         if (currentTask.getStatus() == Status.BIDDED) {

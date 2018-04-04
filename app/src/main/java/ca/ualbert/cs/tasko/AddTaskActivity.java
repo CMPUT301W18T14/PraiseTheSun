@@ -211,6 +211,18 @@ public class AddTaskActivity extends AppCompatActivity {
                         textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
                                 .toString(numImages));
                     }
+                    else {
+                        textView.setText("No images currently added.");
+                        numImages = 0;
+                        photos.clear();
+                        /*
+                         * https://stackoverflow.com/questions/7242282/get-bitmap-information-from-bitmap-stored-in-drawable-folder
+                         * Taken on 2018-04-02
+                         */
+                        Bitmap image = BitmapFactory.decodeResource
+                                (getResources(), R.drawable.ic_menu_gallery);
+                        imageView.setImageBitmap(image);
+                    }
                     break;
                 case 2:
                     // Handle add location Intent result
