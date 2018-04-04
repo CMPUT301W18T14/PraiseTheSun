@@ -19,7 +19,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -83,7 +82,7 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
      */
     private void setUser() throws NoInternetException {
         if (CurrentUser.getInstance().getCurrentUser() == null){
-            User = dm.getUserByUsername("rromano", context);
+            User = dm.getUserByUsername("rromano");
         }else{
             User = CurrentUser.getInstance().getCurrentUser();
         }
@@ -95,10 +94,10 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
     private void getTasks(){
         userBids = new BidList();
         try {
-            userBids = dm.getUserBids(User.getId(), context);
+            userBids = dm.getUserBids(User.getId());
             biddedTasks = new TaskList();
             for (int i = 0; i < userBids.getSize(); i++)
-                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));
+                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID()));
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
 

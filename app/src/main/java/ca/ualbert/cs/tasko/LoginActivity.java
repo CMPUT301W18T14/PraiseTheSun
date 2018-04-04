@@ -15,17 +15,13 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,8 +86,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 User usernameInput = null;
                 try {
-                    usernameInput = DM.getUserByUsername(usernameText.getText().toString(),
-                            LoginActivity.this);
+                    usernameInput = DM.getUserByUsername(usernameText.getText().toString()
+                    );
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }

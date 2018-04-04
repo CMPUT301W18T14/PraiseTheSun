@@ -16,7 +16,6 @@
 package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 
 import com.robotium.solo.Solo;
 
@@ -56,15 +55,15 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
         //user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
+        dmuser = dm.getUserByUsername("rromano");
         task1 = new Task("test", "TestTask2", "Help me test code");
         task2 = new Task("test", "TestTask3", "Help me test code");
-        dm.putTask(task1, getActivity().getApplicationContext());
-        dm.putTask(task2, getActivity().getApplicationContext());
+        dm.putTask(task1);
+        dm.putTask(task2);
         bid1 = new Bid(dmuser.getId(), 11, task1.getId());
         bid2 = new Bid(dmuser.getId(), 12, task2.getId());
-        dm.addBid(bid1, getActivity().getApplicationContext());
-        dm.addBid(bid2, getActivity().getApplicationContext());
+        dm.addBid(bid1);
+        dm.addBid(bid2);
     }
 
 
@@ -73,11 +72,11 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
      * @throws NoInternetException
      */
     public void testPlacingBids() throws NoInternetException {
-        BidList userBids = dm.getUserBids(dmuser.getId(), getActivity().getApplicationContext());
+        BidList userBids = dm.getUserBids(dmuser.getId());
         TaskList biddedTasks = new TaskList();
         for (int i = 0; i < userBids.getSize(); i++)
             try {
-                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), getActivity().getApplicationContext()));
+                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID()));
             } catch (NoInternetException e) {
                 e.printStackTrace();
             }

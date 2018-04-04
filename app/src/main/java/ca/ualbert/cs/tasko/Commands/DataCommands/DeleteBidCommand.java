@@ -21,7 +21,11 @@ import android.util.Log;
 import java.io.IOException;
 
 import ca.ualbert.cs.tasko.Bid;
+import ca.ualbert.cs.tasko.BidList;
+import ca.ualbert.cs.tasko.Task;
+import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.JestWrapper;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 import io.searchbox.core.Delete;
 
 /**
@@ -30,16 +34,30 @@ import io.searchbox.core.Delete;
 
 public class DeleteBidCommand extends DeleteCommand {
 
-    private String bid;
+    private Bid bid;
 
-    public DeleteBidCommand(String bid){
+    public DeleteBidCommand(Bid bid){
         this.bid = bid;
     }
 
     @Override
     public void execute() {
-        DeleteBidAsycTask delete = new DeleteBidAsycTask();
-        delete.execute(bid);
+        try {
+            DataManager dm = DataManager.getInstance();
+            Task task = dm.getTask(bid.getTaskID());
+            if (task != null) {
+                if (bid.getValue() == task.getMinBid()) {
+                    BidList bids = dm.getTaskBids(task.getId());
+                    bids.removeBid(bid);
+                    task.setMinBid(bids.getMinBid().getValue());
+                    dm.putTask(task);
+                }
+            }
+        } catch (NoInternetException e){
+            Log.i("Delete Bid Command", "Failed to update minBid due to lost connection");
+        }
+        deleteBidAsyncTask delete = new deleteBidAsyncTask();
+        delete.execute(bid.getBidID());
     }
 
     @Override
@@ -47,7 +65,7 @@ public class DeleteBidCommand extends DeleteCommand {
 
     }
 
-    private class DeleteBidAsycTask extends AsyncTask<String, Void, Void> {
+    private static class deleteBidAsyncTask extends AsyncTask<String, Void, Void> {
 
         @Override
         protected Void doInBackground(String... strings) {

@@ -26,7 +26,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,7 +74,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
         try {
             String taskID = extras.getString("TaskID");
-            currentTask = dm.getTask(taskID, this);
+            currentTask = dm.getTask(taskID);
             fillInformation();
         } catch (NullPointerException e) {
             Log.i("Error", "TaskID not properly passed");

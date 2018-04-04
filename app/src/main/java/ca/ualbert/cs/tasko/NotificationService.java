@@ -62,11 +62,11 @@ public class NotificationService extends JobService {
             DataManager dm = DataManager.getInstance();
             Boolean alert = false;
             try {
-                NotificationList nl = dm.getNotifications(user.getId(), getApplicationContext());
+                NotificationList nl = dm.getNotifications(user.getId());
                 for(Notification n: nl.getNotifications()){
                     if(!n.getHasSeen()){
                         n.hasSeen();
-                        dm.putNotification(n, getApplicationContext());
+                        dm.putNotification(n);
                         alert = true;
                     }
                 }

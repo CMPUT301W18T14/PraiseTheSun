@@ -56,7 +56,7 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
     public void testPutGetDeleteTask(){
         boolean isConnected = true;
         try {
-            dm.putTask(task1, getActivity().getApplicationContext());
+            dm.putTask(task1);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -69,7 +69,7 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         assertTrue(task1.getId() != null);
         Task retTask = null;
         try {
-            retTask = dm.getTask(task1.getId(), getActivity().getApplicationContext());
+            retTask = dm.getTask(task1.getId());
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -82,13 +82,13 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         assertNotNull(retTask);
         assertEquals(task1.getId(), retTask.getId());
         try{
-            dm.deleteTask(task1, getActivity().getApplicationContext());
+            dm.deleteTask(task1);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            retTask = dm.getTask(task1.getId(), getActivity().getApplicationContext());
+            retTask = dm.getTask(task1.getId());
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -104,10 +104,10 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
     public void testSearchTasks(){
         boolean isConnected = true;
         try{
-            dm.putTask(task1, getActivity().getApplicationContext());
-            dm.putTask(task2, getActivity().getApplicationContext());
+            dm.putTask(task1);
+            dm.putTask(task2);
             task3.setStatus(Status.DONE);
-            dm.putTask(task3, getActivity().getApplicationContext());
+            dm.putTask(task3);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -119,7 +119,7 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         assertTrue(isConnected);
         TaskList results = null;
         try{
-            results = dm.searchTasks("Description", getActivity().getApplicationContext());
+            results = dm.searchTasks("Description");
         } catch (NoInternetException e){
             isConnected = false;
         }
@@ -135,8 +135,8 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
     public void testGetUserTasks(){
         boolean isConnected = true;
         try{
-            dm.putTask(task1, getActivity().getApplicationContext());
-            dm.putTask(task3, getActivity().getApplicationContext());
+            dm.putTask(task1);
+            dm.putTask(task3);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -148,8 +148,7 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         assertTrue(isConnected);
         TaskList results = null;
         try{
-            results = dm.getUserTasks(task1.getTaskRequesterID(), getActivity()
-                    .getApplicationContext());
+            results = dm.getUserTasks(task1.getTaskRequesterID());
         } catch (NoInternetException e){
             isConnected = false;
         }

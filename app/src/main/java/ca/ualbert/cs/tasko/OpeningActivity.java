@@ -15,8 +15,6 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
@@ -27,13 +25,11 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Calendar;
 
 import ca.ualbert.cs.tasko.data.ConnectivityReceiver;
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -67,6 +63,7 @@ public class OpeningActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DataManager.getInstance().init(getApplicationContext());
     }
 
     /**
@@ -111,7 +108,7 @@ public class OpeningActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }else{
-            User curr = dm.getUserByUsername(loggedInUser, this);
+            User curr = dm.getUserByUsername(loggedInUser);
             if(curr.getId() == null){
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);

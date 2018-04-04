@@ -16,13 +16,18 @@
 package ca.ualbert.cs.tasko.Commands.DataCommands;
 
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.io.IOException;
 
+import ca.ualbert.cs.tasko.Bid;
+import ca.ualbert.cs.tasko.BidList;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.Task;
+import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.JestWrapper;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 import io.searchbox.core.Delete;
 
 /**
@@ -39,6 +44,24 @@ public class DeleteTaskCommand extends DeleteCommand {
 
     @Override
     public void execute() {
+        //Update Bids related to this task on another thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DataManager dm = DataManager.getInstance();
+                try {
+                    BidList bids = dm.getTaskBids(task.getId());
+                    for(Bid bid: bids.getBids()){
+                        NotificationFactory nf = new NotificationFactory();
+                        nf.createNotification(task.getId(), NotificationType.TASK_DELETED);
+                        dm.deleteBid(bid);
+                    }
+                } catch (NoInternetException e){
+                    Log.i("Delete Task Error", "Unable to remove bids from task due to lost " +
+                            "connection");
+                }
+            }
+        }).start();
         DeleteTaskAsycTask delete = new DeleteTaskAsycTask();
         delete.execute(task.getId());
     }

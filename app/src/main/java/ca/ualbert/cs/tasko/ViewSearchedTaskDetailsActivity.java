@@ -18,11 +18,9 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
@@ -78,11 +76,11 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         Bid bid;
         try {
             String taskID = extras.getString("TaskID");
-            currentTask = dm.getTask(taskID, this);
-            requesterUser = dm.getUserById(currentTask.getTaskRequesterID(),
-                    getApplicationContext());
+            currentTask = dm.getTask(taskID);
+            requesterUser = dm.getUserById(currentTask.getTaskRequesterID()
+            );
             try{
-                BidList bids = dm.getTaskBids(currentTask.getId(), getApplicationContext());
+                BidList bids = dm.getTaskBids(currentTask.getId());
                 bid = bids.getMinBid();
                 if(bid != null){
                     lowbid = bid.getValue();
@@ -216,8 +214,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
             android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             try {
                 BidList possibleCurrentBids = dm.getUserBids(
-                        CurrentUser.getInstance().getCurrentUser().getId(),
-                        appContext);
+                        CurrentUser.getInstance().getCurrentUser().getId()
+                );
                 List<Bid> bids = possibleCurrentBids.getBids();
                 Bid bid = new Bid(CurrentUser.getInstance()
                         .getCurrentUser().getId(), value, currentTask.getId());
@@ -228,8 +226,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                         break;
                     }
                 }
-                dm.addBid(bid, appContext);
-                dm.putTask(currentTask, appContext);
+                dm.addBid(bid);
+                dm.putTask(currentTask);
                 NotificationFactory nf = new NotificationFactory();
                 nf.setContext(getApplicationContext());
                 nf.createNotification(currentTask.getId(), NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);

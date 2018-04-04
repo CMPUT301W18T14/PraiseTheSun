@@ -19,7 +19,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.CurrentUser;
@@ -48,7 +47,7 @@ public class ViewNotificationActivity extends AppCompatActivity {
         NotificationList myNotifications = new NotificationList();
         try {
             myNotifications.addAll(
-                    dm.getNotifications(cu.getCurrentUser().getId(), context).getNotifications());
+                    dm.getNotifications(cu.getCurrentUser().getId()).getNotifications());
         } catch (NoInternetException e){
             Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT);
         }

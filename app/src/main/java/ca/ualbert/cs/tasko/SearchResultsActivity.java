@@ -17,7 +17,6 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -94,7 +93,7 @@ public class SearchResultsActivity extends RootActivity {
 
         //Try to conduct the search
         try {
-            foundtasks = dm.searchTasks(keywords, context);
+            foundtasks = dm.searchTasks(keywords);
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
         }

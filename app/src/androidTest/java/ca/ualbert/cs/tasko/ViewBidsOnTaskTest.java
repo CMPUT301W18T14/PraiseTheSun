@@ -16,10 +16,8 @@
 package ca.ualbert.cs.tasko;
 
 import android.app.Activity;
-import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
@@ -52,13 +50,13 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
         user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
+        dmuser = dm.getUserByUsername("rromano");
         task1 = new Task("testidA", "TestTaskA", "Help me test");
-        dm.putTask(task1, getActivity().getApplicationContext());
+        dm.putTask(task1);
         bid1 = new Bid(dmuser.getId(), 10, task1.getId());
         bid2 = new Bid(dmuser.getId(), 10, task1.getId());
-        dm.addBid(bid1, getActivity().getApplicationContext());
-        dm.addBid(bid2, getActivity().getApplicationContext());
+        dm.addBid(bid1);
+        dm.addBid(bid2);
     }
 
     /**
@@ -78,7 +76,7 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
     public void testGettingTask() throws NoInternetException {
         TaskList biddedTasks = new TaskList();
             try {
-                biddedTasks.addTask(dm.getTask(task1.getId(),getActivity().getApplicationContext()));
+                biddedTasks.addTask(dm.getTask(task1.getId()));
             } catch (NoInternetException e) {
                 e.printStackTrace();
             }
@@ -91,10 +89,10 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
      */
     public void testGetBidsOnTask() throws NoInternetException {
         BidList bids = new BidList();
-        Task tasktest = dm.getTask(task1.getId(),getActivity().getApplicationContext());
+        Task tasktest = dm.getTask(task1.getId());
 
             try {
-                bids = dm.getTaskBids(tasktest.getId(), getActivity().getApplicationContext());
+                bids = dm.getTaskBids(tasktest.getId());
             } catch (NullPointerException e) {
                 Log.i("Error", "Failed to get bid list properly");
             } catch (NoInternetException e) {

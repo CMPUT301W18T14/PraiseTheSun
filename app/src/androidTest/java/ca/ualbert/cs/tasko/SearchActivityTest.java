@@ -15,7 +15,6 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 
@@ -59,11 +58,11 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
      */
     public void testValidSearch() throws NoInternetException {
         //Dont want to flood the datbase with test tasks
-        dm.putTask(task, InstrumentationRegistry.getTargetContext());
+        dm.putTask(task);
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
-        TaskList foundtasks = dm.searchTasks("Help", InstrumentationRegistry.getTargetContext());
+        TaskList foundtasks = dm.searchTasks("Help");
         solo.clickOnButton("Search");
         solo.assertCurrentActivity("Wrong Activity", SearchResultsActivity.class);
     }
@@ -77,7 +76,7 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
-        TaskList foundtasks = dm.searchTasks("", InstrumentationRegistry.getTargetContext());
+        TaskList foundtasks = dm.searchTasks("");
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
     }
@@ -90,7 +89,7 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
-        TaskList foundtasks = dm.searchTasks("Help", InstrumentationRegistry.getTargetContext());
+        TaskList foundtasks = dm.searchTasks("Help");
         solo.clickOnButton("Search");
         solo.assertCurrentActivity("Wrong Activity", SearchResultsActivity.class);
         solo.clickInRecyclerView(1);

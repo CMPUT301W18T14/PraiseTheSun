@@ -17,13 +17,10 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -58,7 +55,7 @@ public class OtherUsersProfileActivity extends RootActivity {
 
         Intent intent = getIntent();
         try {
-            user = DataManager.getInstance().getUserById(intent.getStringExtra("id"), OtherUsersProfileActivity.this);
+            user = DataManager.getInstance().getUserById(intent.getStringExtra("id"));
         } catch (NoInternetException e) {
             e.printStackTrace();
         }

@@ -15,15 +15,11 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -81,7 +77,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
         User biduser = new User();
         
         try {
-            biduser = dm.getUserById(currentTask.getUserID(),thiscontext);
+            biduser = dm.getUserById(currentTask.getUserID());
         } catch (NoInternetException e) {
             e.printStackTrace();
         }

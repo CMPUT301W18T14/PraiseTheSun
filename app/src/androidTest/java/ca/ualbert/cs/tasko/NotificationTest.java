@@ -43,19 +43,19 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         User provider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
 
-        if (dm.getUserByUsername("StevieP", getActivity().getApplicationContext()) == null) {
-            dm.putUser(requestor, getActivity().getApplicationContext());
-            dm.putUser(provider, getActivity().getApplicationContext());
+        if (dm.getUserByUsername("StevieP") == null) {
+            dm.putUser(requestor);
+            dm.putUser(provider);
         }
 
-        requestorID = dm.getUserByUsername("StevieP",
-                getActivity().getApplicationContext()).getId();
+        requestorID = dm.getUserByUsername("StevieP"
+        ).getId();
 
-        providerID = dm.getUserByUsername("Stevoo",
-                getActivity().getApplicationContext()).getId();
+        providerID = dm.getUserByUsername("Stevoo"
+        ).getId();
 
         task = new Task(requestorID, "TestTask for Notifications", "Notifications");
-        dm.putTask(task, getActivity().getApplicationContext());
+        dm.putTask(task);
     }
 
 }
