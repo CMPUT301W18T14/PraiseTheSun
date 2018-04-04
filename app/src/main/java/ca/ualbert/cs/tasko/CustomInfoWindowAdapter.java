@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import android.content.Context;
+package ca.ualbert.cs.tasko;import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -28,12 +28,12 @@ import ca.ualbert.cs.tasko.R;
  * Created by imtih on 2018-04-04.
  */
 
-public class customInfoWindowAdapter implements InfoWindowAdapter {
+public class CustomInfoWindowAdapter implements InfoWindowAdapter {
 
     private final View mWindow;
     private Context mContext;
 
-    public customInfoWindowAdapter(Context context) {
+    public CustomInfoWindowAdapter(Context context) {
         this.mContext = context;
         mWindow = LayoutInflater.from(context).inflate(R.layout.custom_info_window,null);
     }

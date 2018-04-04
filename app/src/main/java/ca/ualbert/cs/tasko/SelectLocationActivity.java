@@ -139,7 +139,7 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(marker.equals(null)){
+                if(marker == null){
                     Toast.makeText(activity, "Pick a location", Toast.LENGTH_SHORT).show();
                 }else{
                     resultIntent.putExtra("lat", marker.latitude);

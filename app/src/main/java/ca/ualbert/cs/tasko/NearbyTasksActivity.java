@@ -85,6 +85,8 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
     }
 
     private void init(){
+
+
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -128,10 +130,14 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                 .position(task.getGeolocation())
                 .title(task.getTaskName())
                 .snippet(task.getDescription()));
+                Log.i("Here's a task", " Title:" + task.getTaskName());
             }
+
+            Toast.makeText(this, "Showing nearby tasks", Toast.LENGTH_SHORT).show();
 
         } catch (Exception e){
             Toast.makeText(this, "Could not get tasks", Toast.LENGTH_SHORT).show();
+            Log.i("NearbyTasksError", "Error is " + e.toString());
         }
 
         //TODO
@@ -160,9 +166,6 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        //puts the tasks on the map
-        displayNearbyTasks();
     }
 
     /**
@@ -186,10 +189,11 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                     Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
-
+                    //Location permission not granted
                 return;
             }
             mMap.setMyLocationEnabled(true);
+            mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(NearbyTasksActivity.this));
             init();
         }
         // Add a marker in Sydney and move the camera
@@ -250,6 +254,8 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                             Log.d("onComplete", "location found");
                             currentLocation = (Location) task.getResult();
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My location");
+                            //puts the tasks on the map
+                            displayNearbyTasks();
                         }else{
                             Log.d("onComplete","current location is null");
                             Toast.makeText(NearbyTasksActivity.this,
