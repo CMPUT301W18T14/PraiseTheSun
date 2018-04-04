@@ -28,6 +28,7 @@ import android.net.NetworkInfo;
 public class ConnectivityReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        //TODO: IF WE GAIN INTERNET EXECUTE COMMMAND QUEUE
         ConnectivityState.setConnected(isOnline(context));
     }
 

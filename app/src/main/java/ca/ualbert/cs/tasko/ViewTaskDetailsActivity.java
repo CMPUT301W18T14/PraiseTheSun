@@ -30,7 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
-import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * ViewMyTaskDetailsActivity takes the task information from the task selected from the recyclerview
@@ -78,8 +77,6 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             fillInformation();
         } catch (NullPointerException e) {
             Log.i("Error", "TaskID not properly passed");
-        } catch (NoInternetException e) {
-            e.printStackTrace();
         }
 
         ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);

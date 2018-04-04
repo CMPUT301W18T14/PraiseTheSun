@@ -112,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                     mJobScheduler.schedule(infoBuilder.build());
                     //End notification alarm
 
+                    //TODO: REGENERATE LOCAL TASKS FILE
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);
                 } else {

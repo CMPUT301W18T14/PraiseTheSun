@@ -75,11 +75,7 @@ public class ViewBidsOnTaskTest extends ActivityInstrumentationTestCase2 {
      */
     public void testGettingTask() throws NoInternetException {
         TaskList biddedTasks = new TaskList();
-            try {
-                biddedTasks.addTask(dm.getTask(task1.getId()));
-            } catch (NoInternetException e) {
-                e.printStackTrace();
-            }
+        biddedTasks.addTask(dm.getTask(task1.getId()));
         assertFalse(biddedTasks.getSize() == 0);
     }
 

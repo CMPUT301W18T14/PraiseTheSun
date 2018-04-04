@@ -75,11 +75,7 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
         BidList userBids = dm.getUserBids(dmuser.getId());
         TaskList biddedTasks = new TaskList();
         for (int i = 0; i < userBids.getSize(); i++)
-            try {
-                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID()));
-            } catch (NoInternetException e) {
-                e.printStackTrace();
-            }
+            biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID()));
         assertFalse(biddedTasks.getSize() == 0);
 
     }

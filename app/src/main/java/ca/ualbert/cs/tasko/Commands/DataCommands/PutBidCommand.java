@@ -16,14 +16,12 @@
 package ca.ualbert.cs.tasko.Commands.DataCommands;
 
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.io.IOException;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.Task;
-import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.JestWrapper;
 import ca.ualbert.cs.tasko.data.NoInternetException;

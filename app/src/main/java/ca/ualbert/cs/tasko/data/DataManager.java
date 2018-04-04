@@ -66,7 +66,7 @@ public class DataManager {
      * Construct the singleton and create a DataCommandManager for use
      * throughout this class
      */
-    private DataManager(){
+    private DataManager() {
         dcm = DataCommandManager.getInstance();
     }
 
@@ -144,22 +144,35 @@ public class DataManager {
     }
 
     /**
-     * Given a task, add it to the elasticSearch Database
+     * Given a task, add it to the elasticSearch Database or
+     * update it if it already exists.
+     * If the task belongs to the logged in user. Add it to
+     * local task save as well. If the task is not the logged in
+     * users and the device is offline, throw an exception
      *
      * @param task task to be added
-     * @throws NoInternetException when not connected to the internet.
+     * @throws NoInternetException when not connected to the internet and
+     * the task is not the current logged in user.
      */
     public void putTask(Task task) throws NoInternetException{
         PutTaskCommand command = new PutTaskCommand(task);
-        if(ConnectivityState.getConnected()){
-            //TODO: WRITE THIS TASK TO LOCAL STORAGE
-            dcm.invokeCommand(command);
+        if(task.getTaskRequesterID().equals(
+                CurrentUser.getInstance().getCurrentUser().getId())){
+            TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
+            localTasks.addTask(task);
+            LocalTaskManager.saveLocalTasks(localTasks, appCtx);
+            if(ConnectivityState.getConnected()){
+                dcm.invokeCommand(command);
+            } else {
+                dcm.addToQueue(command);
+            }
         } else {
-            //TODO: WRITE THIS TASK TO LOCAL STORAGE
-            dcm.addToQueue(command);
-            throw new NoInternetException();
+            if(ConnectivityState.getConnected()){
+                dcm.invokeCommand(command);
+            } else {
+                throw new NoInternetException();
+            }
         }
-
     }
 
     /**
@@ -170,6 +183,9 @@ public class DataManager {
      */
     public void deleteTask(final Task task) throws NoInternetException{
         DeleteTaskCommand dtc = new DeleteTaskCommand(task);
+        TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
+        localTasks.removeTask(task);
+        LocalTaskManager.saveLocalTasks(localTasks, appCtx);
         if(ConnectivityState.getConnected()){
             dcm.invokeCommand(dtc);
         } else {
@@ -184,17 +200,20 @@ public class DataManager {
      *
      * @param taskId UUID of the desired task
      * @return the found task object or null if not found
-     * @throws NoInternetException when not connected to the internet
      */
-    public Task getTask(String taskId)
-            throws NoInternetException{
+    public Task getTask(String taskId) {
         GetTaskCommand command = new GetTaskCommand(taskId);
         if(ConnectivityState.getConnected()){
             dcm.invokeCommand(command);
             return command.getResult();
-
         } else {
-            throw new NoInternetException();
+            TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
+            for(Task t: localTasks.getTasks()){
+                if(t.getId().equals(taskId)){
+                    return t;
+                }
+            }
+            return null;
         }
     }
 
@@ -243,6 +262,9 @@ public class DataManager {
             dcm.invokeCommand(command);
             return command.getResult();
         } else {
+            if(userId.equals(CurrentUser.getInstance().getCurrentUser().getId())){
+                return LocalTaskManager.getLocalTasks(appCtx);
+            }
             throw new NoInternetException();
         }
     }
