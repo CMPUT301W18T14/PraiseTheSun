@@ -204,7 +204,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
         private void setupUserNameClick(){
-            taskPhoto.setOnClickListener(new View.OnClickListener() {
+            taskRequestorUsername.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(thiscontext, OtherUsersProfileActivity.class);
