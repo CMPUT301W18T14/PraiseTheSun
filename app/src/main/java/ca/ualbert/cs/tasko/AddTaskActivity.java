@@ -200,6 +200,7 @@ public class AddTaskActivity extends AppCompatActivity {
                         double lat = data.getDoubleExtra("lat", 0.00);
                         double lng = data.getDoubleExtra("lng", 0.00);
                         geoLocation = new LatLng(lat, lng);
+                        Log.i("LocationAdded", "lat, lng " + Double.toString(lat) + ", " + Double.toString(lng) );
                     }
                     break;
             }
@@ -225,7 +226,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 finish();
             }
-            Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
+            Task newTask = new Task(taskRequester.getId(), taskName, description, photos, geoLocation);
             newTask.setTaskRequesterUsername(taskRequester.getUsername());
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());

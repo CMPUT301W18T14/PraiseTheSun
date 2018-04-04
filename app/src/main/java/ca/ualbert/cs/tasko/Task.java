@@ -77,8 +77,6 @@ public class Task implements Serializable {
     public Task(String taskRequesterID, String taskName, String description,
                 LatLng location){
         this(taskRequesterID, taskName, description, new ArrayList<String>(), location);
-        this.lat = location.latitude;
-        this.lng = location.longitude;
     }
 
     /**
