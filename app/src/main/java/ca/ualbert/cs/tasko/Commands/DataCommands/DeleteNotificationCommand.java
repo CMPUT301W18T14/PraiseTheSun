@@ -29,16 +29,16 @@ import io.searchbox.core.Delete;
  */
 
 public class DeleteNotificationCommand extends DeleteCommand {
-    private Notification notification;
+    private String notificationId;
 
-    public DeleteNotificationCommand(Notification notification) {
-        this.notification = notification;
+    public DeleteNotificationCommand(String notificationId) {
+        this.notificationId = notificationId;
     }
 
     @Override
     public void execute() {
         DeleteNotificationAsyncTask delete = new DeleteNotificationAsyncTask();
-        delete.execute(notification.getId());
+        delete.execute(notificationId);
     }
 
     @Override

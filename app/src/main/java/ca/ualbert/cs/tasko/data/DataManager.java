@@ -404,10 +404,10 @@ public class DataManager {
     }
 
     //TODO
-    public void deleteNotification(Notification notification, Context context) throws
+    public void deleteNotification(String notificationId, Context context) throws
             NoInternetException {
         context = context.getApplicationContext();
-        DeleteNotificationCommand deleteNotificationCommand = new DeleteNotificationCommand(notification);
+        DeleteNotificationCommand deleteNotificationCommand = new DeleteNotificationCommand(notificationId);
 
         if(isOnline(context)){
             dcm.invokeCommand(deleteNotificationCommand);
