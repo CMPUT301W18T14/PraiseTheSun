@@ -313,14 +313,14 @@ public class AddPhotoActivity extends AppCompatActivity {
                             byte[] byteArray = stream.toByteArray();
                             long imageLength = byteArray.length;
                             if (imageLength > 65535) {
-                                Float num = ((float) 64000 / imageLength) * 100;
-                                Integer size = Math.round(num);
-                                Log.d("Not Error", Integer.toString(size));
+                                Float size = ((float) 64000 / imageLength);
+                                Log.d("Not Error", Integer.toString(Math.round(size)));
+                                image = Bitmap.createScaledBitmap(image, Math.round(image.getWidth
+                                        () * size), Math.round(image.getHeight() * size), false);
                                 stream = new ByteArrayOutputStream();
-                                image.compress(Bitmap.CompressFormat.PNG, size, stream);
+                                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                 byteArray = stream.toByteArray();
                                 Log.d("Not Error", Integer.toString(byteArray.length));
-                                image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
                             }
                             images.add(image);
                             confirm.setEnabled(true);
