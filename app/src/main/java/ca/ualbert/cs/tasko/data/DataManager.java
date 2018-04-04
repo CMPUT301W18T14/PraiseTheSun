@@ -277,7 +277,7 @@ public class DataManager {
             for (Task t: nearbyTasks.getTasks()) {
                 if (CurrentUser.getInstance().getCurrentUser().getId().equals(t
                         .getTaskRequesterID())) {
-                    toRemove.addTask(t);
+                    //toRemove.addTask(t);
                 }
             }
             nearbyTasks.getTasks().removeAll(toRemove.getTasks());

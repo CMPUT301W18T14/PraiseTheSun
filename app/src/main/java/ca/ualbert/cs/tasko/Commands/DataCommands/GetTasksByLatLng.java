@@ -16,11 +16,18 @@
 package ca.ualbert.cs.tasko.Commands.DataCommands;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
+import java.io.IOException;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.util.ArrayList;
+import java.util.List;
 
+import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
+import ca.ualbert.cs.tasko.data.JestWrapper;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
 
 /**
  * Created by Thomas on 2018-04-03.
@@ -37,39 +44,65 @@ public class GetTasksByLatLng extends GetCommand<TaskList> {
 
     @Override
     public void execute() {
-        ArrayList<Double> params = new ArrayList<Double>();
-        params.add(lat);
-        params.add(lng);
+        /*
+         * https://stackoverflow.com/questions/20610999/query-in-elasticsearch-with-multiple-ranges-on-multiple-dates
+         * taken on 2018-04-03
+         */
+        String query = "{\"size\": 1000," +
+                "\"query\" : { " +
+                "      \"bool\": { " +
+                "          \"must\": [ " +
+                "              {\"range\": { " +
+                "                  \"x\" : { " +
+                "                      \"gte\": " + Double.toString(lat - 10000) + ", " +
+                "                      \"lte\": " + Double.toString(lat + 10000) +
+                "                      }" +
+                "                  }" +
+                "              }," +
+                "              {\"range\": { " +
+                "                  \"y\" : { " +
+                "                      \"gte\": " + Double.toString(lng - 10000) + ", " +
+                "                      \"lte\": " + Double.toString(lng + 10000) +
+                "                      }" +
+                "                  }" +
+                "              }" +
+                "           ]" +
+                "       }" +
+                "   }" +
+                "}";
+
+        GetTaskListTask getTaskListTask = new GetTaskListTask();
+        getTaskListTask.execute(query);
+        try{
+            TaskList tasks = getTaskListTask.get();
+            setResult(tasks);
+        } catch (Exception e){
+            Log.i("Error", "Failed to get the Tasks by Lat and Long from the async object");
+        }
     }
 
-    private static class GetTaskListTask extends AsyncTask<ArrayList<Double>, Void, TaskList> {
+    private static class GetTaskListTask extends AsyncTask<String, Void, TaskList> {
+
         @Override
-        protected TaskList doInBackground(ArrayList<Double>... params) {
-            Double lat = params[0].get(0);
-            Double lng = params[0].get(1);
-            String query = "{\"size\": 1000," +
-                    "\"query\" : { " +
-                    "      \"bool\": { " +
-                    "          \"must\": [ " +
-                    "              {\"range\": { " +
-                    "                  \"x\" : { " +
-                    "                      \"gte\": " + Double.toString(lat - 10000) + ", " +
-                    "                      \"lte\": " + Double.toString(lat + 10000) +
-                    "                      }" +
-                    "                  }" +
-                    "              }," +
-                    "              {\"range\": { " +
-                    "                  \"y\" : { " +
-                    "                      \"gte\": " + Double.toString(lng - 10000) + ", " +
-                    "                      \"lte\": " + Double.toString(lng + 10000) +
-                    "                      }" +
-                    "                  }" +
-                    "              }" +
-                    "           ]" +
-                    "       }" +
-                    "   }" +
-                    "}";
-            return new TaskList();
+        protected TaskList doInBackground(String... searchTerms) {
+            TaskList tasks = new TaskList();
+            JestWrapper.verifySettings();
+
+            //Build the search query
+            Search search = new Search.Builder(searchTerms[0]).addIndex(JestWrapper.getIndex())
+                    .addType("task").build();
+            try{
+                SearchResult sr = JestWrapper.getClient().execute(search);
+                if(sr.isSucceeded() && sr.getTotal() > 0){
+                    List<Task> results = sr.getSourceAsObjectList(Task.class);
+                    tasks.addAll(results);
+                }
+
+            } catch (IOException e){
+                Log.i("Error", e.getMessage());
+            }
+
+            return tasks;
         }
     }
 }
