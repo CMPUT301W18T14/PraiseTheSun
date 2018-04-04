@@ -19,9 +19,12 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 
+import ca.ualbert.cs.tasko.data.ConnectivityReceiver;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -73,6 +77,9 @@ public class OpeningActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        BroadcastReceiver conReceiver = new ConnectivityReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.getApplicationContext().registerReceiver(conReceiver, filter);
         try {
             if (!cu.loggedIn())
                 checkForUser();

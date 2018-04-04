@@ -25,6 +25,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import java.io.NotActiveException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
@@ -93,7 +94,7 @@ public class DataManager {
     public void putUser(User user, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         PutUserCommand command = new PutUserCommand(user);
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             dcm.invokeCommand(command);
 
         } else {
@@ -115,7 +116,7 @@ public class DataManager {
     public User getUserById(String id, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserByIdCommand command = new GetUserByIdCommand(id);
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             dcm.invokeCommand(command);
             return command.getResult();
 
@@ -138,7 +139,7 @@ public class DataManager {
         context = context.getApplicationContext();
         GetUserByUsernameCommand command =
                 new GetUserByUsernameCommand(username);
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             dcm.invokeCommand(command);
 
             return command.getResult();
@@ -163,7 +164,7 @@ public class DataManager {
         //TODO: OFFLINE BEHAVIOUR
         context = context.getApplicationContext();
         PutTaskCommand command = new PutTaskCommand(task);
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             dcm.invokeCommand(command);
         } else {
             dcm.addToQueue(command);
@@ -202,7 +203,7 @@ public class DataManager {
             }
         }).start();
 
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             dcm.invokeCommand(dtc);
         } else {
             dcm.addToQueue(dtc);
@@ -223,7 +224,7 @@ public class DataManager {
             throws NoInternetException{
         context = context.getApplicationContext();
         GetTaskCommand command = new GetTaskCommand(taskId);
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             dcm.invokeCommand(command);
             return command.getResult();
 
@@ -248,7 +249,7 @@ public class DataManager {
             throws NoInternetException{
         context = context.getApplicationContext();
         SearchTasksCommand command = new SearchTasksCommand(searchTerm);
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             dcm.invokeCommand(command);
             TaskList tl = command.getResult();
             TaskList toRemove = new TaskList();
@@ -277,7 +278,7 @@ public class DataManager {
     public TaskList getUserTasks(String userId, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserTasksCommand command = new GetUserTasksCommand(userId);
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             dcm.invokeCommand(command);
             return command.getResult();
         } else {
@@ -307,7 +308,7 @@ public class DataManager {
             putTask(task, context);
         }
         PutBidCommand putBidCommand = new PutBidCommand(bid);
-        if (isOnline(context)) {
+        if (ConnectivityState.getConnected()) {
             dcm.invokeCommand(putBidCommand);
         } else {
             throw new NoInternetException();
@@ -328,7 +329,7 @@ public class DataManager {
     public BidList getUserBids(String userId, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         GetUserBidsCommand command = new GetUserBidsCommand(userId);
-        if (isOnline(context)) {
+        if (ConnectivityState.getConnected()) {
             dcm.invokeCommand(command);
             return command.getResult();
         }
@@ -350,7 +351,7 @@ public class DataManager {
     public BidList getTaskBids(String taskId, Context context) throws NoInternetException{
         context = context.getApplicationContext();
         GetTaskBidsCommand command = new GetTaskBidsCommand(taskId);
-        if (isOnline(context)) {
+        if (ConnectivityState.getConnected()) {
             dcm.invokeCommand(command);
             return command.getResult();
         }
@@ -372,7 +373,7 @@ public class DataManager {
             }
         }
         DeleteBidCommand dbc = new DeleteBidCommand(bid.getBidID());
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             dcm.invokeCommand(dbc);
         } else {
             dcm.addToQueue(dbc);
@@ -383,7 +384,7 @@ public class DataManager {
     public void putNotification(Notification notification, Context context)
             throws NoInternetException{
         context = context.getApplicationContext();
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             PutNotificationCommand pnc = new PutNotificationCommand(notification);
             dcm.invokeCommand(pnc);
         } else {
@@ -393,7 +394,7 @@ public class DataManager {
 
     public NotificationList getNotifications(String userId, Context context)
             throws NoInternetException{
-        if(isOnline(context)){
+        if(ConnectivityState.getConnected()){
             GetNotificationsCommand gnc = new GetNotificationsCommand(userId);
             dcm.invokeCommand(gnc);
             return gnc.getResult();
@@ -412,12 +413,12 @@ public class DataManager {
      *
      * @param context Application Context
      * @return true when connected to wifi, false otherwise.
-     */
+     *
     private boolean isOnline(Context context){
         /*
         Retrieved on 04-03-2018
         https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#DetermineType
-         */
+         *
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(
                         Context.CONNECTIVITY_SERVICE);
@@ -432,5 +433,5 @@ public class DataManager {
                     .TYPE_MOBILE;
         }
         return false;
-    }
+    }*/
 }
