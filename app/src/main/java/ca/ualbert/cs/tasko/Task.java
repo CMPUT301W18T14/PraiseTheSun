@@ -22,6 +22,7 @@ import android.util.Base64;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import io.searchbox.annotations.JestId;
 
@@ -95,6 +96,7 @@ public class Task implements Serializable {
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
         this.minBid = null;
+        this.id = UUID.randomUUID().toString();
     }
 
     /**
@@ -117,6 +119,7 @@ public class Task implements Serializable {
         this.geolocation = location;
         this.taskProviderID = null;
         this.status = Status.REQUESTED;
+        this.id = UUID.randomUUID().toString();
     }
 
     /**

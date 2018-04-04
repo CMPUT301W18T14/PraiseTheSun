@@ -20,6 +20,7 @@
 package ca.ualbert.cs.tasko.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
@@ -160,6 +161,7 @@ public class DataManager {
                 CurrentUser.getInstance().getCurrentUser().getId())){
             TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
             localTasks.addTask(task);
+            Log.d("Put New Task", "Task id is " + task.getId());
             LocalTaskManager.saveLocalTasks(localTasks, appCtx);
             if(ConnectivityState.getConnected()){
                 dcm.invokeCommand(command);
@@ -201,19 +203,21 @@ public class DataManager {
      * @param taskId UUID of the desired task
      * @return the found task object or null if not found
      */
-    public Task getTask(String taskId) {
+    public Task getTask(String taskId) throws NoInternetException {
         GetTaskCommand command = new GetTaskCommand(taskId);
         if(ConnectivityState.getConnected()){
+            Log.d("I AM HERE", "Yup");
             dcm.invokeCommand(command);
             return command.getResult();
         } else {
             TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
             for(Task t: localTasks.getTasks()){
-                if(t.getId().equals(taskId)){
+                Log.d("Get new Task", "The local Task ID " + t.getId());
+                if(taskId.equals(t.getId())){
                     return t;
                 }
             }
-            return null;
+            throw new NoInternetException();
         }
     }
 
@@ -263,7 +267,12 @@ public class DataManager {
             return command.getResult();
         } else {
             if(userId.equals(CurrentUser.getInstance().getCurrentUser().getId())){
-                return LocalTaskManager.getLocalTasks(appCtx);
+                TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
+                Log.d("GETUSERTASKS", localTasks.toString());
+                for(Task t: localTasks.getTasks()){
+                    Log.d("GETUSERTASKS", "The ID "+ t.getId());
+                }
+                return localTasks;
             }
             throw new NoInternetException();
         }
