@@ -89,9 +89,8 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         }
 
         setupDeleteButton();
-
+        setUpEditButton();
         setupViewBidsButton();
-
     }
 
     private void setupDeleteButton() {
@@ -149,20 +148,22 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         });
     }
 
-        /*
-    private void setupEditButton() {
+    private void setUpEditButton() {
         editButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            @Override
+            public void onClick(View view) {
                 if(currentTask.getStatus() != Status.REQUESTED) {
-                    Toast.makeText(getApplicationContext(),"This task already has bids on it. This task can no longer be edited.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"This task already has a bid on it. " +
+                            "This task can no longer be edited.", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    //This should go to a pre-filled in version of the AddTaskActivity
+                    Intent editTask = new Intent(context, AddTaskActivity.class);
+                    editTask.putExtra("task", currentTask);
+                    startActivityForResult(editTask, 19);
                 }
             }
         });
     }
-        */
 
     private void setupViewBidsButton() {
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
@@ -199,12 +200,6 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
         viewPhotosIntent.putExtra("photos", currentTask);
         startActivity(viewPhotosIntent);
-    }
-
-    public void onEditClick(View view) {
-        Intent editTask = new Intent(this, AddTaskActivity.class);
-        editTask.putExtra("task", currentTask);
-        startActivityForResult(editTask, 19);
     }
 
     @Override
