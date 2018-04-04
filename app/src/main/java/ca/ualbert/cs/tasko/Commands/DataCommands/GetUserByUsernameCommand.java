@@ -36,7 +36,7 @@ import io.searchbox.core.SearchResult;
  * @author Chase Buhler
  * @see GetCommand
  */
-public class GetUserByUsernameCommand extends GetCommand<User> {
+public class GetUserByUsernameCommand extends GetCommand<User, String> {
     private String username;
 
     /**
@@ -45,6 +45,7 @@ public class GetUserByUsernameCommand extends GetCommand<User> {
      * @param username username of the user that should be retrieved.
      */
     public GetUserByUsernameCommand(String username){
+        super(username, "GetUserByUsernameCommand");
         this.username = username;
     }
 

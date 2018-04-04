@@ -35,7 +35,7 @@ import io.searchbox.core.Index;
  * @see PutCommand
  * @author tlafranc
  */
-public class PutBidCommand implements PutCommand {
+public class PutBidCommand extends PutCommand<Bid> {
     private Bid bid;
 
     /**
@@ -45,6 +45,7 @@ public class PutBidCommand implements PutCommand {
      * @param bid the bid object to be stored in the database
      */
     public PutBidCommand(Bid bid) {
+        super(bid, "PutBidCommand");
         this.bid = bid;
     }
 

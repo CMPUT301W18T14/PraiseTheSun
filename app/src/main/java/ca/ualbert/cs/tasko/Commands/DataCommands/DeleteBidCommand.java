@@ -32,11 +32,12 @@ import io.searchbox.core.Delete;
  * Created by chase on 3/24/2018.
  */
 
-public class DeleteBidCommand extends DeleteCommand {
+public class DeleteBidCommand extends DeleteCommand<Bid> {
 
     private Bid bid;
 
     public DeleteBidCommand(Bid bid){
+        super(bid, "DeleteBidCommand");
         this.bid = bid;
     }
 

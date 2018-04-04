@@ -34,11 +34,12 @@ import io.searchbox.core.Delete;
  * Created by chase on 3/24/2018.
  */
 
-public class DeleteTaskCommand extends DeleteCommand {
+public class DeleteTaskCommand extends DeleteCommand<Task> {
 
     private Task task;
 
     public DeleteTaskCommand(Task task){
+        super(task, "DeleteTaskCommand");
         this.task = task;
     }
 

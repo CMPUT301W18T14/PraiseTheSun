@@ -26,12 +26,15 @@ import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import ca.ualbert.cs.tasko.data.ConnectivityReceiver;
+import ca.ualbert.cs.tasko.data.ConnectivityState;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -54,7 +57,7 @@ public class OpeningActivity extends AppCompatActivity {
     private CurrentUser cu = CurrentUser.getInstance();
     private DataManager dm = DataManager.getInstance();
     private static final String FILENAME = "nfile.sav";
-    private String loggedInUser;
+    private User loggedInUser;
 
     /**
      * Standard OnCreate Method, note there is no layout associated with this activity.
@@ -64,6 +67,9 @@ public class OpeningActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataManager.getInstance().init(getApplicationContext());
+        BroadcastReceiver conReceiver = new ConnectivityReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.getApplicationContext().registerReceiver(conReceiver, filter);
     }
 
     /**
@@ -74,18 +80,10 @@ public class OpeningActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        BroadcastReceiver conReceiver = new ConnectivityReceiver();
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        this.getApplicationContext().registerReceiver(conReceiver, filter);
-        try {
-            if (!cu.loggedIn())
-                checkForUser();
-            else
-                cu.setCurrentUser(null);
-                this.finishAffinity();
-        } catch (NoInternetException e) {
-            e.printStackTrace();
-        }
+        if (!cu.loggedIn())
+            checkForUser();
+        else
+            this.finishAffinity();
     }
 
     /**
@@ -95,39 +93,39 @@ public class OpeningActivity extends AppCompatActivity {
      * starts the app in MainActivity, otherwise the app starts in Login Activity.
      * @throws NoInternetException Throws an exception if no Internet Connection is found.
      */
-    private void checkForUser() throws NoInternetException {
+    private void checkForUser(){
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-            loggedInUser = in.readLine();
+            Gson gson = new Gson();
+            loggedInUser = gson.fromJson(in, User.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if(loggedInUser == null){
+            if(ConnectivityState.getConnected()){
+                //TODO: SEND TO NO INTERNET PLEASE TRY AGAIN THING
+            }
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-        }else{
-            User curr = dm.getUserByUsername(loggedInUser);
-            if(curr.getId() == null){
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-            } else {
-                cu.setCurrentUser(curr);
+        } else {
+            cu.setCurrentUser(loggedInUser);
 
-                //Begin Notification Alarm
-                JobScheduler mJobScheduler = (JobScheduler) getSystemService(Context
-                        .JOB_SCHEDULER_SERVICE);
-                JobInfo.Builder infoBuilder = new JobInfo.Builder(1, new ComponentName
-                        (getPackageName(), NotificationService.class.getName()));
-                infoBuilder.setMinimumLatency(5000); //Every 5 secods
-                mJobScheduler.schedule(infoBuilder.build());
-                //End notification alarm
+            //Begin Notification Alarm
+            JobScheduler mJobScheduler = (JobScheduler) getSystemService(Context
+                    .JOB_SCHEDULER_SERVICE);
+            JobInfo.Builder infoBuilder = new JobInfo.Builder(1, new ComponentName
+                    (getPackageName(), NotificationService.class.getName()));
+            infoBuilder.setMinimumLatency(5000); //Every 5 secods
+            mJobScheduler.schedule(infoBuilder.build());
+            //End notification alarm
 
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            }
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
         }
 
     }
+
 }

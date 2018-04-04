@@ -26,8 +26,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -84,20 +88,23 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
 
-                User usernameInput = null;
+                User retrievedUser = null;
                 try {
-                    usernameInput = DM.getUserByUsername(usernameText.getText().toString()
+                    retrievedUser = DM.getUserByUsername(usernameText.getText().toString()
                     );
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }
 
-                if (usernameInput.getUsername() != null){
-                    CU.setCurrentUser(usernameInput);
+                if (retrievedUser.getUsername() != null){
+                    CU.setCurrentUser(retrievedUser);
                     try {
                         FileOutputStream fos = openFileOutput(FILENAME,
                                 Context.MODE_PRIVATE);
-                        fos.write(usernameInput.getUsername().getBytes());
+                        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+                        Gson gson = new Gson();
+                        gson.toJson(retrievedUser, out);
+                        out.flush();
                         fos.close();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -115,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                     //TODO: REGENERATE LOCAL TASKS FILE
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     usernameText.setError("This is not a valid username");
                 }
