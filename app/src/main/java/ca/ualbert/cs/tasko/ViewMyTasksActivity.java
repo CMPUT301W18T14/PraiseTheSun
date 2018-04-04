@@ -131,6 +131,14 @@ public class ViewMyTasksActivity extends RootActivity {
                         }
                     }
                 }
+                else if (parent.getItemAtPosition(pos).equals("Done")) {
+                    for (int i = 0; i < myTasks.getSize(); i++) {
+                        if (myTasks.get(i).getStatus() != Status.DONE) {
+                            myTasks.removeTask(myTasks.get(i));
+                            --i;
+                        }
+                    }
+                }
 
                 //If taskList is empty, notify the user
                 if (myTasks.getSize() == 0) {

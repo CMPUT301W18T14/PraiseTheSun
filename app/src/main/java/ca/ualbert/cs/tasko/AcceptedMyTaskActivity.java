@@ -31,6 +31,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -82,10 +84,17 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     }
 
     private void fillInformation() {
+        //Taken From https://stackoverflow.com/questions/2538787/
+        //how-to-display-an-output-of-float-data-with-2-decimal-places-in-java
+        //2018-03-26
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
         assignedTaskName.setText(assignedCurrentTask.getTaskName());
         assignedTaskDescription.setText(assignedCurrentTask.getDescription());
+        String lowestBidAmount = df.format(assignedCurrentTask.getMinBid());
         assignedTaskStatus.setText(assignedCurrentTask.getStatus().toString() + ": bid of $" +
-                assignedCurrentTask.getMinBid().toString() + "by " + assignedCurrentTask.getMinBid());
+                lowestBidAmount + " by ");
     }
 
     public void onPhotoClick(View view) {
@@ -108,6 +117,11 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 //Set this task's status to DONE
                                 assignedCurrentTask.setStatus(Status.DONE);
+                                try {
+                                    dm.putTask(assignedCurrentTask, context);
+                                } catch (NoInternetException e) {
+                                    e.printStackTrace();
+                                }
                                 finish();
                             }
                         });
@@ -140,15 +154,32 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                         "Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                //Get bids that were on this task
+                                BidList taskBids = new BidList();
+                                try {
+                                    taskBids = dm.getTaskBids(assignedCurrentTask.getId(), context);
+                                } catch (NoInternetException e) {
+                                    e.printStackTrace();
+                                }
+
                                 //Set this task's status to REQUESTED if there were not other bids
                                 //on this task prior to the assignment
-                                assignedCurrentTask.setStatus(Status.REQUESTED);
-                                finish();
-
+                                if (taskBids.getSize() == 1) {
+                                    assignedCurrentTask.setStatus(Status.REQUESTED);
+                                }
                                 //Set this task's status to BIDDED if there were other bids on this
                                 //task prior to the assignment
-                                //assignedCurrentTask.setStatus(Status.BIDDED);
-                                //finish();
+                                else {
+                                    assignedCurrentTask.setStatus(Status.BIDDED);
+                                }
+
+                                //Put these updates into the database
+                                try {
+                                    dm.putTask(assignedCurrentTask, context);
+                                } catch (NoInternetException e) {
+                                    e.printStackTrace();
+                                }
+                                finish();
                             }
                         });
 
