@@ -45,6 +45,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 
@@ -64,7 +65,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
     private Boolean mLocationPermission = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-
+    private Location currentLocation;
 
     //widgets
     private EditText mSearchText;
@@ -105,15 +106,30 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
             }
         });
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                return false;
+            }
+        });
 
     }
 
     public void displayNearbyTasks() {
-        TaskList tasks = new TaskList();
-        ArrayList<Task> listOfTasks = new ArrayList();
+
         try {
-            tasks = DataManager.getInstance().searchTasks("", NearbyTasksActivity.this);
+            TaskList tasks = new TaskList();
+            ArrayList<Task> listOfTasks = new ArrayList();
+            tasks = DataManager.getInstance().getTasksByLatLng(currentLocation.getLatitude(), currentLocation.getLongitude(), NearbyTasksActivity.this);
             listOfTasks = tasks.getTasks();
+
+            for( Task task : listOfTasks){
+                mMap.addMarker(new MarkerOptions()
+                .position(task.getGeolocation())
+                .title(task.getTaskName())
+                .snippet(task.getDescription()));
+            }
+
         } catch (Exception e){
             Toast.makeText(this, "Could not get tasks", Toast.LENGTH_SHORT).show();
         }
@@ -232,7 +248,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task task){
                         if(task.isSuccessful()){
                             Log.d("onComplete", "location found");
-                            Location currentLocation = (Location) task.getResult();
+                            currentLocation = (Location) task.getResult();
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My location");
                         }else{
                             Log.d("onComplete","current location is null");
