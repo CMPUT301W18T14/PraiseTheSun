@@ -159,10 +159,10 @@ public class DataManager {
         PutTaskCommand command = new PutTaskCommand(task);
         if(task.getTaskRequesterID().equals(
                 CurrentUser.getInstance().getCurrentUser().getId())){
-            TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
+            TaskList localTasks = LocalDataManager.getLocalTasks(appCtx);
             localTasks.addTask(task);
             Log.d("Put New Task", "Task id is " + task.getId());
-            LocalTaskManager.saveLocalTasks(localTasks, appCtx);
+            LocalDataManager.saveLocalTasks(localTasks, appCtx);
             if(ConnectivityState.getConnected()){
                 dcm.invokeCommand(command);
             } else {
@@ -185,9 +185,9 @@ public class DataManager {
      */
     public void deleteTask(final Task task) throws NoInternetException{
         DeleteTaskCommand dtc = new DeleteTaskCommand(task);
-        TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
+        TaskList localTasks = LocalDataManager.getLocalTasks(appCtx);
         localTasks.removeTask(task);
-        LocalTaskManager.saveLocalTasks(localTasks, appCtx);
+        LocalDataManager.saveLocalTasks(localTasks, appCtx);
         if(ConnectivityState.getConnected()){
             dcm.invokeCommand(dtc);
         } else {
@@ -210,7 +210,7 @@ public class DataManager {
             dcm.invokeCommand(command);
             return command.getResult();
         } else {
-            TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
+            TaskList localTasks = LocalDataManager.getLocalTasks(appCtx);
             for(Task t: localTasks.getTasks()){
                 Log.d("Get new Task", "The local Task ID " + t.getId());
                 if(taskId.equals(t.getId())){
@@ -267,7 +267,7 @@ public class DataManager {
             return command.getResult();
         } else {
             if(userId.equals(CurrentUser.getInstance().getCurrentUser().getId())){
-                TaskList localTasks = LocalTaskManager.getLocalTasks(appCtx);
+                TaskList localTasks = LocalDataManager.getLocalTasks(appCtx);
                 Log.d("GETUSERTASKS", localTasks.toString());
                 for(Task t: localTasks.getTasks()){
                     Log.d("GETUSERTASKS", "The ID "+ t.getId());

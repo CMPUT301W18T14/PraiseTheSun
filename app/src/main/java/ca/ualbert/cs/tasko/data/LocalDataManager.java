@@ -37,9 +37,10 @@ import ca.ualbert.cs.tasko.TaskList;
  * Created by Chase on 4/4/2018.
  */
 
-public class LocalTaskManager {
+public class LocalDataManager {
 
     private static final String TASK_FILE = "userTasks.sav";
+    private static final String COMMAND_QUEUE = "commandQueue.sav";
 
     public static TaskList getLocalTasks(Context context){
         TaskList localTasks = new TaskList();
