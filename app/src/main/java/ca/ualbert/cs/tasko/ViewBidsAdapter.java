@@ -163,6 +163,12 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             //updates the task
                             dm.putTask(thisTask, thiscontext);
 
+                            //task assigned and bid accepted.
+                            //brings the user back to view my task 
+                            Intent intent;
+                            intent = new Intent(thiscontext, ViewMyTasksActivity.class);
+                            thiscontext.startActivity(intent);
+
                         }
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");
