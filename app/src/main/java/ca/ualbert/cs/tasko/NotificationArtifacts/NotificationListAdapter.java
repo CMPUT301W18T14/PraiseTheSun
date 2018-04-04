@@ -18,18 +18,14 @@ package ca.ualbert.cs.tasko.NotificationArtifacts;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import ca.ualbert.cs.tasko.CurrentUser;
 import ca.ualbert.cs.tasko.R;
-import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.ViewSearchedTaskDetailsActivity;
 import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -44,22 +40,18 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
 
     private LayoutInflater inflater;
     private NotificationList notifications;
-    private User currentUser;
-    private DataManager dm;
     private Context thiscontext;
 
-    public NotificationListAdapter(Context context) {
+    public NotificationListAdapter(Context context, NotificationList nl) {
         thiscontext = context;
         inflater = LayoutInflater.from(context);
-        currentUser = CurrentUser.getInstance().getCurrentUser();
-        dm = DataManager.getInstance();
-        this.update();
+        notifications = nl;
     }
 
     @Override
     public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.notification_cardview, parent, false);
-        NotificationViewHolder holder = new NotificationViewHolder(view, this);
+        NotificationViewHolder holder = new NotificationViewHolder(view);
 
         return holder;
     }
@@ -97,30 +89,17 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
         return notifications.getSize();
     }
 
-    public void update() {
-        notifications = new NotificationList();
-        try {
-            notifications.addAll(dm.getNotifications(currentUser.getId(), thiscontext)
-                    .getNotifications());
-        } catch (NoInternetException e){
-            Toast.makeText(thiscontext.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT);
-        }
-        this.notifyDataSetChanged();
-    }
-
     class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView notificationMessage;
         TextView notificationTitle;
         ImageView Delete;
-        NotificationListAdapter adapter;
 
-        public NotificationViewHolder(View itemView, NotificationListAdapter adapter){
+        public NotificationViewHolder(View itemView){
             super(itemView);
 
             itemView.setOnClickListener(this);
 
-            this.adapter = adapter;
             notificationMessage = (TextView) itemView.findViewById(R.id.notificationBody);
             notificationTitle = (TextView) itemView.findViewById(R.id.notificationTitle);
             Delete = (ImageView) itemView.findViewById(R.id.notificationDeleteOption);
@@ -160,17 +139,8 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     public void onClick(View view) {
                         try {
                             DataManager.getInstance().deleteNotification(notifications
-                                     .getNotification(getAdapterPosition()).getId(), thiscontext);
-                            /*
-                             * NOTE: may need to thread.sleep as we are deleting then retrieving
-                             * right away so there is a lag
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            */
-                            adapter.update();
+                                    .getNotification
+                                            (getAdapterPosition()).getId(), thiscontext);
                         } catch (NoInternetException e) {
                             e.printStackTrace();
                         }

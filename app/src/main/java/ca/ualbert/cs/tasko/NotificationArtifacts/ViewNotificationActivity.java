@@ -44,7 +44,16 @@ public class ViewNotificationActivity extends AppCompatActivity {
         notificationsLayoutManager = new LinearLayoutManager(context);
         notificationsRecyclerView.setLayoutManager(notificationsLayoutManager);
 
-        notificationsAdapter = new NotificationListAdapter(context);
+        NotificationList myNotifications = new NotificationList();
+        try {
+            myNotifications.addAll(
+                    dm.getNotifications(cu.getCurrentUser().getId(), context).getNotifications());
+        } catch (NoInternetException e){
+            Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT);
+        }
+
+        notificationsAdapter = new NotificationListAdapter(context, myNotifications);
         notificationsRecyclerView.setAdapter(notificationsAdapter);
+
     }
 }
