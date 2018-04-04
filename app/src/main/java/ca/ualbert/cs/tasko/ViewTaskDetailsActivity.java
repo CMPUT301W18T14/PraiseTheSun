@@ -29,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -184,12 +186,15 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     }
 
     private void fillInformation() {
-        //String minBidAmount = df.format(currentTask.getMinBid());
-        //String taskStatusString = currentTask.getStatus().toString();
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
+        String minBidAmount = df.format(currentTask.getMinBid());
+        String taskStatusString = currentTask.getStatus().toString();
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
         if (currentTask.getStatus() == Status.BIDDED) {
-            taskStatus.setText(currentTask.getStatus().toString() + ": Lowest bid of $" + currentTask.getMinBid().toString());
+            taskStatus.setText(taskStatusString + ": Lowest bid of $" + minBidAmount);
         }
         else {
             taskStatus.setText(currentTask.getStatus().toString());

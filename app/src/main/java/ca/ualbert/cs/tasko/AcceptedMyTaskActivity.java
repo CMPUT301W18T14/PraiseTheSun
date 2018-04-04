@@ -165,12 +165,22 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                 //Set this task's status to REQUESTED if there were not other bids
                                 //on this task prior to the assignment
                                 if (taskBids.getSize() == 1) {
+                                    //Change Task Status
                                     assignedCurrentTask.setStatus(Status.REQUESTED);
+                                    //Remove this rejected bid
+                                    taskBids.removeBid(taskBids.get(0));
                                 }
+
                                 //Set this task's status to BIDDED if there were other bids on this
                                 //task prior to the assignment
                                 else {
+                                    //Change Task Status
                                     assignedCurrentTask.setStatus(Status.BIDDED);
+                                    //Change Bid Status'
+                                    //Make all other bids rejected
+                                    for(int i = 0; i < taskBids.getSize(); i++){
+                                        taskBids.get(i).setStatus(Status.PENDING);
+                                    }
                                 }
 
                                 //Put these updates into the database
