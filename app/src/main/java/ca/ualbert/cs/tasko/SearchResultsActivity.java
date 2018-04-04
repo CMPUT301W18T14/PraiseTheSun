@@ -22,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -40,6 +41,7 @@ public class SearchResultsActivity extends RootActivity {
     private RecyclerView.Adapter searchAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
     private DataManager dm = DataManager.getInstance();
+    private ProgressBar loadingCircle;
     private SearchResultsActivity context = this;
     private TaskList foundtasks;
 
@@ -62,12 +64,17 @@ public class SearchResultsActivity extends RootActivity {
         searchLayoutManager = new LinearLayoutManager(context);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
+        loadingCircle = (ProgressBar) findViewById(R.id.taskIBiddedOnProgressBar);
+
+        loadingCircle.setVisibility(View.VISIBLE);
+
         searchForTasks();
 
         //Initialize the Adapter and RecyclerView
         searchAdapter = new TaskListAdapter(context, foundtasks);
         searchRecyclerView.setAdapter(searchAdapter);
 
+        loadingCircle.setVisibility(View.GONE);
     }
 
     @Override

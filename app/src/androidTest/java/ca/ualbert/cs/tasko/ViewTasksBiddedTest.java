@@ -16,7 +16,6 @@
 package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 
 import com.robotium.solo.Solo;
 
@@ -32,7 +31,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * User into the Activity for the test to run. NOTE: this problem will never occur in the normal
  * workflow of the application because the current user HAS TO BE SET by the time a User could
  * navigate to this activity.
- * @see ViewTasksBiddedOnActivity
+ * @see ViewTasksIBiddedOnActivity
  *
  * @author spack
  *
@@ -49,7 +48,7 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
     private User dmuser;
 
     public ViewTasksBiddedTest() {
-        super(ViewTasksBiddedOnActivity.class);
+        super(ViewTasksIBiddedOnActivity.class);
     }
 
     @Override
