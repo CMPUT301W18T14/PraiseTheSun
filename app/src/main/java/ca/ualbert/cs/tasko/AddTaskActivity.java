@@ -84,6 +84,7 @@ public class AddTaskActivity extends AppCompatActivity {
         if (currentTask != null) {
             taskNameText.setText(currentTask.getTaskName());
             descriptionText.setText(currentTask.getDescription());
+            taskNameText.setSelection(taskNameText.getText().length());
         }
 
         if (currentTask != null && currentTask.hasPhoto()) {

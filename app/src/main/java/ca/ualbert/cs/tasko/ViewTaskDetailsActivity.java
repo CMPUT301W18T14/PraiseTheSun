@@ -18,6 +18,8 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -208,9 +210,14 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == 19) {
             currentTask = (Task) data.getSerializableExtra("task");
             fillInformation();
+            ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
             if (currentTask.hasPhoto()) {
-                ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
                 imageView.setImageBitmap(currentTask.getCoverPhoto());
+            }
+            else {
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .ic_menu_gallery);
+                imageView.setImageBitmap(image);
             }
         }
     }

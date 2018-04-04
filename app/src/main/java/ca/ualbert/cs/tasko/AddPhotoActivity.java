@@ -61,7 +61,6 @@ import java.util.ArrayList;
 public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private ArrayList<Bitmap> images;
-    private Button confirm;
     private ImageSwitcher switcher;
     private ImageView imageView;
     private TextView textView;
@@ -70,7 +69,7 @@ public class AddPhotoActivity extends AppCompatActivity {
 
 
     /**
-     * Called when the activity is started. Initializes the confirm button.
+     * Called when the activity is started.
      *
      */
     @SuppressLint("ClickableViewAccessibility")
@@ -84,8 +83,6 @@ public class AddPhotoActivity extends AppCompatActivity {
         switcher = (ImageSwitcher) findViewById(R.id.addPhotoImageSwitcher);
         textView = (TextView) findViewById(R.id.addPhotoTextView);
         images = new ArrayList<Bitmap>();
-        confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
-        confirm.setEnabled(false);
 
         ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
         if (photos != null) {
@@ -95,7 +92,6 @@ public class AddPhotoActivity extends AppCompatActivity {
                     byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
                     Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
                     images.add(image);
-                    confirm.setEnabled(true);
                 }
                 imageView.setImageBitmap(images.get(0));
                 textView.setText("Swipe to view other photos.\n Tap to delete a photo already " +
@@ -308,7 +304,6 @@ public class AddPhotoActivity extends AppCompatActivity {
                         try {
                             inputStream = getContentResolver().openInputStream(selectedImage);
                             images.add(BitmapFactory.decodeStream(inputStream));
-                            confirm.setEnabled(true);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                             Toast.makeText(this.getApplicationContext(), "Image not found", Toast
