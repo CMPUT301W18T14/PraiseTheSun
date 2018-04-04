@@ -178,8 +178,17 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                     assignedCurrentTask.setStatus(Status.BIDDED);
                                     //Change Bid Status'
                                     //Make all other bids rejected
+                                    assignedCurrentTask.getMinBid();
                                     for(int i = 0; i < taskBids.getSize(); i++){
-                                        taskBids.get(i).setStatus(Status.PENDING);
+                                        //Change hidden bids to pending again
+                                        if (taskBids.get(i).getStatus() != Status.ASSIGNED) {
+                                            taskBids.get(i).setStatus(Status.PENDING);
+                                        }
+                                        //Remove rejected-assigned bid from bidlist
+                                        else {
+                                            taskBids.removeBid(taskBids.get(i));
+                                            --i;
+                                        }
                                     }
                                 }
 
