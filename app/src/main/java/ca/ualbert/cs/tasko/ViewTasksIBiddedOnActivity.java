@@ -38,8 +38,8 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter tasksBiddedAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
-    public DataManager dm = DataManager.getInstance();
-    public ViewTasksIBiddedOnActivity context = this;
+    private DataManager dm = DataManager.getInstance();
+    private ViewTasksIBiddedOnActivity context = this;
     private ProgressBar loadingCircle;
     private User User;
     private BidList userBids;
