@@ -161,7 +161,7 @@ public class AddTaskActivity extends AppCompatActivity {
         Intent addLocationIntent = new Intent(this, SelectLocationActivity.class);
         final int result = 2;
         startActivityForResult(addLocationIntent, result);
-
+        onActivityResult(result, result, addLocationIntent);
     }
 
     /**
@@ -196,12 +196,11 @@ public class AddTaskActivity extends AppCompatActivity {
                     break;
                 case 2:
                     // Handle add location Intent result
-                    if(requestCode == 1 && resultCode == RESULT_OK){
-                        double lat = data.getDoubleExtra("lat", 0.00);
-                        double lng = data.getDoubleExtra("lng", 0.00);
-                        geoLocation = new LatLng(lat, lng);
-                        Log.i("LocationAdded", "lat, lng " + Double.toString(lat) + ", " + Double.toString(lng) );
-                    }
+
+                    double lat = data.getDoubleExtra("lat", 0.00);
+                    double lng = data.getDoubleExtra("lng", 0.00);
+                    geoLocation = new LatLng(lat, lng);
+                    Log.i("LocationAdded", "lat, lng " + Double.toString(lat) + ", " + Double.toString(lng) );
                     break;
             }
         }
@@ -230,6 +229,7 @@ public class AddTaskActivity extends AppCompatActivity {
             newTask.setTaskRequesterUsername(taskRequester.getUsername());
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
+                Log.i("Task location: ", "lat, lng " + Double.toString(newTask.getGeolocation().latitude) + ", " + Double.toString(newTask.getGeolocation().longitude) );
                 finish();
             } catch (NoInternetException e) {
                 Log.i("Error", "No internet connection in CreateAccountActivity");

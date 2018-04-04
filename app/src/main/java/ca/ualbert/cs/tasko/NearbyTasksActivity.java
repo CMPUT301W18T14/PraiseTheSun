@@ -122,15 +122,22 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         try {
             TaskList tasks = new TaskList();
             ArrayList<Task> listOfTasks = new ArrayList();
-            tasks = DataManager.getInstance().getTasksByLatLng(currentLocation.getLatitude(), currentLocation.getLongitude(), NearbyTasksActivity.this);
+            //tasks = DataManager.getInstance().getTasksByLatLng(currentLocation.getLatitude(), currentLocation.getLongitude(), NearbyTasksActivity.this);
+            tasks = DataManager.getInstance().searchTasks("", NearbyTasksActivity.this);
             listOfTasks = tasks.getTasks();
 
             for( Task task : listOfTasks){
-                mMap.addMarker(new MarkerOptions()
-                .position(task.getGeolocation())
-                .title(task.getTaskName())
-                .snippet(task.getDescription()));
-                Log.i("Here's a task", " Title:" + task.getTaskName());
+                try {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(task.getGeolocation())
+                            .title(task.getTaskName())
+                            .snippet(task.getDescription()));
+                    Log.i("Here's a task", " Title:" + task.getTaskName());
+                } catch (Exception e){
+                    Log.i("TaskNoLocation", " task has no location");
+
+                }
+
             }
 
             Toast.makeText(this, "Showing nearby tasks", Toast.LENGTH_SHORT).show();
