@@ -65,13 +65,6 @@ public class GetTasksByLatLng extends GetCommand<TaskList> {
                     "                      }" +
                     "                  }" +
                     "              }" +
-                    "               {\"match\": {" +
-                    "                   \"taskName\": {" +
-                    "                       \"query\" : \"" + searchTerm + "\"," +
-                    "                       \"operator\" : \"and\" " +
-                    "                       }" +
-                    "                   }" +
-                    "               }" +
                     "           ]" +
                     "       }" +
                     "   }" +
