@@ -334,7 +334,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
         long imageLength = stream.toByteArray().length;
         if (imageLength > 65535) {
-            size = size * (1.0/3.0);
+            size = size * (1.0/2.0);
             image = Bitmap.createScaledBitmap(image, (int) Math.round(image.getWidth
                     () * size), (int) Math.round(image.getHeight() * size), false);
             return findSize(image, size);
