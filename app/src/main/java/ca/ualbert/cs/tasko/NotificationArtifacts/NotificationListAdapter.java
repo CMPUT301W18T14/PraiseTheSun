@@ -51,7 +51,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
     @Override
     public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.notification_cardview, parent, false);
-        NotificationViewHolder holder = new NotificationViewHolder(view);
+        NotificationViewHolder holder = new NotificationViewHolder(view, this);
 
         return holder;
     }
@@ -89,17 +89,24 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
         return notifications.getSize();
     }
 
+    public void update(Integer index) {
+        notifications.deleteNotification(index);
+        this.notifyDataSetChanged();
+    }
+
     class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView notificationMessage;
         TextView notificationTitle;
         ImageView Delete;
+        NotificationListAdapter adapter;
 
-        public NotificationViewHolder(View itemView){
+        public NotificationViewHolder(View itemView, NotificationListAdapter adapter){
             super(itemView);
 
             itemView.setOnClickListener(this);
 
+            this.adapter = adapter;
             notificationMessage = (TextView) itemView.findViewById(R.id.notificationBody);
             notificationTitle = (TextView) itemView.findViewById(R.id.notificationTitle);
             Delete = (ImageView) itemView.findViewById(R.id.notificationDeleteOption);
@@ -138,9 +145,11 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     @Override
                     public void onClick(View view) {
                         try {
-                            DataManager.getInstance().deleteNotification(notifications
-                                    .getNotification
-                                            (getAdapterPosition()).getId(), thiscontext);
+                            Notification notificationToDel = notifications.getNotification
+                                    (getAdapterPosition());
+                            DataManager.getInstance().deleteNotification(notificationToDel.getId
+                                     (), thiscontext);
+                            adapter.update(getAdapterPosition());
                         } catch (NoInternetException e) {
                             e.printStackTrace();
                         }
