@@ -122,8 +122,8 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         try {
             TaskList tasks = new TaskList();
             ArrayList<Task> listOfTasks = new ArrayList();
-            //tasks = DataManager.getInstance().getTasksByLatLng(currentLocation.getLatitude(), currentLocation.getLongitude(), NearbyTasksActivity.this);
-            tasks = DataManager.getInstance().searchTasks("", NearbyTasksActivity.this);
+            tasks = DataManager.getInstance().getTasksByLatLng(currentLocation.getLatitude(), currentLocation.getLongitude(), NearbyTasksActivity.this);
+            
             listOfTasks = tasks.getTasks();
 
             for( Task task : listOfTasks){
