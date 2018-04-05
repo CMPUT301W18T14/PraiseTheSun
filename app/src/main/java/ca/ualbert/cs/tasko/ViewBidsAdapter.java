@@ -43,7 +43,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     private LayoutInflater inflater;
     private BidList bids;
     private Context thiscontext;
-    private NotificationHandler nh = new NotificationHandler(thiscontext);
+    private NotificationHandler nh;
 
     private DataManager dm = DataManager.getInstance();
 
@@ -55,6 +55,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
      */
     public ViewBidsAdapter(Context context, BidList dmbids){
         thiscontext = context;
+        nh = new NotificationHandler(thiscontext);
         inflater = LayoutInflater.from(context);
         bids = dmbids;
     }
@@ -167,9 +168,12 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
 
                             //assigns it to the appropriate provider
                             thisTask.assign((bids.get(getAdapterPosition())).getUserID());
-                            nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);
+
                             //updates the task
                             dm.putTask(thisTask, thiscontext);
+
+                            //send the notification
+                            nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);
 
                             //task assigned and bid accepted.
                             //brings the user back to view my task details
@@ -212,7 +216,9 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             }
                         } else {
                             //Make bid status REJECTED
-                            (bids.get(getAdapterPosition())).setStatus(BidStatus.REJECTED);
+                            bids.get(getAdapterPosition()).setStatus(BidStatus.REJECTED);
+                            nh.newBidDeletedNotification(thisTask.getId(), bids.get(getAdapterPosition()).getUserID());
+
                         }
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");

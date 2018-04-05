@@ -133,6 +133,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     //TODO IMPLEMENT RATING ACTIVITY
                     break;
                 case TASK_PROVIDER_BID_DECLINED:
+                case TASK_REQUESTOR_REPOSTED_TASK:
                     intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
                     intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                     thiscontext.startActivity(intent);
