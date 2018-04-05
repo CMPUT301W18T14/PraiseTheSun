@@ -24,13 +24,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 
 /**
- * The tests will return a null pointer error if a user is not hardcoded into the ViewBiddedTask
- * Activity, this is because the CurrentUserSingelton is used in the creation of the activity.
- * Becasue of this, By the time I try and set the CurrentUserSingelton in the Test Case, I have
- * already encountered a null pointer error. Because of this, I have to hard code a default
- * User into the Activity for the test to run. NOTE: this problem will never occur in the normal
- * workflow of the application because the current user HAS TO BE SET by the time a User could
- * navigate to this activity.
+ * Tests the functionality of the View My Tasks I have bidded on activity
  * @see ViewTasksIBiddedOnActivity
  *
  * @author spack
