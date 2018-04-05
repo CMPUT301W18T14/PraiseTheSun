@@ -175,6 +175,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                     assignedCurrentTask.setStatus(TaskStatus.REQUESTED);
                                     //Remove this rejected bid
                                     taskBids.removeBid(taskBids.get(0));
+                                    assignedCurrentTask.setMinBid(null);
                                 }
 
 
@@ -182,14 +183,14 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                 //task prior to the assignment
                                 else {
                                     //Change Task Status
-                                    assignedCurrentTask.setStatus(Status.BIDDED);
+                                    assignedCurrentTask.setStatus(TaskStatus.BIDDED);
                                     //Change Bid Status'
                                     //Make all other bids rejected
                                     assignedCurrentTask.getMinBid();
                                     for(int i = 0; i < taskBids.getSize(); i++){
                                         //Change hidden bids to pending again
-                                        if (taskBids.get(i).getStatus() != Status.ASSIGNED) {
-                                            taskBids.get(i).setStatus(Status.PENDING);
+                                        if (taskBids.get(i).getStatus() != BidStatus.ACCEPTED) {
+                                            taskBids.get(i).setStatus(BidStatus.PENDING);
                                             //if (taskBid)
                                         }
                                         //Remove rejected-assigned bid from bidlist
@@ -206,6 +207,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                 } catch (NoInternetException e) {
                                     e.printStackTrace();
                                 }
+                            finish();
                             }
                         });
 

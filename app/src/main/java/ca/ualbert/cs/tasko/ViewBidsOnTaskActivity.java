@@ -103,9 +103,4 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        finish();
-    }
 }
