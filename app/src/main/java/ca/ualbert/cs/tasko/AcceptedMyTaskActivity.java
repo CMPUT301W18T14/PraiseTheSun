@@ -19,8 +19,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -118,7 +116,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //Set this task's status to DONE
-                                assignedCurrentTask.setStatus(Status.DONE);
+                                assignedCurrentTask.setStatus(TaskStatus.DONE);
                                 try {
                                     dm.putTask(assignedCurrentTask, context);
                                 } catch (NoInternetException e) {
@@ -174,10 +172,11 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                 //on this task prior to the assignment
                                 if (taskBids.getSize() == 1) {
                                     //Change Task Status
-                                    assignedCurrentTask.setStatus(Status.REQUESTED);
+                                    assignedCurrentTask.setStatus(TaskStatus.REQUESTED);
                                     //Remove this rejected bid
                                     taskBids.removeBid(taskBids.get(0));
                                 }
+
 
                                 //Set this task's status to BIDDED if there were other bids on this
                                 //task prior to the assignment

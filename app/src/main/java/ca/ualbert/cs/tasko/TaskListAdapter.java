@@ -24,12 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DecimalFormat;
-
-import ca.ualbert.cs.tasko.data.DataManager;
-import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * The class represents a Adapter that is specifically designed to display search results in an
@@ -128,7 +124,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
         // Show the status of a task using an Icon instead of text, saves space and looks better??
-        Status status = currentTask.getStatus();
+        TaskStatus status = currentTask.getStatus();
         switch (status) {
             case REQUESTED:
                 holder.taskStatusIcon.setImageResource(R.drawable.requested);
@@ -218,7 +214,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         public void onClick(View view) {
             Intent intent;
             if (thiscontext instanceof ViewMyTasksActivity) {
-                if (tasks.get(getAdapterPosition()).getStatus() == Status.ASSIGNED) {
+                if (tasks.get(getAdapterPosition()).getStatus() == TaskStatus.ASSIGNED) {
                     intent = new Intent(thiscontext, AcceptedMyTaskActivity.class);
                 }
                 else {

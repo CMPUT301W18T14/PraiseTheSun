@@ -15,26 +15,13 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.test.ActivityInstrumentationTestCase2;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -109,7 +96,7 @@ public class ViewMyTasksActivity extends RootActivity {
 
                 if (parent.getItemAtPosition(pos).equals("Requested")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (myTasks.get(i).getStatus() != Status.REQUESTED) {
+                        if (myTasks.get(i).getStatus() != TaskStatus.REQUESTED) {
                             myTasks.removeTask(myTasks.get(i));
                             --i;
                         }
@@ -117,7 +104,7 @@ public class ViewMyTasksActivity extends RootActivity {
                 }
                 else if (parent.getItemAtPosition(pos).equals("Bidded")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (myTasks.get(i).getStatus() != Status.BIDDED) {
+                        if (myTasks.get(i).getStatus() != TaskStatus.BIDDED) {
                             myTasks.removeTask(myTasks.get(i));
                             --i;
                         }
@@ -125,7 +112,7 @@ public class ViewMyTasksActivity extends RootActivity {
                 }
                 else if (parent.getItemAtPosition(pos).equals("Assigned")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (myTasks.get(i).getStatus() != Status.ASSIGNED) {
+                        if (myTasks.get(i).getStatus() != TaskStatus.ASSIGNED) {
                             myTasks.removeTask(myTasks.get(i));
                             --i;
                         }
