@@ -29,6 +29,7 @@ import ca.ualbert.cs.tasko.R;
 import ca.ualbert.cs.tasko.ViewSearchedTaskDetailsActivity;
 import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * A Notification Adpater.
@@ -50,7 +51,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
     @Override
     public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.notification_cardview, parent, false);
-        NotificationViewHolder holder = new NotificationViewHolder(view);
+        NotificationViewHolder holder = new NotificationViewHolder(view, this);
 
         return holder;
     }
@@ -88,17 +89,24 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
         return notifications.getSize();
     }
 
+    public void update(Integer index) {
+        notifications.deleteNotification(index);
+        this.notifyDataSetChanged();
+    }
+
     class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView notificationMessage;
         TextView notificationTitle;
         ImageView Delete;
+        NotificationListAdapter adapter;
 
-        public NotificationViewHolder(View itemView){
+        public NotificationViewHolder(View itemView, NotificationListAdapter adapter){
             super(itemView);
 
             itemView.setOnClickListener(this);
 
+            this.adapter = adapter;
             notificationMessage = (TextView) itemView.findViewById(R.id.notificationBody);
             notificationTitle = (TextView) itemView.findViewById(R.id.notificationTitle);
             Delete = (ImageView) itemView.findViewById(R.id.notificationDeleteOption);
@@ -136,8 +144,12 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                 Delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DataManager.getInstance().deleteNotification(notifications.getNotification
-                                (getAdapterPosition()).getId(), thiscontext);
+                        try {
+                            DataManager.getInstance().deleteNotification(notifications.getNotification
+                                    (getAdapterPosition()).getId(), thiscontext);
+                        } catch (NoInternetException e) {
+                            e.printStackTrace();
+                        }
                         notifications.delete(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
                         notifyItemRangeChanged(getAdapterPosition(), notifications.getSize());
