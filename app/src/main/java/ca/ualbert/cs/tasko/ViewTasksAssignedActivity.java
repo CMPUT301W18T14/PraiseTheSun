@@ -97,7 +97,7 @@ public class ViewTasksAssignedActivity extends RootActivity {
             userBids = dm.getUserBids(User.getId(), context);
             assignedTasks = new TaskList();
             for (int i = 0; i < userBids.getSize(); i++)
-                if (userBids.get(i).getStatus == Status.ACCEPTED) {
+                if (userBids.get(i).getStatus() == BidStatus.ACCEPTED) {
                     assignedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));
                 }
         } catch (NoInternetException e) {
