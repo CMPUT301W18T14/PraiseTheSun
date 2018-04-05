@@ -76,6 +76,10 @@
     <string name="image_message">No images currently added.</string>
     <string name="add_photo_title">Add Photos</string>
     <string name="view_photos_title">View Photos</string>
+    <string name="edit_your_task">Edit Your Task</string>
+    <string name="confirm">Confirm</string>
+    <string name="profile">Profile</string>
     <string name="title_activity_accepted_task">AcceptedTaskActivity</string>
+
 </resources>
 

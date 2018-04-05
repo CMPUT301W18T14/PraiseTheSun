@@ -30,6 +30,7 @@ import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
 
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteBidCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteNotificationCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetNotificationsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
@@ -46,6 +47,7 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand;
 import ca.ualbert.cs.tasko.CurrentUser;
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.Task;
@@ -190,9 +192,8 @@ public class DataManager {
                 try {
                     BidList bids = getTaskBids(task.getId(), context2);
                     for(Bid bid: bids.getBids()){
-                        NotificationFactory nf = new NotificationFactory();
-                        nf.setContext(context2);
-                        nf.createNotification(task.getId(), NotificationType.TASK_DELETED);
+                        NotificationHandler nh = new NotificationHandler(context2);
+                        nh.newNotification(task.getId(), NotificationType.TASK_DELETED);
                         deleteBid(bid, context2);
                     }
                 } catch (NoInternetException e){
@@ -403,8 +404,17 @@ public class DataManager {
     }
 
     //TODO
-    public void deleteNotification(String userId, Context context){
+    public void deleteNotification(String notificationId, Context context) throws
+            NoInternetException {
+        context = context.getApplicationContext();
+        DeleteNotificationCommand deleteNotificationCommand = new DeleteNotificationCommand(notificationId);
 
+        if(isOnline(context)){
+            dcm.invokeCommand(deleteNotificationCommand);
+        } else {
+            dcm.addToQueue(deleteNotificationCommand);
+            throw new NoInternetException();
+        }
     }
 
     /**

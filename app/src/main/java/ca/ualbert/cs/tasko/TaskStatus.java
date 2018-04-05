@@ -15,14 +15,11 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
-public class ViewTasksIBidOnActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_tasks_ibid_on);
-    }
+/**
+ * An enumeration that is used to designate the status of a Task
+ *
+ * @see Task
+ */
+public enum TaskStatus {
+    REQUESTED, BIDDED, ASSIGNED, DONE
 }

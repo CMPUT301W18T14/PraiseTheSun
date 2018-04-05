@@ -16,12 +16,15 @@
 package ca.ualbert.cs.tasko;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,15 +61,15 @@ import java.util.ArrayList;
 public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private ArrayList<Bitmap> images;
-    private Button confirm;
     private ImageSwitcher switcher;
     private ImageView imageView;
     private TextView textView;
     private int numImages = 0;
+    private Context context;
 
 
     /**
-     * Called when the activity is started. Initializes the confirm button.
+     * Called when the activity is started.
      *
      */
     @SuppressLint("ClickableViewAccessibility")
@@ -74,26 +77,26 @@ public class AddPhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
+        context = this;
 
         imageView = (ImageView) findViewById(R.id.addPhotoImageView);
         switcher = (ImageSwitcher) findViewById(R.id.addPhotoImageSwitcher);
         textView = (TextView) findViewById(R.id.addPhotoTextView);
         images = new ArrayList<Bitmap>();
-        confirm = (Button) findViewById(R.id.addPhotoConfirmButton) ;
-        confirm.setEnabled(false);
 
         ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
         if (photos != null) {
             numImages = photos.size();
-            for (int i = 0; i < numImages; i++) {
-                byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
-                Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                images.add(image);
-                confirm.setEnabled(true);
+            if (photos.size() > 0) {
+                for (int i = 0; i < numImages; i++) {
+                    byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                    Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    images.add(image);
+                }
+                imageView.setImageBitmap(images.get(0));
+                textView.setText("Swipe to view other photos.\n Tap to delete a photo already " +
+                        "chosen.\nViewing photo 1/" + Integer.toString(numImages));
             }
-            imageView.setImageBitmap(images.get(0));
-            textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
-                    .toString(numImages));
         }
 
         /*
@@ -105,6 +108,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         switcher.setOnTouchListener(new View.OnTouchListener() {
             private float initialX;
             private int position = 0;
+
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 //Log.i("Not Error", Integer.toString(numImages));
@@ -121,26 +125,75 @@ public class AddPhotoActivity extends AppCompatActivity {
                                     position++;
                                     imageView.setImageBitmap(images.get(position));
                                     switcher.showNext();
-                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
-                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                    textView.setText("Swipe to view other photos.\n Tap to " +
+                                            "delete a photo already chosen. Viewing photo "
+                                            + Integer.toString(position + 1) + "/" + Integer
                                             .toString(numImages));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                             Toast.LENGTH_LONG).show();
                                 }
-                            } else {
+                            }
+                            else if (initialX < finalX){
                                 if (position > 0) {
                                     position--;
                                     imageView.setImageBitmap(images.get(position));
-                                    switcher.showNext();
                                     switcher.showPrevious();
-                                    textView.setText("Swipe to view other photos.\n Viewing photo" +
-                                            " " + Integer.toString(position + 1) + "/" + Integer
+                                    textView.setText("Swipe to view other photos.\n Tap to " +
+                                            "delete a photo already chosen. Viewing photo "
+                                            + Integer.toString(position + 1) + "/" + Integer
                                             .toString(numImages));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                             Toast.LENGTH_LONG).show();
                                 }
+                            }
+                            else {
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                                builder1.setMessage("Are you sure you want to delete this " +
+                                        "photo?");
+                                builder1.setCancelable(true);
+
+                                builder1.setPositiveButton(
+                                        "Yes",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                images.remove(position);
+                                                numImages -= 1;
+                                                if (numImages > 0) {
+                                                    if (position > 0) {
+                                                        position--;
+                                                    }
+                                                    imageView.setImageBitmap(images.get(position));
+                                                    switcher.showPrevious();
+                                                    textView.setText("Swipe to view other photos.\n Tap to " +
+                                                            "delete a photo already chosen. Viewing photo "
+                                                            + Integer.toString(position + 1) + "/" + Integer
+                                                            .toString(numImages));
+                                                }
+                                                else {
+                                                    textView.setText("No images currently added.");
+                                                    /*
+                                                     * https://stackoverflow.com/questions/7242282/get-bitmap-information-from-bitmap-stored-in-drawable-folder
+                                                     * Taken on 2018-04-02
+                                                     */
+                                                    Bitmap image = BitmapFactory.decodeResource
+                                                            (getResources(), R.drawable.ic_menu_gallery);
+                                                    imageView.setImageBitmap(image);
+                                                }
+                                            }
+                                        });
+
+                                builder1.setNegativeButton(
+                                        "No",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
                             }
                             break;
                     }
@@ -198,6 +251,7 @@ public class AddPhotoActivity extends AppCompatActivity {
              */
             long imageLength = byteArray.length;
             if (imageLength > 65535) {
+                Log.d("Not Error", Long.toString(imageLength));
                 String message = "Image file #" + Integer.toString(i + 1) + " is too big.";
                 Toast.makeText(this.getApplicationContext(), message, Toast
                         .LENGTH_LONG).show();
@@ -207,6 +261,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                 // https://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
                 String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
                 imgStrings.add(encodedImage);
+                Log.d("Not Error", Integer.toString(byteArray.length));
             }
         }
         if (passed) {
@@ -250,8 +305,10 @@ public class AddPhotoActivity extends AppCompatActivity {
                         InputStream inputStream;
                         try {
                             inputStream = getContentResolver().openInputStream(selectedImage);
-                            images.add(BitmapFactory.decodeStream(inputStream));
-                            confirm.setEnabled(true);
+                            Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+                            image = findSize(image, 1.0);
+                            images.add(image);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                             Toast.makeText(this.getApplicationContext(), "Image not found", Toast
@@ -260,10 +317,25 @@ public class AddPhotoActivity extends AppCompatActivity {
                     }
                     numImages += numNewImages;
                     imageView.setImageBitmap(images.get(0));
-                    textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
-                            .toString(numImages));
+                    textView.setText("Swipe to view other photos.\n Tap to delete a photo already " +
+                            "chosen.\nViewing photo 1/" + Integer.toString(numImages));
                 }
             }
+        }
+    }
+
+    private Bitmap findSize(Bitmap image, double size) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        long imageLength = stream.toByteArray().length;
+        if (imageLength > 65535) {
+            size = size * (1.0/2.0);
+            image = Bitmap.createScaledBitmap(image, (int) Math.round(image.getWidth
+                    () * size), (int) Math.round(image.getHeight() * size), false);
+            return findSize(image, size);
+        }
+        else {
+            return image;
         }
     }
 }

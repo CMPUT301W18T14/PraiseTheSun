@@ -18,6 +18,8 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +28,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,7 +67,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         //Button and TextView definitions
         deleteButton = (Button) findViewById(R.id.deleteButton);
         editButton = (Button) findViewById(R.id.editButton);
-        viewBidsButton = (Button) findViewById(R.id.placeBidButton);
+        viewBidsButton = (Button) findViewById(R.id.viewBidsButton);
         taskName = (TextView) findViewById(R.id.taskName);
         taskDescription = (TextView) findViewById(R.id.taskDescription);
         taskStatus = (TextView) findViewById(R.id.taskStatus);
@@ -89,9 +90,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         }
 
         setupDeleteButton();
-
-        setupEditButton();
-
+        setUpEditButton();
         setupViewBidsButton();
     }
 
@@ -115,7 +114,17 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                                 "Yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        //Here's where the task deletion code goes
+                                        try {
+                                            dm.deleteTask(currentTask, context);
+                                            finish();
+                                            Toast.makeText(getApplicationContext(),"Your task has successfully been deleted.", Toast.LENGTH_SHORT).show();
+                                        }
+                                        catch (NoInternetException e) {
+                                            Log.i("Error", "No internet connection in " +
+                                                    "ViewTaskDetailsActivity");
+                                            Toast.makeText(context, "No Internet Connection!",
+                                                    Toast.LENGTH_LONG).show();
+                                        }
                                     }
                                 });
 
@@ -138,17 +147,19 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
-    private void setupEditButton() {
+    private void setUpEditButton() {
         editButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(currentTask.getStatus() != Status.REQUESTED) {
+                if(currentTask.getStatus() != TaskStatus.REQUESTED) {
                     Toast.makeText(getApplicationContext(),"This task already has bids on it. This task can no longer be edited.", Toast.LENGTH_SHORT).show();
+
                 }
                 else {
-                    //This should go to a pre-filled in version of the AddTaskActivity
+                    Intent editTask = new Intent(context, AddTaskActivity.class);
+                    editTask.putExtra("task", currentTask);
+                    startActivityForResult(editTask, 19);
                 }
             }
         });
@@ -157,20 +168,27 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private void setupViewBidsButton() {
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Context thiscontext = getApplicationContext();
-                Intent intent;
-                intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
-                intent.putExtra("TaskID", currentTask.getId());
-                thiscontext.startActivity(intent);
+                if(currentTask.getStatus() == TaskStatus.REQUESTED) {
+                    Toast.makeText(getApplicationContext(),"This task is still requested and has no bids on it.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Context thiscontext = getApplicationContext();
+                    Intent intent;
+                    intent = new Intent(thiscontext, ViewBidsOnTaskActivity.class);
+                    intent.putExtra("TaskID", currentTask.getId());
+                    thiscontext.startActivity(intent);
+                }
             }
         });
 
     }
 
     private void fillInformation() {
+        //String minBidAmount = df.format(currentTask.getMinBid());
+        //String taskStatusString = currentTask.getStatus().toString();
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
-        if (currentTask.getStatus() == Status.BIDDED) {
+        if (currentTask.getStatus() == TaskStatus.BIDDED) {
             taskStatus.setText(currentTask.getStatus().toString() + ": Lowest bid of $" + currentTask.getMinBid().toString());
         }
         else {
@@ -182,5 +200,23 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
         viewPhotosIntent.putExtra("photos", currentTask);
         startActivity(viewPhotosIntent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 19) {
+            currentTask = (Task) data.getSerializableExtra("task");
+            fillInformation();
+            ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+            if (currentTask.hasPhoto()) {
+                imageView.setImageBitmap(currentTask.getCoverPhoto());
+            }
+            else {
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .ic_menu_gallery);
+                imageView.setImageBitmap(image);
+            }
+        }
     }
 }

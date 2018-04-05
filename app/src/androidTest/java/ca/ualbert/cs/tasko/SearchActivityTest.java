@@ -39,9 +39,6 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
     private DataManager dm = DataManager.getInstance();
-    private Task task = new Task("requestorID", "TestTask4",
-                            "Help me with recyclerview adapters ahhhhhhh," +
-                                    "Help me find NullPointerErrors... :(");
 
     public SearchActivityTest() {
         super(MainActivity.class);
@@ -50,6 +47,18 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+        CurrentUser.getInstance().setCurrentUser(user);
+        try {
+            dm.putUser(user, getActivity().getApplicationContext());
+        }catch(IllegalArgumentException e){
+        }
+
+        User dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
+
+        Task task = new Task(dmuser.getId(), "TestTask", "TestMessage");
+        dm.putTask(task, InstrumentationRegistry.getTargetContext());
+
     }
 
     /**
@@ -58,12 +67,8 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
      * @throws NoInternetException
      */
     public void testValidSearch() throws NoInternetException {
-        //Dont want to flood the datbase with test tasks
-        dm.putTask(task, InstrumentationRegistry.getTargetContext());
-
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
-        TaskList foundtasks = dm.searchTasks("Help", InstrumentationRegistry.getTargetContext());
         solo.clickOnButton("Search");
         solo.assertCurrentActivity("Wrong Activity", SearchResultsActivity.class);
     }
@@ -77,7 +82,6 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
-        TaskList foundtasks = dm.searchTasks("", InstrumentationRegistry.getTargetContext());
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
     }
@@ -90,7 +94,6 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.searchQuery), "Help");
-        TaskList foundtasks = dm.searchTasks("Help", InstrumentationRegistry.getTargetContext());
         solo.clickOnButton("Search");
         solo.assertCurrentActivity("Wrong Activity", SearchResultsActivity.class);
         solo.clickInRecyclerView(1);
