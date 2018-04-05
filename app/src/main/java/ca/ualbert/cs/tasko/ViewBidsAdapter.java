@@ -211,9 +211,10 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                                 Log.d("Message", "Bid status is PENDING!");
                             }
                         } else {
-                            //Make bid status REJECTED
-                            bids.removeBid(bids.get(getAdapterPosition()));
-                            dm.deleteBid(bids.get(getAdapterPosition()), thiscontext);
+                            //Reject a bid
+                            Bid currentbid = bids.get(getAdapterPosition());
+                            bids.removeBid(currentbid);
+                            dm.deleteBid(currentbid, thiscontext);
                             notifyDataSetChanged();
                         }
                     } catch (NullPointerException e) {
