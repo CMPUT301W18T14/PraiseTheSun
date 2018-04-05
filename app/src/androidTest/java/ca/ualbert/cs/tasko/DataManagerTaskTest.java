@@ -68,7 +68,11 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         assertTrue(isConnected);
         assertTrue(task1.getId() != null);
         Task retTask = null;
-        retTask = dm.getTask(task1.getId());
+        try {
+            retTask = dm.getTask(task1.getId());
+        }catch (NoInternetException e){
+            e.printStackTrace();
+        }
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
