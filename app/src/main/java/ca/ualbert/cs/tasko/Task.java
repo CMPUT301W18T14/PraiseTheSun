@@ -189,6 +189,10 @@ public class Task implements Serializable {
         }
     }
 
+    public ArrayList<String> getPhotoStrings() {
+        return this.photos;
+    }
+
     // Not implemented yet
     // Todo Part 5
     public void addLocation(Location location){
