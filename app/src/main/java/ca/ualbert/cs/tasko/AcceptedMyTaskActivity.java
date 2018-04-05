@@ -64,7 +64,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
         try {
             String taskID = extras.getString("TaskID");
-            assignedCurrentTask = dm.getTask(taskID, this);
+            assignedCurrentTask = dm.getTask(taskID);
             fillInformation();
         } catch (NullPointerException e) {
             Log.i("Error", "TaskID not properly passed");

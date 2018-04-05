@@ -254,7 +254,7 @@ public class AddTaskActivity extends AppCompatActivity {
             newTask.setTaskRequesterUsername(taskRequester.getUsername());
             if (currentTask != null) {
                 try {
-                    DataManager.getInstance().deleteTask(currentTask, this.getApplicationContext());
+                    DataManager.getInstance().deleteTask(currentTask);
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }

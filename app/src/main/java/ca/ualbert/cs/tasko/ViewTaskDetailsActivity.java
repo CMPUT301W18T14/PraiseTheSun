@@ -117,7 +117,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         try {
-                                            dm.deleteTask(currentTask, context);
+                                            dm.deleteTask(currentTask);
                                             finish();
                                             Toast.makeText(getApplicationContext(),"Your task has successfully been deleted.", Toast.LENGTH_SHORT).show();
                                         }
