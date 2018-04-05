@@ -15,7 +15,9 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.Display;
 
 import com.robotium.solo.Solo;
 
@@ -35,56 +37,60 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
     private DataManager dm = DataManager.getInstance();
     private Task task1;
-    private Task task2;
-    private User user;
-    private Bid bid1;
-    private Bid bid2;
+    private Bid bid;
     private User dmuser;
 
     public ViewTasksBiddedTest() {
-        super(ViewTasksIBiddedOnActivity.class);
+        super(MainActivity.class);
     }
 
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
-        //user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
-        task1 = new Task("test", "TestTask2", "Help me test code");
-        task2 = new Task("test", "TestTask3", "Help me test code");
-        dm.putTask(task1, getActivity().getApplicationContext());
-        dm.putTask(task2, getActivity().getApplicationContext());
-        bid1 = new Bid(dmuser.getId(), 11, task1.getId());
-        bid2 = new Bid(dmuser.getId(), 12, task2.getId());
-        dm.addBid(bid1, getActivity().getApplicationContext());
-        dm.addBid(bid2, getActivity().getApplicationContext());
+
+        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+
+        try {
+            dm.putUser(user, InstrumentationRegistry.getTargetContext());
+        }catch(IllegalArgumentException e){
+        }
+
+        dmuser = dm.getUserByUsername("rromano", InstrumentationRegistry.getTargetContext());
+        CurrentUser.getInstance().setCurrentUser(dmuser);
+
+        task1= new Task(dmuser.getId(), "TestTask", "Help me test code");
+        dm.putTask(task1, InstrumentationRegistry.getTargetContext());
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        bid = new Bid(dmuser.getId(), 11, task1.getId());
+        dm.addBid(bid, getActivity().getApplicationContext());
     }
 
-
-    /**
-     * Tests the process that adds Tasks to a tasklist by using a users posted bids.
-     * @throws NoInternetException
-     */
-    public void testPlacingBids() throws NoInternetException {
-        BidList userBids = dm.getUserBids(dmuser.getId(), getActivity().getApplicationContext());
-        TaskList biddedTasks = new TaskList();
-        for (int i = 0; i < userBids.getSize(); i++)
-            try {
-                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), getActivity().getApplicationContext()));
-            } catch (NoInternetException e) {
-                e.printStackTrace();
-            }
-        assertFalse(biddedTasks.getSize() == 0);
-
-    }
-
-    /**
+        /**
      * Ensures the onClick in viewholder is accurate, directs the user to the proper activity which
      * in this case is ViewSerchedTaskDetails.
      */
     public void testClick(){
+        swipeToRight();
+        solo.assertCurrentActivity("wrong activity", MainActivity.class);
+        solo.setNavigationDrawer(Solo.OPENED);
+        solo.clickOnText("My bids");
+        solo.assertCurrentActivity("wrong activity", ViewTasksIBiddedOnActivity.class);
         solo.clickInRecyclerView(0);
-        solo.assertCurrentActivity("Click did not register", ViewSearchedTaskDetailsActivity.class);
+    }
+
+    private void swipeToRight() {
+        // Refer: https://stackoverflow.com/questions/26118480/how-to-open-navigation-drawer-menu-in-robotium-automation-script-in-android/29645959
+        // Viewed on: March 18, 2018
+        Display display = solo.getCurrentActivity().getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        int height = display.getHeight();
+        float xStart = 0 ;
+        float xEnd = width / 2;
+        solo.drag(xStart, xEnd, height / 2, height / 2, 1);
     }
 
 }
