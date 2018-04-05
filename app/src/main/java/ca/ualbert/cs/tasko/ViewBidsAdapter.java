@@ -18,19 +18,17 @@ package ca.ualbert.cs.tasko;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -45,6 +43,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     private LayoutInflater inflater;
     private BidList bids;
     private Context thiscontext;
+    private NotificationHandler nh = new NotificationHandler(thiscontext);
 
     private DataManager dm = DataManager.getInstance();
 
@@ -135,7 +134,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                     try {
                         //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
-                        if (thisTask.getStatus() == Status.ASSIGNED) {
+                        if (thisTask.getStatus() == TaskStatus.ASSIGNED) {
                             //tell the user that task is already assigned
                             CharSequence toasttext = "Task already Assigned";
                             Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
@@ -144,23 +143,31 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             Log.d("Error", "Task already assigned");
 
                             //testing stuff
-                            if ((bids.get(getAdapterPosition())).getStatus() == Status.ACCEPTED ) {
+                            if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.ACCEPTED ) {
                                 Log.d("Message", "Bid status is ACCEPTED!");
-                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.REJECTED ) {
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.REJECTED ) {
                                 Log.d("Message", "Bid status is REJECTED!");
-                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.PENDING) {
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.PENDING) {
                                 Log.d("Message", "Bid status is PENDING!");
                             }
+                        } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.REJECTED) {
+
+                            //tell the user that the bid is already rejected
+                            CharSequence toasttext = "Bid already Rejected";
+                            Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
+                            toast.show();
+
                         } else {
                             //Make all other bids rejected
                             for(int i = 0; i < bids.getSize(); i++){
-                                bids.get(i).setStatus(Status.REJECTED);
+                                bids.get(i).setStatus(BidStatus.REJECTED);
                             }
                             //Make accepted bid status accepted
-                            (bids.get(getAdapterPosition())).setStatus(Status.ACCEPTED);
+                            (bids.get(getAdapterPosition())).setStatus(BidStatus.ACCEPTED);
 
                             //assigns it to the appropriate provider
                             thisTask.assign((bids.get(getAdapterPosition())).getUserID());
+                            nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);
                             //updates the task
                             dm.putTask(thisTask, thiscontext);
 
@@ -187,7 +194,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                     try {
                         //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
-                        if (thisTask.getStatus() == Status.ASSIGNED) {
+                        if (thisTask.getStatus() == TaskStatus.ASSIGNED) {
                             //tell the user that task is already assigned
                             CharSequence toasttext = "Task already Assigned";
                             Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
@@ -196,16 +203,16 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             Log.d("Error", "Task already assigned");
 
                             //testing stuff
-                            if ((bids.get(getAdapterPosition())).getStatus() == Status.ACCEPTED ) {
+                            if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.ACCEPTED ) {
                                 Log.d("Message", "Bid status is ACCEPTED!");
-                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.REJECTED ) {
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.REJECTED ) {
                                 Log.d("Message", "Bid status is REJECTED!");
-                            } else if ((bids.get(getAdapterPosition())).getStatus() == Status.PENDING) {
+                            } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.PENDING) {
                                 Log.d("Message", "Bid status is PENDING!");
                             }
                         } else {
                             //Make bid status REJECTED
-                            (bids.get(getAdapterPosition())).setStatus(Status.REJECTED);
+                            (bids.get(getAdapterPosition())).setStatus(BidStatus.REJECTED);
                         }
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");

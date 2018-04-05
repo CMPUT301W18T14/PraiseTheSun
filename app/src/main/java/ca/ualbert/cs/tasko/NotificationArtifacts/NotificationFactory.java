@@ -18,13 +18,10 @@ package ca.ualbert.cs.tasko.NotificationArtifacts;
 import android.content.Context;
 
 import ca.ualbert.cs.tasko.BidList;
-import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
-
-import static ca.ualbert.cs.tasko.Status.REQUESTED;
 
 /**
  * Handles the creation of all notifications by using a switch block to create unique messages and
@@ -65,7 +62,7 @@ public class NotificationFactory {
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
                 recipientID = task.getTaskProviderID();
-                message = "You have been assigned to complete " + taskname;
+                message = "You have been assigned to complete " + taskname + "!";
                 notification = new Notification(message, recipientID, null, taskID,
                         NotificationType.TASK_PROVIDER_BID_ACCEPTED);
                 dm.putNotification(notification, context);

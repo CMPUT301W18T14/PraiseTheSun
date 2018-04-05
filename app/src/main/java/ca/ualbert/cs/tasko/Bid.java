@@ -16,7 +16,6 @@
 
 package ca.ualbert.cs.tasko;
 
-import ca.ualbert.cs.tasko.data.DataManager;
 import io.searchbox.annotations.JestId;
 
 /**
@@ -33,7 +32,7 @@ public class Bid implements Comparable<Bid>{
     private String UserID;
     private float value;
     //Alden's addition
-    private Status status;
+    private BidStatus status;
 
     @JestId
     private String BidID;
@@ -49,7 +48,7 @@ public class Bid implements Comparable<Bid>{
         this.TaskID = TaskID;
         this.value = value;
         //Alden's addition
-        this.status = Status.PENDING;
+        this.status = BidStatus.PENDING;
     }
 
     //Alden's addition
@@ -58,7 +57,7 @@ public class Bid implements Comparable<Bid>{
      *
      * @param status status of the object
      */
-    public void setStatus(Status status){
+    public void setStatus(BidStatus status){
         this.status = status;
     }
 
@@ -67,9 +66,9 @@ public class Bid implements Comparable<Bid>{
      * Method which returns the status of this bid.
      *
      * @return the status of this bid
-     * @see #setStatus(Status)
+     * @see #setStatus(BidStatus)
      */
-    public Status getStatus() {
+    public BidStatus getStatus() {
         return status;
     }
 

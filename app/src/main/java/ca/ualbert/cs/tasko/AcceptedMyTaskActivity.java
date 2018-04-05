@@ -19,8 +19,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,8 +27,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -43,6 +42,8 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     private Button completedButton;
     private final Context context = this;
     private DataManager dm = DataManager.getInstance();
+    private NotificationHandler nh = new NotificationHandler(context);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //Set this task's status to DONE
-                                assignedCurrentTask.setStatus(Status.DONE);
+                                assignedCurrentTask.setStatus(TaskStatus.DONE);
                                 finish();
                             }
                         });
@@ -122,6 +123,12 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
                 AlertDialog alert = builder.create();
                 alert.show();
+                try {
+                    nh.newNotification(assignedCurrentTask.getId(), NotificationType.RATING);
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -142,7 +149,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 //Set this task's status to REQUESTED if there were not other bids
                                 //on this task prior to the assignment
-                                assignedCurrentTask.setStatus(Status.REQUESTED);
+                                assignedCurrentTask.setStatus(TaskStatus.REQUESTED);
                                 finish();
 
                                 //Set this task's status to BIDDED if there were other bids on this
