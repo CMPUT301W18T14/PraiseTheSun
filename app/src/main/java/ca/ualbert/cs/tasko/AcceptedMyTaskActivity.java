@@ -183,7 +183,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                         //Change hidden bids to pending again
                                         if (taskBids.get(i).getStatus() != Status.ASSIGNED) {
                                             taskBids.get(i).setStatus(Status.PENDING);
-                                            if (taskBid)
+                                            //if (taskBid)
                                         }
                                         //Remove rejected-assigned bid from bidlist
                                         else {
@@ -199,7 +199,6 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                 } catch (NoInternetException e) {
                                     e.printStackTrace();
                                 }
-                                finish();
                             }
                         });
 
