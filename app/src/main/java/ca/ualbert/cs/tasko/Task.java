@@ -20,7 +20,6 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.util.Base64;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -44,7 +43,7 @@ public class Task implements Serializable {
     private String taskRequesterUsername;
     private String taskProviderID;
     private Float minBid;
-    private Status status;
+    private TaskStatus status;
 
     @JestId
     private String id;
@@ -94,7 +93,7 @@ public class Task implements Serializable {
         this.photos = photos;
         this.geolocation = null;
         this.taskProviderID = null;
-        this.status = Status.REQUESTED;
+        this.status = TaskStatus.REQUESTED;
         this.minBid = null;
         this.id = UUID.randomUUID().toString();
     }
@@ -118,8 +117,8 @@ public class Task implements Serializable {
         this.photos = photos;
         this.geolocation = location;
         this.taskProviderID = null;
-        this.status = Status.REQUESTED;
         this.id = UUID.randomUUID().toString();
+        this.status = TaskStatus.REQUESTED;
     }
 
     /**
@@ -193,6 +192,10 @@ public class Task implements Serializable {
         }
     }
 
+    public ArrayList<String> getPhotoStrings() {
+        return this.photos;
+    }
+
     // Not implemented yet
     // Todo Part 5
     public void addLocation(Location location){
@@ -210,7 +213,7 @@ public class Task implements Serializable {
      *
      * @param status status of the object
      */
-    public void setStatus(Status status){
+    public void setStatus(TaskStatus status){
         this.status = status;
     }
 
@@ -218,9 +221,9 @@ public class Task implements Serializable {
      * Method which returns the status of this task.
      *
      * @return the status of this task
-     * @see #setStatus(Status)
+     * @see #setStatus(TaskStatus)
      */
-    public Status getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
@@ -325,7 +328,7 @@ public class Task implements Serializable {
      */
     public void assign(String taskProviderID) {
         this.taskProviderID = taskProviderID;
-        this.status = Status.ASSIGNED;
+        this.status = TaskStatus.ASSIGNED;
     }
 
     @Override

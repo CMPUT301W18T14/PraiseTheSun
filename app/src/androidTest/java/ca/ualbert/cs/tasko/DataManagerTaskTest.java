@@ -102,7 +102,8 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         try{
             dm.putTask(task1);
             dm.putTask(task2);
-            task3.setStatus(Status.DONE);
+            dm.putTask(task3);
+            task3.setStatus(TaskStatus.DONE);
             dm.putTask(task3);
             try {
                 Thread.sleep(2000);

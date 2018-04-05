@@ -20,8 +20,6 @@ import android.view.Display;
 
 import com.robotium.solo.Solo;
 
-import ca.ualbert.cs.tasko.data.DataManager;
-
 /**
  * Created by imtih on 2018-03-16.
  *
@@ -81,7 +79,7 @@ public class RootActivityTest extends ActivityInstrumentationTestCase2 {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        solo.assertCurrentActivity("wrong activity", ViewTasksBiddedOnActivity.class);
+        solo.assertCurrentActivity("wrong activity", ViewTasksIBiddedOnActivity.class);
     }
 
     public void testGoToViewUserProfile(){

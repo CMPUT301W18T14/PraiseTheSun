@@ -26,6 +26,7 @@ import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
 
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteBidCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteNotificationCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetNotificationsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
@@ -365,8 +366,15 @@ public class DataManager {
     }
 
     //TODO
-    public void deleteNotification(String userId, Context context){
+    public void deleteNotification(String notificationId) throws
+            NoInternetException {
+        DeleteNotificationCommand deleteNotificationCommand = new DeleteNotificationCommand(notificationId);
 
+        if(ConnectivityState.getConnected()){
+            dcm.invokeCommand(deleteNotificationCommand);
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     /**

@@ -96,7 +96,7 @@ public class ViewMyTasksActivity extends RootActivity {
 
                 if (parent.getItemAtPosition(pos).equals("Requested")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (myTasks.get(i).getStatus() != Status.REQUESTED) {
+                        if (myTasks.get(i).getStatus() != TaskStatus.REQUESTED) {
                             myTasks.removeTask(myTasks.get(i));
                             --i;
                         }
@@ -104,7 +104,7 @@ public class ViewMyTasksActivity extends RootActivity {
                 }
                 else if (parent.getItemAtPosition(pos).equals("Bidded")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (myTasks.get(i).getStatus() != Status.BIDDED) {
+                        if (myTasks.get(i).getStatus() != TaskStatus.BIDDED) {
                             myTasks.removeTask(myTasks.get(i));
                             --i;
                         }
@@ -112,7 +112,7 @@ public class ViewMyTasksActivity extends RootActivity {
                 }
                 else if (parent.getItemAtPosition(pos).equals("Assigned")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
-                        if (myTasks.get(i).getStatus() != Status.ASSIGNED) {
+                        if (myTasks.get(i).getStatus() != TaskStatus.ASSIGNED) {
                             myTasks.removeTask(myTasks.get(i));
                             --i;
                         }

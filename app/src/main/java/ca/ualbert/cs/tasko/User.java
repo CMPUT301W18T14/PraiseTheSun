@@ -41,9 +41,7 @@ public class User {
     private String name;
     private String phoneNumber;
     private String email;
-    private float rating;
-
-
+    private ArrayList<Float> ratings;
 
     public User(){
 
@@ -62,7 +60,7 @@ public class User {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.rating = 5;
+        this.ratings = new ArrayList<>(5);
 
     }
 
@@ -149,23 +147,28 @@ public class User {
      * Method that returns the rating of the user
      *
      * @return the rating of the user
-     * @see #setRating(float)
      */
     public float getRating() {
-        return rating;
+
+        float sum = 0;
+        for (int i = 0; i < ratings.size(); i++){
+            sum += ratings.get(i);
+        }
+        return ratings.size() == 0 ? sum : sum/ratings.size();
     }
 
     /**
-     * Method that sets the rating of the user
+     * Method that adds a float to the users rating
      *
      * @param rating the rating of the user
-     * @throws IllegalArgumentException if rating given is greater than 10
      */
-    public void setRating (float rating) throws IllegalArgumentException{
-        if(rating < 0 || rating > 10){
-            throw new IllegalArgumentException("Argument must be between 0 and 10 inclusive.");
-        }
-        this.rating = rating;
+    public void addRating (float rating){
+        if (ratings.size() == 4){
+            ratings.remove(0);
+            ratings.add(rating);
+        }else
+            ratings.add(rating);
+
     }
 
     /**

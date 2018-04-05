@@ -55,14 +55,14 @@ public class NotificationFactory {
         switch (notificationType){
             case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
                 recipientID = task.getTaskRequesterID();
-                message = "You have received a new Bid on" + taskname;
+                message = "You have received a new bid on your task: " + taskname + "!";
                 notification = new Notification(message, recipientID, null, taskID
                         , NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
                 dm.putNotification(notification);
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
                 recipientID = task.getTaskProviderID();
-                message = "You have been assigned to complete" + taskname;
+                message = "You have been assigned to complete " + taskname + "!";
                 notification = new Notification(message, recipientID, null, taskID,
                         NotificationType.TASK_PROVIDER_BID_ACCEPTED);
                 dm.putNotification(notification);
@@ -96,7 +96,6 @@ public class NotificationFactory {
                             NotificationType.TASK_DELETED);
                     dm.putNotification(notification);
                 }
-
                 break;
         }
 
