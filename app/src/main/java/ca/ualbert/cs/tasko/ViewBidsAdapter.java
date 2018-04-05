@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -164,10 +165,8 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             dm.putTask(thisTask, thiscontext);
 
                             //task assigned and bid accepted.
-                            //brings the user back to view my task
-                            Intent intent;
-                            intent = new Intent(thiscontext, ViewMyTasksActivity.class);
-                            thiscontext.startActivity(intent);
+                            //brings the user back to view my task details
+                            ((ViewBidsOnTaskActivity)thiscontext).finish();
 
                         }
                     } catch (NullPointerException e) {
