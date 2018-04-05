@@ -110,7 +110,8 @@ public class AddTaskActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                             Toast.LENGTH_LONG).show();
                                 }
-                            } else {
+                            }
+                            else if (initialX < finalX){
                                 if (position > 0) {
                                     position--;
                                     imageView.setImageBitmap(images.get(position));

@@ -255,6 +255,7 @@ public class AddPhotoActivity extends AppCompatActivity {
              */
             long imageLength = byteArray.length;
             if (imageLength > 65535) {
+                Log.d("Not Error", Long.toString(imageLength));
                 String message = "Image file #" + Integer.toString(i + 1) + " is too big.";
                 Toast.makeText(this.getApplicationContext(), message, Toast
                         .LENGTH_LONG).show();
@@ -264,6 +265,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                 // https://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
                 String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
                 imgStrings.add(encodedImage);
+                Log.d("Not Error", Integer.toString(byteArray.length));
             }
         }
         if (passed) {
@@ -307,7 +309,10 @@ public class AddPhotoActivity extends AppCompatActivity {
                         InputStream inputStream;
                         try {
                             inputStream = getContentResolver().openInputStream(selectedImage);
-                            images.add(BitmapFactory.decodeStream(inputStream));
+                            Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+                            image = findSize(image, 1.0);
+                            images.add(image);
                             confirm.setEnabled(true);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -321,6 +326,21 @@ public class AddPhotoActivity extends AppCompatActivity {
                             "chosen.\nViewing photo 1/" + Integer.toString(numImages));
                 }
             }
+        }
+    }
+
+    private Bitmap findSize(Bitmap image, double size) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        long imageLength = stream.toByteArray().length;
+        if (imageLength > 65535) {
+            size = size * (1.0/2.0);
+            image = Bitmap.createScaledBitmap(image, (int) Math.round(image.getWidth
+                    () * size), (int) Math.round(image.getHeight() * size), false);
+            return findSize(image, size);
+        }
+        else {
+            return image;
         }
     }
 }
