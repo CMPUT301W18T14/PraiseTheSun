@@ -65,7 +65,7 @@ public class NotificationFactory {
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
                 recipientID = task.getTaskProviderID();
-                message = "You have been assigned to complete " + taskname;
+                message = "You have been assigned to complete " + taskname + "!";
                 notification = new Notification(message, recipientID, null, taskID,
                         NotificationType.TASK_PROVIDER_BID_ACCEPTED);
                 dm.putNotification(notification, context);

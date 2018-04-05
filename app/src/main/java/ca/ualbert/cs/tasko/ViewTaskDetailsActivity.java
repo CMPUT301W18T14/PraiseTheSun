@@ -18,6 +18,8 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -91,11 +93,8 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         }
 
         setupDeleteButton();
-
-        setupEditButton();
-
+        setUpEditButton();
         setupViewBidsButton();
-
     }
 
     private void setupDeleteButton() {
@@ -151,17 +150,20 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
-    private void setupEditButton() {
+    private void setUpEditButton() {
         editButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            @Override
+            public void onClick(View view) {
                 if(currentTask.getStatus() != Status.REQUESTED) {
-                    Toast.makeText(getApplicationContext(),"This task already has bids on it. This task can no longer be edited.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"This task already has a bid on it. " +
+                            "This task can no longer be edited.", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    //This should go to a pre-filled in version of the AddTaskActivity
+                    Intent editTask = new Intent(context, AddTaskActivity.class);
+                    editTask.putExtra("task", currentTask);
+                    startActivityForResult(editTask, 19);
                 }
             }
         });
@@ -205,5 +207,23 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
         viewPhotosIntent.putExtra("photos", currentTask);
         startActivity(viewPhotosIntent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 19) {
+            currentTask = (Task) data.getSerializableExtra("task");
+            fillInformation();
+            ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+            if (currentTask.hasPhoto()) {
+                imageView.setImageBitmap(currentTask.getCoverPhoto());
+            }
+            else {
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .ic_menu_gallery);
+                imageView.setImageBitmap(image);
+            }
+        }
     }
 }

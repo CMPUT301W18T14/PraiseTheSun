@@ -20,7 +20,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.util.Base64;
 import java.io.Serializable;
-import java.lang.reflect.Array;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -188,6 +188,10 @@ public class Task implements Serializable {
         else {
             return null;
         }
+    }
+
+    public ArrayList<String> getPhotoStrings() {
+        return this.photos;
     }
 
     // Not implemented yet
