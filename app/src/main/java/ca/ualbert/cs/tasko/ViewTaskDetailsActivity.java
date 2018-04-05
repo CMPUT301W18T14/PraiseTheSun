@@ -31,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -152,11 +151,10 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
     private void setUpEditButton() {
         editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(currentTask.getStatus() != Status.REQUESTED) {
-                    Toast.makeText(getApplicationContext(),"This task already has a bid on it. " +
-                            "This task can no longer be edited.", Toast.LENGTH_LONG).show();
+            public void onClick(View v) {
+                if(currentTask.getStatus() != TaskStatus.REQUESTED) {
+                    Toast.makeText(getApplicationContext(),"This task already has bids on it. This task can no longer be edited.", Toast.LENGTH_SHORT).show();
+
                 }
                 else {
                     Intent editTask = new Intent(context, AddTaskActivity.class);
@@ -170,7 +168,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private void setupViewBidsButton() {
         viewBidsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(currentTask.getStatus() == Status.REQUESTED) {
+                if(currentTask.getStatus() == TaskStatus.REQUESTED) {
                     Toast.makeText(getApplicationContext(),"This task is still requested and has no bids on it.", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -190,7 +188,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         //String taskStatusString = currentTask.getStatus().toString();
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
-        if (currentTask.getStatus() == Status.BIDDED) {
+        if (currentTask.getStatus() == TaskStatus.BIDDED) {
             taskStatus.setText(currentTask.getStatus().toString() + ": Lowest bid of $" + currentTask.getMinBid().toString());
         }
         else {

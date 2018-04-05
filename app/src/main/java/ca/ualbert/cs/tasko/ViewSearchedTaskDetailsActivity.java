@@ -35,7 +35,6 @@ import android.text.method.DigitsKeyListener;
 
 import java.util.List;
 
-import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -173,8 +172,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     private void placeBid(float value){
         if(CurrentUser.getInstance().loggedIn()) {
-            if(currentTask.getStatus() != Status.BIDDED) {
-                currentTask.setStatus(Status.BIDDED);
+            if(currentTask.getStatus() != TaskStatus.BIDDED) {
+                currentTask.setStatus(TaskStatus.BIDDED);
             }
             if(value < lowbid || lowbid == -1){
                 lowbid = value;
