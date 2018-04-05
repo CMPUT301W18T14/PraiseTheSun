@@ -211,7 +211,8 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             }
                         } else {
                             //Make bid status REJECTED
-                            (bids.get(getAdapterPosition())).setStatus(Status.REJECTED);
+                            dm.deleteBid(bids.get(getAdapterPosition()), thiscontext);
+                            notifyDataSetChanged();
                         }
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");
