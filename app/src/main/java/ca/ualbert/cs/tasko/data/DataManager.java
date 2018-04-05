@@ -166,7 +166,7 @@ public class DataManager {
             if(ConnectivityState.getConnected()){
                 dcm.invokeCommand(command);
             } else {
-                dcm.addToQueue(command);
+                LocalDataManager.addCommandToQueue(command, appCtx);
             }
         } else {
             if(ConnectivityState.getConnected()){
@@ -191,7 +191,7 @@ public class DataManager {
         if(ConnectivityState.getConnected()){
             dcm.invokeCommand(dtc);
         } else {
-            dcm.addToQueue(dtc);
+            LocalDataManager.addCommandToQueue(dtc, appCtx);
             throw new NoInternetException();
         }
     }
@@ -339,7 +339,6 @@ public class DataManager {
         if(ConnectivityState.getConnected()){
             dcm.invokeCommand(dbc);
         } else {
-            dcm.addToQueue(dbc);
             throw new NoInternetException();
         }
     }

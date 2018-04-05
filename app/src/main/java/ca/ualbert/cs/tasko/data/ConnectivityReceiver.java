@@ -29,8 +29,10 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         //TODO: IF WE GAIN INTERNET EXECUTE COMMMAND QUEUE
-        //DataCommandManager.getInstance().executeQueue();
         ConnectivityState.setConnected(isOnline(context));
+        if(ConnectivityState.getConnected()){
+            LocalDataManager.executeAllPendingCommands(context);
+        }
     }
 
     private boolean isOnline(Context context){

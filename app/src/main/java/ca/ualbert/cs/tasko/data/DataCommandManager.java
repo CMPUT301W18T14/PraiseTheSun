@@ -36,7 +36,6 @@ import ca.ualbert.cs.tasko.Commands.Command;
  */
 public class DataCommandManager {
     private LinkedList<Command> historyList;
-    private LinkedList<Command> queue;
     private static DataCommandManager instance = new DataCommandManager();
 
     /**
@@ -44,7 +43,6 @@ public class DataCommandManager {
      */
     private DataCommandManager(){
         historyList = new LinkedList<>();
-        queue = new LinkedList<>();
     }
 
     /**
@@ -68,16 +66,4 @@ public class DataCommandManager {
             historyList.clear();
         }
     }
-
-    public void addToQueue(Command command){
-        queue.add(command);
-    }
-
-    public void executeQueue(){
-        for(Command command: queue){
-            invokeCommand(queue.remove());
-        }
-    }
-
-    //TODO: Add an undo all and undo last
 }
