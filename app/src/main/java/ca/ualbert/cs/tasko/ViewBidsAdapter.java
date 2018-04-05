@@ -212,6 +212,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             }
                         } else {
                             //Make bid status REJECTED
+                            bids.removeBid(bids.get(getAdapterPosition()));
                             dm.deleteBid(bids.get(getAdapterPosition()), thiscontext);
                             notifyDataSetChanged();
                         }
