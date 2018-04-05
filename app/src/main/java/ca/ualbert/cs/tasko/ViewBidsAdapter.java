@@ -148,7 +148,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.PENDING) {
                                 Log.d("Message", "Bid status is PENDING!");
                             }
-                        } else if ((bids.get(getAdapterPosition())).getStatus() == Status.REJECTED) {
+                        } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.REJECTED) {
 
                             //tell the user that the bid is already rejected
                             CharSequence toasttext = "Bid already Rejected";
