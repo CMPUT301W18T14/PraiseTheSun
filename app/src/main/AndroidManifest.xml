@@ -76,6 +76,7 @@
             android:name=".AcceptedMyTaskActivity"
             android:label="@string/title_activity_accepted_task"
             android:theme="@style/AppTheme"/>
+        <activity android:name=".OtherUsersProfileActivity" />
     </application>
 
 </manifest>
