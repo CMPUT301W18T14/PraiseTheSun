@@ -18,13 +18,10 @@ package ca.ualbert.cs.tasko.NotificationArtifacts;
 import android.content.Context;
 
 import ca.ualbert.cs.tasko.BidList;
-import ca.ualbert.cs.tasko.Status;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
-
-import static ca.ualbert.cs.tasko.Status.REQUESTED;
 
 /**
  * Handles the creation of all notifications by using a switch block to create unique messages and
@@ -48,7 +45,6 @@ public class NotificationFactory {
 
         Notification notification = null;
         Task task = dm.getTask(taskID, context);
-
         String message;
         String taskname = task.getTaskName();
         String recipientID;
@@ -58,18 +54,18 @@ public class NotificationFactory {
         switch (notificationType){
             case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
                 recipientID = task.getTaskRequesterID();
-                message = "You have received a new Bid on" + taskname;
+                message = "You have received a new bid on your task: " + taskname + "!";
                 notification = new Notification(message, recipientID, null, taskID
                         , NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
                 dm.putNotification(notification, context);
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
                 recipientID = task.getTaskProviderID();
-                message = "You have been assigned to complete" + taskname;
+                message = "You have been assigned to complete " + taskname + "!";
                 notification = new Notification(message, recipientID, null, taskID,
                         NotificationType.TASK_PROVIDER_BID_ACCEPTED);
-                dm.putNotification(notification, context);
-                break;
+               dm.putNotification(notification, context);
+                 break;
             case RATING:
                 User taskprovider = dm.getUserById(task.getTaskProviderID(), context);
                 User taskrequestor = dm.getUserById(task.getTaskRequesterID(), context);
@@ -84,12 +80,14 @@ public class NotificationFactory {
                 notification = new Notification(message, taskprovider.getId(), taskrequestor.getId(), taskID, NotificationType.RATING);
                 dm.putNotification(notification, context);
                 break;
-            case TASK_PROVIDER_BID_DECLINED:
-                recipientID = task.getTaskProviderID();
-                message = "Your Bid on " + taskname + " has been Declined. Try making a lower Bid ";
-                notification = new Notification(message, recipientID, null, taskID,
-                        NotificationType.TASK_PROVIDER_BID_DECLINED);
-                dm.putNotification(notification, context);
+            case TASK_REQUESTOR_REPOSTED_TASK:
+                BidList reOpenedBids = dm.getTaskBids(taskID, context);
+                for(int i = 0; i < reOpenedBids.getSize(); i++){
+                    message = taskname + "Has been ReRequested by the poster!";
+                    notification = new Notification(message, reOpenedBids.get(i).getUserID(), null, taskID,
+                            NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+                    dm.putNotification(notification, context);
+                }
                 break;
             case TASK_DELETED:
                 BidList deletedBids = dm.getTaskBids(taskID, context);
@@ -99,7 +97,6 @@ public class NotificationFactory {
                             NotificationType.TASK_DELETED);
                     dm.putNotification(notification, context);
                 }
-
                 break;
         }
 

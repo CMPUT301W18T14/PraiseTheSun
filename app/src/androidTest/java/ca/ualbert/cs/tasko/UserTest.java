@@ -15,10 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
-
-import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Created by ryan on 2018-02-24.
@@ -31,26 +28,11 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
     }
 
     User user;
-    User provider;
-    Bid bid;
     Task task;
 
-    @Override
-    public void setUp(){
-        user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-        user.setId("userid");
-        provider = new User("jdoe", "John Doe", "123-456-9999", "jdoe@example.com");
-        user.setId("userid2");
-
-        task = new Task("jdoeID", "Test Task", "This is a simple test!");
-        task.setId("taskid");
-
-        /*TODO: Implememnt using new bid*/
-        bid = new Bid(provider.getId(), 4.99f, task.getId());
-    }
-
     public void testCreateUser() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+
+        user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
         assertEquals(user.getUsername(), "rromano");
         assertEquals(user.getName(), "Ryan");
@@ -59,27 +41,32 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
     }
 
-    /*TODO: RedoTest cases for Updated Notifications Class*/
-//    public void testGetNotifications() {
-//        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
-//        User user2 = new User("Bob_Dylan", "Bob", "555-456-1239", "tambourineman@music.com");
-//        Task task = new Task(user2, "Good Task Name", "Better description.");
-//        NotificationHandler notification = new NotificationHandler(task);
-//
-//        assertNull(user.getNotifications());
-//        notification.sendNotification(notification);
-//        assertTrue(user.getNotifications().contains(notification));
-//    }
+    public void testGetRating(){
+        user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+
+        assertEquals(user.getRating(), 0.0F);
+        user.addRating(5.0f);
+        assertEquals(user.getRating(), 5.0F);
+    }
+
+    public void testAddRating(){
+        user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+
+        user.addRating(5.0f);
+        assertEquals(user.getRating(), 5.0F);
+
+        //Try to "Flush Out the Five Rating"
+        int i = 0;
+        while(i < 4){
+            user.addRating(0.0f);
+            i++;
+        }
+
+        assertEquals(user.getRating(), 0.0F);
 
 
-    public void testGetRating() {
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
-        assertTrue(user.getRating() == 5);
-        user.setRating(3.25f);
-        assertFalse(user.getRating() == 4.25f);
-        assertFalse(user.getRating() == -1.0f);
-        assertTrue(user.getRating() == 3.25f);
+
     }
 
 }

@@ -18,11 +18,9 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +35,7 @@ import android.text.method.DigitsKeyListener;
 
 import java.util.List;
 
-import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -174,8 +172,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     private void placeBid(float value){
         if(CurrentUser.getInstance().loggedIn()) {
-            if(currentTask.getStatus() != Status.BIDDED) {
-                currentTask.setStatus(Status.BIDDED);
+            if(currentTask.getStatus() != TaskStatus.BIDDED) {
+                currentTask.setStatus(TaskStatus.BIDDED);
             }
             if(value < lowbid || lowbid == -1){
                 lowbid = value;
@@ -230,9 +228,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 }
                 dm.addBid(bid, appContext);
                 dm.putTask(currentTask, appContext);
-                NotificationFactory nf = new NotificationFactory();
-                nf.setContext(getApplicationContext());
-                nf.createNotification(currentTask.getId(), NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
+                NotificationHandler nh = new NotificationHandler(getApplicationContext());
+                nh.newNotification(currentTask.getId(), NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
             } catch (NoInternetException e) {
                 runOnUiThread(new Runnable() {
                     @Override
