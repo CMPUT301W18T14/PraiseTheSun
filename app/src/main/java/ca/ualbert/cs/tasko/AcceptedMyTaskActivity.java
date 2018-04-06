@@ -149,6 +149,12 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 //Set this task's status to REQUESTED if there were not other bids
                                 //on this task prior to the assignment
+                                NotificationHandler nh = new NotificationHandler(context);
+                                try {
+                                    nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+                                } catch (NoInternetException e) {
+                                    e.printStackTrace();
+                                }
                                 assignedCurrentTask.setStatus(TaskStatus.REQUESTED);
                                 finish();
 
