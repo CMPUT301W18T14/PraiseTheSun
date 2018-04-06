@@ -94,9 +94,21 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         df.setMaximumFractionDigits(2);
         assignedTaskName.setText(assignedCurrentTask.getTaskName());
         assignedTaskDescription.setText(assignedCurrentTask.getDescription());
-        String lowestBidAmount = df.format(assignedCurrentTask.getMinBid());
-        assignedTaskStatus.setText(assignedCurrentTask.getStatus().toString() + ": bid of $" +
-                lowestBidAmount + " by ");
+        //Get bids that were on this task
+        BidList taskBids = new BidList();
+        try {
+            taskBids = dm.getTaskBids(assignedCurrentTask.getId(), context);
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < taskBids.getSize(); i++) {
+            if (taskBids.get(i).getStatus() == BidStatus.ACCEPTED) {
+                String acceptedBidAmount = df.format(taskBids.get(i).getValue());
+                String minBidUser = taskBids.get(i).getUserID();
+                assignedTaskStatus.setText(assignedCurrentTask.getStatus().toString() + ": bid of $" +
+                        acceptedBidAmount + " by " + minBidUser);
+            }
+        }
     }
 
     public void onPhotoClick(View view) {
@@ -206,7 +218,6 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                     taskBids.removeBid(taskBids.get(0));
                                     assignedCurrentTask.setMinBidNull();
                                 }
-
 
                                 //Set this task's status to BIDDED if there were other bids on this
                                 //task prior to the assignment
