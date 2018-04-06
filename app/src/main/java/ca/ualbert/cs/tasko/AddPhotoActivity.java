@@ -72,7 +72,7 @@ public class AddPhotoActivity extends AppCompatActivity {
      * Called when the activity is started.
      *
      */
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +109,7 @@ public class AddPhotoActivity extends AppCompatActivity {
             private float initialX;
             private int position = 0;
 
+            @SuppressLint("SetTextI18n")
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 //Log.i("Not Error", Integer.toString(numImages));
@@ -157,6 +158,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                                 builder1.setPositiveButton(
                                         "Yes",
                                         new DialogInterface.OnClickListener() {
+                                            @SuppressLint("SetTextI18n")
                                             public void onClick(DialogInterface dialog, int id) {
                                                 images.remove(position);
                                                 numImages -= 1;
@@ -282,6 +284,7 @@ public class AddPhotoActivity extends AppCompatActivity {
      * @param data Information sent back from activity
 
      */
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

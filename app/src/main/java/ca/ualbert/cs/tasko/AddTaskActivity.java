@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -66,6 +67,7 @@ public class AddTaskActivity extends AppCompatActivity {
      * a task.
      *
      */
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +110,7 @@ public class AddTaskActivity extends AppCompatActivity {
         switcher.setOnTouchListener(new View.OnTouchListener() {
             private float initialX;
             private int position = 0;
+            @SuppressLint("SetTextI18n")
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 //Log.i("Not Error", Integer.toString(numImages));
@@ -194,6 +197,7 @@ public class AddTaskActivity extends AppCompatActivity {
      * @param resultCode Code sent from called activity indicating if task was completed
      * @param data Information sent back from activity
      */
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

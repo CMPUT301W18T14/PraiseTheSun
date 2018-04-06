@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -82,6 +83,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         setupRepostButton();
     }
 
+    @SuppressLint("SetTextI18n")
     private void fillInformation() {
         assignedTaskName.setText(assignedCurrentTask.getTaskName());
         assignedTaskDescription.setText(assignedCurrentTask.getDescription());

@@ -22,34 +22,41 @@
         <item
             android:id="@+id/get_home"
             android:icon="?android:attr/actionModeCopyDrawable"
-            android:title="Home" />
+            android:title="Home"
+            tools:ignore="HardcodedText" />
         <item
             android:id="@+id/add_new_task"
             android:icon="@android:drawable/ic_input_add"
-            android:title="Add new task" />
+            android:title="Add new task"
+            tools:ignore="HardcodedText" />
         <item
             android:id="@+id/my_tasks"
             android:icon="@drawable/ic_menu_manage"
-            android:title="My tasks" />
+            android:title="My tasks"
+            tools:ignore="HardcodedText" />
         <item
             android:id="@+id/my_bids"
             android:icon="?android:attr/actionModeFindDrawable"
-            android:title="My bids" />
+            android:title="My bids"
+            tools:ignore="HardcodedText" />
 
         <item
             android:id="@+id/my_assignments"
             android:icon="?android:attr/actionModePasteDrawable"
-            android:title="My assignments" />
+            android:title="My assignments"
+            tools:ignore="HardcodedText" />
 
         <item
             android:id="@+id/find_nearby_tasks"
             android:icon="?android:attr/actionModeWebSearchDrawable"
-            android:title="Find nearby tasks" />
+            android:title="Find nearby tasks"
+            tools:ignore="HardcodedText" />
 
         <item
             android:id="@+id/view_profile"
             android:icon="@android:drawable/ic_menu_info_details"
-            android:title="View profile" />
+            android:title="View profile"
+            tools:ignore="HardcodedText" />
     </group>
 
 
