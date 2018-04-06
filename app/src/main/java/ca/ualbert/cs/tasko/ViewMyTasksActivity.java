@@ -61,8 +61,6 @@ public class ViewMyTasksActivity extends RootActivity {
         adpaterSetup();
     }
 
-
-
     private void adpaterSetup() {
         setContentView(R.layout.activity_view_my_tasks);
 
@@ -71,6 +69,12 @@ public class ViewMyTasksActivity extends RootActivity {
         myTasksRecyclerView.setLayoutManager(myTasksLayoutManager);
         loadingCircle = (ProgressBar) findViewById(R.id.loadingCircle);
 
+        //Give some time to get updated values from the server
+        try {
+            Thread.sleep(500);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
         filterOptions();
     }
 

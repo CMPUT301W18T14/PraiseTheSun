@@ -154,6 +154,23 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            String taskID = getIntent().getExtras().getString("TaskID");
+            currentTask = dm.getTask(taskID, this);
+        } catch (NullPointerException e) {
+            Log.i("Error", "TaskID not properly passed");
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
+
+        if (currentTask.getStatus() == TaskStatus.ASSIGNED) {
+            finish();
+        }
+    }
+
     private void setUpEditButton() {
         editButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -18,6 +18,8 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -73,7 +75,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+        ImageView imageView = (ImageView) findViewById(R.id.myAssignedTasksImageView);
         if (assignedCurrentTask.hasPhoto()) {
             imageView.setImageBitmap(assignedCurrentTask.getCoverPhoto());
         }
@@ -101,6 +103,24 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
         viewPhotosIntent.putExtra("photos", assignedCurrentTask);
         startActivity(viewPhotosIntent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 19) {
+            assignedCurrentTask = (Task) data.getSerializableExtra("task");
+            fillInformation();
+            ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+            if (assignedCurrentTask.hasPhoto()) {
+                imageView.setImageBitmap(assignedCurrentTask.getCoverPhoto());
+            }
+            else {
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .ic_menu_gallery);
+                imageView.setImageBitmap(image);
+            }
+        }
     }
 
     private void setupCompleteButton() {
@@ -184,7 +204,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
                                     //Remove this rejected bid
                                     taskBids.removeBid(taskBids.get(0));
-                                    assignedCurrentTask.setMinBid(null);
+                                    assignedCurrentTask.setMinBidNull();
                                 }
 
 
