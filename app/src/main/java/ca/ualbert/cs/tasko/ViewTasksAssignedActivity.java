@@ -96,19 +96,6 @@ public class ViewTasksAssignedActivity extends RootActivity {
             userBids = dm.getUserBids(User.getId(), context);
             assignedTasks = new TaskList();
             for (int i = 0; i < userBids.getSize(); i++) {
-                Log.d("msg", "bid check");
-                if (i > i -1) {
-                    Log.d("msg", "index increase");
-                }
-
-                if (userBids.get(i).getStatus() == BidStatus.PENDING) {
-                    Log.d("msg", "bid is pending");
-                }
-
-                if (userBids.get(i).getStatus() == BidStatus.REJECTED) {
-                    Log.d("msg", "bid is rejected");
-                }
-
                 if (userBids.get(i).getStatus() == BidStatus.ACCEPTED) {
                     Log.d("msg", "bid is accepted");
                     assignedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));

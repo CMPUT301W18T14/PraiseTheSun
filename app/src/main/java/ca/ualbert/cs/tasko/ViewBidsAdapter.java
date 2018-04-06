@@ -173,6 +173,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             //nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);
                             //updates the task
                             dm.putTask(thisTask, thiscontext);
+                            dm.addBid(bids.get(getAdapterPosition()), thiscontext);
 
                             //task assigned and bid accepted.
                             //brings the user back to view my task details
