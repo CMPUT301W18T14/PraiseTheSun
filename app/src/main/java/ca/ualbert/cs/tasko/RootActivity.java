@@ -135,7 +135,17 @@ public class RootActivity extends AppCompatActivity {
                                 break;
 */
                             case R.id.find_nearby_tasks:
-                                if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                boolean validGPS = false;
+                                boolean validLocation = false;
+                                try{
+                                    validGPS = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                                }
+                                catch (Exception e){}
+                                try{
+                                    validLocation = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                                }
+                                catch (Exception e){}
+                                if(validGPS || validLocation) {
                                     i = new Intent(getApplicationContext(), NearbyTasksActivity.class);
                                     i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                     startActivity(i);
