@@ -30,7 +30,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.text.DecimalFormat;
+import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -52,6 +53,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private Button viewBidsButton;
     private final Context context = this;
     private DataManager dm = DataManager.getInstance();
+    private boolean edit;
 
     /**
      * On creation of the activity, fills the relevant displays with information selected from the
@@ -153,6 +155,28 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!edit) {
+            try {
+                String taskID = getIntent().getExtras().getString("TaskID");
+                currentTask = dm.getTask(taskID, this);
+            } catch (NullPointerException e) {
+                Log.i("Error", "TaskID not properly passed");
+            } catch (NoInternetException e) {
+                e.printStackTrace();
+            }
+
+            if (currentTask.getStatus() == TaskStatus.ASSIGNED) {
+                finish();
+            }
+        }
+        else {
+            edit = false;
+        }
+    }
+
     private void setUpEditButton() {
         editButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -163,6 +187,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                 else {
                     Intent editTask = new Intent(context, AddTaskActivity.class);
                     editTask.putExtra("task", currentTask);
+                    edit = true;
                     startActivityForResult(editTask, 19);
                 }
             }
@@ -188,15 +213,27 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     }
 
     private void fillInformation() {
-        //String minBidAmount = df.format(currentTask.getMinBid());
-        //String taskStatusString = currentTask.getStatus().toString();
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
         if (currentTask.getStatus() == TaskStatus.BIDDED) {
-            taskStatus.setText(currentTask.getStatus().toString() + ": Lowest bid of $" + currentTask.getMinBid().toString());
+            String minBidAmount = df.format(currentTask.getMinBid());
+            String taskStatusString = currentTask.getStatus().toString();
+            taskStatus.setText(taskStatusString + ": Lowest bid of $" + minBidAmount);
         }
         else {
             taskStatus.setText(currentTask.getStatus().toString());
+        }
+        ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+        if (currentTask.hasPhoto()) {
+            imageView.setImageBitmap(currentTask.getCoverPhoto());
+        }
+        else {
+            Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable
+                    .ic_menu_gallery);
+            imageView.setImageBitmap(image);
         }
     }
 
@@ -212,15 +249,6 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == 19) {
             currentTask = (Task) data.getSerializableExtra("task");
             fillInformation();
-            ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
-            if (currentTask.hasPhoto()) {
-                imageView.setImageBitmap(currentTask.getCoverPhoto());
-            }
-            else {
-                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable
-                        .ic_menu_gallery);
-                imageView.setImageBitmap(image);
-            }
         }
     }
 }

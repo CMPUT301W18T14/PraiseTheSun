@@ -65,6 +65,7 @@
         <item>Requested</item>
         <item>Bidded</item>
         <item>Assigned</item>
+        <item>Done</item>
     </string-array>
     <string name="your_bid">Your Bid</string>
     <string name="bidded_task_title">Task Title</string>
