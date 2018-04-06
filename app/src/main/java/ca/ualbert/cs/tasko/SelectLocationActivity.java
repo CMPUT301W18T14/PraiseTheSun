@@ -20,6 +20,9 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -89,6 +92,7 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1111;
     private static final float DEFAULT_ZOOM = 15f;
+    private static final String TAG = "SelectLocationActivity";
     private Boolean mLocationPermission = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -107,7 +111,7 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
         //View contentView = inflater.inflate(R.layout.activity_nearby_tasks, null, false);
         //drawerLayout.addView(contentView, 0);
         setContentView(R.layout.activity_select_location);
-        mSearchText = (EditText)  findViewById(R.id.local_search);
+       //mSearchText = (EditText)  findViewById(R.id.local_search);
         mGps = (ImageView) findViewById(R.id.ic_gps_select);
         addButton = (ImageButton) findViewById(R.id.addLocation);
         getLocationPermission();
@@ -115,6 +119,7 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
     }
 
     private void init(){
+        /*
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -128,7 +133,26 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
                 return false;
             }
         });
+        */
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment_location_select);
 
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+
+                LatLng address = place.getLatLng();
+                moveCamera(new LatLng(address.latitude, address.longitude), DEFAULT_ZOOM, place.getAddress().toString());
+                Log.i(TAG, "Place: " + place.getName());
+            }
+
+            @Override
+            public void onError(com.google.android.gms.common.api.Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+
+        });
         mGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

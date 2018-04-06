@@ -57,45 +57,51 @@ android:layout_height="match_parent">
         android:elevation="10dp"
         android:background="@drawable/search_border"
         android:id="@+id/nearby_tasks_search_bar">
+        <!--
+                <ImageView
+                    android:id="@+id/ic_magnify"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_search_bar_icon" />
 
-        <ImageView
-            android:id="@+id/ic_magnify"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_search_bar_icon" />
 
-
-        <EditText
-            android:id="@+id/local_search"
+                <EditText
+                    android:id="@+id/local_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/ic_magnify"
+                    android:background="@null"
+                    android:hint="Enter Address, City, or Postal Code"
+                    android:textColor="#000"
+                    android:textSize="15sp" />-->
+            <fragment
+            android:id="@+id/place_autocomplete_fragment_location_select"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/ic_magnify"
-            android:background="@null"
-            android:hint="Enter Address, City, or Postal Code"
-            android:textColor="#000"
-            android:textSize="15sp" />
-    </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            />
+            </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/ic_gps_select"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/nearby_tasks_search_bar"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="centerCrop"
-        android:src="@android:drawable/ic_menu_mylocation" />
+            <ImageView
+                android:id="@+id/ic_gps_select"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/nearby_tasks_search_bar"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_mylocation" />
 
-    <ImageButton
-        android:id="@+id/addLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/nearby_tasks_search_bar"
-        android:layout_below="@+id/nearby_tasks_search_bar"
-        android:src="@android:drawable/ic_menu_add" />
+            <ImageButton
+                android:id="@+id/addLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/nearby_tasks_search_bar"
+                android:layout_below="@+id/nearby_tasks_search_bar"
+                android:src="@android:drawable/ic_menu_add" />
 
-</RelativeLayout>
+        </RelativeLayout>

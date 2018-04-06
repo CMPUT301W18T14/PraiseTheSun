@@ -42,6 +42,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -64,6 +67,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1111;
     private static final float DEFAULT_ZOOM = 15f;
+    private static final String TAG = "NearbyTasksActivity";
     private Boolean mLocationPermission = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -80,7 +84,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         //View contentView = inflater.inflate(R.layout.activity_nearby_tasks, null, false);
         //drawerLayout.addView(contentView, 0);
         setContentView(R.layout.activity_nearby_tasks);
-        mSearchText = (EditText)  findViewById(R.id.nearby_tasks_location_search_text);
+        //mSearchText = (EditText)  findViewById(R.id.nearby_tasks_location_search_text);
         mGps = (ImageView) findViewById(R.id.ic_gps);
         getLocationPermission();
 
@@ -88,7 +92,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
 
     private void init(){
 
-
+/*
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -102,7 +106,27 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                 return false;
             }
         });
+*/
 
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+
+                LatLng address = place.getLatLng();
+                moveCamera(new LatLng(address.latitude, address.longitude), DEFAULT_ZOOM, place.getAddress().toString());
+                Log.i(TAG, "Place: " + place.getName());
+            }
+
+            @Override
+            public void onError(com.google.android.gms.common.api.Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+
+        });
         mGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +147,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                 Intent intent = new Intent(thisActivity, ViewSearchedTaskDetailsActivity.class);
                 intent.putExtra("TaskID", marker.getTag().toString());
                 startActivity(intent);
-              
+
             }
         });
 

@@ -15,10 +15,12 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.location.LocationManager;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,7 +62,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView textView;
     private int numImages;
-
+    LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     /**
      * Called when the activity is started. Initializes the taskNameText and descriptionText.
      * Uses the CurrentUser singleton class in order to determine the current user who is posting
@@ -157,11 +159,14 @@ public class AddTaskActivity extends AppCompatActivity {
      */
     public void onAddLocationClick(View view){
         // Create an Intent to AddLocationActivity
-
+        if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
         Intent addLocationIntent = new Intent(this, SelectLocationActivity.class);
         final int result = 2;
         startActivityForResult(addLocationIntent, result);
         onActivityResult(result, result, addLocationIntent);
+        } else {
+            Toast.makeText(this, "Location services disabled", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

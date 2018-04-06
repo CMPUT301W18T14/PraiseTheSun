@@ -15,7 +15,10 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +32,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  *
@@ -51,6 +55,8 @@ public class RootActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView username;
     User user;
+    LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    Activity activity = this;
     /**
      * Takes a navigation_view for the formatting of the navigator menu,
      * creates a toolbar object so that the items can be clicked,
@@ -129,14 +135,14 @@ public class RootActivity extends AppCompatActivity {
                                 break;
 */
                             case R.id.find_nearby_tasks:
-
-
-                                i = new Intent(getApplicationContext(), NearbyTasksActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-
-                                startActivity(i);
-                                drawerLayout.closeDrawers();
+                                if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                    i = new Intent(getApplicationContext(), NearbyTasksActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    startActivity(i);
+                                    drawerLayout.closeDrawers();
+                                } else {
+                                    Toast.makeText(getApplicationContext() , "Location services disabled", Toast.LENGTH_SHORT).show();
+                                }
                                 break;
 
                             case R.id.view_profile:
