@@ -62,7 +62,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView textView;
     private int numImages;
-    LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    LocationManager lm;
     /**
      * Called when the activity is started. Initializes the taskNameText and descriptionText.
      * Uses the CurrentUser singleton class in order to determine the current user who is posting
@@ -81,7 +81,7 @@ public class AddTaskActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.addTaskImageView);
         switcher = (ImageSwitcher) findViewById(R.id.addTaskImageSwitcher);
         textView = (TextView) findViewById(R.id.addTaskTextView);
-
+        lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         /*
          * https://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
          * http://codetheory.in/android-ontouchevent-ontouchlistener-motionevent-to-detect-common-gestures/

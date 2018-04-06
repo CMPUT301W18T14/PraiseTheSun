@@ -55,7 +55,7 @@ public class RootActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView username;
     User user;
-    LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    LocationManager lm;
     Activity activity = this;
     /**
      * Takes a navigation_view for the formatting of the navigator menu,
@@ -70,7 +70,7 @@ public class RootActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
+        lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         toolbar = (Toolbar) findViewById(R.id.navbar);
         setSupportActionBar(toolbar);
