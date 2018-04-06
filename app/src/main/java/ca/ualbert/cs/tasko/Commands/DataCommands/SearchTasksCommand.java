@@ -61,6 +61,10 @@ public class SearchTasksCommand extends GetCommand<TaskList> {
         String query = "{\"size\": 1000," +
                 "\"query\" : { " +
                 "      \"bool\": { " +
+                "           \"must_not\" : [" +
+                "               {\"match\": {\"status\":\"DONE\" }}," +
+                "               {\"match\": {\"status\":\"ASSIGNED\"}}" +
+                "           ],"+
                 "           \"should\" :[ " +
                 "               {\"match\": {" +
                 "                   \"description\": { " +
