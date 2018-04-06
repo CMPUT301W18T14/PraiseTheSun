@@ -110,7 +110,7 @@
                 android:layout_alignStart="@+id/searchTaskTitle"
                 android:layout_below="@+id/searchedTaskStatusIcon"
                 android:text="Username"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
 
         </RelativeLayout>

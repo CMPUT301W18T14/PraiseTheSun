@@ -63,7 +63,7 @@ public class ViewNotificationActivity extends AppCompatActivity {
             myNotifications.addAll(
                     dm.getNotifications(cu.getCurrentUser().getId(), context).getNotifications());
         } catch (NoInternetException e){
-            Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT);
+            Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT).show();
         }
 
         notificationsAdapter = new NotificationListAdapter(context, myNotifications);

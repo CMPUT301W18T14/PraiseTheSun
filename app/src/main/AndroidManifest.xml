@@ -69,8 +69,8 @@
         <activity android:name=".ViewBidsOnTaskActivity" />
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".LogOutActivity"></activity>
-        <activity android:name=".ViewPhotoActivity"></activity>
+        <activity android:name=".LogOutActivity" />
+        <activity android:name=".ViewPhotoActivity" />
         <activity android:name=".ViewTasksIBiddedOnActivity"/>
         <service android:name=".NotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
