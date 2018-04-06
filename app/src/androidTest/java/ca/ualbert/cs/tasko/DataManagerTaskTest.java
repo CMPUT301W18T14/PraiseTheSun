@@ -106,7 +106,7 @@ public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
         try{
             dm.putTask(task1, getActivity().getApplicationContext());
             dm.putTask(task2, getActivity().getApplicationContext());
-            task3.setStatus(Status.DONE);
+            task3.setStatus(TaskStatus.DONE);
             dm.putTask(task3, getActivity().getApplicationContext());
             try {
                 Thread.sleep(2000);

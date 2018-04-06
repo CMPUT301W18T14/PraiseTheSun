@@ -73,6 +73,7 @@ public class OpeningActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         try {
             if (!cu.loggedIn())
                 checkForUser();

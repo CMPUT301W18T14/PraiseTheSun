@@ -88,7 +88,7 @@ public class AndroidNotificationCreator extends ContextWrapper {
                 PendingIntent.getActivity(this, 0, intent, 0);
 
         notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
-        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher)
+        notificationBuilder.setSmallIcon(R.drawable.ic_info_outline_black_24dp)
                 .setContentTitle("Tasko")
                 .setContentText("You have New Notifications in Tasko!")
                 .setContentIntent(pendingIntent)

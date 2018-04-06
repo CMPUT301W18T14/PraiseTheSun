@@ -35,6 +35,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/recyclerview" />
+    <include layout="@layout/content_view_tasks_i_bidded_on"/>
+
+    <include layout="@layout/recyclerview"/>
 
 </android.support.design.widget.CoordinatorLayout>

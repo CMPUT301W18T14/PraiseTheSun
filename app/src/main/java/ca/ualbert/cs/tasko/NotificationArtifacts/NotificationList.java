@@ -57,4 +57,8 @@ public class NotificationList{
     public ArrayList<Notification> getNotifications(){
         return NotificationList;
     }
+
+    public void delete(int index){
+        NotificationList.remove(index);
+    }
 }

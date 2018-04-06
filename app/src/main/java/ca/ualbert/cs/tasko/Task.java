@@ -44,9 +44,9 @@ public class Task implements Serializable {
     private String taskRequesterUsername;
     private String taskProviderID;
     private Float minBid;
-    private Status status;
     private double lat;
     private double lng;
+    private TaskStatus status;
 
 
     @JestId
@@ -97,7 +97,7 @@ public class Task implements Serializable {
         this.photos = photos;
        // this.geolocation = null;
         this.taskProviderID = null;
-        this.status = Status.REQUESTED;
+        this.status = TaskStatus.REQUESTED;
         this.minBid = null;
     }
 
@@ -118,11 +118,11 @@ public class Task implements Serializable {
         this.taskName = taskName;
         this.description = description;
         this.photos = photos;
-       // this.geolocation = location;
+
         this.taskProviderID = null;
-        this.status = Status.REQUESTED;
         this.lat = location.latitude;
         this.lng = location.longitude;
+        this.status = TaskStatus.REQUESTED;
     }
 
     /**
@@ -196,6 +196,7 @@ public class Task implements Serializable {
         }
     }
 
+
     /**
      * Sets the location of the task
      * @see LatLng, NearbyTasksActivity
@@ -204,8 +205,13 @@ public class Task implements Serializable {
     public void addLocation(LatLng location){
         lat = location.latitude;
         lng = location.longitude;
-
     }
+
+    public ArrayList<String> getPhotoStrings(){
+        return this.photos;
+    }
+
+
 
     /**
      * Removes the location of the task
@@ -221,7 +227,7 @@ public class Task implements Serializable {
      *
      * @param status status of the object
      */
-    public void setStatus(Status status){
+    public void setStatus(TaskStatus status){
         this.status = status;
     }
 
@@ -229,9 +235,9 @@ public class Task implements Serializable {
      * Method which returns the status of this task.
      *
      * @return the status of this task
-     * @see #setStatus(Status)
+     * @see #setStatus(TaskStatus)
      */
-    public Status getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
@@ -337,7 +343,7 @@ public class Task implements Serializable {
      */
     public void assign(String taskProviderID) {
         this.taskProviderID = taskProviderID;
-        this.status = Status.ASSIGNED;
+        this.status = TaskStatus.ASSIGNED;
     }
 
     @Override

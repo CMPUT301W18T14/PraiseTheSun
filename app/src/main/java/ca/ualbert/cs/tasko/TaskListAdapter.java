@@ -24,12 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DecimalFormat;
-
-import ca.ualbert.cs.tasko.data.DataManager;
-import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * The class represents a Adapter that is specifically designed to display search results in an
@@ -128,7 +124,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
         // Show the status of a task using an Icon instead of text, saves space and looks better??
-        Status status = currentTask.getStatus();
+        TaskStatus status = currentTask.getStatus();
         switch (status) {
             case REQUESTED:
                 holder.taskStatusIcon.setImageResource(R.drawable.requested);
@@ -188,7 +184,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
 
             setupPhotoClick();
-            //setupUserNameClick();
+            setupUserNameClick();
 
         }
 
@@ -204,12 +200,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
         private void setupUserNameClick(){
-            taskPhoto.setOnClickListener(new View.OnClickListener() {
+            taskRequestorUsername.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Intent intent = new Intent(thiscontext, OtherUserActivity.class);
-                    ///intent.putExtra("UserID", tasks.get(getAdapterPosition()).getTaskRequesterID());
-                    //thiscontext.startActivity(intent);
+                    Intent intent = new Intent(thiscontext, OtherUsersProfileActivity.class);
+                    intent.putExtra("id", tasks.get(getAdapterPosition()).getTaskRequesterID());
+                    thiscontext.startActivity(intent);
                 }
             });
         }
@@ -218,8 +214,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         public void onClick(View view) {
             Intent intent;
             if (thiscontext instanceof ViewMyTasksActivity) {
-                intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
-            }
+                if (tasks.get(getAdapterPosition()).getStatus() == TaskStatus.ASSIGNED) {
+                    intent = new Intent(thiscontext, AcceptedMyTaskActivity.class);
+                }
+                else {
+                    intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
+                }
+        }
             else {
                 intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
             }

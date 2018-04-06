@@ -62,7 +62,12 @@ public class AddTaskActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView textView;
     private int numImages;
+
     LocationManager lm;
+
+    private Task currentTask;
+
+
     /**
      * Called when the activity is started. Initializes the taskNameText and descriptionText.
      * Uses the CurrentUser singleton class in order to determine the current user who is posting
@@ -74,14 +79,37 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
+        Intent editTask = getIntent();
+        currentTask = (Task) editTask.getSerializableExtra("task");
+
         taskNameText = (EditText) findViewById(R.id.addTaskName);
         descriptionText = (EditText) findViewById(R.id.addTaskDescription);
         taskRequester = CurrentUser.getInstance().getCurrentUser();
-        images = new ArrayList<Bitmap>();
         imageView = (ImageView) findViewById(R.id.addTaskImageView);
         switcher = (ImageSwitcher) findViewById(R.id.addTaskImageSwitcher);
         textView = (TextView) findViewById(R.id.addTaskTextView);
+
         lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+
+        if (currentTask != null) {
+            taskNameText.setText(currentTask.getTaskName());
+            descriptionText.setText(currentTask.getDescription());
+            taskNameText.setSelection(taskNameText.getText().length());
+        }
+
+        if (currentTask != null && currentTask.hasPhoto()) {
+            photos = currentTask.getPhotoStrings();
+            images = currentTask.getPhotos();
+            numImages = images.size();
+            imageView.setImageBitmap(images.get(0));
+            textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
+                    .toString(numImages));
+        }
+        else {
+            images = new ArrayList<Bitmap>();
+        }
+
         /*
          * https://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
          * http://codetheory.in/android-ontouchevent-ontouchlistener-motionevent-to-detect-common-gestures/
@@ -114,7 +142,8 @@ public class AddTaskActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
                                             Toast.LENGTH_LONG).show();
                                 }
-                            } else {
+                            }
+                            else if (initialX < finalX){
                                 if (position > 0) {
                                     position--;
                                     imageView.setImageBitmap(images.get(position));
@@ -198,6 +227,18 @@ public class AddTaskActivity extends AppCompatActivity {
                         textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
                                 .toString(numImages));
                     }
+                    else {
+                        textView.setText("No images currently added.");
+                        numImages = 0;
+                        photos.clear();
+                        /*
+                         * https://stackoverflow.com/questions/7242282/get-bitmap-information-from-bitmap-stored-in-drawable-folder
+                         * Taken on 2018-04-02
+                         */
+                        Bitmap image = BitmapFactory.decodeResource
+                                (getResources(), R.drawable.ic_menu_gallery);
+                        imageView.setImageBitmap(image);
+                    }
                     break;
                 case 2:
                     // Handle add location Intent result
@@ -230,8 +271,21 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
                 finish();
             }
+
             Task newTask = new Task(taskRequester.getId(), taskName, description, photos, geoLocation);
+
             newTask.setTaskRequesterUsername(taskRequester.getUsername());
+            if (currentTask != null) {
+                try {
+                    DataManager.getInstance().deleteTask(currentTask, this.getApplicationContext());
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
+                Intent editIntent = new Intent();
+                editIntent.putExtra("task", newTask);
+                setResult(RESULT_OK, editIntent);
+            }
+
             try {
                 DataManager.getInstance().putTask(newTask, this.getApplicationContext());
                 Log.i("Task location: ", "lat, lng " + Double.toString(newTask.getGeolocation().latitude) + ", " + Double.toString(newTask.getGeolocation().longitude) );
