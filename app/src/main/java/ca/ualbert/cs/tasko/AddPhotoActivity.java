@@ -90,19 +90,29 @@ public class AddPhotoActivity extends AppCompatActivity {
          * Determine if there are photos already added. If so, initialize the images array and
          * display the first image
          */
-        ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
-        if (photos != null) {
-            numImages = photos.size();
-            if (photos.size() > 0) {
+        returnImgs = (ArrayList<Uri>) getIntent().getSerializableExtra("photos");
+        if (returnImgs != null) {
+            numImages = returnImgs.size();
+            if (numImages > 0) {
+                InputStream inputStream;
                 for (int i = 0; i < numImages; i++) {
-                    byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
-                    Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                    images.add(image);
+                    try {
+                        inputStream = getContentResolver().openInputStream(returnImgs.get(i));
+                        Bitmap image = BitmapFactory.decodeStream(inputStream);
+                        images.add(image);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this.getApplicationContext(), "Image not found", Toast
+                                .LENGTH_LONG).show();
+                    }
                 }
                 imageView.setImageBitmap(images.get(0));
                 textView.setText("Swipe to view other photos.\n Tap to delete a photo already " +
                         "chosen.\nViewing photo 1/" + Integer.toString(numImages));
             }
+        }
+        else {
+            returnImgs = new ArrayList<Uri>();
         }
 
         /*

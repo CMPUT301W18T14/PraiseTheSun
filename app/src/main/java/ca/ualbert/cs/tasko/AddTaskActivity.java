@@ -58,6 +58,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private Location geoLocation = null;
     private ArrayList<String> photos;
     private ArrayList<Bitmap> images;
+    private ArrayList<Uri> imageUris;
     private ImageSwitcher switcher;
     private ImageView imageView;
     private TextView textView;
@@ -171,7 +172,8 @@ public class AddTaskActivity extends AppCompatActivity {
         // Create an Intent to AddPhotoActivity
         Intent addPhotoIntent = new Intent(this, AddPhotoActivity.class);
         final int result = 19;
-        addPhotoIntent.putExtra("photos", photos);
+        addPhotoIntent.putExtra("photos", imageUris);
+        addPhotoIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(addPhotoIntent, result);
     }
 
@@ -205,7 +207,7 @@ public class AddTaskActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 19:
-                    ArrayList<Uri> imageUris = (ArrayList<Uri>) data.getSerializableExtra
+                    imageUris = (ArrayList<Uri>) data.getSerializableExtra
                             ("photos");
                     numImages = imageUris.size();
                     if (numImages > 0) {
