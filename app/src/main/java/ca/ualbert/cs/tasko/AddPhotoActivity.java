@@ -61,7 +61,6 @@ import java.util.ArrayList;
 public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private ArrayList<Bitmap> images;
-    private ArrayList<Uri> returnImgs;
     private ImageSwitcher switcher;
     private ImageView imageView;
     private TextView textView;
@@ -84,35 +83,24 @@ public class AddPhotoActivity extends AppCompatActivity {
         switcher = (ImageSwitcher) findViewById(R.id.addPhotoImageSwitcher);
         textView = (TextView) findViewById(R.id.addPhotoTextView);
         images = new ArrayList<Bitmap>();
-        returnImgs = new ArrayList<Uri>();
 
         /*
          * Determine if there are photos already added. If so, initialize the images array and
          * display the first image
          */
-        returnImgs = (ArrayList<Uri>) getIntent().getSerializableExtra("photos");
-        if (returnImgs != null) {
-            numImages = returnImgs.size();
-            if (numImages > 0) {
-                InputStream inputStream;
+        ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
+        if (photos != null) {
+            numImages = photos.size();
+            if (photos.size() > 0) {
                 for (int i = 0; i < numImages; i++) {
-                    try {
-                        inputStream = getContentResolver().openInputStream(returnImgs.get(i));
-                        Bitmap image = BitmapFactory.decodeStream(inputStream);
-                        images.add(image);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        Toast.makeText(this.getApplicationContext(), "Image not found", Toast
-                                .LENGTH_LONG).show();
-                    }
+                    byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                    Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    images.add(image);
                 }
                 imageView.setImageBitmap(images.get(0));
                 textView.setText("Swipe to view other photos.\n Tap to delete a photo already " +
                         "chosen.\nViewing photo 1/" + Integer.toString(numImages));
             }
-        }
-        else {
-            returnImgs = new ArrayList<Uri>();
         }
 
         /*
@@ -176,7 +164,6 @@ public class AddPhotoActivity extends AppCompatActivity {
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 images.remove(position);
-                                                returnImgs.remove(position);
                                                 numImages -= 1;
                                                 if (numImages > 0) {
                                                     if (position > 0) {
@@ -253,8 +240,29 @@ public class AddPhotoActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
         else {
+            ArrayList<String> imgStrings = new ArrayList<String>();
+            /*
+             * Code on how to properly send a bitmap object through an intent was taken from
+             * https://stackoverflow.com/questions/11010386/passing-android-bitmap-data-within
+             * -activity-using-intent-in-android
+             * Taken on 2018-03-17
+             */
+            for (int i = 0; i < numImages; i++) {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                images.get(i).compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                /*
+                  * Code on converting an image into a base64 string was taken from
+                  * https://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
+                  * accessed on 2018-03-25
+                  */
+                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                imgStrings.add(encodedImage);
+                Log.d("Not Error", Integer.toString(byteArray.length));
+            }
+
             Intent returnImages = new Intent();
-            returnImages.putExtra("photos", returnImgs);
+            returnImages.putExtra("photos", imgStrings);
             setResult(RESULT_OK, returnImages);
             finish();
         }
@@ -291,7 +299,6 @@ public class AddPhotoActivity extends AppCompatActivity {
                     int numNewImages = data.getClipData().getItemCount();
                     for (int i = 0; i < numNewImages; i++) {
                         Uri selectedImage = data.getClipData().getItemAt(i).getUri();
-                        returnImgs.add(selectedImage);
                         InputStream inputStream;
                         try {
                             inputStream = getContentResolver().openInputStream(selectedImage);

@@ -20,7 +20,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.media.Image;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -35,9 +34,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -58,7 +54,6 @@ public class AddTaskActivity extends AppCompatActivity {
     private Location geoLocation = null;
     private ArrayList<String> photos;
     private ArrayList<Bitmap> images;
-    private ArrayList<Uri> imageUris;
     private ImageSwitcher switcher;
     private ImageView imageView;
     private TextView textView;
@@ -102,7 +97,6 @@ public class AddTaskActivity extends AppCompatActivity {
         }
         else {
             images = new ArrayList<Bitmap>();
-            photos = new ArrayList<String>();
         }
 
         /*
@@ -172,8 +166,7 @@ public class AddTaskActivity extends AppCompatActivity {
         // Create an Intent to AddPhotoActivity
         Intent addPhotoIntent = new Intent(this, AddPhotoActivity.class);
         final int result = 19;
-        addPhotoIntent.putExtra("photos", imageUris);
-        addPhotoIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        addPhotoIntent.putExtra("photos", photos);
         startActivityForResult(addPhotoIntent, result);
     }
 
@@ -207,32 +200,14 @@ public class AddTaskActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 19:
-                    imageUris = (ArrayList<Uri>) data.getSerializableExtra
-                            ("photos");
-                    numImages = imageUris.size();
-                    if (numImages > 0) {
+                    photos = data.getStringArrayListExtra("photos");
+                    images = new ArrayList<Bitmap>();
+                    if (photos.size() > 0) {
+                        numImages = photos.size();
                         for (int i = 0; i < numImages; i++) {
-                            InputStream inputStream;
-                            try {
-                                inputStream = getContentResolver().openInputStream(imageUris.get
-                                        (i));
-                                Bitmap image = BitmapFactory.decodeStream(inputStream);
-                                images.add(image);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                                Toast.makeText(this.getApplicationContext(), "Image not found", Toast
-                                        .LENGTH_LONG).show();
-                            }
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            images.get(i).compress(Bitmap.CompressFormat.PNG, 100, stream);
-                            byte[] byteArray = stream.toByteArray();
-                            /*
-                              * Code on converting an image into a base64 string was taken from
-                              * https://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
-                              * accessed on 2018-03-25
-                              */
-                            String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                            photos.add(encodedImage);
+                            byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                            Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                            images.add(image);
                         }
                         imageView.setImageBitmap(images.get(0));
                         textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
