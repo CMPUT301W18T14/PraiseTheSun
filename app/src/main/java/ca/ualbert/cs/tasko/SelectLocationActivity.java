@@ -316,7 +316,11 @@ public class SelectLocationActivity extends FragmentActivity implements OnMapRea
                         if(task.isSuccessful()){
                             Log.d("onComplete", "location found");
                             Location currentLocation = (Location) task.getResult();
+                            try{
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My location");
+                            } catch (Exception e){
+                                Toast.makeText(getApplicationContext(), "Could not get location", Toast.LENGTH_SHORT).show();
+                            }
                         }else{
                             Log.d("onComplete","current location is null");
                             Toast.makeText(SelectLocationActivity.this,
