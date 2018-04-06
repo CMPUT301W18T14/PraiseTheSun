@@ -53,6 +53,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     private Button viewBidsButton;
     private final Context context = this;
     private DataManager dm = DataManager.getInstance();
+    private boolean edit;
 
     /**
      * On creation of the activity, fills the relevant displays with information selected from the
@@ -157,17 +158,22 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            String taskID = getIntent().getExtras().getString("TaskID");
-            currentTask = dm.getTask(taskID, this);
-        } catch (NullPointerException e) {
-            Log.i("Error", "TaskID not properly passed");
-        } catch (NoInternetException e) {
-            e.printStackTrace();
-        }
+        if (!edit) {
+            try {
+                String taskID = getIntent().getExtras().getString("TaskID");
+                currentTask = dm.getTask(taskID, this);
+            } catch (NullPointerException e) {
+                Log.i("Error", "TaskID not properly passed");
+            } catch (NoInternetException e) {
+                e.printStackTrace();
+            }
 
-        if (currentTask.getStatus() == TaskStatus.ASSIGNED) {
-            finish();
+            if (currentTask.getStatus() == TaskStatus.ASSIGNED) {
+                finish();
+            }
+        }
+        else {
+            edit = false;
         }
     }
 
@@ -181,6 +187,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                 else {
                     Intent editTask = new Intent(context, AddTaskActivity.class);
                     editTask.putExtra("task", currentTask);
+                    edit = true;
                     startActivityForResult(editTask, 19);
                 }
             }
@@ -219,6 +226,15 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         else {
             taskStatus.setText(currentTask.getStatus().toString());
         }
+        ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+        if (currentTask.hasPhoto()) {
+            imageView.setImageBitmap(currentTask.getCoverPhoto());
+        }
+        else {
+            Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable
+                    .ic_menu_gallery);
+            imageView.setImageBitmap(image);
+        }
     }
 
     public void onPhotoClick(View view) {
@@ -233,15 +249,6 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == 19) {
             currentTask = (Task) data.getSerializableExtra("task");
             fillInformation();
-            ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
-            if (currentTask.hasPhoto()) {
-                imageView.setImageBitmap(currentTask.getCoverPhoto());
-            }
-            else {
-                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable
-                        .ic_menu_gallery);
-                imageView.setImageBitmap(image);
-            }
         }
     }
 }
