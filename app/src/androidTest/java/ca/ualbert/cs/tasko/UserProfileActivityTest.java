@@ -68,7 +68,7 @@ public class UserProfileActivityTest extends ActivityInstrumentationTestCase2 {
     public void testName(){
 
 
-        Log.i("CurrentUserName", CurrentUser.getInstance().getCurrentUser().getUsername().toString());
+        Log.i("CurrentUserName", CurrentUser.getInstance().getCurrentUser().getUsername());
         Log.i("usrnameOnScreen", usrname.toString());
         assertEquals(CurrentUser.getInstance().getCurrentUser().getUsername(), usrname.getText().toString());
     }

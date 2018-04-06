@@ -27,10 +27,6 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * Created by op49o_000 on 2018-03-17.
- */
-
-/**
  * This test will ensure that data on a task can be retrieved successfully from the database
  * namely bidlist on a particular task.
  */
