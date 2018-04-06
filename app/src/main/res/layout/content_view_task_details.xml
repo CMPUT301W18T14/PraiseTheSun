@@ -216,8 +216,7 @@
                 android:layout_alignBottom="@+id/deleteButton"
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/deleteButton"
-                android:onClick="onEditClick"
-                android:text="Edit"
+                android:text="@string/edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/deleteButton" />
