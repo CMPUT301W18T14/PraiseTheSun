@@ -19,6 +19,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -94,10 +95,25 @@ public class ViewTasksAssignedActivity extends RootActivity {
         try {
             userBids = dm.getUserBids(User.getId(), context);
             assignedTasks = new TaskList();
-            for (int i = 0; i < userBids.getSize(); i++)
-                if (userBids.get(i).getStatus()== BidStatus.ACCEPTED) {
+            for (int i = 0; i < userBids.getSize(); i++) {
+                Log.d("msg", "bid check");
+                if (i > i -1) {
+                    Log.d("msg", "index increase");
+                }
+
+                if (userBids.get(i).getStatus() == BidStatus.PENDING) {
+                    Log.d("msg", "bid is pending");
+                }
+
+                if (userBids.get(i).getStatus() == BidStatus.REJECTED) {
+                    Log.d("msg", "bid is rejected");
+                }
+
+                if (userBids.get(i).getStatus() == BidStatus.ACCEPTED) {
+                    Log.d("msg", "bid is accepted");
                     assignedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));
                 }
+            }
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
 
