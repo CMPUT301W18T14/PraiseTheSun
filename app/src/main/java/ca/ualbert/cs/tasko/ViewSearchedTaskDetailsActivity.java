@@ -18,6 +18,8 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Process;
@@ -35,7 +37,11 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationFactory;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
@@ -48,6 +54,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private TextView taskName;
     private TextView lowestBid;
     private TextView status;
+    private TextView taskAddress;
     private float lowbid = -1;
     private TextView requesterName;
     private Button placeBidButton;
@@ -56,7 +63,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private Task currentTask;
     private final Context context = this;
     private User requesterUser;
-
+    private LatLng latLng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +77,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
         status = (TextView) findViewById(R.id.ViewSearchedDetailsStatus);
-
+        taskAddress = (TextView) findViewById(R.id.taskLocationText);
         //Dialog for choosing to make a bid on the task
 
 
@@ -110,6 +117,19 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
         status.setText(currentTask.getStatus().toString());
+        latLng = currentTask.getGeolocation();
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+
+            taskAddress.setText(addresses.get(0).getAddressLine(0));
+
+        } catch (IOException e) {
+            taskAddress.setText("No location provided");
+        }
         if(lowbid == -1){
             lowestBid.setText(R.string.ViewSearchedTaskDetailsNoBids);
         } else {
