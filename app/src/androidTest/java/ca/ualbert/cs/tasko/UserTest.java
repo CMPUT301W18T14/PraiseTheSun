@@ -44,28 +44,35 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
     public void testGetRating(){
         user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
-        assertEquals(user.getRating(), 0.0F);
-        user.addRating(5.0f);
-        assertEquals(user.getRating(), 5.0F);
+        assertEquals(2.5F, user.getRating());
     }
 
     public void testAddRating(){
         user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
         user.addRating(5.0f);
-        assertEquals(user.getRating(), 5.0F);
+        assertEquals(3.0F, user.getRating());
 
-        //Try to "Flush Out the Five Rating"
+        //Try to "Flush Out the Rating"
         int i = 0;
-        while(i < 4){
+        while(i < 5){
             user.addRating(0.0f);
             i++;
         }
 
-        assertEquals(user.getRating(), 0.0F);
+        assertEquals(0.0F, user.getRating());
+    }
 
+    public void testIsPrefered(){
+        user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
+        int i = 0;
+        while(i < 5){
+            user.addRating(5.0f);
+            i++;
+        }
 
+        assertTrue(user.isPrefered());
 
     }
 

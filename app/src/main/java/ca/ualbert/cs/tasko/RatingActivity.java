@@ -36,8 +36,6 @@ public class RatingActivity extends AppCompatActivity {
     Task currentTask;
     User RatingRecipient;
 
-
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +50,7 @@ public class RatingActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void discernRecipient(){
 
         Bundle extras = getIntent().getExtras();
@@ -59,11 +58,12 @@ public class RatingActivity extends AppCompatActivity {
 
         try {
             currentTask = dm.getTask(taskID, this);
-            if (currentTask.getTaskRequesterUsername().equals(cu.getCurrentUser().getUsername()))
-                RatingRecipient =
-                instructions.setText("Please rate " + dm.getUserById(currentTask.getTaskProviderID(), this).getUsername());
-            else
-                instructions.setText("Please rate " + currentTask.getTaskRequesterUsername());
+            if (currentTask.getTaskRequesterUsername().equals(cu.getCurrentUser().getUsername())) {
+                RatingRecipient = dm.getUserById(currentTask.getTaskProviderID(), this);
+            } else {
+                RatingRecipient = dm.getUserById(currentTask.getTaskRequesterID(), this);
+            }
+            instructions.setText("Please rate " + RatingRecipient.getUsername());
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
@@ -73,8 +73,8 @@ public class RatingActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ratingbar.getRating();
-
+                RatingRecipient.addRating(ratingbar.getRating());
+                finish();
             }
         });
     }

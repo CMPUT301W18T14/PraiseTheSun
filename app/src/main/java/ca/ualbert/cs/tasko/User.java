@@ -30,7 +30,7 @@ import io.searchbox.annotations.JestId;
  * Represents a user (which can be both a task requester and task provider). Contains info such
  * as name, username, number, email, tasks bidded on, tasks that you have requested, tasks that
  * you are assigned and their rating.
- * @author imtihan, chase
+ * @author imtihan, chase, stephen
  *
  */
 
@@ -42,6 +42,7 @@ public class User {
     private String phoneNumber;
     private String email;
     private ArrayList<Float> ratings;
+    private int ratingCapacity;
 
     public User(){
 
@@ -60,8 +61,9 @@ public class User {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.ratings = new ArrayList<>(5);
-        for(int i = 0; i < ratings.size(); i++){
+        this.ratingCapacity = 5;
+        this.ratings = new ArrayList<>(ratingCapacity);
+        for(int i = 0; i < ratingCapacity; i++){
             ratings.add(i, 2.5f);
         }
     }
@@ -153,10 +155,10 @@ public class User {
     public float getRating() {
 
         float sum = 0;
-        for (int i = 0; i < ratings.size(); i++){
+        for (int i = 0; i < ratingCapacity; i++){
             sum += ratings.get(i);
         }
-        return ratings.size() == 0 ? sum : sum/ratings.size();
+        return sum/ratingCapacity;
     }
 
     /**
@@ -165,12 +167,16 @@ public class User {
      * @param rating the rating of the user
      */
     public void addRating (float rating){
-        if (ratings.size() == 4){
-            ratings.remove(0);
-            ratings.add(rating);
-        }else
-            ratings.add(rating);
+        ratings.remove(0);
+        ratings.add(rating);
+    }
 
+    /**
+     * Method that checks if a user is preferred, a prefered user has a rating >= 4
+     * @return a boolean that tells if a user is preferred or not
+     */
+    public boolean isPrefered(){
+        return getRating() >= 4;
     }
 
     /**
