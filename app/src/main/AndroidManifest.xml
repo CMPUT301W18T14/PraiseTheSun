@@ -66,16 +66,22 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
+
+        <service
+            android:name=".NotificationService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <activity android:name=".LogOutActivity" />
+        <activity android:name=".ViewPhotoActivity" />
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
-        <activity android:name=".LogOutActivity"></activity>
-        <activity android:name=".ViewPhotoActivity"></activity>
-        <activity android:name=".ViewTasksIBiddedOnActivity"/>
-        <service android:name=".NotificationService"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity
             android:name=".AcceptedMyTaskActivity"
             android:label="@string/title_activity_accepted_task"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".RatingActivity"/>
+        <activity android:name=".ViewTasksIBiddedOnActivity"/>
+        <service android:name=".NotificationService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity android:name=".OtherUsersProfileActivity" />
     </application>
 
