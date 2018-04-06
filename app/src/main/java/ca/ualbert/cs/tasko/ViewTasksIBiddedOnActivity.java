@@ -19,9 +19,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -33,13 +33,14 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  *
  * @author spack
  */
-public class ViewTasksBiddedOnActivity extends RootActivity {
+public class ViewTasksIBiddedOnActivity extends RootActivity {
 
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter tasksBiddedAdapter;
     private RecyclerView.LayoutManager searchLayoutManager;
-    public DataManager dm = DataManager.getInstance();
-    public ViewTasksBiddedOnActivity context = this;
+    private DataManager dm = DataManager.getInstance();
+    private ViewTasksIBiddedOnActivity context = this;
+    private ProgressBar loadingCircle;
     private User User;
     private BidList userBids;
     private TaskList biddedTasks;
@@ -52,21 +53,28 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        User = CurrentUser.getInstance().getCurrentUser();
+
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_view_tasks_bidded_on, null, false);
         drawerLayout.addView(contentView, 0);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         searchLayoutManager = new LinearLayoutManager(context);
+        loadingCircle = (ProgressBar) findViewById(R.id.taskIBiddedOnProgressBar);
+
+        loadingCircle.setVisibility(View.VISIBLE);
 
         searchRecyclerView.setLayoutManager(searchLayoutManager);
-        try {setUser();
-        } catch (NoInternetException e) {e.printStackTrace();}
+
 
         getTasks();
 
         tasksBiddedAdapter = new TaskListAdapter(context, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
+
+        loadingCircle.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -78,19 +86,8 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
     }
 
     /**
-     * Sets the current User. Note we have to hardcode in a User for Testing.
-     * @throws NoInternetException
-     */
-    private void setUser() throws NoInternetException {
-        if (CurrentUser.getInstance().getCurrentUser() == null){
-            User = dm.getUserByUsername("rromano", context);
-        }else{
-            User = CurrentUser.getInstance().getCurrentUser();
-        }
-    }
-
-    /**
-     * Gets all tasks a user has bidded on, which will be displayed in the RecyclerView.
+     * Gets all tasks a user has bidded on, which will be displayed in the RecyclerView. Does
+     * Not include Tasks in which your Bid has been
      */
     private void getTasks(){
         userBids = new BidList();
@@ -98,7 +95,9 @@ public class ViewTasksBiddedOnActivity extends RootActivity {
             userBids = dm.getUserBids(User.getId(), context);
             biddedTasks = new TaskList();
             for (int i = 0; i < userBids.getSize(); i++)
-                biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));
+                if (userBids.get(i).getStatus()!= BidStatus.REJECTED) {
+                    biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));
+                }
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
 

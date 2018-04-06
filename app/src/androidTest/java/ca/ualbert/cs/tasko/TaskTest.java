@@ -17,7 +17,6 @@ package ca.ualbert.cs.tasko;
 
 import android.location.Location;
 import android.media.Image;
-import android.support.test.espresso.proto.action.ViewActions;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
@@ -62,14 +61,14 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
     public void testGetStatus(){
 
         Task task = new Task("bobismyID", "atask", "test");
-        assertTrue(task.getStatus() == Status.REQUESTED);
+        assertTrue(task.getStatus() == TaskStatus.REQUESTED);
     }
 
     public void testSetStatus(){
 
         Task task = new Task("bobismyID", "atask", "test");
-        task.setStatus(Status.BIDDED);
-        assertEquals(Status.BIDDED,task.getStatus());
+        task.setStatus(TaskStatus.BIDDED);
+        assertEquals(TaskStatus.BIDDED,task.getStatus());
     }
 
     public void testAddPhoto() {

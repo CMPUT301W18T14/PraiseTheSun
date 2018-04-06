@@ -24,7 +24,7 @@
         android:id="@+id/Rating_Activity_Instruction_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PLease give so and so a rating!"
+        android:text="Please give so and so a rating!"
         />
     <RatingBar
         android:layout_width="wrap_content"

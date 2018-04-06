@@ -31,6 +31,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 public class NotificationHandler{
 
     private NotificationFactory NotificationFactory;
+    private BidDeletedNotificationFactory BidDeletedFactory;
 
     /**
      * The constructor for NotificationHandler sets up the appropriate factories that will handle
@@ -41,12 +42,15 @@ public class NotificationHandler{
     public NotificationHandler(Context context) {
         this.NotificationFactory = new NotificationFactory();
         NotificationFactory.setContext(context);
+
+        this.BidDeletedFactory = new BidDeletedNotificationFactory();
+        BidDeletedFactory.setContext(context);
     }
 
 
     /**
-     * This method is called to create all notifications, this includes notification based on bidding
-     * assigning tasks, rejecting bids, deleting bids or creating rating messages. The type of
+     * This method is called to create most notifications, this includes notification based on bidding
+     * assigning tasks, deleting bids or creating rating messages. The type of
      * notification that will be created by the factory.
      * @param taskID the ID of the task the notification is related to.
      * @param Type The type of the notification that will be created, An enumeration.
@@ -55,4 +59,10 @@ public class NotificationHandler{
 
         NotificationFactory.createNotification(taskID, Type);
     }
+
+    public void newBidDeletedNotification(String taskID, String recipientID) throws NoInternetException{
+        BidDeletedFactory.createNotification(taskID, recipientID);
+    }
+
+
 }

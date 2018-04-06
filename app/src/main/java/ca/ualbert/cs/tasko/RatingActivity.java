@@ -17,6 +17,7 @@ package ca.ualbert.cs.tasko;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 public class RatingActivity extends AppCompatActivity {
 
@@ -24,5 +25,7 @@ public class RatingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
+
+        TextView instructions = (TextView)
     }
 }
