@@ -22,6 +22,8 @@ package ca.ualbert.cs.tasko.data;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
 
@@ -163,7 +165,6 @@ public class DataManager {
                 CurrentUser.getInstance().getCurrentUser().getId())){
             TaskList localTasks = LocalDataManager.getLocalTasks(appCtx);
             localTasks.addTask(task);
-            Log.d("Put New Task", "Task id is " + task.getId());
             LocalDataManager.saveLocalTasks(localTasks, appCtx);
             if(ConnectivityState.getConnected()){
                 dcm.invokeCommand(command);
@@ -207,7 +208,6 @@ public class DataManager {
     public Task getTask(String taskId) throws NoInternetException {
         GetTaskCommand command = new GetTaskCommand(taskId);
         if(ConnectivityState.getConnected()){
-            Log.d("I AM HERE", "Yup");
             dcm.invokeCommand(command);
             return command.getResult();
         } else {
@@ -253,10 +253,9 @@ public class DataManager {
         }
     }
 
-    public TaskList getTasksByLatLng(Double lat, Double lng, Context context) throws
+    public TaskList getTasksByLatLng(Double lat, Double lng) throws
             NoInternetException {
-        context = context.getApplicationContext();
-        GetTasksByLatLng command = new GetTasksByLatLng(lat, lng);
+        GetTasksByLatLng command = new GetTasksByLatLng(new LatLng(lat, lng));
         if (ConnectivityState.getConnected()) {
             dcm.invokeCommand(command);
             TaskList nearbyTasks = command.getResult();

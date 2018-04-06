@@ -97,7 +97,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         //Get bids that were on this task
         BidList taskBids = new BidList();
         try {
-            taskBids = dm.getTaskBids(assignedCurrentTask.getId(), context);
+            taskBids = dm.getTaskBids(assignedCurrentTask.getId());
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
@@ -150,7 +150,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                 //Set this task's status to DONE
                                 assignedCurrentTask.setStatus(TaskStatus.DONE);
                                 try {
-                                    dm.putTask(assignedCurrentTask, context);
+                                    dm.putTask(assignedCurrentTask);
                                 } catch (NoInternetException e) {
                                     e.printStackTrace();
                                 }
@@ -195,7 +195,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                 //Get bids that were on this task
                                 BidList taskBids = new BidList();
                                 try {
-                                    taskBids = dm.getTaskBids(assignedCurrentTask.getId(), context);
+                                    taskBids = dm.getTaskBids(assignedCurrentTask.getId());
                                 } catch (NoInternetException e) {
                                     e.printStackTrace();
                                 }
@@ -243,7 +243,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
                                 //Put these updates into the database
                                 try {
-                                    dm.putTask(assignedCurrentTask, context);
+                                    dm.putTask(assignedCurrentTask);
                                 } catch (NoInternetException e) {
                                     e.printStackTrace();
                                 }

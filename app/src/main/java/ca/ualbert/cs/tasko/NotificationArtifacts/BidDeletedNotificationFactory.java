@@ -37,11 +37,11 @@ public class BidDeletedNotificationFactory {
 
     public void createNotification(String taskID, String recipientID) throws NoInternetException {
 
-        Task task = dm.getTask(taskID, context);
+        Task task = dm.getTask(taskID);
         String taskname = task.getTaskName();
         String message = "Your Bid on " + taskname + " has been Declined. Try making a lower Bid ";
         Notification notification = new Notification(message, recipientID, null, taskID,
                 NotificationType.TASK_PROVIDER_BID_DECLINED);
-        dm.putNotification(notification, context);
+        dm.putNotification(notification);
     }
 }

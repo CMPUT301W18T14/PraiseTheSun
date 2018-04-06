@@ -57,11 +57,11 @@ public class RatingActivity extends AppCompatActivity {
         String taskID = extras.getString("TaskID");
 
         try {
-            currentTask = dm.getTask(taskID, this);
+            currentTask = dm.getTask(taskID);
             if (currentTask.getTaskRequesterUsername().equals(cu.getCurrentUser().getUsername())) {
-                RatingRecipient = dm.getUserById(currentTask.getTaskProviderID(), this);
+                RatingRecipient = dm.getUserById(currentTask.getTaskProviderID());
             } else {
-                RatingRecipient = dm.getUserById(currentTask.getTaskRequesterID(), this);
+                RatingRecipient = dm.getUserById(currentTask.getTaskRequesterID());
             }
             instructions.setText("Please rate " + RatingRecipient.getUsername());
         } catch (NoInternetException e) {

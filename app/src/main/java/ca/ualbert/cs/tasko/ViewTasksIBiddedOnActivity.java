@@ -96,7 +96,10 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
             biddedTasks = new TaskList();
             for (int i = 0; i < userBids.getSize(); i++)
                 if (userBids.get(i).getStatus()!= BidStatus.REJECTED) {
-                    biddedTasks.addTask(dm.getTask(userBids.get(i).getTaskID()));
+                    Task task = dm.getTask(userBids.get(i).getTaskID());
+                    if(task == null)
+                        continue;
+                    biddedTasks.addTask(task);
                 }
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
