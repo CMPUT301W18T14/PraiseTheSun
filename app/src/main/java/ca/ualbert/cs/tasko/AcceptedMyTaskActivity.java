@@ -170,9 +170,18 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
                                 //Set this task's status to REQUESTED if there were not other bids
                                 //on this task prior to the assignment
+
                                 if (taskBids.getSize() == 1) {
                                     //Change Task Status
                                     assignedCurrentTask.setStatus(TaskStatus.REQUESTED);
+
+                                    NotificationHandler nh = new NotificationHandler(context);
+                                    try {
+                                        nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+                                    } catch (NoInternetException e) {
+                                        e.printStackTrace();
+                                    }
+
                                     //Remove this rejected bid
                                     taskBids.removeBid(taskBids.get(0));
                                     assignedCurrentTask.setMinBid(null);
