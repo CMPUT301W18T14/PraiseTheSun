@@ -61,10 +61,12 @@ import java.util.ArrayList;
 public class AddPhotoActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private ArrayList<Bitmap> images;
+    private ArrayList<Uri> returnImgs;
     private ImageSwitcher switcher;
     private ImageView imageView;
     private TextView textView;
     private int numImages = 0;
+    private int position = 0;
     private Context context;
 
 
@@ -72,7 +74,6 @@ public class AddPhotoActivity extends AppCompatActivity {
      * Called when the activity is started.
      *
      */
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +84,12 @@ public class AddPhotoActivity extends AppCompatActivity {
         switcher = (ImageSwitcher) findViewById(R.id.addPhotoImageSwitcher);
         textView = (TextView) findViewById(R.id.addPhotoTextView);
         images = new ArrayList<Bitmap>();
+        returnImgs = new ArrayList<Uri>();
 
+        /*
+         * Determine if there are photos already added. If so, initialize the images array and
+         * display the first image
+         */
         ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
         if (photos != null) {
             numImages = photos.size();
@@ -100,14 +106,15 @@ public class AddPhotoActivity extends AppCompatActivity {
         }
 
         /*
+         * I used these resources in order to create a swipeable view
          * https://stackoverflow.com/questions/15799839/motionevent-action-up-not-called
          * http://codetheory.in/android-ontouchevent-ontouchlistener-motionevent-to-detect-common-gestures/
          * https://developer.android.com/training/gestures/detector.html
+         * accessed on 2018-03-28
          *
          */
         switcher.setOnTouchListener(new View.OnTouchListener() {
             private float initialX;
-            private int position = 0;
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -159,6 +166,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 images.remove(position);
+                                                returnImgs.remove(position);
                                                 numImages -= 1;
                                                 if (numImages > 0) {
                                                     if (position > 0) {
@@ -230,43 +238,13 @@ public class AddPhotoActivity extends AppCompatActivity {
      *
      */
     public void onConfirmClick(View view) {
-        boolean passed = true;
-        ArrayList<String> imgStrings = new ArrayList<String>();
-        /*
-         * Code on how to properly send a bitmap object through an intent was taken from
-         * https://stackoverflow.com/questions/11010386/passing-android-bitmap-data-within
-         * -activity-using-intent-in-android
-         * Taken on 2018-03-17
-         */
-        for (int i = 0; i < numImages; i++) {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            images.get(i).compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-
-            /*
-             * Code on checking the size of an image was taken from
-             * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
-             * -android
-             * Taken on 2018-03-18
-             */
-            long imageLength = byteArray.length;
-            if (imageLength > 65535) {
-                Log.d("Not Error", Long.toString(imageLength));
-                String message = "Image file #" + Integer.toString(i + 1) + " is too big.";
-                Toast.makeText(this.getApplicationContext(), message, Toast
-                        .LENGTH_LONG).show();
-                passed = false;
-            }
-            else {
-                // https://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
-                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                imgStrings.add(encodedImage);
-                Log.d("Not Error", Integer.toString(byteArray.length));
-            }
+        if (numImages > 10) {
+            Toast.makeText(this, "Too many images chosen. Only 10 images allowed per task.",
+                    Toast.LENGTH_LONG).show();
         }
-        if (passed) {
+        else {
             Intent returnImages = new Intent();
-            returnImages.putExtra("photos", imgStrings);
+            returnImages.putExtra("photos", returnImgs);
             setResult(RESULT_OK, returnImages);
             finish();
         }
@@ -295,6 +273,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                  */
 
                 /*
+                 * Code on taken multiple images from the gallery
                  * https://stackoverflow.com/questions/19585815/select-multiple-images-from-android-gallery
                  * accessed 2018-03-25
                  */
@@ -302,6 +281,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                     int numNewImages = data.getClipData().getItemCount();
                     for (int i = 0; i < numNewImages; i++) {
                         Uri selectedImage = data.getClipData().getItemAt(i).getUri();
+                        returnImgs.add(selectedImage);
                         InputStream inputStream;
                         try {
                             inputStream = getContentResolver().openInputStream(selectedImage);
@@ -317,6 +297,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                     }
                     numImages += numNewImages;
                     imageView.setImageBitmap(images.get(0));
+                    position = 0;
                     textView.setText("Swipe to view other photos.\n Tap to delete a photo already " +
                             "chosen.\nViewing photo 1/" + Integer.toString(numImages));
                 }
@@ -324,7 +305,22 @@ public class AddPhotoActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Recursive method that determines the appropriate constraint for an image in order for the
+     * image to be under 65535 bytes.
+     *
+     * @param image The image that may need to be constrained.
+     * @param size The size of the constraint to be tested to see if it makes the image under
+     *             65535 bytes.
+     * @return The properly constrained image that has size less than 65535 bytes.
+     */
     private Bitmap findSize(Bitmap image, double size) {
+        /*
+         * Code on checking the size of an image was taken from
+         * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
+         * -android
+         * Taken on 2018-03-18
+         */
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
         long imageLength = stream.toByteArray().length;
