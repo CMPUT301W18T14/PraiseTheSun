@@ -66,6 +66,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
+        <activity android:name=".ViewTasksAssignedActivity" />
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
         <activity android:name=".LogOutActivity"></activity>
         <activity android:name=".ViewPhotoActivity"></activity>
