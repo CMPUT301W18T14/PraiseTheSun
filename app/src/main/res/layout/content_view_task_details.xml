@@ -78,6 +78,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:onClick="onPhotoClick"
             android:orientation="horizontal"
             android:padding="16dp">
@@ -188,6 +189,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="View Bids"
+                android:backgroundTint="@android:color/holo_orange_light"
                 app:layout_constraintBottom_toTopOf="@+id/editButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -201,6 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:text="Delete"
+                android:backgroundTint="@android:color/holo_orange_light"
                 app:layout_constraintBaseline_toBaselineOf="@+id/editButton"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -218,6 +221,7 @@
                 android:layout_toStartOf="@+id/deleteButton"
                 android:onClick="onEditClick"
                 android:text="Edit"
+                android:backgroundTint="@android:color/holo_orange_light"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/deleteButton" />

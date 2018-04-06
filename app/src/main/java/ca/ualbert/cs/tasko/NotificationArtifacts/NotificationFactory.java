@@ -40,17 +40,16 @@ public class NotificationFactory {
         this.context = context;
     }
 
-    public void createNotification(String taskID, NotificationType Type) throws NoInternetException{
+    public void createNotification(String taskID, NotificationType type) throws NoInternetException{
 
 
         Notification notification = null;
         Task task = dm.getTask(taskID);
-
         String message;
         String taskname = task.getTaskName();
         String recipientID;
 
-        NotificationType notificationType = Type;
+        NotificationType notificationType = type;
 
         switch (notificationType){
             case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
@@ -87,6 +86,14 @@ public class NotificationFactory {
                 notification = new Notification(message, recipientID, null, taskID,
                         NotificationType.TASK_PROVIDER_BID_DECLINED);
                 dm.putNotification(notification);
+            case TASK_REQUESTOR_REPOSTED_TASK:
+                BidList reOpenedBids = dm.getTaskBids(taskID);
+                for(int i = 0; i < reOpenedBids.getSize(); i++){
+                    message = taskname + "Has been ReRequested by the poster!";
+                    notification = new Notification(message, reOpenedBids.get(i).getUserID(), null, taskID,
+                            NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+                    dm.putNotification(notification);
+                }
                 break;
             case TASK_DELETED:
                 BidList deletedBids = dm.getTaskBids(taskID);

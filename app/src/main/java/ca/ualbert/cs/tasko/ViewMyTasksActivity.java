@@ -52,22 +52,37 @@ public class ViewMyTasksActivity extends RootActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_my_tasks);
+        adpaterSetup();
+    }
 
-        if (CurrentUser.getInstance().getCurrentUser() == null) {
-            try {
-                CurrentUser.getInstance().setCurrentUser(dm.getUserByUsername("rromano"));
-            }
-            catch (NoInternetException e) {
-                e.printStackTrace();
-            }
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adpaterSetup();
+    }
+
+    private void adpaterSetup() {
+        setContentView(R.layout.activity_view_my_tasks);
 
         myTasksRecyclerView = (RecyclerView) findViewById(R.id.my_tasks_recycler_view);
         myTasksLayoutManager = new LinearLayoutManager(activity);
         myTasksRecyclerView.setLayoutManager(myTasksLayoutManager);
         loadingCircle = (ProgressBar) findViewById(R.id.loadingCircle);
 
+        //Give some time to get updated values from the server
+        try {
+            Thread.sleep(500);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        filterOptions();
+    }
+
+    /**
+     * When the filter is selected, the recycle view displays only the users tasks that
+     * corresponds to the tasks status
+     */
+    private void filterOptions() {
         Spinner filterSpinner = (Spinner) findViewById(R.id.filter_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.filter_options_array, android.R.layout.simple_spinner_item);
@@ -77,11 +92,6 @@ public class ViewMyTasksActivity extends RootActivity {
         final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
         emptyListMessage.setLayoutResource(R.layout.empty_task_list);
 
-
-        /**
-         * When the filter is selected, the recycle view displays only the users tasks that
-         * corresponds to the tasks status
-         */
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -101,18 +111,23 @@ public class ViewMyTasksActivity extends RootActivity {
                             --i;
                         }
                     }
-                }
-                else if (parent.getItemAtPosition(pos).equals("Bidded")) {
+                } else if (parent.getItemAtPosition(pos).equals("Bidded")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
                         if (myTasks.get(i).getStatus() != TaskStatus.BIDDED) {
                             myTasks.removeTask(myTasks.get(i));
                             --i;
                         }
                     }
-                }
-                else if (parent.getItemAtPosition(pos).equals("Assigned")) {
+                } else if (parent.getItemAtPosition(pos).equals("Assigned")) {
                     for (int i = 0; i < myTasks.getSize(); i++) {
                         if (myTasks.get(i).getStatus() != TaskStatus.ASSIGNED) {
+                            myTasks.removeTask(myTasks.get(i));
+                            --i;
+                        }
+                    }
+                } else if (parent.getItemAtPosition(pos).equals("Done")) {
+                    for (int i = 0; i < myTasks.getSize(); i++) {
+                        if (myTasks.get(i).getStatus() != TaskStatus.DONE) {
                             myTasks.removeTask(myTasks.get(i));
                             --i;
                         }
@@ -122,8 +137,7 @@ public class ViewMyTasksActivity extends RootActivity {
                 //If taskList is empty, notify the user
                 if (myTasks.getSize() == 0) {
                     emptyListMessage.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     emptyListMessage.setVisibility(View.GONE);
                 }
 
@@ -138,5 +152,4 @@ public class ViewMyTasksActivity extends RootActivity {
             }
         });
     }
-
 }

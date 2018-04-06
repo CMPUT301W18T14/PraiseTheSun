@@ -86,6 +86,7 @@ public class OpeningActivity extends AppCompatActivity {
             checkForUser();
         else
             this.finishAffinity();
+
     }
 
     /**
