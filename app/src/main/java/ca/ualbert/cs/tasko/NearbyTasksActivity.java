@@ -16,7 +16,9 @@
 package ca.ualbert.cs.tasko;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -66,7 +68,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location currentLocation;
-
+    private Activity thisActivity = this;
     //widgets
     private EditText mSearchText;
     private ImageView mGps;
@@ -115,6 +117,16 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
             }
         });
 
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(thisActivity, ViewSearchedTaskDetailsActivity.class);
+                intent.putExtra("TaskID", marker.getTag().toString());
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     public void displayNearbyTasks() {
@@ -131,7 +143,8 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                     mMap.addMarker(new MarkerOptions()
                             .position(task.getGeolocation())
                             .title(task.getTaskName())
-                            .snippet(task.getDescription()));
+                            .snippet(task.getDescription()))
+                            .setTag(task.getId());
                     Log.i("Here's a task", " Title:" + task.getTaskName());
                 } catch (Exception e){
                     Log.i("TaskNoLocation", " task has no location");
