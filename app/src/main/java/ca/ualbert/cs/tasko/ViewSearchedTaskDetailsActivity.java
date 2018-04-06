@@ -124,11 +124,14 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            try {
+                taskAddress.setText(addresses.get(0).getAddressLine(0));
+            } catch (Exception e){
+                taskAddress.setText("No location provided");
+            }
 
-            taskAddress.setText(addresses.get(0).getAddressLine(0));
-
-        } catch (IOException e) {
-            taskAddress.setText("No location provided");
+        } catch (Exception e) {
+            taskAddress.setText("Could not find location");
         }
         if(lowbid == -1){
             lowestBid.setText(R.string.ViewSearchedTaskDetailsNoBids);
