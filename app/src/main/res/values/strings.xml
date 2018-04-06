@@ -82,5 +82,9 @@
     <string name="profile">Profile</string>
     <string name="title_activity_accepted_task">AcceptedTaskActivity</string>
 
+    <string name="title_activity_nearby_tasks">Map</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_select_location">Map</string>
+
 </resources>
 
