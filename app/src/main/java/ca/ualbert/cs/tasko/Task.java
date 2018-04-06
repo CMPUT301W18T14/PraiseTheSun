@@ -151,6 +151,13 @@ public class Task implements Serializable {
             this.minBid = value;
     }
 
+    /**
+     * Sets the minimum bid on the task back to null
+     */
+    public void setMinBidNull() {
+        this.minBid = null;
+    }
+
     // Not implemented yet
     // Todo Part 5
     public boolean hasPhoto(){
