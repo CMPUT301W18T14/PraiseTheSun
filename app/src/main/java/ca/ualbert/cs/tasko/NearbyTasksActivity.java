@@ -26,6 +26,7 @@ import android.location.Location;
 import android.media.Image;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -297,9 +299,15 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                         if(task.isSuccessful()){
                             Log.d("onComplete", "location found");
                             currentLocation = (Location) task.getResult();
+                            try{
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My location");
                             //puts the tasks on the map
                             displayNearbyTasks();
+                            } catch (Exception e){
+                                Log.d("onComplete1","current location is null");
+                                Toast.makeText(getApplicationContext(), "Could not get location", Toast.LENGTH_LONG).show();
+
+                            }
                         }else{
                             Log.d("onComplete","current location is null");
                             Toast.makeText(NearbyTasksActivity.this,
