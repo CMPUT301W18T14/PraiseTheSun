@@ -27,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -102,6 +103,8 @@ public class OpeningActivity extends AppCompatActivity {
             loggedInUser = gson.fromJson(in, User.class);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch(IllegalStateException | JsonSyntaxException e){
+            loggedInUser = null;
         }
 
         if(loggedInUser == null){
