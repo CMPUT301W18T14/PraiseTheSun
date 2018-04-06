@@ -123,7 +123,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
                 Intent intent = new Intent(thisActivity, ViewSearchedTaskDetailsActivity.class);
                 intent.putExtra("TaskID", marker.getTag().toString());
                 startActivity(intent);
-                finish();
+              
             }
         });
 
