@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v7.app.AlertDialog;
@@ -58,7 +59,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private float lowbid = -1;
     private TextView requesterName;
     private Button placeBidButton;
-    //private Button geolocationButton;
+    private Button getDirectionsButton;
+
     private DataManager dm = DataManager.getInstance();
     private Task currentTask;
     private final Context context = this;
@@ -72,7 +74,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         //Button and text boxes definitions
         requesterName = (TextView) findViewById(R.id.taskRequesterName);
         placeBidButton = (Button) findViewById(R.id.placeBidButton);
-        //geolocationButton = (Button) findViewById(R.id.geolocationButton);
+        getDirectionsButton = (Button) findViewById(R.id.getDirectionsButton);
         taskDescription = (TextView) findViewById(R.id.taskDescriptionView);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
@@ -111,6 +113,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         }
 
         setupPlaceBidButton();
+        setupGetDirectionsButton();
     }
 
     private void populateFields(){
@@ -195,6 +198,16 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     }
 
+    private void setupGetDirectionsButton(){
+        getDirectionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uri = "http://maps.google.com/maps?daddr=" + latLng.latitude + "," + latLng.longitude;
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(intent);
+            }
+        });
+    }
     private void placeBid(float value){
         if(CurrentUser.getInstance().loggedIn()) {
             if(currentTask.getStatus() != Status.BIDDED) {
