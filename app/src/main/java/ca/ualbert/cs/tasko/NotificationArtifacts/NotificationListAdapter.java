@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ca.ualbert.cs.tasko.MainActivity;
 import ca.ualbert.cs.tasko.R;
 import ca.ualbert.cs.tasko.ViewSearchedTaskDetailsActivity;
 import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
@@ -70,28 +71,27 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                 holder.notificationTitle.setText("New Bid Received!");
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
-                holder.notificationTitle.setText("You Have been Assigned a new Task!");
+                holder.notificationTitle.setText("You Have been Assigned a New Task!");
                 break;
             case RATING:
                 holder.notificationTitle.setText("Please Provide a Rating!");
                 break;
             case TASK_PROVIDER_BID_DECLINED:
-                holder.notificationTitle.setText("One of your bids has been declined");
+                holder.notificationTitle.setText("One of your Bids has been Declined!");
                 break;
             case TASK_DELETED:
-                holder.notificationTitle.setText("A Task you have bidded in has been Deleted!");
+                holder.notificationTitle.setText("A Task you have Bid on has been Deleted!");
                 break;
+            case TASK_REQUESTOR_REPOSTED_TASK:
+                holder.notificationTitle.setText("A Task you have Bid on has been Reposted!");
+                break;
+
         }
     }
 
     @Override
     public int getItemCount() {
         return notifications.getSize();
-    }
-
-    public void update(Integer index) {
-        notifications.deleteNotification(index);
-        this.notifyDataSetChanged();
     }
 
     class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -116,15 +116,14 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
 
         @Override
         public void onClick(View view) {
-            Intent intent;
+            Intent intent = null;
             Notification clickedNotificatoin = notifications.getNotification(getAdapterPosition());
             NotificationType Type = clickedNotificatoin.getType();
 
-            switch (Type){
+            switch (Type) {
                 case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
                     intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
                     intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
-                    thiscontext.startActivity(intent);
                     break;
                 case TASK_PROVIDER_BID_ACCEPTED:
                     //TODO REDIRECT TO TASKS ASSIGNED ACTIVITY
@@ -136,10 +135,13 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                 case TASK_REQUESTOR_REPOSTED_TASK:
                     intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
                     intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
-                    thiscontext.startActivity(intent);
                     break;
-                    }
             }
+            if (intent != null) {
+                thiscontext.startActivity(intent);
+                ((ViewNotificationActivity)thiscontext).finish();
+            }
+        }
 
             private void setupDelete(){
                 Delete.setOnClickListener(new View.OnClickListener() {

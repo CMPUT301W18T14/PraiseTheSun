@@ -31,6 +31,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -115,6 +117,8 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         try {
+                                            NotificationHandler nh = new NotificationHandler(context);
+                                            nh.newNotification(currentTask.getId(), NotificationType.TASK_DELETED);
                                             dm.deleteTask(currentTask, context);
                                             finish();
                                             Toast.makeText(getApplicationContext(),"Your task has successfully been deleted.", Toast.LENGTH_SHORT).show();

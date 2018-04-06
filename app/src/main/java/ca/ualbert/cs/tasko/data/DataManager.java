@@ -192,8 +192,6 @@ public class DataManager {
                 try {
                     BidList bids = getTaskBids(task.getId(), context2);
                     for(Bid bid: bids.getBids()){
-                        NotificationHandler nh = new NotificationHandler(context2);
-                        nh.newNotification(task.getId(), NotificationType.TASK_DELETED);
                         deleteBid(bid, context2);
                     }
                 } catch (NoInternetException e){
