@@ -15,17 +15,67 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class RatingActivity extends AppCompatActivity {
 
+    TextView instructions;
+    RatingBar ratingbar;
+    Button submitButton;
+    DataManager dm = DataManager.getInstance();
+    CurrentUser cu = CurrentUser.getInstance();
+    Task currentTask;
+    User RatingRecipient;
+
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
 
-        TextView instructions = (TextView)
+        instructions = (TextView) findViewById(R.id.Rating_Activity_Instruction_textview);
+        ratingbar = (RatingBar) findViewById(R.id.Rating_Activity_Rating_Bar);
+        submitButton = (Button) findViewById(R.id.Rating_Activity_Submit_Button);
+
+        discernRecipient();
+        setupSubmitButton();
+
+    }
+
+    private void discernRecipient(){
+
+        Bundle extras = getIntent().getExtras();
+        String taskID = extras.getString("TaskID");
+
+        try {
+            currentTask = dm.getTask(taskID, this);
+            if (currentTask.getTaskRequesterUsername().equals(cu.getCurrentUser().getUsername()))
+                RatingRecipient =
+                instructions.setText("Please rate " + dm.getUserById(currentTask.getTaskProviderID(), this).getUsername());
+            else
+                instructions.setText("Please rate " + currentTask.getTaskRequesterUsername());
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setupSubmitButton(){
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ratingbar.getRating();
+
+            }
+        });
     }
 }
