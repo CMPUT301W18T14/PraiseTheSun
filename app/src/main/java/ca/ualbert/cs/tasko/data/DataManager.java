@@ -193,7 +193,6 @@ public class DataManager {
             dcm.invokeCommand(dtc);
         } else {
             LocalDataManager.addCommandToQueue(dtc, appCtx);
-            throw new NoInternetException();
         }
     }
 
@@ -265,7 +264,9 @@ public class DataManager {
         GetUserTasksCommand command = new GetUserTasksCommand(userId);
         if(ConnectivityState.getConnected()){
             dcm.invokeCommand(command);
-            return command.getResult();
+            TaskList result = command.getResult();
+            LocalDataManager.saveLocalTasks(result, appCtx);
+            return result;
         } else {
             if(userId.equals(CurrentUser.getInstance().getCurrentUser().getId())){
                 TaskList localTasks = LocalDataManager.getLocalTasks(appCtx);

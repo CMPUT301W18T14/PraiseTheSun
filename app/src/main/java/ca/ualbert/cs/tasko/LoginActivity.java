@@ -20,8 +20,10 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.LocalDataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
@@ -96,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (retrievedUser.getUsername() != null){
+                if (retrievedUser != null){
                     CU.setCurrentUser(retrievedUser);
                     try {
                         FileOutputStream fos = openFileOutput(FILENAME,
@@ -119,7 +122,16 @@ public class LoginActivity extends AppCompatActivity {
                     mJobScheduler.schedule(infoBuilder.build());
                     //End notification alarm
 
-                    //TODO: REGENERATE LOCAL TASKS FILE
+                    //Build local task storage
+                    try {
+                        TaskList tasks = DataManager.getInstance().getUserTasks(
+                                retrievedUser.getId());
+                        LocalDataManager.saveLocalTasks(tasks, getApplicationContext());
+                    } catch (NoInternetException e){
+                        Log.i("Error", "Failed to sync users local tasks on login due to lost " +
+                                "connection");
+                    }
+
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);
                     finish();

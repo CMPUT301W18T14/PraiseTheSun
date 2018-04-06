@@ -57,7 +57,7 @@ public class DeleteBidCommand extends DeleteCommand<Bid> {
         } catch (NoInternetException e){
             Log.i("Delete Bid Command", "Failed to update minBid due to lost connection");
         }
-        deleteBidAsyncTask delete = new deleteBidAsyncTask();
+        DeleteBidAsyncTask delete = new DeleteBidAsyncTask();
         delete.execute(bid.getBidID());
     }
 
@@ -66,7 +66,7 @@ public class DeleteBidCommand extends DeleteCommand<Bid> {
 
     }
 
-    private static class deleteBidAsyncTask extends AsyncTask<String, Void, Void> {
+    private static class DeleteBidAsyncTask extends AsyncTask<String, Void, Void> {
 
         @Override
         protected Void doInBackground(String... strings) {
