@@ -34,10 +34,6 @@ public class NotificationList{
         NotificationList.add(notification);
     }
 
-    public void deleteNotification(int index){
-        NotificationList.remove(index);
-    }
-
     public int getSize(){
         return NotificationList.size();
     }

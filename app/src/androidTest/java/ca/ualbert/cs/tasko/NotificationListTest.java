@@ -15,10 +15,12 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
 
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
+import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -31,33 +33,83 @@ public class NotificationListTest extends ActivityInstrumentationTestCase2 {
 
     private DataManager dm = DataManager.getInstance();
 
-    private NotificationList nl;
+    private NotificationList nlp;
+    private NotificationList nlr;
     private NotificationHandler nh;
-    private String providerID;
-    private String requestorID;
     private Task task;
+    private String taskID;
+    private Context context;
+    private User requestor;
+    private User provider;
 
     public void setUp() throws NoInternetException {
-        nh = new NotificationHandler(getActivity().getApplicationContext());
 
-        User requestor = new User("StevieP", "Steve", "780-450-1000",
+        context = getActivity().getApplicationContext();
+
+        nh = new NotificationHandler(context);
+
+        User testrequestor = new User("StevieP", "Steve", "780-450-1000",
                 "spacker@ualberta.ca");
-        User provider = new User("Stevoo", "Stephen", "780-454-1054",
+        User testprovider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
 
-        //Dont keep putting in Users
-        if (dm.getUserByUsername("StevieP", getActivity().getApplicationContext()) == null) {
-            dm.putUser(requestor, getActivity().getApplicationContext());
-            dm.putUser(provider, getActivity().getApplicationContext());
-        }
+        dm.putUser(requestor, context);
+        dm.putUser(provider, context);
 
-        requestorID = dm.getUserByUsername("StevieP",
-                getActivity().getApplicationContext()).getId();
+        requestor = dm.getUserByUsername("StevieP",
+                context);
 
-        providerID = dm.getUserByUsername("Stevoo",
-                getActivity().getApplicationContext()).getId();
+        provider = dm.getUserByUsername("Stevoo",
+                context);
 
-        task = new Task(requestorID, "TestTask for Notifications", "Notifications");
-        dm.putTask(task, getActivity().getApplicationContext());
+        task = new Task(requestor.getId(), "TestTask for Notifications", "Notifications");
+        dm.putTask(task, context);
+
+        taskID = task.getId();
+
+        //Clear Old test data
+        deleteTestInfo();
+
+        //Goes to the requester
+        nh.newNotification(taskID, NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
+
+        //Goes to the provider
+        nh.newNotification(taskID, NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+        nh.newNotification(taskID, NotificationType.TASK_PROVIDER_BID_ACCEPTED);
+        nh.newNotification(taskID, NotificationType.TASK_DELETED);
+        nh.newBidDeletedNotification(taskID, provider.getId());
+
+       //Goes to both
+        nh.newNotification(taskID, NotificationType.RATING);
+    }
+
+    public void testAddNotification() throws NoInternetException{
+
+        nlp = new NotificationList();
+        nlr = new NotificationList();
+
+        //Test the requester notifications
+        nlr.addAll(dm.getNotifications(requestor.getId(), context).getNotifications());
+        //assertEquals(2, nlr.getSize());
+
+        //Test the provider notifications
+        nlp.addAll(dm.getNotifications(provider.getId(), context).getNotifications());
+        //assertEquals(5, nlp.getSize());
+    }
+
+    public void deleteTestInfo() throws NoInternetException {
+
+        nlp = new NotificationList();
+        nlr = new NotificationList();
+
+        // Delete the requester notifications
+        nlr.addAll(dm.getNotifications(requestor.getId(), context).getNotifications());
+        while (nlr.getSize() > 0)
+            nlr.delete(0);
+
+        //Delete the provider notifications
+        nlp.addAll(dm.getNotifications(provider.getId(), context).getNotifications());
+        while (nlr.getSize() > 0)
+            nlr.delete(0);
     }
 }
