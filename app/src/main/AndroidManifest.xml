@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ca.ualbert.cs.tasko">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -66,7 +67,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
-        <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
+        <activity android:name=".NotificationArtifacts.ViewNotificationActivity"
+            tools:ignore="InnerclassSeparator" />
         <activity android:name=".LogOutActivity"></activity>
         <activity android:name=".ViewPhotoActivity"></activity>
         <activity android:name=".ViewTasksIBiddedOnActivity"/>
