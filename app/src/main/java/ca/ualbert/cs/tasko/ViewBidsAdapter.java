@@ -162,13 +162,17 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                                 bids.get(i).setStatus(BidStatus.REJECTED);
                             }
                             //Make accepted bid status accepted
-                            bids.get(getAdapterPosition()).setStatus(BidStatus.ACCEPTED);
+                            (bids.get(getAdapterPosition())).setStatus(BidStatus.ACCEPTED);
+                            if (bids.get(getAdapterPosition()).getStatus() == BidStatus.ACCEPTED) {
+                                Log.d("Msg", "Bid is accepted");
+                            }
 
                             //assigns it to the appropriate provider
                             thisTask.assign((bids.get(getAdapterPosition())).getUserID());
 
                             //updates the task
                             dm.putTask(thisTask);
+                            dm.addBid(bids.get(getAdapterPosition()));
 
                             //send the notification
                             nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);

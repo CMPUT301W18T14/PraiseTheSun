@@ -73,8 +73,9 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
 
-        <activity android:name=".ViewTasksBiddedOnActivity" />
+        <activity android:name=".ViewTasksIBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
+        <activity android:name=".ViewTasksAssignedActivity" />
 
         <service
             android:name=".NotificationService"
@@ -82,6 +83,7 @@
 
         <activity android:name=".LogOutActivity" />
         <activity android:name=".ViewPhotoActivity" />
+>>>>>>> dev
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
         <activity
             android:name=".AcceptedMyTaskActivity"

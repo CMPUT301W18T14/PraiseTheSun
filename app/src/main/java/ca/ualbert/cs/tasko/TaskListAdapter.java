@@ -108,8 +108,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         df.setMinimumFractionDigits(2);
         df.setMaximumFractionDigits(2);
 
+        // Alden's addition: checks if in my activity
+        if (thiscontext instanceof ViewTasksAssignedActivity) {
+            holder.taskLowestBid.setText("");
+        }
         // Tries to get the minimum bid on each task if it exists
-        if (currentTask.getMinBid() != null){
+        else if (currentTask.getMinBid() != null){
             String lowbidValue = df.format(currentTask.getMinBid());
             holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
         }else{
@@ -213,7 +217,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         @Override
         public void onClick(View view) {
             Intent intent;
-            if (thiscontext instanceof ViewMyTasksActivity) {
+            if (thiscontext instanceof ViewTasksAssignedActivity) {
+                intent = new Intent(thiscontext, AcceptedMyTaskActivity.class);
+            }
+
+            else if (thiscontext instanceof ViewMyTasksActivity) {
                 if (tasks.get(getAdapterPosition()).getStatus() == TaskStatus.ASSIGNED) {
                     intent = new Intent(thiscontext, AcceptedMyTaskActivity.class);
                 }

@@ -114,14 +114,14 @@ public class RootActivity extends AppCompatActivity {
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-/*
+
                             case R.id.my_assignments:
-                                i = new Intent(getApplicationContext(), MyAssignmentsActivity.class);
+                                i = new Intent(getApplicationContext(), ViewTasksAssignedActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-*/
+
                             case R.id.find_nearby_tasks:
                                 boolean validGPS = false;
                                 boolean validLocation = false;
