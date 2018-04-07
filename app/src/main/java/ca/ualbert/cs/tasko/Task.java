@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import io.searchbox.annotations.JestId;
 
@@ -99,6 +100,7 @@ public class Task implements Serializable {
         this.taskProviderID = null;
         this.status = TaskStatus.REQUESTED;
         this.minBid = null;
+        this.id = UUID.randomUUID().toString();
     }
 
     /**
@@ -118,8 +120,8 @@ public class Task implements Serializable {
         this.taskName = taskName;
         this.description = description;
         this.photos = photos;
-
         this.taskProviderID = null;
+        this.id = UUID.randomUUID().toString();
         this.lat = location.latitude;
         this.lng = location.longitude;
         this.status = TaskStatus.REQUESTED;

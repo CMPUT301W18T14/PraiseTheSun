@@ -86,11 +86,11 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         Bid bid;
         try {
             String taskID = extras.getString("TaskID");
-            currentTask = dm.getTask(taskID, this);
-            requesterUser = dm.getUserById(currentTask.getTaskRequesterID(),
-                    getApplicationContext());
+            currentTask = dm.getTask(taskID);
+            requesterUser = dm.getUserById(currentTask.getTaskRequesterID()
+            );
             try{
-                BidList bids = dm.getTaskBids(currentTask.getId(), getApplicationContext());
+                BidList bids = dm.getTaskBids(currentTask.getId());
                 bid = bids.getMinBid();
                 if(bid != null){
                     lowbid = bid.getValue();
@@ -201,9 +201,15 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         getDirectionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uri = "http://maps.google.com/maps?daddr=" + latLng.latitude + "," + latLng.longitude;
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(intent);
+
+                if( Math.abs(latLng.latitude) > 0.0000001  &&  Math.abs(latLng.longitude) > 0.0000001){
+                    String uri = "http://maps.google.com/maps?daddr=" + latLng.latitude + "," + latLng.longitude;
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"This task has no location", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -251,8 +257,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
             android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             try {
                 BidList possibleCurrentBids = dm.getUserBids(
-                        CurrentUser.getInstance().getCurrentUser().getId(),
-                        appContext);
+                        CurrentUser.getInstance().getCurrentUser().getId()
+                );
                 List<Bid> bids = possibleCurrentBids.getBids();
                 Bid bid = new Bid(CurrentUser.getInstance()
                         .getCurrentUser().getId(), value, currentTask.getId());
@@ -263,8 +269,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                         break;
                     }
                 }
-                dm.addBid(bid, appContext);
-                dm.putTask(currentTask, appContext);
+                dm.addBid(bid);
+                dm.putTask(currentTask);
                 NotificationHandler nh = new NotificationHandler(getApplicationContext());
                 nh.newNotification(currentTask.getId(), NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
             } catch (NoInternetException e) {

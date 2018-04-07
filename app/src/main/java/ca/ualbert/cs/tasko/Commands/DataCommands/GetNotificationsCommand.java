@@ -30,7 +30,7 @@ import io.searchbox.core.SearchResult;
  * Created by chase on 3/27/2018.
  */
 
-public class GetNotificationsCommand extends GetCommand<NotificationList> {
+public class GetNotificationsCommand extends GetCommand<NotificationList, String> {
     private String userId;
 
     /**
@@ -40,6 +40,7 @@ public class GetNotificationsCommand extends GetCommand<NotificationList> {
      * @param userId the userId associated to the notifications in the returned NotificationList
      */
     public GetNotificationsCommand(String userId){
+        super(userId, "GetNotificationsCommand");
         this.userId = userId;
     }
 
