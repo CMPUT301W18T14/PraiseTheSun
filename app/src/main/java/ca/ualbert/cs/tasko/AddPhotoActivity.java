@@ -46,6 +46,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 // https://stackoverflow.com/questions/19585815/select-multiple-images-from-android-gallery
@@ -304,7 +305,8 @@ public class AddPhotoActivity extends AppCompatActivity {
                             inputStream = getContentResolver().openInputStream(selectedImage);
                             Bitmap image = BitmapFactory.decodeStream(inputStream);
 
-                            image = findSize(image, 1.0);
+                            image = getCorrectSizeBitmap(image);
+                            Log.d("BITMAPS", ""+image.getByteCount());
                             images.add(image);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -322,7 +324,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         }
     }
 
-    /**
+    /*/**
      * Recursive method that determines the appropriate constraint for an image in order for the
      * image to be under 65535 bytes.
      *
@@ -330,14 +332,14 @@ public class AddPhotoActivity extends AppCompatActivity {
      * @param size The size of the constraint to be tested to see if it makes the image under
      *             65535 bytes.
      * @return The properly constrained image that has size less than 65535 bytes.
-     */
+     *
     private Bitmap findSize(Bitmap image, double size) {
         /*
          * Code on checking the size of an image was taken from
          * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
          * -android
          * Taken on 2018-03-18
-         */
+         *
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
         long imageLength = stream.toByteArray().length;
@@ -350,5 +352,29 @@ public class AddPhotoActivity extends AppCompatActivity {
         else {
             return image;
         }
+    }*/
+
+    /**
+     * getCorrectSizeBitmap uses the desired size and the width and height of the
+     * current bitmap to calculate the desired width and height that will bring the
+     * bitmap down to a size <= 65535
+     * @param image Bitmap to scale
+     * @return scaled bitmap if its size > 65535 or the original bitmap if its size <= 65535
+     */
+    private Bitmap getCorrectSizeBitmap(Bitmap image){
+        int size = image.getByteCount();
+        BigInteger gcd = BigInteger.valueOf(image.getWidth()).gcd(BigInteger.valueOf(image.getHeight()));
+        if(size <= 65535){
+            return image;
+        }
+        int widthMultiplier = image.getWidth() / gcd.intValue();
+        int heightMultiplier = image
+                .getHeight() / gcd
+                .intValue();
+        Long x = Math.round(Math.sqrt((65535/5)/(widthMultiplier * heightMultiplier)));
+
+        Log.d("BITMAPS", ""+size+" "+image.getDensity() + " " + image.getConfig().toString());
+        return Bitmap.createScaledBitmap(image, widthMultiplier * x.intValue() ,
+                heightMultiplier * x.intValue(), true);
     }
 }
