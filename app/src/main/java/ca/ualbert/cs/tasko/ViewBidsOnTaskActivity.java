@@ -102,4 +102,5 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         myBidList.setAdapter(searchAdapter);
         
     }
+
 }

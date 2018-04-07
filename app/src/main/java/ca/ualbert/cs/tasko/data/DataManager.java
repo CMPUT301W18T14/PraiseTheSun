@@ -34,6 +34,7 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteNotificationCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetNotificationsCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetTasksByLatLng;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand;
@@ -192,8 +193,6 @@ public class DataManager {
                 try {
                     BidList bids = getTaskBids(task.getId(), context2);
                     for(Bid bid: bids.getBids()){
-                        NotificationHandler nh = new NotificationHandler(context2);
-                        nh.newNotification(task.getId(), NotificationType.TASK_DELETED);
                         deleteBid(bid, context2);
                     }
                 } catch (NoInternetException e){
@@ -262,6 +261,28 @@ public class DataManager {
             tl.getTasks().removeAll(toRemove.getTasks());
             return tl;
         } else {
+            throw new NoInternetException();
+        }
+    }
+
+    public TaskList getTasksByLatLng(Double lat, Double lng, Context context) throws
+            NoInternetException {
+        context = context.getApplicationContext();
+        GetTasksByLatLng command = new GetTasksByLatLng(lat, lng);
+        if (isOnline(context)) {
+            dcm.invokeCommand(command);
+            TaskList nearbyTasks = command.getResult();
+            TaskList toRemove = new TaskList();
+            for (Task t: nearbyTasks.getTasks()) {
+                if (CurrentUser.getInstance().getCurrentUser().getId().equals(t
+                        .getTaskRequesterID())) {
+                    //toRemove.addTask(t);
+                }
+            }
+            nearbyTasks.getTasks().removeAll(toRemove.getTasks());
+            return nearbyTasks;
+        }
+        else {
             throw new NoInternetException();
         }
     }

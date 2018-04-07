@@ -15,7 +15,10 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -26,6 +29,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  *
@@ -48,6 +52,8 @@ public class RootActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView username;
     User user;
+    LocationManager lm;
+    Activity activity = this;
     /**
      * Takes a navigation_view for the formatting of the navigator menu,
      * creates a toolbar object so that the items can be clicked,
@@ -61,7 +67,7 @@ public class RootActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
+        lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         toolbar = (Toolbar) findViewById(R.id.navbar);
         setSupportActionBar(toolbar);
@@ -124,14 +130,28 @@ public class RootActivity extends AppCompatActivity {
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
-/*
+
                             case R.id.find_nearby_tasks:
-                                i = new Intent(getApplicationContext(), FindNearbyTasksActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                startActivity(i);
-                                drawerLayout.closeDrawers();
+                                boolean validGPS = false;
+                                boolean validLocation = false;
+                                try{
+                                    validGPS = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                                }
+                                catch (Exception e){}
+                                try{
+                                    validLocation = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                                }
+                                catch (Exception e){}
+                                if(validGPS || validLocation) {
+                                    i = new Intent(getApplicationContext(), NearbyTasksActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    startActivity(i);
+                                    drawerLayout.closeDrawers();
+                                } else {
+                                    Toast.makeText(getApplicationContext() , "Location services disabled", Toast.LENGTH_SHORT).show();
+                                }
                                 break;
-*/
+
                             case R.id.view_profile:
                                 i = new Intent(getApplicationContext(), UserActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
