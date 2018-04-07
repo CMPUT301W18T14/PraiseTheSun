@@ -235,7 +235,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     public void onPhotoClick(View view) {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
-        viewPhotosIntent.putExtra("photos", currentTask);
+        viewPhotosIntent.putExtra("photos", currentTask.getByteArrays());
         startActivity(viewPhotosIntent);
     }
 
