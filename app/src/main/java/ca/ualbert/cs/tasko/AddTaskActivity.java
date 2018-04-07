@@ -93,6 +93,7 @@ public class AddTaskActivity extends AppCompatActivity {
         if (currentTask != null && currentTask.hasPhoto()) {
             photos = currentTask.getPhotoStrings();
             images = currentTask.getPhotos();
+            imgBytes = currentTask.getByteArrays();
             numImages = images.size();
             imageView.setImageBitmap(images.get(0));
             textView.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer

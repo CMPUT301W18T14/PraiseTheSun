@@ -241,7 +241,6 @@ public class AddPhotoActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
         else {
-            ArrayList<String> imgStrings = new ArrayList<String>();
             ArrayList<byte[]> imgBytes = new ArrayList<byte[]>();
             /*
              * Code on how to properly send a bitmap object through an intent was taken from
