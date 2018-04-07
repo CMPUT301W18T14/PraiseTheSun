@@ -88,13 +88,14 @@ public class AddPhotoActivity extends AppCompatActivity {
          * Determine if there are photos already added. If so, initialize the images array and
          * display the first image
          */
-        ArrayList<String> photos = getIntent().getStringArrayListExtra("photos");
-        if (photos != null) {
-            numImages = photos.size();
-            if (photos.size() > 0) {
+        ArrayList<byte[]> imageBytes = (ArrayList<byte[]>) getIntent().getSerializableExtra
+                ("photos");
+        if (imageBytes != null) {
+            numImages = imageBytes.size();
+            if (numImages > 0) {
                 for (int i = 0; i < numImages; i++) {
-                    byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
-                    Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    Bitmap image = BitmapFactory.decodeByteArray(imageBytes.get(i), 0,
+                            imageBytes.get(i).length);
                     images.add(image);
                 }
                 imageView.setImageBitmap(images.get(0));
@@ -241,6 +242,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         }
         else {
             ArrayList<String> imgStrings = new ArrayList<String>();
+            ArrayList<byte[]> imgBytes = new ArrayList<byte[]>();
             /*
              * Code on how to properly send a bitmap object through an intent was taken from
              * https://stackoverflow.com/questions/11010386/passing-android-bitmap-data-within
@@ -256,13 +258,12 @@ public class AddPhotoActivity extends AppCompatActivity {
                   * https://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
                   * accessed on 2018-03-25
                   */
-                String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                imgStrings.add(encodedImage);
+                imgBytes.add(byteArray);
                 Log.d("Not Error", Integer.toString(byteArray.length));
             }
 
             Intent returnImages = new Intent();
-            returnImages.putExtra("photos", imgStrings);
+            returnImages.putExtra("photos", imgBytes);
             setResult(RESULT_OK, returnImages);
             finish();
         }

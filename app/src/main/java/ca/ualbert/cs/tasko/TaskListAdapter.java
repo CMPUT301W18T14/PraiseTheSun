@@ -193,7 +193,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(thiscontext, ViewPhotoActivity.class);
-                    intent.putExtra("photos", tasks.get(getAdapterPosition()));
+                    intent.putExtra("photos", tasks.get(getAdapterPosition()).getByteArrays());
                     thiscontext.startActivity(intent);
                 }
             });

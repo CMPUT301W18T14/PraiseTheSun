@@ -34,6 +34,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -54,6 +56,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private Location geoLocation = null;
     private ArrayList<String> photos;
     private ArrayList<Bitmap> images;
+    private ArrayList<byte[]> imgBytes;
     private ImageSwitcher switcher;
     private ImageView imageView;
     private TextView textView;
@@ -97,6 +100,7 @@ public class AddTaskActivity extends AppCompatActivity {
         }
         else {
             images = new ArrayList<Bitmap>();
+            photos = new ArrayList<String>();
         }
 
         /*
@@ -166,7 +170,7 @@ public class AddTaskActivity extends AppCompatActivity {
         // Create an Intent to AddPhotoActivity
         Intent addPhotoIntent = new Intent(this, AddPhotoActivity.class);
         final int result = 19;
-        addPhotoIntent.putExtra("photos", photos);
+        addPhotoIntent.putExtra("photos", imgBytes);
         startActivityForResult(addPhotoIntent, result);
     }
 
@@ -200,13 +204,15 @@ public class AddTaskActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 19:
-                    photos = data.getStringArrayListExtra("photos");
-                    images = new ArrayList<Bitmap>();
-                    if (photos.size() > 0) {
-                        numImages = photos.size();
+                    imgBytes = (ArrayList<byte[]>) data.getSerializableExtra("photos");
+                    numImages = imgBytes.size();
+                    if (numImages > 0) {
                         for (int i = 0; i < numImages; i++) {
-                            byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
-                            Bitmap image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                            String encodedImage = Base64.encodeToString(imgBytes.get(i),
+                                    Base64.DEFAULT);
+                            photos.add(encodedImage);
+                            Bitmap image = BitmapFactory.decodeByteArray(imgBytes.get(i), 0,
+                                    imgBytes.get(i).length);
                             images.add(image);
                         }
                         imageView.setImageBitmap(images.get(0));
@@ -215,8 +221,9 @@ public class AddTaskActivity extends AppCompatActivity {
                     }
                     else {
                         textView.setText("No images currently added.");
-                        numImages = 0;
+                        imgBytes.clear();
                         photos.clear();
+                        images.clear();
                         /*
                          * https://stackoverflow.com/questions/7242282/get-bitmap-information-from-bitmap-stored-in-drawable-folder
                          * Taken on 2018-04-02
