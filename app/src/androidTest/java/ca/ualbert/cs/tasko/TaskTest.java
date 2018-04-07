@@ -19,6 +19,8 @@ import android.location.Location;
 import android.media.Image;
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by Chase on 2/23/2018.
  */
@@ -45,9 +47,7 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testGetGeolocation(){
-        Location location = new Location("");
-        location.setLatitude(0.0d);//your coords of course
-        location.setLongitude(0.0d);
+        LatLng location = new LatLng(0.0d, 0.0d);
         Task task = new Task("bobismyID", "atask", "test", location);
         assertEquals(location, task.getGeolocation());
     }
@@ -85,18 +85,14 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testAddLocation(){
-        Location location = new Location("");
-        location.setLatitude(0.0d);//your coords of course
-        location.setLongitude(0.0d);
+        LatLng location = new LatLng(0.0d, 0.0d);
         Task task = new Task("bobismyID", "atask", "test");
         task.addLocation(location);
         assertEquals(location, task.getGeolocation());
     }
 
     public void testRemoveLocation(){
-        Location location = new Location("");
-        location.setLatitude(0.0d);//your coords of course
-        location.setLongitude(0.0d);
+        LatLng location = new LatLng(0.0d, 0.0d);
         Task task = new Task("bobismyID", "atask", "test", location);
         task.removeLocation();
         assertNull(task.getGeolocation());

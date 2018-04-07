@@ -33,7 +33,7 @@ import io.searchbox.core.Index;
  * @see PutCommand
  * @see ca.ualbert.cs.tasko.Commands.Command
  */
-public class PutTaskCommand implements PutCommand {
+public class PutTaskCommand extends PutCommand<Task> {
     Task task;
 
     /**
@@ -43,6 +43,7 @@ public class PutTaskCommand implements PutCommand {
      * @param task the task object to be stored in the database
      */
     public PutTaskCommand(Task task){
+        super(task, "PutTaskCommand");
         this.task = task;
     }
 

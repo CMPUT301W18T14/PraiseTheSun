@@ -33,7 +33,7 @@ import io.searchbox.core.Get;
  * @author Chase Buhler
  * @see GetCommand
  */
-public class GetTaskCommand extends GetCommand<Task> {
+public class GetTaskCommand extends GetCommand<Task, String> {
     private String taskid;
 
     /**
@@ -42,6 +42,7 @@ public class GetTaskCommand extends GetCommand<Task> {
      * @param taskid taskid of the task to be searched for
      */
     public GetTaskCommand(String taskid){
+        super(taskid, "GetTaskCommand");
         this.taskid = taskid;
     }
 

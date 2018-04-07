@@ -13,17 +13,22 @@
  * limitations under the License.
  */
 
-package ca.ualbert.cs.tasko.Commands.DataCommands;
+package ca.ualbert.cs.tasko.data;
 
-import ca.ualbert.cs.tasko.Commands.Command;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Represents a command that will be used to put data into the database. With no results
- *
- * @author Chase Buhler
+ * Created by Chase on 4/3/2018.
  */
-public abstract class PutCommand<E> extends Command<E> {
-    public PutCommand(E arg, String type) {
-        super(arg, type);
+
+public class ConnectivityState {
+    private static AtomicBoolean isConnected = new AtomicBoolean(false);
+
+    public static boolean getConnected(){
+        return isConnected.get();
+    }
+
+    public static void setConnected(boolean connected){
+        isConnected.set(connected);
     }
 }

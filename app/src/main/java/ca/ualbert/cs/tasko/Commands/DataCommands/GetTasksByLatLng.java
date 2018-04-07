@@ -18,9 +18,9 @@ package ca.ualbert.cs.tasko.Commands.DataCommands;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.IOException;
-import java.nio.channels.AsynchronousChannelGroup;
-import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualbert.cs.tasko.Task;
@@ -33,13 +33,14 @@ import io.searchbox.core.SearchResult;
  * Created by Thomas on 2018-04-03.
  */
 
-public class GetTasksByLatLng extends GetCommand<TaskList> {
+public class GetTasksByLatLng extends GetCommand<TaskList, LatLng> {
     private Double lat;
     private Double lng;
 
-    public GetTasksByLatLng(Double lat, Double lng) {
-        this.lat = lat;
-        this.lng = lng;
+    public GetTasksByLatLng(LatLng latLng) {
+        super(latLng, "GetTasksByLatLng");
+        this.lat = latLng.latitude;
+        this.lng = latLng.longitude;
     }
 
     @Override

@@ -15,7 +15,6 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 
@@ -50,14 +49,14 @@ public class SearchActivityTest extends ActivityInstrumentationTestCase2 {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
         CurrentUser.getInstance().setCurrentUser(user);
         try {
-            dm.putUser(user, getActivity().getApplicationContext());
+            dm.putUser(user);
         }catch(IllegalArgumentException e){
         }
 
-        User dmuser = dm.getUserByUsername("rromano", getActivity().getApplicationContext());
+        User dmuser = dm.getUserByUsername("rromano");
 
         Task task = new Task(dmuser.getId(), "TestTask", "TestMessage");
-        dm.putTask(task, InstrumentationRegistry.getTargetContext());
+        dm.putTask(task);
 
     }
 

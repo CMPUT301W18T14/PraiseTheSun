@@ -23,8 +23,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+import ca.ualbert.cs.tasko.data.LocalDataManager;
 
 /**
  * The LogOutActivity logs the user out by deleting their login information form the internal
@@ -65,8 +71,14 @@ public class LogOutActivity extends AppCompatActivity {
         ((JobScheduler)getSystemService(Context.JOB_SCHEDULER_SERVICE)).cancelAll();
         CurrentUser.getInstance().setCurrentUser(null);
         FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-        fos.write("".getBytes());
-        fos.close();
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+        Gson gson = new Gson();
+        gson.toJson((User) null, out);
+        out.flush();
+
+        //Clear local Task saves
+        TaskList empty = new TaskList();
+        LocalDataManager.saveLocalTasks(empty, getApplicationContext());
 
         Intent intent = new Intent(this, OpeningActivity.class);
         startActivity(intent);
