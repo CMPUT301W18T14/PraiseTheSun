@@ -15,30 +15,12 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-
-import org.apache.commons.lang3.ObjectUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -83,7 +65,7 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         //gets bidlist for the current task that was selected
         try {
             String taskID = extras.getString("TaskID");
-            bidsOnTask = dm.getTaskBids(taskID, this);
+            bidsOnTask = dm.getTaskBids(taskID);
         } catch (NullPointerException e) {
             Log.i("Error", "Failed to get bid list properly");
         } catch (NoInternetException e) {
@@ -102,4 +84,5 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         myBidList.setAdapter(searchAdapter);
         
     }
+
 }

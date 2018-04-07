@@ -22,5 +22,8 @@ import ca.ualbert.cs.tasko.Commands.Command;
  *
  * @author Chase Buhler
  */
-public interface PutCommand extends Command {
+public abstract class PutCommand<E> extends Command<E> {
+    public PutCommand(E arg, String type) {
+        super(arg, type);
+    }
 }

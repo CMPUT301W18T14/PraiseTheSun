@@ -28,10 +28,11 @@ import io.searchbox.core.Delete;
  * Created by Thomas on 2018-04-03.
  */
 
-public class DeleteNotificationCommand extends DeleteCommand {
+public class DeleteNotificationCommand extends DeleteCommand<String> {
     private String notificationId;
 
     public DeleteNotificationCommand(String notificationId) {
+        super(notificationId, "DeleteNotificationCommand");
         this.notificationId = notificationId;
     }
 

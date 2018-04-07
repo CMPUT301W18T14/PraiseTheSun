@@ -15,24 +15,24 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
-import android.media.Image;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -51,14 +51,18 @@ public class AddTaskActivity extends AppCompatActivity {
     private String taskName;
     private String description;
     private User taskRequester;
-    private Location geoLocation = null;
+    private LatLng geoLocation = null;
     private ArrayList<String> photos;
     private ArrayList<Bitmap> images;
     private ImageSwitcher switcher;
     private ImageView imageView;
     private TextView textView;
     private int numImages;
+
+    LocationManager lm;
+
     private Task currentTask;
+
 
     /**
      * Called when the activity is started. Initializes the taskNameText and descriptionText.
@@ -81,10 +85,14 @@ public class AddTaskActivity extends AppCompatActivity {
         switcher = (ImageSwitcher) findViewById(R.id.addTaskImageSwitcher);
         textView = (TextView) findViewById(R.id.addTaskTextView);
 
+        lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+
         if (currentTask != null) {
             taskNameText.setText(currentTask.getTaskName());
             descriptionText.setText(currentTask.getDescription());
             taskNameText.setSelection(taskNameText.getText().length());
+            geoLocation = currentTask.getGeolocation();
         }
 
         if (currentTask != null && currentTask.hasPhoto()) {
@@ -177,11 +185,14 @@ public class AddTaskActivity extends AppCompatActivity {
      */
     public void onAddLocationClick(View view){
         // Create an Intent to AddLocationActivity
-        /*
-        Intent addLocationIntent = new Intent(this, AddLocationActivity.class);
-        final int result = 1;
+        if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        Intent addLocationIntent = new Intent(this, SelectLocationActivity.class);
+        final int result = 2;
         startActivityForResult(addLocationIntent, result);
-         */
+        onActivityResult(result, result, addLocationIntent);
+        } else {
+            Toast.makeText(this, "Location services disabled", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -228,6 +239,11 @@ public class AddTaskActivity extends AppCompatActivity {
                     break;
                 case 2:
                     // Handle add location Intent result
+
+                    double lat = data.getDoubleExtra("lat", 0.00);
+                    double lng = data.getDoubleExtra("lng", 0.00);
+                    geoLocation = new LatLng(lat, lng);
+                    Log.i("LocationAdded", "lat, lng " + Double.toString(lat) + ", " + Double.toString(lng) );
                     break;
             }
         }
@@ -253,11 +269,17 @@ public class AddTaskActivity extends AppCompatActivity {
                 finish();
             }
 
-            Task newTask = new Task(taskRequester.getId(), taskName, description, photos);
+            Task newTask;
+            if (geoLocation != null) {
+                newTask = new Task(taskRequester.getId(), taskName, description, photos, geoLocation);
+            }
+            else {
+                newTask = new Task(taskRequester.getId(), taskName, description, photos);
+            }
             newTask.setTaskRequesterUsername(taskRequester.getUsername());
             if (currentTask != null) {
                 try {
-                    DataManager.getInstance().deleteTask(currentTask, this.getApplicationContext());
+                    DataManager.getInstance().deleteTask(currentTask);
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }
@@ -267,7 +289,8 @@ public class AddTaskActivity extends AppCompatActivity {
             }
 
             try {
-                DataManager.getInstance().putTask(newTask, this.getApplicationContext());
+                DataManager.getInstance().putTask(newTask);
+                Log.i("Task location: ", "lat, lng " + Double.toString(newTask.getGeolocation().latitude) + ", " + Double.toString(newTask.getGeolocation().longitude) );
                 finish();
             } catch (NoInternetException e) {
                 Log.i("Error", "No internet connection in CreateAccountActivity");

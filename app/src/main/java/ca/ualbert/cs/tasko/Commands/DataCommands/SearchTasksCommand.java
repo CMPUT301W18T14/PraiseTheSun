@@ -37,7 +37,7 @@ import io.searchbox.core.SearchResult;
  * @see GetCommand
  * @author Chase Buhler
  */
-public class SearchTasksCommand extends GetCommand<TaskList> {
+public class SearchTasksCommand extends GetCommand<TaskList, String> {
     private String searchTerm;
 
     /**
@@ -48,6 +48,7 @@ public class SearchTasksCommand extends GetCommand<TaskList> {
      *                  search the description of the tasks
      */
     public SearchTasksCommand(String searchTerm){
+        super(searchTerm, "SearchTasksCommand");
         this.searchTerm = searchTerm;
     }
 
@@ -61,6 +62,10 @@ public class SearchTasksCommand extends GetCommand<TaskList> {
         String query = "{\"size\": 1000," +
                 "\"query\" : { " +
                 "      \"bool\": { " +
+                "           \"must_not\" : [" +
+                "               {\"match\": {\"status\":\"DONE\" }}," +
+                "               {\"match\": {\"status\":\"ASSIGNED\"}}" +
+                "           ],"+
                 "           \"should\" :[ " +
                 "               {\"match\": {" +
                 "                   \"description\": { " +

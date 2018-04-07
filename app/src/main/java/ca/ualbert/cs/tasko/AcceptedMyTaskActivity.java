@@ -18,6 +18,8 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +29,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import java.text.DecimalFormat;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -64,7 +67,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
         try {
             String taskID = extras.getString("TaskID");
-            assignedCurrentTask = dm.getTask(taskID, this);
+            assignedCurrentTask = dm.getTask(taskID);
             fillInformation();
         } catch (NullPointerException e) {
             Log.i("Error", "TaskID not properly passed");
@@ -72,7 +75,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+        ImageView imageView = (ImageView) findViewById(R.id.myAssignedTasksImageView);
         if (assignedCurrentTask.hasPhoto()) {
             imageView.setImageBitmap(assignedCurrentTask.getCoverPhoto());
         }
@@ -83,16 +86,53 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     }
 
     private void fillInformation() {
+        //Taken From https://stackoverflow.com/questions/2538787/
+        //how-to-display-an-output-of-float-data-with-2-decimal-places-in-java
+        //2018-03-26
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
         assignedTaskName.setText(assignedCurrentTask.getTaskName());
         assignedTaskDescription.setText(assignedCurrentTask.getDescription());
-        assignedTaskStatus.setText(assignedCurrentTask.getStatus().toString() + ": bid of $" +
-                assignedCurrentTask.getMinBid().toString() + "by " + assignedCurrentTask.getMinBid());
+        //Get bids that were on this task
+        BidList taskBids = new BidList();
+        try {
+            taskBids = dm.getTaskBids(assignedCurrentTask.getId());
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < taskBids.getSize(); i++) {
+            if (taskBids.get(i).getStatus() == BidStatus.ACCEPTED) {
+                String acceptedBidAmount = df.format(taskBids.get(i).getValue());
+                String minBidUser = taskBids.get(i).getUserID();
+                assignedTaskStatus.setText(assignedCurrentTask.getStatus().toString() + ": bid of $" +
+                        acceptedBidAmount + " by " + minBidUser);
+            }
+        }
     }
 
     public void onPhotoClick(View view) {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
         viewPhotosIntent.putExtra("photos", assignedCurrentTask);
         startActivity(viewPhotosIntent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 19) {
+            assignedCurrentTask = (Task) data.getSerializableExtra("task");
+            fillInformation();
+            ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
+            if (assignedCurrentTask.hasPhoto()) {
+                imageView.setImageBitmap(assignedCurrentTask.getCoverPhoto());
+            }
+            else {
+                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable
+                        .ic_menu_gallery);
+                imageView.setImageBitmap(image);
+            }
+        }
     }
 
     private void setupCompleteButton() {
@@ -109,6 +149,11 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 //Set this task's status to DONE
                                 assignedCurrentTask.setStatus(TaskStatus.DONE);
+                                try {
+                                    dm.putTask(assignedCurrentTask);
+                                } catch (NoInternetException e) {
+                                    e.printStackTrace();
+                                }
                                 finish();
                             }
                         });
@@ -147,15 +192,62 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                         "Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                //Get bids that were on this task
+                                BidList taskBids = new BidList();
+                                try {
+                                    taskBids = dm.getTaskBids(assignedCurrentTask.getId());
+                                } catch (NoInternetException e) {
+                                    e.printStackTrace();
+                                }
+
                                 //Set this task's status to REQUESTED if there were not other bids
                                 //on this task prior to the assignment
-                                assignedCurrentTask.setStatus(TaskStatus.REQUESTED);
-                                finish();
+
+                                if (taskBids.getSize() == 1) {
+                                    //Change Task Status
+                                    assignedCurrentTask.setStatus(TaskStatus.REQUESTED);
+
+                                    NotificationHandler nh = new NotificationHandler(context);
+                                    try {
+                                        nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+                                    } catch (NoInternetException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    //Remove this rejected bid
+                                    taskBids.removeBid(taskBids.get(0));
+                                    assignedCurrentTask.setMinBidNull();
+                                }
 
                                 //Set this task's status to BIDDED if there were other bids on this
                                 //task prior to the assignment
-                                //assignedCurrentTask.setStatus(Status.BIDDED);
-                                //finish();
+                                else {
+                                    //Change Task Status
+                                    assignedCurrentTask.setStatus(TaskStatus.BIDDED);
+                                    //Change Bid Status'
+                                    //Make all other bids rejected
+                                    assignedCurrentTask.getMinBid();
+                                    for(int i = 0; i < taskBids.getSize(); i++){
+                                        //Change hidden bids to pending again
+                                        if (taskBids.get(i).getStatus() != BidStatus.ACCEPTED) {
+                                            taskBids.get(i).setStatus(BidStatus.PENDING);
+                                            //if (taskBid)
+                                        }
+                                        //Remove rejected-assigned bid from bidlist
+                                        else {
+                                            taskBids.removeBid(taskBids.get(i));
+                                            --i;
+                                        }
+                                    }
+                                }
+
+                                //Put these updates into the database
+                                try {
+                                    dm.putTask(assignedCurrentTask);
+                                } catch (NoInternetException e) {
+                                    e.printStackTrace();
+                                }
+                            finish();
                             }
                         });
 
