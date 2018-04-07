@@ -102,8 +102,8 @@ public class ViewMyTasksActivity extends RootActivity {
                 TaskList myTasks = new TaskList();
                 loadingCircle.setVisibility(View.VISIBLE);
                 try {
-                    myTasks = dm.getUserTasks(CurrentUser.getInstance().getCurrentUser().getId(),
-                            activity);
+                    myTasks = dm.getUserTasks(CurrentUser.getInstance().getCurrentUser().getId()
+                    );
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }

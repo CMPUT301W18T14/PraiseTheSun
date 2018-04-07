@@ -40,7 +40,7 @@ import io.searchbox.core.SearchResult;
  * @see GetCommand
  * @author tlafranc
  */
-public class GetUserBidsCommand extends GetCommand<BidList> {
+public class GetUserBidsCommand extends GetCommand<BidList, String> {
     private String userId;
 
     /**
@@ -50,6 +50,7 @@ public class GetUserBidsCommand extends GetCommand<BidList> {
      * @param userId the userId associated to the bids in the returned BidList
      */
     public GetUserBidsCommand(String userId){
+        super(userId, "GetUserBidsCommand");
         this.userId = userId;
     }
 

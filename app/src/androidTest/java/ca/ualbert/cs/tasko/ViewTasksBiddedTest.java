@@ -15,15 +15,10 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.Display;
-
 import com.robotium.solo.Solo;
-
 import ca.ualbert.cs.tasko.data.DataManager;
-import ca.ualbert.cs.tasko.data.NoInternetException;
-
 
 /**
  * Tests the functionality of the View My Tasks I have bidded on activity
@@ -51,22 +46,22 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
         User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
 
         try {
-            dm.putUser(user, InstrumentationRegistry.getTargetContext());
+            dm.putUser(user);
         }catch(IllegalArgumentException e){
         }
 
-        dmuser = dm.getUserByUsername("rromano", InstrumentationRegistry.getTargetContext());
+        dmuser = dm.getUserByUsername("rromano");
         CurrentUser.getInstance().setCurrentUser(dmuser);
 
         task1= new Task(dmuser.getId(), "TestTask", "Help me test code");
-        dm.putTask(task1, InstrumentationRegistry.getTargetContext());
+        dm.putTask(task1);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         bid = new Bid(dmuser.getId(), 11, task1.getId());
-        dm.addBid(bid, getActivity().getApplicationContext());
+        dm.addBid(bid);
     }
 
         /**

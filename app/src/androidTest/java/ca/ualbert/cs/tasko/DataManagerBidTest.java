@@ -49,7 +49,7 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
         boolean isConnected = true;
         BidList returnedBids = null;
         try {
-            dm.addBid(bid1, getActivity().getApplicationContext());
+            dm.addBid(bid1);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -61,8 +61,7 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
         }
         assertTrue(isConnected);
         try {
-            returnedBids = dm.getUserBids(bid1.getUserID(), getActivity()
-                    .getApplicationContext());
+            returnedBids = dm.getUserBids(bid1.getUserID());
         } catch (NoInternetException e) {
             Log.i("Error", "The phone has no internet so this test will fail");
         }
@@ -70,14 +69,13 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
         assertEquals(returnedBids.getBid(userID1).getValue(), bid1.getValue());
         assertEquals(returnedBids.getBid(userID1).getTaskID(), bid1.getTaskID());
         try {
-            dm.deleteBid(bid1, getActivity().getApplicationContext());
+            dm.deleteBid(bid1);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            returnedBids = dm.getUserBids(bid1.getUserID(), getActivity()
-                    .getApplicationContext());
+            returnedBids = dm.getUserBids(bid1.getUserID());
         } catch (NoInternetException e) {
             Log.i("Error", "The phone has no internet so this test will fail");
         }
@@ -88,7 +86,7 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
         boolean isConnected = true;
         BidList returnedBids = null;
         try {
-            dm.addBid(bid2, getActivity().getApplicationContext());
+            dm.addBid(bid2);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -100,8 +98,7 @@ public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
         }
         assertTrue(isConnected);
         try {
-            returnedBids = dm.getTaskBids(bid2.getTaskID(), getActivity()
-                    .getApplicationContext());
+            returnedBids = dm.getTaskBids(bid2.getTaskID());
         } catch (NoInternetException e) {
             Log.i("Error", "The phone has no internet so this test will fail");
         }

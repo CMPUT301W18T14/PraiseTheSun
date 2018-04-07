@@ -18,20 +18,11 @@ package ca.ualbert.cs.tasko;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import junit.framework.TestCase;
-
-import java.io.IOException;
-
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
-import ca.ualbert.cs.tasko.data.JestWrapper;
 import ca.ualbert.cs.tasko.data.NoInternetException;
-import io.searchbox.core.DocumentResult;
-import io.searchbox.core.Index;
-import io.searchbox.core.Search;
-import io.searchbox.core.SearchResult;
 
 /**
  * Created by chase on 3/4/2018.
@@ -59,7 +50,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
     public void testPutUser(){
         User returnedUser = null;
         try {
-            dm.putUser(user2, getActivity().getApplicationContext());
+            dm.putUser(user2);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -71,8 +62,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
             //this is good
         }
         try {
-            returnedUser = dm.getUserById(user2.getId(), getActivity()
-                    .getApplicationContext());
+            returnedUser = dm.getUserById(user2.getId());
         } catch (NoInternetException e){
             Log.i("Error", "The phone has no internet so this test will fail");
         }
@@ -81,7 +71,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
 
         boolean noDup = false;
         try {
-            dm.putUser(user2, getActivity().getApplicationContext());
+            dm.putUser(user2);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -99,7 +89,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
     public void testGetUserByUsername(){
         User returnedUser = null;
         try {
-            dm.putUser(user1, getActivity().getApplicationContext());
+            dm.putUser(user1);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -112,8 +102,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         }
 
         try {
-            returnedUser = dm.getUserByUsername(user1.getUsername(), getActivity()
-                    .getApplicationContext());
+            returnedUser = dm.getUserByUsername(user1.getUsername());
         } catch (NoInternetException e){
             Log.i("Error", "No internet connection, can not get the user from elasticsearch");
         }
@@ -125,7 +114,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
     public void testNotifications(){
         NotificationList nl = null;
         try {
-            dm.putNotification(n, getActivity().getApplicationContext());
+            dm.putNotification(n);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -136,8 +125,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         }
 
         try {
-            nl = dm.getNotifications(n.getRecipientID(), getActivity()
-                    .getApplicationContext());
+            nl = dm.getNotifications(n.getRecipientID());
         } catch (NoInternetException e){
             Log.i("Error", "No internet connection, can not get the user from elasticsearch");
         }

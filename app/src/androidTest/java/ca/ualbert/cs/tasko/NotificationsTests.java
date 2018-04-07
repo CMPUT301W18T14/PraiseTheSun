@@ -62,23 +62,21 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
         User testprovider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
 
-        dm.putUser(requestor, context);
-        dm.putUser(provider, context);
+        dm.putUser(requestor);
+        dm.putUser(provider);
 
-        requestor = dm.getUserByUsername("StevieP",
-                context);
+        requestor = dm.getUserByUsername("StevieP");
 
-        provider = dm.getUserByUsername("Stevoo",
-                context);
+        provider = dm.getUserByUsername("Stevoo");
 
         task = new Task(requestor.getId(), "TestTask for Notifications", "Notifications");
-        dm.putTask(task, context);
+        dm.putTask(task);
 
         taskID = task.getId();
 
         Bid testBid = new Bid(provider.getId(), 10f, taskID);
 
-        dm.addBid(testBid, context);
+        dm.addBid(testBid);
 
 
         //Clear Old test data
@@ -90,7 +88,7 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
 
         nh.newNotification(taskID, NotificationType.TASK_REQUESTER_RECEIVED_BID_ON_TASK);
         sleep();
-        nlr.addAll(dm.getNotifications(requestor.getId(), context).getNotifications());
+        nlr.addAll(dm.getNotifications(requestor.getId()).getNotifications());
         assertEquals(1, nlr.getSize());
         deleteTestInfo();
     }
@@ -99,7 +97,7 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
 
         nh.newNotification(taskID, NotificationType.TASK_REQUESTER_REPOSTED_TASK);
         sleep();
-        nlp.addAll(dm.getNotifications(provider.getId(), context).getNotifications());
+        nlp.addAll(dm.getNotifications(provider.getId()).getNotifications());
         assertEquals(1, nlp.getSize());
         deleteTestInfo();
     }
@@ -107,11 +105,11 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
     public void testBidAcceptedNotification() throws NoInternetException{
 
         task.assign(provider.getId());
-        dm.putTask(task, context);
+        dm.putTask(task);
         sleep();
         nh.newNotification(taskID, NotificationType.TASK_PROVIDER_BID_ACCEPTED);
         sleep();
-        nlp.addAll(dm.getNotifications(provider.getId(), context).getNotifications());
+        nlp.addAll(dm.getNotifications(provider.getId()).getNotifications());
         assertEquals(1, nlp.getSize());
         deleteTestInfo();
     }
@@ -120,7 +118,7 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
 
         nh.newNotification(taskID, NotificationType.TASK_DELETED);
         sleep();
-        nlp.addAll(dm.getNotifications(provider.getId(), context).getNotifications());
+        nlp.addAll(dm.getNotifications(provider.getId()).getNotifications());
         assertEquals(1, nlp.getSize());
         deleteTestInfo();
     }
@@ -129,7 +127,7 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
 
         nh.newBidDeletedNotification(taskID, provider.getId());
         sleep();
-        nlp.addAll(dm.getNotifications(provider.getId(), context).getNotifications());
+        nlp.addAll(dm.getNotifications(provider.getId()).getNotifications());
         assertEquals(1, nlp.getSize());
         deleteTestInfo();
     }
@@ -141,11 +139,11 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
         nh.newNotification(taskID, NotificationType.RATING);
         sleep();
 
-        nlr.addAll(dm.getNotifications(requestor.getId(), context).getNotifications());
+        nlr.addAll(dm.getNotifications(requestor.getId()).getNotifications());
         assertEquals(1, nlr.getSize());
 
 
-        nlp.addAll(dm.getNotifications(provider.getId(), context).getNotifications());
+        nlp.addAll(dm.getNotifications(provider.getId()).getNotifications());
         //assertEquals(1, nlp.getSize());
 
         deleteTestInfo();
@@ -161,16 +159,16 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
         nlr = new NotificationList();
 
         // Delete the requester notifications
-        nlr.addAll(dm.getNotifications(requestor.getId(), context).getNotifications());
+        nlr.addAll(dm.getNotifications(requestor.getId()).getNotifications());
         while (nlr.getSize() > 0) {
-            dm.deleteNotification(nlr.getNotification(0).getId(), context);
+            dm.deleteNotification(nlr.getNotification(0).getId());
             nlr.delete(0);
         }
 
         //Delete the provider notifications
-        nlp.addAll(dm.getNotifications(provider.getId(), context).getNotifications());
+        nlp.addAll(dm.getNotifications(provider.getId()).getNotifications());
         while (nlp.getSize() > 0) {
-            dm.deleteNotification(nlp.getNotification(0).getId(), context);
+            dm.deleteNotification(nlp.getNotification(0).getId());
             nlp.delete(0);
         }
     }

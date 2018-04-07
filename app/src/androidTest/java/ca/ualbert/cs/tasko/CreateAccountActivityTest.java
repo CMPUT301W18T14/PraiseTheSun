@@ -67,8 +67,7 @@ public class CreateAccountActivityTest extends ActivityInstrumentationTestCase2 
             e.printStackTrace();
         }
         try {
-            assertTrue(DataManager.getInstance().getUserByUsername(username, getActivity()
-                    .getApplicationContext()).getUsername() != null);
+            assertTrue(DataManager.getInstance().getUserByUsername(username).getUsername() != null);
         } catch (NoInternetException e) {
             e.printStackTrace();
         }

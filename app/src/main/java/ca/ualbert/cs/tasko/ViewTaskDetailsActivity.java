@@ -32,7 +32,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.text.DecimalFormat;
-import ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -81,12 +80,12 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
         try {
             String taskID = extras.getString("TaskID");
-            currentTask = dm.getTask(taskID, this);
+            currentTask = dm.getTask(taskID);
             fillInformation();
         } catch (NullPointerException e) {
             Log.i("Error", "TaskID not properly passed");
-        } catch (NoInternetException e) {
-            e.printStackTrace();
+        } catch (NoInternetException e){
+            Log.i("Error", "No Connection in Details");
         }
 
         ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
@@ -122,7 +121,8 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
                                         try {
                                             NotificationHandler nh = new NotificationHandler(context);
                                             nh.newNotification(currentTask.getId(), NotificationType.TASK_DELETED);
-                                            dm.deleteTask(currentTask, context);
+                                            dm.deleteTask(currentTask);
+
                                             finish();
                                             Toast.makeText(getApplicationContext(),"Your task has successfully been deleted.", Toast.LENGTH_SHORT).show();
                                         }
@@ -162,7 +162,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         if (!edit) {
             try {
                 String taskID = getIntent().getExtras().getString("TaskID");
-                currentTask = dm.getTask(taskID, this);
+                currentTask = dm.getTask(taskID);
             } catch (NullPointerException e) {
                 Log.i("Error", "TaskID not properly passed");
             } catch (NoInternetException e) {

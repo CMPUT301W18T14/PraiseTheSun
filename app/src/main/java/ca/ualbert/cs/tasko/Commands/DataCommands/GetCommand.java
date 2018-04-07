@@ -29,8 +29,12 @@ import ca.ualbert.cs.tasko.Commands.Command;
  * @version 1
  * @see Command
  */
-public abstract class GetCommand<T> implements Command {
+public abstract class GetCommand<T, E> extends Command<E> {
     private T result;
+
+    public GetCommand(E arg, String type) {
+        super(arg, type);
+    }
 
     /**
      * return the result of the command

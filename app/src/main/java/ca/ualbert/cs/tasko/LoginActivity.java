@@ -15,14 +15,12 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,10 +28,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.LocalDataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
@@ -88,20 +91,23 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
 
-                User usernameInput = null;
+                User retrievedUser = null;
                 try {
-                    usernameInput = DM.getUserByUsername(usernameText.getText().toString(),
-                            LoginActivity.this);
+                    retrievedUser = DM.getUserByUsername(usernameText.getText().toString()
+                    );
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }
 
-                if (usernameInput.getUsername() != null){
-                    CU.setCurrentUser(usernameInput);
+                if (retrievedUser.getUsername() != null){
+                    CU.setCurrentUser(retrievedUser);
                     try {
                         FileOutputStream fos = openFileOutput(FILENAME,
                                 Context.MODE_PRIVATE);
-                        fos.write(usernameInput.getUsername().getBytes());
+                        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+                        Gson gson = new Gson();
+                        gson.toJson(retrievedUser, out);
+                        out.flush();
                         fos.close();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -116,8 +122,19 @@ public class LoginActivity extends AppCompatActivity {
                     mJobScheduler.schedule(infoBuilder.build());
                     //End notification alarm
 
+                    //Build local task storage
+                    try {
+                        TaskList tasks = DataManager.getInstance().getUserTasks(
+                                retrievedUser.getId());
+                        LocalDataManager.saveLocalTasks(tasks, getApplicationContext());
+                    } catch (NoInternetException e){
+                        Log.i("Error", "Failed to sync users local tasks on login due to lost " +
+                                "connection");
+                    }
+
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     usernameText.setError("This is not a valid username");
                 }
