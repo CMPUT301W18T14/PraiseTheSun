@@ -19,6 +19,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.util.Base64;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -37,12 +40,15 @@ public class Task implements Serializable {
     private String taskName;
     private String description;
     private ArrayList<String> photos;
-    private Location geolocation;
+    //private Location geolocation;
     private String taskRequesterID;
     private String taskRequesterUsername;
     private String taskProviderID;
     private Float minBid;
+    private double lat;
+    private double lng;
     private TaskStatus status;
+
 
     @JestId
     private String id;
@@ -70,7 +76,7 @@ public class Task implements Serializable {
      * @param location geolocation of the task
      */
     public Task(String taskRequesterID, String taskName, String description,
-                Location location){
+                LatLng location){
         this(taskRequesterID, taskName, description, new ArrayList<String>(), location);
     }
 
@@ -90,7 +96,7 @@ public class Task implements Serializable {
         this.taskName = taskName;
         this.description = description;
         this.photos = photos;
-        this.geolocation = null;
+       // this.geolocation = null;
         this.taskProviderID = null;
         this.status = TaskStatus.REQUESTED;
         this.minBid = null;
@@ -108,13 +114,15 @@ public class Task implements Serializable {
      * @param location geolocation of the task
      */
     public Task(String taskRequesterID, String taskName, String description,
-                ArrayList<String> photos, Location location){
+                ArrayList<String> photos, LatLng location){
         this.taskRequesterID = taskRequesterID;
         this.taskName = taskName;
         this.description = description;
         this.photos = photos;
-        this.geolocation = location;
+
         this.taskProviderID = null;
+        this.lat = location.latitude;
+        this.lng = location.longitude;
         this.status = TaskStatus.REQUESTED;
     }
 
@@ -149,6 +157,13 @@ public class Task implements Serializable {
     public void setMinBid(Float value) {
         if (minBid == null || value < minBid)
             this.minBid = value;
+    }
+
+    /**
+     * Sets the minimum bid on the task back to null
+     */
+    public void setMinBidNull() {
+        this.minBid = null;
     }
 
     // Not implemented yet
@@ -189,9 +204,21 @@ public class Task implements Serializable {
         }
     }
 
-    public ArrayList<String> getPhotoStrings() {
+
+    /**
+     * Sets the location of the task
+     * @see LatLng, NearbyTasksActivity
+     * @param location
+     */
+    public void addLocation(LatLng location){
+        lat = location.latitude;
+        lng = location.longitude;
+    }
+
+    public ArrayList<String> getPhotoStrings(){
         return this.photos;
     }
+
 
     public ArrayList<byte[]> getByteArrays() {
         if (hasPhoto()) {
@@ -213,10 +240,14 @@ public class Task implements Serializable {
 
     }
 
-    // Not implemented yet
-    // Todo Part 5
-    public void removeLocation(){
 
+    /**
+     * Removes the location of the task
+     * @see NearbyTasksActivity
+     */
+    public void removeLocation(){
+        this.lat = 0.00f;
+        this.lng = 0.00f;
     }
 
     /**
@@ -280,21 +311,22 @@ public class Task implements Serializable {
      * Method which returns the geolocation of this task.
      *
      * @return the geolocation of this task
-     * @see #setGeolocation(Location)
-     */
-    public Location getGeolocation() {
+     * @see #addLocation(LatLng)
+        */
+    public LatLng getGeolocation() {
+        LatLng geolocation = new LatLng(lat, lng);
         return geolocation;
     }
-
+/*
     /**
      * Method which sets the geolocation of this task
      *
      * @param geolocation the location of this task
      */
-    public void setGeolocation(Location geolocation) {
+/*    public void setGeolocation(Location geolocation) {
         this.geolocation = geolocation;
     }
-
+*/
     /**
      * Method which returns the userID of the task requester
      *
