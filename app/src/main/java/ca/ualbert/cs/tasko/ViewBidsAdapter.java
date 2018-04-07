@@ -70,7 +70,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
      */
     @Override
     public BidViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.bid_view, parent, false);
+        View view = inflater.inflate(R.layout.bid_cardview_layout, parent, false);
         BidViewHolder holder = new BidViewHolder(view);
 
         return holder;
