@@ -268,8 +268,13 @@ public class AddTaskActivity extends AppCompatActivity {
                 finish();
             }
 
-            Task newTask = new Task(taskRequester.getId(), taskName, description, photos, geoLocation);
-
+            Task newTask;
+            if (geoLocation != null) {
+                newTask = new Task(taskRequester.getId(), taskName, description, photos, geoLocation);
+            }
+            else {
+                newTask = new Task(taskRequester.getId(), taskName, description, photos);
+            }
             newTask.setTaskRequesterUsername(taskRequester.getUsername());
             if (currentTask != null) {
                 try {
