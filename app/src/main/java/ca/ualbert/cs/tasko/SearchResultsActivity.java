@@ -45,7 +45,7 @@ public class SearchResultsActivity extends RootActivity {
     private ProgressBar loadingCircle;
     private SearchResultsActivity context = this;
     private TaskList foundtasks;
-    private ArrayList foundtasksUsers;
+    private ArrayList<String> foundtasksUsers;
 
     /**
      * Creates the Activity which includes initializing the RecyclerView with the appropriate
@@ -115,14 +115,11 @@ public class SearchResultsActivity extends RootActivity {
 
         int i;
 
-        foundtasksUsers = new ArrayList();
+        foundtasksUsers = new ArrayList<>();
 
         for(i = 0; i < foundtasks.getSize(); i++){
-            foundtasksUsers.add(foundtasks.get(i).getTaskRequesterID())
+            foundtasksUsers.add(foundtasks.get(i).getTaskRequesterID());
         }
-
-        String query =
-                " {query
     }
 }
 
