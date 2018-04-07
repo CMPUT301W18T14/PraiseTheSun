@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,35 +90,35 @@ public class RootActivity extends AppCompatActivity {
                         switch (item.getItemId()){
                             case R.id.get_home:
                                 i = new Intent(getApplicationContext(), MainActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 
                             case R.id.add_new_task:
                                 i = new Intent(getApplicationContext(), AddTaskActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 
                             case R.id.my_tasks:
                                 i = new Intent(getApplicationContext(), ViewMyTasksActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 
                             case R.id.my_bids:
                                 i = new Intent(getApplicationContext(), ViewTasksIBiddedOnActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
 
                             case R.id.my_assignments:
                                 i = new Intent(getApplicationContext(), ViewTasksAssignedActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
@@ -135,7 +136,7 @@ public class RootActivity extends AppCompatActivity {
                                 catch (Exception e){}
                                 if(validGPS || validLocation) {
                                     i = new Intent(getApplicationContext(), NearbyTasksActivity.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                     startActivity(i);
                                     drawerLayout.closeDrawers();
                                 } else {
@@ -145,7 +146,7 @@ public class RootActivity extends AppCompatActivity {
 
                             case R.id.view_profile:
                                 i = new Intent(getApplicationContext(), UserActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                 startActivity(i);
                                 drawerLayout.closeDrawers();
                                 break;
@@ -157,6 +158,16 @@ public class RootActivity extends AppCompatActivity {
                 }
         );
 
+
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), UserActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(i);
+                drawerLayout.closeDrawers();
+            }
+        });
 
     }
 
