@@ -35,7 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-g
+
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Array;
 import com.google.android.gms.maps.model.LatLng;
