@@ -42,6 +42,15 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 import static android.provider.Telephony.Mms.Part.FILENAME;
 
+/**
+ * The activity that displays Notifications in a recyclerview. Because the app can start with this
+ * activity if a user clicks on an Android notification, we have ti handle starting the app briefly
+ * before displaying the notifications.
+ * @see Notification
+ * @see NotificationListAdapter
+ *
+ * @author spack
+ */
 public class ViewNotificationActivity extends AppCompatActivity {
 
     private RecyclerView notificationsRecyclerView;
@@ -76,12 +85,16 @@ public class ViewNotificationActivity extends AppCompatActivity {
 
     }
 
-    private void handleAppStart() {
-        if (cu.loggedIn()) {
+    /**
+     * If the app starts with this activity, we have to make sure the user is logged in and online.
+     * Otherwise we will send the user to the login activity or if they have no connection, to a no
+     * access page.
+     */
+    private void handleAppStart(){
+        if (cu.loggedIn()){
             return;
         } else {
             try {
-                Log.i("Im not logged in..", "Trying to get the user");
                 FileInputStream fis = openFileInput(FILENAME);
                 BufferedReader in = new BufferedReader(new InputStreamReader(fis));
                 Gson gson = new Gson();

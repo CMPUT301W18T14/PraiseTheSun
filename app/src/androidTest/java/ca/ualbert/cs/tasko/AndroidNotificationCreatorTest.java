@@ -25,14 +25,12 @@ import ca.ualbert.cs.tasko.NotificationArtifacts.AndroidNotificationCreator;
  */
 public class AndroidNotificationCreatorTest extends ActivityInstrumentationTestCase2 {
 
-    private AndroidNotificationCreator anc;
-
     public AndroidNotificationCreatorTest() {
         super(MainActivity.class);
     }
 
     public void testCreate(){
-        anc = new AndroidNotificationCreator(getActivity().getApplicationContext());
+        AndroidNotificationCreator anc = new AndroidNotificationCreator(getActivity().getApplicationContext());
         anc.createAndriodNotification();
     }
 }

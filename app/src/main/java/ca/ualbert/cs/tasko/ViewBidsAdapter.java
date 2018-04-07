@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -79,6 +80,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
      * @param holder The ViewHolder data will be bound too.
      * @param position The position within the RecyclerView.
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(BidViewHolder holder, int position) {
         Bid currentTask = bids.get(position);
