@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -74,6 +75,8 @@ public class MainActivity extends RootActivity {
                         startActivity(intent);
                     }
                 } catch (NoInternetException e) {
+                    Toast.makeText(MainActivity.this, "Can not search offline", Toast.LENGTH_SHORT)
+                            .show();
                     e.printStackTrace();
                 }
 
