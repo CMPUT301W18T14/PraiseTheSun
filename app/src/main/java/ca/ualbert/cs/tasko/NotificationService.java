@@ -21,6 +21,8 @@ import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -33,6 +35,7 @@ import java.io.InputStreamReader;
 import ca.ualbert.cs.tasko.NotificationArtifacts.AndroidNotificationCreator;
 import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
+import ca.ualbert.cs.tasko.data.ConnectivityState;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -82,6 +85,8 @@ public class NotificationService extends JobService {
             } else {
                 DataManager dm = DataManager.getInstance();
                 Boolean alert = false;
+                ConnectivityState.setConnected(isOnline(getApplicationContext()));
+                Log.d("Notification Poll", "We are polling");
                 try {
                     NotificationList nl = dm.getNotifications(user.getId());
                     for (Notification n : nl.getNotifications()) {
@@ -110,6 +115,26 @@ public class NotificationService extends JobService {
                 jobFinished(jp, false);
             }
         }
+    }
+    private boolean isOnline(Context context){
+        /*
+        Retrieved on 04-03-2018
+        https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#DetermineType
+         */
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null
+                && activeNetwork.isConnectedOrConnecting();
+        if(isConnected){
+            return activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET
+                    || activeNetwork.getType() == ConnectivityManager.TYPE_WIFI
+                    || activeNetwork.getType() == ConnectivityManager
+                    .TYPE_MOBILE;
+        }
+        return false;
     }
 
 }
