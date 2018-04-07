@@ -52,9 +52,7 @@ public class DeleteTaskCommand extends DeleteCommand<Task> {
                 DataManager dm = DataManager.getInstance();
                 try {
                     BidList bids = dm.getTaskBids(task.getId());
-                    for(Bid bid: bids.getBids()){
-                        NotificationFactory nf = new NotificationFactory();
-                        nf.createNotification(task.getId(), NotificationType.TASK_DELETED);
+                    for(Bid bid: bids.getBids()) {
                         dm.deleteBid(bid);
                     }
                 } catch (NoInternetException e){
