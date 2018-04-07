@@ -93,12 +93,12 @@ public class ViewTasksAssignedActivity extends RootActivity {
     private void getTasks(){
         userBids = new BidList();
         try {
-            userBids = dm.getUserBids(User.getId(), context);
+            userBids = dm.getUserBids(User.getId());
             assignedTasks = new TaskList();
             for (int i = 0; i < userBids.getSize(); i++) {
                 if (userBids.get(i).getStatus() == BidStatus.ACCEPTED) {
                     Log.d("msg", "bid is accepted");
-                    assignedTasks.addTask(dm.getTask(userBids.get(i).getTaskID(), context));
+                    assignedTasks.addTask(dm.getTask(userBids.get(i).getTaskID()));
                 }
             }
         } catch (NoInternetException e) {

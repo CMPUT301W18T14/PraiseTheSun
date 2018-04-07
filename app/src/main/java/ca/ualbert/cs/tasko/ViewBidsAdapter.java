@@ -171,7 +171,10 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             thisTask.assign((bids.get(getAdapterPosition())).getUserID());
 
                             //updates the task
+
                             dm.putTask(thisTask);
+                            dm.addBid(bids.get(getAdapterPosition()));
+
 
                             //send the notification
                             nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);

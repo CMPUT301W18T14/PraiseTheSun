@@ -23,6 +23,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -43,6 +44,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     private Task assignedCurrentTask;
     private Button repostButton;
     private Button completedButton;
+    private CardView buttonCard;
     private final Context context = this;
     private DataManager dm = DataManager.getInstance();
     private NotificationHandler nh = new NotificationHandler(context);
@@ -56,7 +58,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Button and TextView definitions
-
+        buttonCard = (CardView) findViewById(R.id.myAssignedTaskButtonsCard);
         completedButton = (Button) findViewById(R.id.taskCompleteButton);
         repostButton = (Button) findViewById(R.id.taskRepostButton);
         assignedTaskName = (TextView) findViewById(R.id.assignedTaskName);
@@ -80,9 +82,13 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
             imageView.setImageBitmap(assignedCurrentTask.getCoverPhoto());
         }
 
-        setupCompleteButton();
-
-        setupRepostButton();
+        if (CurrentUser.getInstance().getCurrentUser().getId() == assignedCurrentTask.getTaskProviderID()) {
+            setupCompleteButton();
+            setupRepostButton();
+        }
+        else {
+            buttonCard.setVisibility(View.GONE);
+        }
     }
 
     private void fillInformation() {
