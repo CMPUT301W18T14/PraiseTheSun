@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -43,6 +45,7 @@ public class SearchResultsActivity extends RootActivity {
     private ProgressBar loadingCircle;
     private SearchResultsActivity context = this;
     private TaskList foundtasks;
+    private ArrayList foundtasksUsers;
 
     /**
      * Creates the Activity which includes initializing the RecyclerView with the appropriate
@@ -68,6 +71,7 @@ public class SearchResultsActivity extends RootActivity {
         loadingCircle.setVisibility(View.VISIBLE);
 
         searchForTasks();
+        getTaskUsers();
 
         //Initialize the Adapter and RecyclerView
         searchAdapter = new TaskListAdapter(context, foundtasks);
@@ -105,6 +109,20 @@ public class SearchResultsActivity extends RootActivity {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void getTaskUsers(){
+
+        int i;
+
+        foundtasksUsers = new ArrayList();
+
+        for(i = 0; i < foundtasks.getSize(); i++){
+            foundtasksUsers.add(foundtasks.get(i).getTaskRequesterID())
+        }
+
+        String query =
+                " {query
     }
 }
 

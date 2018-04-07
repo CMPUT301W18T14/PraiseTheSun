@@ -106,11 +106,22 @@
                 android:id="@+id/searchedTaskUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#6305b3"
                 android:paddingBottom="2dp"
                 android:layout_alignStart="@+id/searchTaskTitle"
                 android:layout_below="@+id/searchedTaskStatusIcon"
                 android:text="Username"
                 android:textSize="14dp" />
+
+            <ImageView
+                android:id="@+id/taskListAdapterStar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/searchTaskPhoto"
+                android:layout_below="@+id/searchTaskTitle"
+                android:layout_toEndOf="@+id/searchedTaskUsername"
+                android:layout_toStartOf="@+id/searchTaskDescription"
+                app:srcCompat="@drawable/ic_star" />
 
 
         </RelativeLayout>
