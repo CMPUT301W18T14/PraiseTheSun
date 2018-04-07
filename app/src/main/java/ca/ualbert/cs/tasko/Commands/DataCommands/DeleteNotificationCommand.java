@@ -25,12 +25,21 @@ import ca.ualbert.cs.tasko.data.JestWrapper;
 import io.searchbox.core.Delete;
 
 /**
- * Created by Thomas on 2018-04-03.
+ * An extension of the DeleteCommand class. When a DeleteNotificationCommand is executed,
+ * it will attempt to query our database using Elasticsearch in order to delete
+ * the notification with a given notificationId
+ *
+ * @see DeleteCommand
+ * @author tlafranc
  */
-
 public class DeleteNotificationCommand extends DeleteCommand {
     private String notificationId;
 
+    /**
+     * DeleteNotificationCommand Constructor. Requires a notificationid to be initialized
+     *
+     * @param notificationId The notificationId of the notification to be deleted
+     */
     public DeleteNotificationCommand(String notificationId) {
         this.notificationId = notificationId;
     }

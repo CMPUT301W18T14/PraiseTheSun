@@ -27,7 +27,6 @@ import io.searchbox.core.Delete;
 /**
  * Created by chase on 3/24/2018.
  */
-
 public class DeleteBidCommand extends DeleteCommand {
 
     private String bid;
