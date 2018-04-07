@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (retrievedUser != null){
+                if (retrievedUser.getUsername() != null){
                     CU.setCurrentUser(retrievedUser);
                     try {
                         FileOutputStream fos = openFileOutput(FILENAME,
