@@ -153,7 +153,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                 //on this task prior to the assignment
                                 NotificationHandler nh = new NotificationHandler(context);
                                 try {
-                                    nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+                                    nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTER_REPOSTED_TASK);
                                 } catch (NoInternetException e) {
                                     e.printStackTrace();
                                 }

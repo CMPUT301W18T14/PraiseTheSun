@@ -88,7 +88,7 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
 
     public void testNewBidNotification() throws NoInternetException{
 
-        nh.newNotification(taskID, NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
+        nh.newNotification(taskID, NotificationType.TASK_REQUESTER_RECEIVED_BID_ON_TASK);
         sleep();
         nlr.addAll(dm.getNotifications(requestor.getId(), context).getNotifications());
         assertEquals(1, nlr.getSize());
@@ -97,7 +97,7 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
 
     public void testReOpenedTaskdNotification() throws NoInternetException{
 
-        nh.newNotification(taskID, NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+        nh.newNotification(taskID, NotificationType.TASK_REQUESTER_REPOSTED_TASK);
         sleep();
         nlp.addAll(dm.getNotifications(provider.getId(), context).getNotifications());
         assertEquals(1, nlp.getSize());

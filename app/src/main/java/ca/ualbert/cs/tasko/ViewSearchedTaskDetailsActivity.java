@@ -229,7 +229,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 dm.addBid(bid, appContext);
                 dm.putTask(currentTask, appContext);
                 NotificationHandler nh = new NotificationHandler(getApplicationContext());
-                nh.newNotification(currentTask.getId(), NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
+                nh.newNotification(currentTask.getId(), NotificationType.TASK_REQUESTER_RECEIVED_BID_ON_TASK);
             } catch (NoInternetException e) {
                 runOnUiThread(new Runnable() {
                     @Override
