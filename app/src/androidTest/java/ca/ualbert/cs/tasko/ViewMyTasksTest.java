@@ -15,9 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
@@ -47,10 +45,10 @@ public class ViewMyTasksTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
         newUser = new User("rye-guy", "Ryan", "780-780-7800", "rye-guy@hotmail.com");
-        dmUser = dm.getUserByUsername("rye-guy", getActivity().getApplicationContext());
+        dmUser = dm.getUserByUsername("rye-guy");
         CurrentUser.getInstance().setCurrentUser(newUser);
         task = new Task(dmUser.getId(), "Test Task", "Help me test this project");
-        dm.putTask(task, getActivity().getApplicationContext());
+        dm.putTask(task);
     }
 
     /**

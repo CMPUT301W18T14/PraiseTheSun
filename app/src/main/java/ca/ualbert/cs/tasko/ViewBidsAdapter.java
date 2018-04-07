@@ -15,8 +15,6 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -88,7 +86,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
         User biduser = new User();
         
         try {
-            biduser = dm.getUserById(currentTask.getUserID(),thiscontext);
+            biduser = dm.getUserById(currentTask.getUserID());
         } catch (NoInternetException e) {
             e.printStackTrace();
         }
@@ -134,7 +132,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                     Log.d("ButtonClick", "Accept Button Clicked");
                     try {
                         //gets the current task
-                        Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
+                        Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID());
                         if (thisTask.getStatus() == TaskStatus.ASSIGNED) {
                             //tell the user that task is already assigned
                             CharSequence toasttext = "Task already Assigned";
@@ -173,8 +171,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             thisTask.assign((bids.get(getAdapterPosition())).getUserID());
 
                             //updates the task
-                            dm.putTask(thisTask, thiscontext);
-                            dm.addBid(bids.get(getAdapterPosition()), thiscontext);
+                            dm.putTask(thisTask);
 
                             //send the notification
                             nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);
@@ -201,7 +198,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
 
                     try {
                         //gets the current task
-                        Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID(), thiscontext);
+                        Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID());
                         if (thisTask.getStatus() == TaskStatus.ASSIGNED) {
                             //tell the user that task is already assigned
                             CharSequence toasttext = "Task already Assigned";

@@ -17,7 +17,6 @@ package ca.ualbert.cs.tasko;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
 import android.util.Log;
@@ -87,7 +86,7 @@ public class UserProfileActivity extends RootActivity {
                 CurrentUser.getInstance().getCurrentUser().setPhoneNumber(phoneNumber.getText().toString());
                 //TODO edit in database
                 try {
-                    DataManager.getInstance().putUser(CurrentUser.getInstance().getCurrentUser(), activity);
+                    DataManager.getInstance().putUser(CurrentUser.getInstance().getCurrentUser());
                     Intent intent = new Intent(activity, UserActivity.class);
                     startActivity(intent);
                 } catch (NoInternetException e) {

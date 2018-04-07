@@ -34,7 +34,7 @@ import io.searchbox.core.SearchResult;
  * @see GetCommand
  * @author tlafranc
  */
-public class GetTaskBidsCommand extends GetCommand<BidList> {
+public class GetTaskBidsCommand extends GetCommand<BidList, String> {
     private String taskId;
 
     /**
@@ -44,6 +44,7 @@ public class GetTaskBidsCommand extends GetCommand<BidList> {
      * @param taskId the taskId associated to the bids in the returned BidList
      */
     public GetTaskBidsCommand(String taskId) {
+        super(taskId, "GetTaskBidsCommand");
         this.taskId = taskId;
     }
 
