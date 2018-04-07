@@ -24,6 +24,9 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
 
@@ -85,6 +88,10 @@ public class DataManager {
 
     public void init(Context context){
         appCtx = context.getApplicationContext();
+    }
+
+    public Map<String, User> getUserMap(ArrayList<String> userids){
+        return null;
     }
 
     /**
