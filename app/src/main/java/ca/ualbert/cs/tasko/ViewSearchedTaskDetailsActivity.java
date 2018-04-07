@@ -201,9 +201,15 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         getDirectionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uri = "http://maps.google.com/maps?daddr=" + latLng.latitude + "," + latLng.longitude;
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(intent);
+
+                if( Math.abs(latLng.latitude) > 0.0000001  &&  Math.abs(latLng.longitude) > 0.0000001){
+                    String uri = "http://maps.google.com/maps?daddr=" + latLng.latitude + "," + latLng.longitude;
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"This task has no location", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
