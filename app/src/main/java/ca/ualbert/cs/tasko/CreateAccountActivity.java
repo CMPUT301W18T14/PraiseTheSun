@@ -68,8 +68,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         phoneText = (EditText) findViewById(R.id.createAccountPhone);
         phoneText.addTextChangedListener(new TextWatcher() {
             /*
+             * Code on creating a text watcher that automatically inserts hyphens into the phone
+             * number at their desired locations.
              * https://stackoverflow.com/questions/4886858/android-edittext-deletebackspace-key-event
              * https://stackoverflow.com/questions/20682865/disable-button-when-edit-text-fields-empty
+             * accessed on 2018-04-01
              */
             private boolean backspace;
             private int previousLength;
@@ -178,6 +181,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         return validInputs;
     }
 
+    /**
+     * Method utilized to insert a hyphen into the phoneText box automatically.
+     *
+     * @param backspace Indicates if the most recent event was a backspace
+     */
     private void formatPhoneEntry(boolean backspace) {
         phone = phoneText.getText().toString();
         if (phone.length() == 3 || phone.length() == 7) {

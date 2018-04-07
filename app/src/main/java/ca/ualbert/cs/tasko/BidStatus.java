@@ -16,9 +16,9 @@
 package ca.ualbert.cs.tasko;
 
 /**
- * An enumeration that is used to designate the status of a Task
+ * An enumeration that is used to designate the status of a Bid
  *
- * @see Task
+ * @see Bid
  */
 public enum BidStatus {
     PENDING, ACCEPTED, REJECTED
