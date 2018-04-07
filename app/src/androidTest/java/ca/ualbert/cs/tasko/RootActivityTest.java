@@ -29,7 +29,6 @@ import com.robotium.solo.Solo;
 public class RootActivityTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
-    private User user = new User("testname", "name", "somenumber", "email@nowhere.universe");
     public RootActivityTest(){super(MainActivity.class);}
 
     public void setUp() throws Exception{

@@ -27,7 +27,7 @@ import io.searchbox.core.Index;
  * Created by chase on 3/27/2018.
  */
 
-public class PutNotificationCommand implements PutCommand {
+public class PutNotificationCommand extends PutCommand<Notification> {
 
     Notification not;
 
@@ -38,6 +38,7 @@ public class PutNotificationCommand implements PutCommand {
      * @param notification the notification object to be stored in the database
      */
     public PutNotificationCommand(Notification notification){
+        super(notification, "PutNotificationCommand");
         not = notification;
     }
 

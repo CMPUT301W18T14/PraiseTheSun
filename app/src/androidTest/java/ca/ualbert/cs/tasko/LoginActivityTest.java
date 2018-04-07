@@ -16,7 +16,6 @@
 package ca.ualbert.cs.tasko;
 
 import android.app.Activity;
-import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 
@@ -47,7 +46,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
         // Taken from https://stackoverflow.com/questions/28960898/getting-context-in-androidtestcase-or-instrumentationtestcase-in-android-studio/29063736#29063736
         // 2018-03-06
         try {
-            dm.putUser(testUser, InstrumentationRegistry.getTargetContext());
+            dm.putUser(testUser);
         }catch(IllegalArgumentException e){}
     }
 

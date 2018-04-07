@@ -33,7 +33,7 @@ import io.searchbox.core.Get;
  * @author Chase Buhler
  * @see GetCommand
  */
-public class GetUserByIdCommand extends GetCommand<User> {
+public class GetUserByIdCommand extends GetCommand<User, String> {
     private String id;
 
     /**
@@ -41,6 +41,7 @@ public class GetUserByIdCommand extends GetCommand<User> {
      * @param id userId of the user that should be retrieved.
      */
     public GetUserByIdCommand(String id){
+        super(id, "GetUserByIdCommand");
         this.id = id;
     }
 

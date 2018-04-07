@@ -4,7 +4,6 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.view.MenuItem;
 
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -67,7 +66,7 @@ public class MainActivity extends RootActivity {
             public void onClick(View v) {
                 String keywords = searchQuery.getText().toString();
                 try {
-                    TaskList temptasks = dm.searchTasks(keywords, activity);
+                    TaskList temptasks = dm.searchTasks(keywords);
                     if(temptasks.getSize() == 0){
                         searchQuery.setError("This Search Found No Results");
                     }else{
@@ -76,6 +75,8 @@ public class MainActivity extends RootActivity {
                         startActivity(intent);
                     }
                 } catch (NoInternetException e) {
+                    Toast.makeText(MainActivity.this, "Can not search offline", Toast.LENGTH_SHORT)
+                            .show();
                     e.printStackTrace();
                 }
 

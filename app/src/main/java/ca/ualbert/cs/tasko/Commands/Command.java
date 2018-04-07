@@ -20,8 +20,14 @@ package ca.ualbert.cs.tasko.Commands;
  *
  * @author Chase Buhler
  */
-public interface Command {
-    public void execute();
-    public void undo();
-    public boolean canUndo();
+public abstract class Command<E> {
+    protected String type;
+    E arg;
+    public Command(E arg, String type){
+        this.arg = arg;
+        this.type = type;
+    }
+    public abstract void execute();
+    public abstract void undo();
+    public abstract boolean canUndo();
 }

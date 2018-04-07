@@ -24,7 +24,11 @@ import ca.ualbert.cs.tasko.Commands.Command;
  * @author Chase Buhler
  * @see Command
  */
-public abstract class DeleteCommand implements Command {
+public abstract class DeleteCommand<E> extends Command<E> {
+    public DeleteCommand(E arg, String type) {
+        super(arg, type);
+    }
+
     public boolean canUndo(){
         return true;
     }
