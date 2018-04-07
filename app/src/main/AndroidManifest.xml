@@ -73,11 +73,9 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
 
-        <activity android:name=".ViewTasksBiddedOnActivity" />
+        <activity android:name=".ViewTasksIBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
-<<<<<<< HEAD
         <activity android:name=".ViewTasksAssignedActivity" />
-=======
 
         <service
             android:name=".NotificationService"
