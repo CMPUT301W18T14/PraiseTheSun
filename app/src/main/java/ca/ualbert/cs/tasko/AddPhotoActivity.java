@@ -324,7 +324,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         }
     }
 
-    /*/**
+    /**
      * Recursive method that determines the appropriate constraint for an image in order for the
      * image to be under 65535 bytes.
      *
@@ -332,14 +332,14 @@ public class AddPhotoActivity extends AppCompatActivity {
      * @param size The size of the constraint to be tested to see if it makes the image under
      *             65535 bytes.
      * @return The properly constrained image that has size less than 65535 bytes.
-     *
+     */
     private Bitmap findSize(Bitmap image, double size) {
         /*
          * Code on checking the size of an image was taken from
          * https://stackoverflow.com/questions/29137003/how-to-check-image-size-less-then-100kb
          * -android
          * Taken on 2018-03-18
-         *
+         */
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
         long imageLength = stream.toByteArray().length;
@@ -352,7 +352,7 @@ public class AddPhotoActivity extends AppCompatActivity {
         else {
             return image;
         }
-    }*/
+    }
 
     /**
      * getCorrectSizeBitmap uses the desired size and the width and height of the
@@ -373,8 +373,13 @@ public class AddPhotoActivity extends AppCompatActivity {
                 .intValue();
         Long x = Math.round(Math.sqrt((65535/5)/(widthMultiplier * heightMultiplier)));
 
-        Log.d("BITMAPS", ""+size+" "+image.getDensity() + " " + image.getConfig().toString());
-        return Bitmap.createScaledBitmap(image, widthMultiplier * x.intValue() ,
-                heightMultiplier * x.intValue(), true);
+        if (x.intValue() != 0) {
+            Log.d("BITMAPS", "" + size + " " + image.getDensity() + " " + image.getConfig().toString());
+            return Bitmap.createScaledBitmap(image, widthMultiplier * x.intValue(),
+                    heightMultiplier * x.intValue(), true);
+        }
+        else {
+            return findSize(image, 1.0);
+        }
     }
 }
