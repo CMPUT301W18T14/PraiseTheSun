@@ -82,6 +82,7 @@
         <activity android:name=".ViewTasksIBiddedOnActivity"/>
         <service android:name=".NotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <activity android:name=".ViewTasksAssignedActivity" />
 
         <service
             android:name=".NotificationService"

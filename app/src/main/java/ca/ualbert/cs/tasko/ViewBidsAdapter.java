@@ -69,7 +69,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
      */
     @Override
     public BidViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.bid_view, parent, false);
+        View view = inflater.inflate(R.layout.bid_cardview_layout, parent, false);
         BidViewHolder holder = new BidViewHolder(view);
 
         return holder;
@@ -164,13 +164,17 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                                 bids.get(i).setStatus(BidStatus.REJECTED);
                             }
                             //Make accepted bid status accepted
-                            bids.get(getAdapterPosition()).setStatus(BidStatus.ACCEPTED);
+                            (bids.get(getAdapterPosition())).setStatus(BidStatus.ACCEPTED);
+                            if (bids.get(getAdapterPosition()).getStatus() == BidStatus.ACCEPTED) {
+                                Log.d("Msg", "Bid is accepted");
+                            }
 
                             //assigns it to the appropriate provider
                             thisTask.assign((bids.get(getAdapterPosition())).getUserID());
 
                             //updates the task
                             dm.putTask(thisTask);
+                            dm.addBid(bids.get(getAdapterPosition()));
 
                             //send the notification
                             nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);
@@ -215,9 +219,14 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                                 Log.d("Message", "Bid status is PENDING!");
                             }
                         } else {
-                            //Make bid status REJECTED
-                            bids.get(getAdapterPosition()).setStatus(BidStatus.REJECTED);
+                            //Reject a bid
+                            Bid currentbid = bids.get(getAdapterPosition());
+                            bids.removeBid(currentbid);
+                            dm.deleteBid(currentbid);
+                            notifyDataSetChanged();
+                         
                             nh.newBidDeletedNotification(thisTask.getId(), bids.get(getAdapterPosition()).getUserID());
+
 
                         }
                     } catch (NullPointerException e) {

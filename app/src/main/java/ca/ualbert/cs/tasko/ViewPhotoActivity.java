@@ -18,6 +18,7 @@ package ca.ualbert.cs.tasko;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -36,10 +37,10 @@ public class ViewPhotoActivity extends AppCompatActivity {
     private ImageSwitcher switcher;
     private ImageView imageView;
     private TextView imageText;
-    private Task currentTask;
     private int position = 0;
     private int numImages;
     private ArrayList<Bitmap> photos;
+    private ArrayList<byte[]> imageBytes;
     private Float initialX;
 
 
@@ -52,12 +53,17 @@ public class ViewPhotoActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.viewPhotoImageView);
         imageText = (TextView) findViewById(R.id.viewPhotoTextView);
         Intent intent = getIntent();
-        currentTask = (Task) intent.getSerializableExtra("photos");
+        imageBytes = (ArrayList<byte[]>) intent.getSerializableExtra("photos");
+        photos = new ArrayList<Bitmap>();
+        numImages = imageBytes.size();
 
-        if (currentTask.hasPhoto()) {
-            photos = currentTask.getPhotos();
+        if (numImages > 0) {
+            for (int i = 0; i < numImages; i++) {
+                Bitmap image = BitmapFactory.decodeByteArray(imageBytes.get(i), 0,
+                        imageBytes.get(i).length);
+                photos.add(image);
+            }
             imageView.setImageBitmap(photos.get(0));
-            numImages = photos.size();
             imageText.setText("Swipe to view other photos.\n Viewing photo 1" + "/" + Integer
                     .toString(numImages));
         }
@@ -73,7 +79,7 @@ public class ViewPhotoActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (currentTask.hasPhoto()) {
+        if (numImages > 0) {
             float finalX;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:

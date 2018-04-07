@@ -17,6 +17,7 @@ package ca.ualbert.cs.tasko;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -220,6 +221,26 @@ public class Task implements Serializable {
         return this.photos;
     }
 
+
+    public ArrayList<byte[]> getByteArrays() {
+        if (hasPhoto()) {
+            ArrayList<byte[]> imageBytes = new ArrayList<byte[]>();
+            for (int i = 0; i < photos.size(); i++) {
+                byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                imageBytes.add(byteArray);
+            }
+            return imageBytes;
+        }
+        else {
+            return null;
+        }
+    }
+
+    // Not implemented yet
+    // Todo Part 5
+    public void addLocation(Location location){
+
+    }
 
 
     /**
