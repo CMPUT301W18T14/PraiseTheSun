@@ -92,6 +92,7 @@ public class AddTaskActivity extends AppCompatActivity {
             taskNameText.setText(currentTask.getTaskName());
             descriptionText.setText(currentTask.getDescription());
             taskNameText.setSelection(taskNameText.getText().length());
+            geoLocation = currentTask.getGeolocation();
         }
 
         if (currentTask != null && currentTask.hasPhoto()) {
