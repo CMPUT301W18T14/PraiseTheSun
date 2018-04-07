@@ -109,7 +109,7 @@ public class OpeningActivity extends AppCompatActivity {
         }
 
         if(loggedInUser == null){
-            if(ConnectivityState.getConnected()){
+            if(!ConnectivityState.getConnected()){
                 //TODO: SEND TO NO INTERNET PLEASE TRY AGAIN THING
             }
             Intent intent = new Intent(this, LoginActivity.class);

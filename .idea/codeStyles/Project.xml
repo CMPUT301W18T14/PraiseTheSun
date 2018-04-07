@@ -54,8 +54,8 @@
         <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="DeallocMethod" />
       </class>
       <extensions>
-        <pair source="cpp" header="h" />
-        <pair source="c" header="h" />
+        <pair source="cpp" header="h" fileNamingConvention="NONE" />
+        <pair source="c" header="h" fileNamingConvention="NONE" />
       </extensions>
     </Objective-C-extensions>
     <XML>
