@@ -51,9 +51,7 @@ public class MainActivity extends RootActivity {
         final EditText searchQuery = (EditText)findViewById(R.id.searchQuery);
 
 
-        /**
-         * Go to the AddTaskActivity to create a new task
-         */
+        // Go to the AddTaskActivity to create a new task
         postTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -24,8 +24,9 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * Handles the creation of all notifications by using a switch block to create unique messages and
- * send the notifications to specific users via the DataManager
+ * Handles the creation of most notifications by using a switch block to create unique messages and
+ * send the notifications to specific users via the DataManager. The switch block is base upon
+ * the type of notification passed in when createNotification is called.
  * @see Notification
  *
  * @author spack
@@ -33,8 +34,8 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class NotificationFactory {
 
-    DataManager dm = DataManager.getInstance();
-    Context context;
+    private DataManager dm = DataManager.getInstance();
+    private Context context;
 
     public void setContext(Context context){
         this.context = context;
@@ -43,20 +44,19 @@ public class NotificationFactory {
     public void createNotification(String taskID, NotificationType type) throws NoInternetException{
 
 
-        Notification notification = null;
+        Notification notification;
         Task task = dm.getTask(taskID);
         String message;
         String taskname = task.getTaskName();
         String recipientID;
 
-        NotificationType notificationType = type;
 
-        switch (notificationType){
-            case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
+        switch (type){
+            case TASK_REQUESTER_RECEIVED_BID_ON_TASK:
                 recipientID = task.getTaskRequesterID();
                 message = "You have received a new bid on your task: " + taskname + "!";
                 notification = new Notification(message, recipientID, null, taskID
-                        , NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
+                        , NotificationType.TASK_REQUESTER_RECEIVED_BID_ON_TASK);
                 dm.putNotification(notification);
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
@@ -80,18 +80,12 @@ public class NotificationFactory {
                 notification = new Notification(message, taskprovider.getId(), taskrequestor.getId(), taskID, NotificationType.RATING);
                 dm.putNotification(notification);
                 break;
-            case TASK_PROVIDER_BID_DECLINED:
-                recipientID = task.getTaskProviderID();
-                message = "Your Bid on " + taskname + " has been Declined. Try making a lower Bid ";
-                notification = new Notification(message, recipientID, null, taskID,
-                        NotificationType.TASK_PROVIDER_BID_DECLINED);
-                dm.putNotification(notification);
-            case TASK_REQUESTOR_REPOSTED_TASK:
+            case TASK_REQUESTER_REPOSTED_TASK:
                 BidList reOpenedBids = dm.getTaskBids(taskID);
                 for(int i = 0; i < reOpenedBids.getSize(); i++){
                     message = taskname + "Has been ReRequested by the poster!";
                     notification = new Notification(message, reOpenedBids.get(i).getUserID(), null, taskID,
-                            NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+                            NotificationType.TASK_REQUESTER_REPOSTED_TASK);
                     dm.putNotification(notification);
                 }
                 break;

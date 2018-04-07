@@ -23,9 +23,15 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * Created by spack on 2018-04-05.
+ * A special notification factory used to inform a user that one of their bids placed has been
+ * declined. This factory is needed because all other notifications can get their recipients though
+ * a task object. Because the Bid is never assigned to the task, we need to manually pass the user
+ * who the Notification will go to.
+ * @see NotificationHandler
+ * @see Notification
+ *
+ * @author spack
  */
-
 public class BidDeletedNotificationFactory {
 
     DataManager dm = DataManager.getInstance();

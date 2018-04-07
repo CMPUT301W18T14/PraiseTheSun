@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -85,6 +86,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         setupRepostButton();
     }
 
+    @SuppressLint("SetTextI18n")
     private void fillInformation() {
         //Taken From https://stackoverflow.com/questions/2538787/
         //how-to-display-an-output-of-float-data-with-2-decimal-places-in-java
@@ -209,7 +211,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
                                     NotificationHandler nh = new NotificationHandler(context);
                                     try {
-                                        nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+                                        nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTER_REPOSTED_TASK);
                                     } catch (NoInternetException e) {
                                         e.printStackTrace();
                                     }

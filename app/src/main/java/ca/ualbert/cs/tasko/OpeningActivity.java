@@ -21,17 +21,16 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 

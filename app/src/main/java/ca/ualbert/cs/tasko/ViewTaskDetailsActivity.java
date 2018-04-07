@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -212,6 +213,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void fillInformation() {
         DecimalFormat df = new DecimalFormat();
         df.setMinimumFractionDigits(2);

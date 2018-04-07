@@ -31,6 +31,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ca.ualbert.cs.tasko.NotificationArtifacts.ViewNotificationActivity;
+
 /**
  *
  * This activity extends every activity in the app that requires a menu.
@@ -86,7 +88,7 @@ public class RootActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                         Intent i;
-                        switch (item.getItemId()){
+                        switch (item.getItemId()) {
                             case R.id.get_home:
                                 i = new Intent(getApplicationContext(), MainActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -150,6 +152,20 @@ public class RootActivity extends AppCompatActivity {
                                 drawerLayout.closeDrawers();
                                 break;
 
+                            case R.id.notifications:
+                                i = new Intent(getApplicationContext(), ViewNotificationActivity
+                                        .class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(i);
+                                drawerLayout.closeDrawers();
+                                break;
+
+                            case R.id.logout:
+                                i = new Intent(getApplicationContext(), LogOutActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(i);
+                                drawerLayout.closeDrawers();
+                                break;
                         }
 
                         return false;
