@@ -18,6 +18,10 @@ package ca.ualbert.cs.tasko;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v7.app.AlertDialog;
@@ -33,7 +37,11 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
@@ -46,15 +54,17 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private TextView taskName;
     private TextView lowestBid;
     private TextView status;
+    private TextView taskAddress;
     private float lowbid = -1;
     private TextView requesterName;
     private Button placeBidButton;
-    //private Button geolocationButton;
+    private Button getDirectionsButton;
+
     private DataManager dm = DataManager.getInstance();
     private Task currentTask;
     private final Context context = this;
     private User requesterUser;
-
+    private LatLng latLng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +73,12 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         //Button and text boxes definitions
         requesterName = (TextView) findViewById(R.id.taskRequesterName);
         placeBidButton = (Button) findViewById(R.id.placeBidButton);
-        //geolocationButton = (Button) findViewById(R.id.geolocationButton);
+        getDirectionsButton = (Button) findViewById(R.id.getDirectionsButton);
         taskDescription = (TextView) findViewById(R.id.taskDescriptionView);
         taskName = (TextView) findViewById(R.id.taskName);
         lowestBid = (TextView) findViewById(R.id.lowestBid);
         status = (TextView) findViewById(R.id.ViewSearchedDetailsStatus);
-
+        taskAddress = (TextView) findViewById(R.id.taskLocationText);
         //Dialog for choosing to make a bid on the task
 
 
@@ -102,12 +112,29 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         }
 
         setupPlaceBidButton();
+        setupGetDirectionsButton();
     }
 
     private void populateFields(){
         taskName.setText(currentTask.getTaskName());
         taskDescription.setText(currentTask.getDescription());
         status.setText(currentTask.getStatus().toString());
+        latLng = currentTask.getGeolocation();
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            try {
+                taskAddress.setText(addresses.get(0).getAddressLine(0));
+            } catch (Exception e){
+                taskAddress.setText("No location provided");
+            }
+
+        } catch (Exception e) {
+            taskAddress.setText("Could not find location");
+        }
         if(lowbid == -1){
             lowestBid.setText(R.string.ViewSearchedTaskDetailsNoBids);
         } else {
@@ -170,6 +197,16 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     }
 
+    private void setupGetDirectionsButton(){
+        getDirectionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uri = "http://maps.google.com/maps?daddr=" + latLng.latitude + "," + latLng.longitude;
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(intent);
+            }
+        });
+    }
     private void placeBid(float value){
         if(CurrentUser.getInstance().loggedIn()) {
             if(currentTask.getStatus() != TaskStatus.BIDDED) {

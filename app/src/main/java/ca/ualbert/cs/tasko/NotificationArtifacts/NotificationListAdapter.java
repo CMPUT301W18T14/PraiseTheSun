@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ca.ualbert.cs.tasko.R;
+import ca.ualbert.cs.tasko.RatingActivity;
 import ca.ualbert.cs.tasko.ViewSearchedTaskDetailsActivity;
 import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -139,21 +140,20 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
             switch (Type) {
                 case TASK_REQUESTER_RECEIVED_BID_ON_TASK:
                     intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
-                    intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                     break;
                 case TASK_PROVIDER_BID_ACCEPTED:
                     //TODO REDIRECT TO TASKS ASSIGNED ACTIVITY
                     break;
                 case RATING:
-                    //TODO IMPLEMENT RATING ACTIVITY
+                    intent = new Intent(thiscontext, RatingActivity.class);
                     break;
                 case TASK_PROVIDER_BID_DECLINED:
                 case TASK_REQUESTER_REPOSTED_TASK:
                     intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
-                    intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                     break;
             }
             if (intent != null) {
+                intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                 thiscontext.startActivity(intent);
                 ((ViewNotificationActivity)thiscontext).finish();
             }
