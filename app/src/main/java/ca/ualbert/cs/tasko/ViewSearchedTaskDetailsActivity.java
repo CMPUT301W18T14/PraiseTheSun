@@ -110,6 +110,9 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         if (currentTask.hasPhoto()) {
             imageView.setImageBitmap(currentTask.getCoverPhoto());
         }
+        else {
+            imageView.setImageResource(R.drawable.ic_menu_gallery);
+        }
 
         setupPlaceBidButton();
         setupGetDirectionsButton();

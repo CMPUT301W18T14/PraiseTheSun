@@ -239,13 +239,7 @@ public class AddTaskActivity extends RootActivity {
                         imgBytes.clear();
                         photos.clear();
                         images.clear();
-                        /*
-                         * https://stackoverflow.com/questions/7242282/get-bitmap-information-from-bitmap-stored-in-drawable-folder
-                         * Taken on 2018-04-02
-                         */
-                        Bitmap image = BitmapFactory.decodeResource
-                                (getResources(), R.drawable.ic_menu_gallery);
-                        imageView.setImageBitmap(image);
+                        imageView.setImageResource(R.drawable.ic_menu_gallery);
                     }
                     break;
                 case 2:

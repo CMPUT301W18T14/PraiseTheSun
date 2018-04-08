@@ -18,6 +18,7 @@ package ca.ualbert.cs.tasko;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -170,8 +171,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 break;
         }
 
-        holder.taskPhoto.setImageBitmap(currentTask.getCoverPhoto());
-
+        Bitmap taskImage = currentTask.getCoverPhoto();
+        if (taskImage == null) {
+            holder.taskPhoto.setImageResource(R.drawable.ic_menu_gallery);
+        }
+        else {
+            holder.taskPhoto.setImageBitmap(taskImage);
+        }        
+     
         if(userMap != null){
             if(userMap.get(currentTask.getTaskRequesterID()) == null){
 
@@ -181,7 +188,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 }
             }
         }
-
     }
 
     /**
