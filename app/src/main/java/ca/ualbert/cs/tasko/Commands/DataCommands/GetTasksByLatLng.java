@@ -47,8 +47,7 @@ public class GetTasksByLatLng extends GetCommand<TaskList, LatLng> {
      * Constructor for the GetTasksByLatLng. Requires the parameter lat and lng
      * in order to be initialized.
      *
-     * @param lat A double representing the latitude of a task
-     * @param lng A double representing the longitude of a task
+     * @param latLng A LatLng representing the latitude and longitude of a task
      */
     public GetTasksByLatLng(LatLng latLng) {
         super(latLng, "GetTasksByLatLng");
