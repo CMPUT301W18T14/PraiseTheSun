@@ -195,15 +195,7 @@ public class RootActivity extends AppCompatActivity {
         );
 
 
-        username.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), UserActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(i);
-                drawerLayout.closeDrawers();
-            }
-        });
+
 
     }
     @Override
@@ -220,6 +212,15 @@ public class RootActivity extends AppCompatActivity {
         username = (TextView) navigationView.getHeaderView(0).findViewById(R.id.MenuUsername);
         Log.i("User stuff:", user.getUsername() + " \\ " + user.getEmail()  );
         username.setText(user.getUsername());
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), UserActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(i);
+                drawerLayout.closeDrawers();
+            }
+        });
     }
 
     @Override

@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
 
         //Set the Title depending on the type of Notification
         NotificationType type = currentNotification.getType();
+        Log.d("Notification", "" + currentNotification.getType() + " " + currentNotification.getId());
         switch (type){
             case TASK_REQUESTER_RECEIVED_BID_ON_TASK:
                 holder.notificationTitle.setText("New Bid Received!");
