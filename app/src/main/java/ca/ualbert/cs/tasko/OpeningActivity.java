@@ -84,7 +84,7 @@ public class OpeningActivity extends AppCompatActivity {
         if (!cu.loggedIn())
             checkForUser();
         else
-            this.finishAffinity();
+            this.finish();
 
     }
 

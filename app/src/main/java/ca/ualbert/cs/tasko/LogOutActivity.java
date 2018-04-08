@@ -80,8 +80,6 @@ public class LogOutActivity extends AppCompatActivity {
         TaskList empty = new TaskList();
         LocalDataManager.saveLocalTasks(empty, getApplicationContext());
 
-        Intent intent = new Intent(this, OpeningActivity.class);
-        startActivity(intent);
         finish();
 
     }
