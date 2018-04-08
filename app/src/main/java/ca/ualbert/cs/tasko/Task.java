@@ -35,13 +35,11 @@ import io.searchbox.annotations.JestId;
  * can be one of requested, bidded, assigned or done.
  *
  */
-
 public class Task implements Serializable {
 
     private String taskName;
     private String description;
     private ArrayList<String> photos;
-    //private Location geolocation;
     private String taskRequesterID;
     private String taskRequesterUsername;
     private String taskProviderID;
@@ -174,8 +172,11 @@ public class Task implements Serializable {
         this.minBid = null;
     }
 
-    // Not implemented yet
-    // Todo Part 5
+    /**
+     * Method that determines whether this task has any photos attached to it.
+     *
+     * @return A boolean indicating if any photos are attached to this task
+     */
     public boolean hasPhoto(){
         if (photos != null) {
             return photos.size() > 0;
@@ -185,6 +186,11 @@ public class Task implements Serializable {
         }
     }
 
+    /**
+     * Method that returns the cover photo for a task (the first photo inserted)
+     *
+     * @return A Bitmap representation of the cover photo
+     */
     public Bitmap getCoverPhoto() {
         if (hasPhoto()) {
             byte[] byteArray = Base64.decode(photos.get(0), Base64.DEFAULT);
@@ -195,8 +201,13 @@ public class Task implements Serializable {
         }
     }
 
-    // Not implemented yet
-    // Todo Part 5
+    /**
+     * Method that returns all the photos attached to this task in the form of an ArrayList of
+     * Bitmap objects.
+     *
+     * @return An ArrayList containing the Bitmap representation of all the photos attached to
+     * this task.
+     */
     public ArrayList<Bitmap> getPhotos(){
         if (hasPhoto()) {
             ArrayList<Bitmap> images = new ArrayList<Bitmap>();
@@ -223,10 +234,16 @@ public class Task implements Serializable {
         lng = location.longitude;
     }
 
+    /**
+     * Method that returns all the photos attached to this task in the form of an ArrayList of
+     * String objects.
+     *
+     * @return An ArrayList containing the String representation of all the photos attached to
+     * this task.
+     */
     public ArrayList<String> getPhotoStrings(){
         return this.photos;
     }
-
 
     public ArrayList<byte[]> getByteArrays() {
         if (hasPhoto()) {
@@ -247,7 +264,6 @@ public class Task implements Serializable {
     public void addLocation(Location location){
 
     }
-
 
     /**
      * Removes the location of the task
@@ -382,6 +398,13 @@ public class Task implements Serializable {
         this.status = TaskStatus.ASSIGNED;
     }
 
+    /**
+     * The equality method for a Task object. Two tasks are equal if they have the same Id.
+     *
+     * @param o The object to be compared with this Task object
+     * @return A boolean indicating if the parameter being passed into the function is the same
+     * as the task that this method is being called upon.
+     */
     @Override
     public boolean equals(Object o){
         if(!(o instanceof Task)){

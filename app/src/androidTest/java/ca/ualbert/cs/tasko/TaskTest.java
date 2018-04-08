@@ -22,9 +22,10 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by Chase on 2/23/2018.
+ * Testing class for the entity class Task
+ *
+ * @see Task
  */
-
 public class TaskTest extends ActivityInstrumentationTestCase2 {
     public TaskTest(){
         super(MainActivity.class);

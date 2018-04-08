@@ -21,9 +21,14 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * Created by chase on 3/9/2018.
+ * Testing class for putting, retrieving and deleting tasks from the database
+ *
+ * @author tlafranc
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands.SearchTasksCommand
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands.DeleteTaskCommand
  */
-
 public class DataManagerTaskTest extends ActivityInstrumentationTestCase2 {
 
     private User requester;

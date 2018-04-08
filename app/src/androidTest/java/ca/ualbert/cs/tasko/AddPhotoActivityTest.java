@@ -25,7 +25,7 @@ import com.robotium.solo.Solo;
 /**
  * Testing class for the activity AddPhotoActivity
  *
- * @see AddTaskActivity
+ * @see AddPhotoActivity
  * @author tlafranc
  */
 public class AddPhotoActivityTest extends ActivityInstrumentationTestCase2 {

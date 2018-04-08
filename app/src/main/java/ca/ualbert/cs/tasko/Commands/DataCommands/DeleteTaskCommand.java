@@ -31,9 +31,13 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 import io.searchbox.core.Delete;
 
 /**
- * Created by chase on 3/24/2018.
+ * An extension of the DeleteCommand class. When a DeleteTaskCommand is executed, it will
+ * attempt to query our database using Elasticsearch in order to delete the task object
+ * passed as a parameter from the database.
+ *
+ * @see DeleteCommand
+ * @author Chase Buhler
  */
-
 public class DeleteTaskCommand extends DeleteCommand<Task> {
 
     private Task task;

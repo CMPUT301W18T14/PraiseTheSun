@@ -14,15 +14,7 @@
  */
 
 package ca.ualbert.cs.tasko;
-
-import android.content.Context;
-
 import java.util.ArrayList;
-
-
-import ca.ualbert.cs.tasko.data.DataManager;
-import ca.ualbert.cs.tasko.data.NoInternetException;
-
 import io.searchbox.annotations.JestId;
 
 /**

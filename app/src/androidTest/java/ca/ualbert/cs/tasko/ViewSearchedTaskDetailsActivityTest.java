@@ -22,9 +22,11 @@ import android.widget.EditText;
 import com.robotium.solo.Solo;
 
 /**
- * Created by chase on 3/19/2018.
+ * Testing class for the activity ViewSearchedTaskDetailsActivity
+ *
+ * @see ViewSearchedTaskDetailsActivity
+ * @author Chase Buhler
  */
-
 public class ViewSearchedTaskDetailsActivityTest extends ActivityInstrumentationTestCase2 {
 
     private EditText bidAmount;

@@ -27,9 +27,13 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by chase on 3/27/2018.
+ * An extension of the GetCommand class. When a GetNotificationsCommand is executed, it
+ * will attempt to query our database using Elasticsearch in order to retrieve
+ * the notifications associated with the given userId.
+ *
+ * @author Chase Buhler
+ * @see GetCommand
  */
-
 public class GetNotificationsCommand extends GetCommand<NotificationList, String> {
     private String userId;
 

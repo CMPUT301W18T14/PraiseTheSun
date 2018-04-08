@@ -26,7 +26,6 @@ import ca.ualbert.cs.tasko.data.MockDataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * Created by Thomas on 2018-03-04.
  * Testing class for the activity AddTaskActivity
  *
  * @see AddTaskActivity
