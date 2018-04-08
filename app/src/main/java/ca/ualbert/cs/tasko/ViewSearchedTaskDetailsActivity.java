@@ -227,9 +227,6 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 new Thread(placeBid).start();
             }
             else {
-                PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
-                        getApplicationContext());
-                new Thread(placeBid).start();
                 BidList taskBids;
                 float lowestBidValue;
                 try {
@@ -244,6 +241,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                     currentTask.setMinBid(lowestBidValue);
                     populateFields();
                     //dm.putTask(currentTask);
+
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }
