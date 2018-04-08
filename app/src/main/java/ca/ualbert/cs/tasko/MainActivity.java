@@ -1,8 +1,14 @@
 package ca.ualbert.cs.tasko;
 
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,6 +20,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import ca.ualbert.cs.tasko.data.ConnectivityReceiver;
+import ca.ualbert.cs.tasko.data.ConnectivityState;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -22,8 +38,13 @@ public class MainActivity extends RootActivity {
     private MainActivity activity = this;
     private DataManager dm = DataManager.getInstance();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DataManager.getInstance().init(getApplicationContext());
+        BroadcastReceiver conReceiver = new ConnectivityReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        this.getApplicationContext().registerReceiver(conReceiver, filter);
         super.onCreate(savedInstanceState);
 
         /*
@@ -45,15 +66,16 @@ public class MainActivity extends RootActivity {
         drawerLayout.addView(contentView, 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
+
         setSupportActionBar(toolbar);
         Button postTaskButton = (Button)findViewById(R.id.postTaskButton);
         Button searchTaskButton = (Button)findViewById(R.id.SearchButton);
         final EditText searchQuery = (EditText)findViewById(R.id.searchQuery);
 
 
-        /**
-         * Go to the AddTaskActivity to create a new task
-         */
+        // Go to the AddTaskActivity to create a new task
         postTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,4 +126,5 @@ public class MainActivity extends RootActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

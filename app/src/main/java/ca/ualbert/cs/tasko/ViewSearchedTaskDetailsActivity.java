@@ -201,9 +201,15 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         getDirectionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uri = "http://maps.google.com/maps?daddr=" + latLng.latitude + "," + latLng.longitude;
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(intent);
+
+                if( Math.abs(latLng.latitude) > 0.0000001  &&  Math.abs(latLng.longitude) > 0.0000001){
+                    String uri = "http://maps.google.com/maps?daddr=" + latLng.latitude + "," + latLng.longitude;
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(),"This task has no location", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -229,8 +235,14 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     public void onPhotoClick(View view) {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
-        viewPhotosIntent.putExtra("photos", currentTask);
+        viewPhotosIntent.putExtra("photos", currentTask.getByteArrays());
         startActivity(viewPhotosIntent);
+    }
+
+    public void onNameClick(View view) {
+        Intent viewUserDetails = new Intent(this, OtherUsersProfileActivity.class);
+        viewUserDetails.putExtra("id", requesterUser.getId());
+        startActivity(viewUserDetails);
     }
 
     class PlaceBidRunnable implements Runnable{
@@ -266,7 +278,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 dm.addBid(bid);
                 dm.putTask(currentTask);
                 NotificationHandler nh = new NotificationHandler(getApplicationContext());
-                nh.newNotification(currentTask.getId(), NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
+                nh.newNotification(currentTask.getId(), NotificationType.TASK_REQUESTER_RECEIVED_BID_ON_TASK);
             } catch (NoInternetException e) {
                 runOnUiThread(new Runnable() {
                     @Override

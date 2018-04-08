@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ca.ualbert.cs.tasko">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -27,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".OpeningActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -71,18 +72,22 @@
             android:name=".SearchResultsActivity"
             android:label="@string/title_activity_search_results"
             android:theme="@style/AppTheme" />
-        <activity android:name=".MainActivity" />
+        <!--<activity android:name=".MainActivity" /> -->
 
-        <activity android:name=".ViewTasksBiddedOnActivity" />
         <activity android:name=".ViewBidsOnTaskActivity" />
+        <activity android:name=".NotificationArtifacts.ViewNotificationActivity"
+            tools:ignore="InnerclassSeparator" />
+        <activity android:name=".LogOutActivity" />
+        <activity android:name=".ViewPhotoActivity" />
+        <activity android:name=".ViewTasksIBiddedOnActivity"/>
+        <service android:name=".NotificationService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <activity android:name=".ViewTasksAssignedActivity" />
 
         <service
             android:name=".NotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <activity android:name=".LogOutActivity" />
-        <activity android:name=".ViewPhotoActivity" />
-        <activity android:name=".NotificationArtifacts.ViewNotificationActivity" />
         <activity
             android:name=".AcceptedMyTaskActivity"
             android:label="@string/title_activity_accepted_task"
@@ -97,7 +102,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_key"/>
 
         <activity
             android:name=".NearbyTasksActivity"
@@ -105,7 +110,6 @@
         <activity
             android:name=".SelectLocationActivity"
             android:label="@string/title_activity_select_location"></activity>
-        <activity android:name=".ViewTasksIBiddedOnActivity"/>
         <service android:name=".NotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity android:name=".RatingActivity"/>

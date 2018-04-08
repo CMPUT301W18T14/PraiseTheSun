@@ -108,8 +108,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         df.setMinimumFractionDigits(2);
         df.setMaximumFractionDigits(2);
 
+        // Alden's addition: checks if in my activity
+        if (thiscontext instanceof ViewTasksAssignedActivity) {
+            holder.taskLowestBid.setText("My Bid: " + df.format(myBids.get(position).getValue()));
+        }
         // Tries to get the minimum bid on each task if it exists
-        if (currentTask.getMinBid() != null){
+        else if (currentTask.getMinBid() != null){
             String lowbidValue = df.format(currentTask.getMinBid());
             holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
         }else{
@@ -117,7 +121,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
         // Checks see if to get the users bid on the Task if it exists
-        if (myBids != null){
+        if (thiscontext instanceof ViewTasksAssignedActivity) {
+            holder.taskMyBid.setText("");
+        }
+        else if (myBids != null){
             holder.taskMyBid.setText("My Bid: " + df.format(myBids.get(position).getValue()));
         } else{
             holder.taskMyBid.setText("");
@@ -193,7 +200,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(thiscontext, ViewPhotoActivity.class);
-                    intent.putExtra("photos", tasks.get(getAdapterPosition()));
+                    intent.putExtra("photos", tasks.get(getAdapterPosition()).getByteArrays());
                     thiscontext.startActivity(intent);
                 }
             });
@@ -213,7 +220,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         @Override
         public void onClick(View view) {
             Intent intent;
-            if (thiscontext instanceof ViewMyTasksActivity) {
+            if (thiscontext instanceof ViewTasksAssignedActivity) {
+                intent = new Intent(thiscontext, AcceptedMyTaskActivity.class);
+            }
+
+            else if (thiscontext instanceof ViewMyTasksActivity) {
                 if (tasks.get(getAdapterPosition()).getStatus() == TaskStatus.ASSIGNED) {
                     intent = new Intent(thiscontext, AcceptedMyTaskActivity.class);
                 }
