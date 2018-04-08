@@ -63,7 +63,14 @@ public class Task implements Serializable {
      * @param description description of the task
      */
     public Task(String taskRequesterID, String taskName, String description){
-        this(taskRequesterID, taskName, description, new ArrayList<String>(), null);
+        this.taskRequesterID = taskRequesterID;
+        this.taskName = taskName;
+        this.description = description;
+        this.photos = new ArrayList<String>();
+        this.taskProviderID = null;
+        this.status = TaskStatus.REQUESTED;
+        this.minBid = null;
+        this.id = UUID.randomUUID().toString();
     }
 
     /**
@@ -97,7 +104,6 @@ public class Task implements Serializable {
         this.taskName = taskName;
         this.description = description;
         this.photos = photos;
-       // this.geolocation = null;
         this.taskProviderID = null;
         this.status = TaskStatus.REQUESTED;
         this.minBid = null;
