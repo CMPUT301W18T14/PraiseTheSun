@@ -80,13 +80,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
      * if a user is preferred and if so display a star by their name.
      * @param context The context for the activity using the adapter.
      * @param dmTasks The TaskList representing all Tasks a user has bid on, from the DataManager.
-     * @param dmMyBids A BidList which represents all bids a user has made on the include TaskList.
      */
-    public TaskListAdapter(Context context, TaskList dmTasks, BidList dmMyBids, Map<String, User> dmMap){
+    public TaskListAdapter(Context context, TaskList dmTasks, Map<String, User> dmMap){
         thiscontext = context;
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
-        myBids = dmMyBids;
         userMap = dmMap;
     }
 
@@ -170,8 +168,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         holder.taskPhoto.setImageBitmap(currentTask.getCoverPhoto());
 
         if(userMap != null){
-            if (userMap.get(currentTask.getTaskRequesterID()).isPrefered()){
-                holder.userPreferred.setImageResource(R.drawable.ic_star);
+            if(userMap.get(currentTask.getTaskRequesterID()) == null){
+
+            } else {
+                if (userMap.get(currentTask.getTaskRequesterID()).isPrefered()) {
+                    holder.userPreferred.setImageResource(R.drawable.ic_star);
+                }
             }
         }
 

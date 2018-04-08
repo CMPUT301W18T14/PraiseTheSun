@@ -19,12 +19,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -71,10 +74,9 @@ public class SearchResultsActivity extends RootActivity {
         loadingCircle.setVisibility(View.VISIBLE);
 
         searchForTasks();
-        getTaskUsers();
 
         //Initialize the Adapter and RecyclerView
-        searchAdapter = new TaskListAdapter(context, foundtasks);
+        searchAdapter = new TaskListAdapter(context, foundtasks, getTaskUsers());
         searchRecyclerView.setAdapter(searchAdapter);
 
         loadingCircle.setVisibility(View.GONE);
@@ -111,7 +113,7 @@ public class SearchResultsActivity extends RootActivity {
 
     }
 
-    private void getTaskUsers(){
+    private Map<String, User> getTaskUsers(){
 
         int i;
 
@@ -120,6 +122,13 @@ public class SearchResultsActivity extends RootActivity {
         for(i = 0; i < foundtasks.getSize(); i++){
             foundtasksUsers.add(foundtasks.get(i).getTaskRequesterID());
         }
+        try {
+            Map<String, User> results = dm.getUserMap(foundtasksUsers);
+            return results;
+        } catch (NoInternetException e){
+            Log.i("Error", "Could not get preferred users. no internet");
+        }
+        return new HashMap<String, User>();
     }
 }
 
