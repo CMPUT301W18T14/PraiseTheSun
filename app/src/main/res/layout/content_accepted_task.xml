@@ -198,14 +198,22 @@ tools:showIn="@layout/activity_accepted_task">
                 tools:ignore="HardcodedText" />
 
             <Button
+                android:id="@+id/taskDeleteButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:text="Delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/taskRepostButton"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
                 android:id="@+id/taskRepostButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:text="Repost Task"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/taskDeleteButton"
                 tools:ignore="HardcodedText" />
 
         </android.support.constraint.ConstraintLayout>
