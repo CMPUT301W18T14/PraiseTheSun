@@ -22,6 +22,7 @@ import android.widget.EditText;
 import com.robotium.solo.Solo;
 
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.MockDataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
@@ -44,15 +45,10 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
-        try {
-            User taskRequester = DataManager.getInstance().getUserByUsername("jdoe62"
-            );
-            CurrentUser.getInstance().setCurrentUser(taskRequester);
-            nameText = (EditText) solo.getView(R.id.addTaskName);
-            descriptionText = (EditText) solo.getView(R.id.addTaskDescription);
-        } catch (NoInternetException e) {
-            Log.i("Not Error", "No internet connection");
-        }
+        User taskRequester = MockDataManager.getInstance().getTaskRequester();
+        CurrentUser.getInstance().setCurrentUser(taskRequester);
+        nameText = (EditText) solo.getView(R.id.addTaskName);
+        descriptionText = (EditText) solo.getView(R.id.addTaskDescription);
     }
 
     public void testTask() {

@@ -31,6 +31,7 @@ import ca.ualbert.cs.tasko.User;
  */
 
 public class MockDataManager {
+    private static MockDataManager instance = new MockDataManager();
     private User user1;
     private User user2;
     private Task task1;
@@ -104,7 +105,7 @@ public class MockDataManager {
     }
 
     public static MockDataManager getInstance(){
-        return new MockDataManager();
+        return instance;
     }
 
     public User getUser() {
