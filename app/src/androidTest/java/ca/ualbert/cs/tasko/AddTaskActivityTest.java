@@ -44,6 +44,7 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+        DataManager.getInstance().init(getActivity().getApplicationContext());
         User taskRequester = MockDataManager.getInstance().getTaskRequester();
         CurrentUser.getInstance().setCurrentUser(taskRequester);
         nameText = (EditText) solo.getView(R.id.addTaskName);
