@@ -43,7 +43,9 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * Activity that adds a task. Is called either from the MainActivity when the user selects "Post
- * a Task" or from the menu bar.
+ * a Task" or from the menu bar or when a user is editing a task. If this was called
+ * from a user wanting to edit their task, the name, description, photos and location
+ * will be preset to the values they were originally.
  *
  * @author tlafranc
  */

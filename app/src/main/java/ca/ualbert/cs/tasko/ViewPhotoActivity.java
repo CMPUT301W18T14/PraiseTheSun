@@ -32,6 +32,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * Activity that displays the photos of a given task or an empty image icon if
+ * there are no images associated with that task
+ *
+ * @author tlafranc
+ */
 public class ViewPhotoActivity extends AppCompatActivity {
 
     private ImageSwitcher switcher;
@@ -44,6 +50,11 @@ public class ViewPhotoActivity extends AppCompatActivity {
     private Float initialX;
 
 
+    /**
+     * Called when the activity is started. Initializes the images and the corresponding
+     * text that should be displayed with it (either "No Images" or "Viewing photo _/_
+     *
+     */
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +84,11 @@ public class ViewPhotoActivity extends AppCompatActivity {
     }
 
     /*
+     * I used help from these websites in order to determine how to properly switch
+     * images after swiping on the activity.
      * https://developer.android.com/training/gestures/detector.html
      * http://www.androprogrammer.com/2014/02/add-gesture-in-image-switcher-to-swipe.html
+     * accessed on 2018-03-28
      */
     @SuppressLint("SetTextI18n")
     @Override
