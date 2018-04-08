@@ -66,8 +66,7 @@ public class AndroidNotificationCreator extends ContextWrapper {
     }
 
     /**
-     * Setups the Channel we will use to send notifications... If performance is an issue, I will
-     * store the channel creation in a diffrent class so it does not need to be done everytime!
+     * Setups the Channel we will use to send Android notifications.
      */
     private void setupChannel(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -84,7 +83,7 @@ public class AndroidNotificationCreator extends ContextWrapper {
     public void createAndroidNotification(){
         Intent intent = new Intent(this, ViewNotificationActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, 0);
+                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
         notificationBuilder.setSmallIcon(R.drawable.ic_notification_alert)

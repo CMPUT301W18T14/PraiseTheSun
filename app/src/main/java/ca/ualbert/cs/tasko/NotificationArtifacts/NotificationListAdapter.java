@@ -149,6 +149,9 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     break;
                 case RATING:
                     intent = new Intent(thiscontext, RatingActivity.class);
+                    intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
+                    thiscontext.startActivity(intent);
+                    delete();
                     break;
                 case TASK_PROVIDER_BID_DECLINED:
                 case TASK_REQUESTER_REPOSTED_TASK:
@@ -161,24 +164,32 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
             }
         }
 
-            //Sets Up the delete button which removes the notification form the recyclerview and the
-            //database in one motion.
+            /**
+             * Provides the onclick for the delete icon.
+             */
             private void setupDelete(){
                 Delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        try {
-                            DataManager.getInstance().deleteNotification(notifications.getNotification
-                                    (getAdapterPosition()).getId());
-                        } catch (NoInternetException e) {
-                            e.printStackTrace();
-                        }
-                        notifications.delete(getAdapterPosition());
-                        notifyItemRemoved(getAdapterPosition());
-                        notifyItemRangeChanged(getAdapterPosition(), notifications.getSize());
+                        delete();
                     }
                 });
             }
-        }
+
+        /**
+         * Deletes the Notification object from the Adapter and the database.
+         */
+        private void delete(){
+                try {
+                    DataManager.getInstance().deleteNotification(notifications.getNotification
+                            (getAdapterPosition()).getId());
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
+                notifications.delete(getAdapterPosition());
+                notifyItemRemoved(getAdapterPosition());
+                notifyItemRangeChanged(getAdapterPosition(), notifications.getSize());
+            }
     }
+}
 
