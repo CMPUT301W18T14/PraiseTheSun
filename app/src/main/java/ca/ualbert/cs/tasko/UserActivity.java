@@ -17,6 +17,7 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -35,13 +37,15 @@ import org.w3c.dom.Text;
  * @see RootActivity, User
  */
 public class UserActivity extends RootActivity {
-    TextView username;
-    TextView email;
-    TextView phone;
-    Button myTasks;
-    Button myAssignments;
-    Button editProfile;
+    private TextView username;
+    private TextView email;
+    private TextView phone;
+    private ImageView star;
+    private Button myTasks;
+    private Button myAssignments;
+    private Button editProfile;
     private UserActivity activity = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +54,20 @@ public class UserActivity extends RootActivity {
         View contentView = inflater.inflate(R.layout.activity_user, null, false);
         drawerLayout.addView(contentView, 0);
 
+        User currentUser = CurrentUser.getInstance().getCurrentUser();
 
         username = (TextView)findViewById(R.id.UserActivityUsername);
         email = (TextView) findViewById(R.id.UserActivityUserEmail);
         phone = (TextView) findViewById(R.id.UserActivityPhone);
+        star = (ImageView) findViewById(R.id.userActivityStar);
 
-        username.setText(CurrentUser.getInstance().getCurrentUser().getName());
-        email.setText(CurrentUser.getInstance().getCurrentUser().getEmail());
-        phone.setText(CurrentUser.getInstance().getCurrentUser().getPhoneNumber());
+        username.setText(currentUser.getName());
+        email.setText(currentUser.getEmail());
+        phone.setText(currentUser.getPhoneNumber());
+
+        if(currentUser.isPrefered()){
+            star.setImageResource(R.drawable.ic_star);
+        }
 
         myTasks = (Button) findViewById(R.id.UserActivityMyTasksButton);
         myAssignments = (Button) findViewById(R.id.UserActivityMyAssignmentButton);
@@ -80,12 +90,12 @@ public class UserActivity extends RootActivity {
     }
 
     public void myAssignmentsButton(){
-        //TODO when the activity is done
         myAssignments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                //Intent intent = new Intent(activity, ViewMyAssignme)
+                Intent intent = new Intent(activity, ViewTasksAssignedActivity.class);
+                startActivity(intent);
             }
         });
     }

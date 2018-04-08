@@ -40,14 +40,17 @@
 
             <TextView
                 android:id="@+id/bidTitle"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/username"
-                android:textColor="@android:color/black"
-                android:textSize="21sp"
-                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:shadowColor="#000000"
+                android:shadowDx="0.6"
+                android:shadowDy="0.6"
+                android:shadowRadius="2.0"
+                android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,8 +61,8 @@
                 android:layout_above="@+id/rejectButton"
                 android:layout_alignStart="@+id/bidTitle"
                 android:layout_below="@+id/bidTitle"
-                android:layout_marginTop="10dp"
-                android:paddingBottom="12dp"
+                android:layout_marginTop="4dp"
+                android:paddingBottom="4dp"
                 android:text="@string/search_lowest_bid"
                 android:textColor="@color/whiteAccent"
                 android:textSize="16sp"
