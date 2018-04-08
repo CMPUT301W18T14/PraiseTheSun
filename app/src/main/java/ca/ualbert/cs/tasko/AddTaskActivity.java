@@ -61,6 +61,7 @@ public class AddTaskActivity extends RootActivity {
     private ImageView imageView;
     private TextView textView;
     private int numImages;
+    private int position = 0;
 
     LocationManager lm;
 
@@ -123,7 +124,6 @@ public class AddTaskActivity extends RootActivity {
          */
         switcher.setOnTouchListener(new View.OnTouchListener() {
             private float initialX;
-            private int position = 0;
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 //Log.i("Not Error", Integer.toString(numImages));
@@ -145,7 +145,7 @@ public class AddTaskActivity extends RootActivity {
                                             .toString(numImages));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
-                                            Toast.LENGTH_LONG).show();
+                                            Toast.LENGTH_SHORT).show();
                                 }
                             }
                             else if (initialX < finalX){
@@ -159,7 +159,7 @@ public class AddTaskActivity extends RootActivity {
                                             .toString(numImages));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "No More Images To Swipe",
-                                            Toast.LENGTH_LONG).show();
+                                            Toast.LENGTH_SHORT).show();
                                 }
                             }
                             break;
@@ -219,6 +219,9 @@ public class AddTaskActivity extends RootActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 19:
+                    photos.clear();
+                    images.clear();
+                    position = 0;
                     imgBytes = (ArrayList<byte[]>) data.getSerializableExtra("photos");
                     numImages = imgBytes.size();
                     if (numImages > 0) {
@@ -236,9 +239,6 @@ public class AddTaskActivity extends RootActivity {
                     }
                     else {
                         textView.setText("No images currently added.");
-                        imgBytes.clear();
-                        photos.clear();
-                        images.clear();
                         imageView.setImageResource(R.drawable.ic_menu_gallery);
                     }
                     break;

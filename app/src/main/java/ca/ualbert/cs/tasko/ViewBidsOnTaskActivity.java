@@ -72,14 +72,6 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //test data
-        /*
-        bidsOnTask = new BidList();
-
-        bidsOnTask.addBid(new Bid("testid", 5.7f, "testtaskid"));
-        bidsOnTask.addBid(new Bid("testid2", 7.8f, "testtaskid2"));
-        */
-
         searchAdapter = new ViewBidsAdapter(activity, bidsOnTask);
         myBidList.setAdapter(searchAdapter);
         
