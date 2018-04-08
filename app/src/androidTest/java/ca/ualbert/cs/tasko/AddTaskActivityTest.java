@@ -43,9 +43,14 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+        DataManager.getInstance().init(getActivity().getApplicationContext());
         try {
-            User taskRequester = DataManager.getInstance().getUserByUsername("jdoe62"
-            );
+            User taskRequester = DataManager.getInstance().getUserByUsername("test");
+            if (taskRequester.getUsername() == null) {
+                taskRequester = new User("test", "Test User", "111-111-1111", "test@test" +
+                        ".ca");
+                DataManager.getInstance().putUser(taskRequester);
+            }
             CurrentUser.getInstance().setCurrentUser(taskRequester);
             nameText = (EditText) solo.getView(R.id.addTaskName);
             descriptionText = (EditText) solo.getView(R.id.addTaskDescription);
