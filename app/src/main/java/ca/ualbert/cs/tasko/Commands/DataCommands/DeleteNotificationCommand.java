@@ -27,7 +27,7 @@ import io.searchbox.core.Delete;
 /**
  * An extension of the DeleteCommand class. When a DeleteNotificationCommand is executed,
  * it will attempt to query our database using Elasticsearch in order to delete
- * the notification with a given notificationId
+ * the notification with a given notificationId from the database.
  *
  * @see DeleteCommand
  * @author tlafranc

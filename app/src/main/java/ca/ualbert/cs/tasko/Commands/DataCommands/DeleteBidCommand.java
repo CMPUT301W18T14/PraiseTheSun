@@ -29,7 +29,12 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 import io.searchbox.core.Delete;
 
 /**
- * Created by chase on 3/24/2018.
+ * An extension of the DeleteCommand class. When a DeleteBidCommand is executed, it will
+ * attempt to query our database using Elasticsearch in order to delete the bid object
+ * passed into the class as a parameter from the database.
+ *
+ * @see DeleteCommand
+ * @author Chase Buhler
  */
 public class DeleteBidCommand extends DeleteCommand<Bid> {
 

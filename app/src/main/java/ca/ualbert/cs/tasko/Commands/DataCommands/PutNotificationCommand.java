@@ -24,9 +24,13 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 
 /**
- * Created by chase on 3/27/2018.
+ * An extension of PutCommand, PutNotificationCommand will take a notification and attempt to
+ * add it to our elastic search database.
+ *
+ * @author Chase Buhler
+ * @see PutCommand
+ * @see ca.ualbert.cs.tasko.Commands.Command
  */
-
 public class PutNotificationCommand extends PutCommand<Notification> {
 
     Notification not;
