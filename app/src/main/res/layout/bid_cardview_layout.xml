@@ -40,11 +40,11 @@
 
             <TextView
                 android:id="@+id/bidTitle"
-                android:layout_width="match_parent"
                 android:layout_height="25dp"
+                android:layout_width="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/search_task_title"
+                android:text="@string/username"
                 android:textColor="@android:color/black"
                 android:textSize="21sp"
                 android:textStyle="bold"
@@ -55,41 +55,36 @@
                 android:id="@+id/LowBid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/rejectButton"
                 android:layout_alignStart="@+id/bidTitle"
                 android:layout_below="@+id/bidTitle"
-                android:layout_marginTop="19dp"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="12dp"
                 android:text="@string/search_lowest_bid"
                 android:textColor="@color/whiteAccent"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/acceptButton"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/UserWhoMadeBid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/bidTitle"
-                android:layout_below="@+id/bidTitle"
-                android:text="@string/username"
-                android:textColor="@color/whiteAccent"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/LowBid"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <ImageView
                 android:id="@+id/taskBidsStar"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_below="@+id/bidTitle"
-                android:layout_toRightOf="@id/UserWhoMadeBid" />
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_above="@+id/LowBid"
+                android:layout_alignTop="@+id/bidTitle"
+                android:layout_toEndOf="@+id/bidTitle"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp" />
 
             <Button
                 android:id="@+id/rejectButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/acceptButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="11dp"
                 android:text="Reject"
+                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -100,9 +95,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="18dp"
+                android:layout_alignStart="@+id/LowBid"
                 android:text="Accept"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/rejectButton"
                 app:layout_constraintStart_toStartOf="parent" />
