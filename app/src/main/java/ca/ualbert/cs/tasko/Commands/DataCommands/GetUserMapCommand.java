@@ -48,7 +48,9 @@ public class GetUserMapCommand extends GetCommand<Map<String, User>, ArrayList<S
 
         @Override
         protected ArrayList<User> doInBackground(String... strings) {
-            return null;
+            ArrayList<User> results =  new ArrayList<>();
+
+            return results;
         }
     }
 }
