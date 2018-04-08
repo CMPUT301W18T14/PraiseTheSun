@@ -115,7 +115,7 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:maxHeight="150dp"
-            android:src="@android:color/background_light" />
+            android:src="@drawable/ic_menu_gallery" />
 
     </ImageSwitcher>
 

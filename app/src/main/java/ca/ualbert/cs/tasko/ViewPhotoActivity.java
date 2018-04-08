@@ -55,9 +55,9 @@ public class ViewPhotoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         imageBytes = (ArrayList<byte[]>) intent.getSerializableExtra("photos");
         photos = new ArrayList<Bitmap>();
-        numImages = imageBytes.size();
 
-        if (numImages > 0) {
+        if (imageBytes != null) {
+            numImages = imageBytes.size();
             for (int i = 0; i < numImages; i++) {
                 Bitmap image = BitmapFactory.decodeByteArray(imageBytes.get(i), 0,
                         imageBytes.get(i).length);
