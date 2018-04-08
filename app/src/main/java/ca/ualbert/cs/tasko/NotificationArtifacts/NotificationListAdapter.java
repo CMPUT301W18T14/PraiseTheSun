@@ -30,6 +30,7 @@ import ca.ualbert.cs.tasko.R;
 import ca.ualbert.cs.tasko.RatingActivity;
 import ca.ualbert.cs.tasko.ViewSearchedTaskDetailsActivity;
 import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
+import ca.ualbert.cs.tasko.ViewTasksAssignedActivity;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -144,7 +145,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
                     break;
                 case TASK_PROVIDER_BID_ACCEPTED:
-                    //TODO REDIRECT TO TASKS ASSIGNED ACTIVITY
+                    intent = new Intent(thiscontext, ViewTasksAssignedActivity.class);
                     break;
                 case RATING:
                     intent = new Intent(thiscontext, RatingActivity.class);
@@ -157,7 +158,6 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
             if (intent != null) {
                 intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                 thiscontext.startActivity(intent);
-                ((ViewNotificationActivity)thiscontext).finish();
             }
         }
 

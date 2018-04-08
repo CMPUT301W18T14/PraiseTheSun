@@ -102,7 +102,7 @@ public class NotificationService extends JobService {
                 if (alert) {
                     AndroidNotificationCreator anc =
                             new AndroidNotificationCreator(getApplicationContext());
-                    anc.createAndriodNotification();
+                    anc.createAndroidNotification();
                 }
                 //Begin Notification Alarm
                 JobScheduler mJobScheduler = (JobScheduler) getSystemService(Context

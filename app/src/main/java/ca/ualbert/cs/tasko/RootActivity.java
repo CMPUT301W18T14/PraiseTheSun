@@ -68,7 +68,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  */
 public class RootActivity extends AppCompatActivity {
 
-    DrawerLayout drawerLayout;
+    public DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
     TextView username;
@@ -193,11 +193,8 @@ public class RootActivity extends AppCompatActivity {
                     }
                 }
         );
-
-
-
-
     }
+
     @Override
     public void onStart(){
         super.onStart();
@@ -262,9 +259,6 @@ public class RootActivity extends AppCompatActivity {
 
         if(loggedInUser == null){
             Log.d("LOGIN", "Current logged is NULL COnnectivity: " + ConnectivityState.getConnected());
-            if(!ConnectivityState.getConnected()){
-                //TODO: SEND TO NO INTERNET PLEASE TRY AGAIN THING
-            }
             int result = 10;
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, result);
@@ -281,8 +275,6 @@ public class RootActivity extends AppCompatActivity {
             mJobScheduler.schedule(infoBuilder.build());
             //End notification alarm
 
-            //Intent intent = new Intent(this, MainActivity.class);
-            //startActivity(intent);
             return true;
 
         }

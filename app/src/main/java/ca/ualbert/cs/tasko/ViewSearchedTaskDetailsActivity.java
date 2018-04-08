@@ -239,6 +239,12 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         startActivity(viewPhotosIntent);
     }
 
+    public void onNameClick(View view) {
+        Intent viewUserDetails = new Intent(this, OtherUsersProfileActivity.class);
+        viewUserDetails.putExtra("id", requesterUser.getId());
+        startActivity(viewUserDetails);
+    }
+
     class PlaceBidRunnable implements Runnable{
         private User currentUser = CurrentUser.getInstance().getCurrentUser();
         private DataManager dm = DataManager.getInstance();
