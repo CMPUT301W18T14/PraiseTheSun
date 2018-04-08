@@ -110,7 +110,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         // Alden's addition: checks if in my activity
         if (thiscontext instanceof ViewTasksAssignedActivity) {
-            holder.taskLowestBid.setText("");
+            holder.taskLowestBid.setText("My Bid: " + df.format(myBids.get(position).getValue()));
         }
         // Tries to get the minimum bid on each task if it exists
         else if (currentTask.getMinBid() != null){
@@ -121,7 +121,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
         // Checks see if to get the users bid on the Task if it exists
-        if (myBids != null){
+        if (thiscontext instanceof ViewTasksAssignedActivity) {
+            holder.taskMyBid.setText("");
+        }
+        else if (myBids != null){
             holder.taskMyBid.setText("My Bid: " + df.format(myBids.get(position).getValue()));
         } else{
             holder.taskMyBid.setText("");
