@@ -22,9 +22,13 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * Created by Thomas on 2018-03-07.
+ * Testing class for putting and retrieving bids from the database
+ *
+ * @author tlafranc
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands.PutBidCommand
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands.GetUserBidsCommand
+ * @see ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskBidsCommand
  */
-
 public class DataManagerBidTest extends ActivityInstrumentationTestCase2 {
 
     private Bid bid1;

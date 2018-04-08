@@ -21,7 +21,6 @@ import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 
 /**
- * Created by Thomas on 2018-02-23.
  * Testing class for the class TaskList.
  *
  * @see TaskList
