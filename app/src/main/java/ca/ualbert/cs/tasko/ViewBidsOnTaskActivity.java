@@ -74,12 +74,12 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        RecyclerView.Adapter searchAdapter = new ViewBidsAdapter(activity, bidsOnTask);
+        RecyclerView.Adapter searchAdapter = new ViewBidsAdapter(activity, bidsOnTask, getBidUsers());
         myBidList.setAdapter(searchAdapter);
         
     }
 
-    private Map<String, User> getTaskUsers(){
+    private Map<String, User> getBidUsers(){
 
         int i;
 
