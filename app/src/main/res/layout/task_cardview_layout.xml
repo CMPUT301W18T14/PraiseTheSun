@@ -24,7 +24,9 @@
     <android.support.v7.widget.CardView
         android:id="@+id/taskCardView"
         android:layout_width="match_parent"
-        android:layout_height="145dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="7dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -39,23 +41,28 @@
             <TextView
                 android:id="@+id/searchTaskTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/searchTaskPhoto"
-                android:layout_toStartOf="@id/searchedTaskStatusIcon"
+                android:layout_alignParentStart="true"
+                android:paddingTop="8dp"
+                android:paddingLeft="8dp"
                 android:text="@string/search_task_title"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
+                android:textColor="@color/colorAccent"
+                android:shadowColor="#000000"
+                android:shadowDx="0.6"
+                android:shadowDy="0.6"
+                android:shadowRadius="2"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/searchTaskPhoto"
                 android:layout_width="82dp"
                 android:layout_height="82dp"
-                android:layout_above="@+id/searchTaskLowestBid"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/searchedTaskUsername"
-                android:layout_marginStart="13dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:adjustViewBounds="false"
                 android:background="@drawable/image_border"
                 android:cropToPadding="false" />
@@ -64,66 +71,71 @@
                 android:id="@+id/searchTaskDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/searchTaskLowestBid"
                 android:layout_alignTop="@+id/searchTaskPhoto"
-                android:layout_marginStart="13dp"
-                android:layout_toEndOf="@+id/searchTaskPhoto"
-                android:maxHeight="98dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="0dp"
+                android:maxLines="4"
+                android:layout_toEndOf="@id/searchTaskPhoto"
                 android:text="@string/task_search_description"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/colorTextWhite"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/searchTaskLowestBid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignStart="@+id/searchTaskPhoto"
+                android:layout_below="@id/searchTaskPhoto"
+                android:layout_alignParentStart="true"
+                android:paddingLeft="8dp"
+                android:paddingBottom="8dp"
                 android:text="@string/lowest_bid"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorTextWhite"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/searchedTasksMyBidOnTask"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:text="@string/my_bid"
-                android:paddingRight="10dp"
-                android:textColor="@android:color/black"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/colorTextWhite"
                 android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/searchedTaskStatusIcon"
-                android:layout_width="27dp"
-                android:layout_height="27dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:paddingEnd="2dp"
-                android:paddingTop="2dp" />
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"/>
 
             <TextView
                 android:id="@+id/searchedTaskUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#6305b3"
-                android:paddingBottom="2dp"
-                android:layout_alignStart="@+id/searchTaskTitle"
-                android:layout_below="@+id/searchedTaskStatusIcon"
+                android:textColor="@color/colorTextWhite"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/searchTaskTitle"
                 android:text="Username"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 tools:ignore="HardcodedText" />
 
             <ImageView
                 android:id="@+id/taskListAdapterStar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/searchTaskPhoto"
-                android:layout_below="@+id/searchTaskTitle"
+                android:layout_alignTop="@id/searchedTaskUsername"
                 android:layout_toEndOf="@+id/searchedTaskUsername"
-                android:layout_toStartOf="@+id/searchTaskDescription" />
-
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
 
         </RelativeLayout>
 
