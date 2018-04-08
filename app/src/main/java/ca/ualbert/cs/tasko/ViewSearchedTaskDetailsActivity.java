@@ -218,15 +218,36 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
             if(currentTask.getStatus() != TaskStatus.BIDDED) {
                 currentTask.setStatus(TaskStatus.BIDDED);
             }
-            if(value < lowbid || lowbid == -1){
+            if(value < lowbid || lowbid == -1) {
                 lowbid = value;
                 currentTask.setMinBid(value);
                 populateFields();
-
+                PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
+                        getApplicationContext());
+                new Thread(placeBid).start();
             }
-            PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
-                    getApplicationContext());
-            new Thread(placeBid).start();
+            else {
+                PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
+                        getApplicationContext());
+                new Thread(placeBid).start();
+                BidList taskBids;
+                float lowestBidValue;
+                try {
+                    taskBids = dm.getTaskBids(currentTask.getId());
+                    lowestBidValue = taskBids.get(0).getValue();
+                    for (int i = 0; i < taskBids.getSize(); i++) {
+                        if (taskBids.get(i).getValue() < lowestBidValue) {
+                            lowestBidValue = taskBids.get(i).getValue();
+                        }
+                    }
+                    lowbid = lowestBidValue;
+                    currentTask.setMinBid(lowestBidValue);
+                    populateFields();
+                    //dm.putTask(currentTask);
+                } catch (NoInternetException e) {
+                    e.printStackTrace();
+                }
+            }
 
         } else {
             Toast.makeText(getApplicationContext(),"Not Logged In", Toast.LENGTH_SHORT).show();
@@ -271,8 +292,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 }
                 dm.addBid(bid);
                 dm.putTask(currentTask);
-                NotificationHandler nh = new NotificationHandler(getApplicationContext());
-                nh.newNotification(currentTask.getId(), NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
+
             } catch (NoInternetException e) {
                 runOnUiThread(new Runnable() {
                     @Override
