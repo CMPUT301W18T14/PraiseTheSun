@@ -42,12 +42,9 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
-
+        dm.init(getActivity().getApplicationContext());
         // Taken from https://stackoverflow.com/questions/28960898/getting-context-in-androidtestcase-or-instrumentationtestcase-in-android-studio/29063736#29063736
         // 2018-03-06
-        try {
-            dm.putUser(testUser);
-        }catch(IllegalArgumentException e){}
     }
 
     public void testStart() throws Exception {
@@ -59,7 +56,11 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
      * if Valid should switch to MainActivity.
      */
     public void testLoginVALIDCredentials() throws NoInternetException {
-
+        try {
+            dm.putUser(testUser);
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
         solo.enterText((EditText) solo.getView(R.id.usernameEditText), "username1");
         solo.clickOnButton("LOGIN");
@@ -71,7 +72,11 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
      * DataBase if invalid it should remain in LoginActivity.
      */
     public void testLoginINVALIDCredentials() throws InterruptedException {
-
+        try {
+            dm.putUser(testUser);
+        } catch(NoInternetException e){
+            e.printStackTrace();
+        }
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
         solo.clickOnButton("LOGIN");
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
