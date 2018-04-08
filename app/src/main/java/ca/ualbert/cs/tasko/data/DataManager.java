@@ -38,6 +38,7 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTasksByLatLng;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserMapCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutNotificationCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
@@ -90,8 +91,14 @@ public class DataManager {
         appCtx = context.getApplicationContext();
     }
 
-    public Map<String, User> getUserMap(ArrayList<String> userids){
-        return null;
+    public Map<String, User> getUserMap(ArrayList<String> userids) throws NoInternetException{
+        GetUserMapCommand gum = new GetUserMapCommand(userids);
+        if(ConnectivityState.getConnected()){
+            dcm.invokeCommand(gum);
+            return gum.getResult();
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     /**
