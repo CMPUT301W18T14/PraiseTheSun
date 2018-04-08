@@ -103,6 +103,9 @@ public class AddPhotoActivity extends AppCompatActivity {
                 textView.setText("Swipe to view other photos.\n Tap to delete a photo already " +
                         "chosen.\nViewing photo 1/" + Integer.toString(numImages));
             }
+            else {
+                imageView.setImageResource(R.drawable.ic_menu_gallery);
+            }
         }
 
         /*
@@ -164,6 +167,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                                 builder1.setPositiveButton(
                                         "Yes",
                                         new DialogInterface.OnClickListener() {
+                                            @SuppressLint("SetTextI18n")
                                             public void onClick(DialogInterface dialog, int id) {
                                                 images.remove(position);
                                                 numImages -= 1;
@@ -180,13 +184,7 @@ public class AddPhotoActivity extends AppCompatActivity {
                                                 }
                                                 else {
                                                     textView.setText("No images currently added.");
-                                                    /*
-                                                     * https://stackoverflow.com/questions/7242282/get-bitmap-information-from-bitmap-stored-in-drawable-folder
-                                                     * Taken on 2018-04-02
-                                                     */
-                                                    Bitmap image = BitmapFactory.decodeResource
-                                                            (getResources(), R.drawable.ic_menu_gallery);
-                                                    imageView.setImageBitmap(image);
+                                                    imageView.setImageResource(R.drawable.ic_menu_gallery);
                                                 }
                                             }
                                         });
@@ -279,6 +277,7 @@ public class AddPhotoActivity extends AppCompatActivity {
      * @param data Information sent back from activity
 
      */
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

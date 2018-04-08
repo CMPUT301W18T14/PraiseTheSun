@@ -131,6 +131,6 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2 {
         }
         assertFalse(nl == null);
         assertNotNull(n.getId());
-        assertTrue(nl.hasNotification(n));
+        assertTrue(nl.getNotifications().contains(n));
     }
 }

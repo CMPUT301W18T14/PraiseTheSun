@@ -110,6 +110,9 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         if (currentTask.hasPhoto()) {
             imageView.setImageBitmap(currentTask.getCoverPhoto());
         }
+        else {
+            imageView.setImageResource(R.drawable.ic_menu_gallery);
+        }
 
         setupPlaceBidButton();
         setupGetDirectionsButton();
@@ -227,8 +230,13 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 new Thread(placeBid).start();
             }
             else {
+                //Place/Replace previous bid
+                PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
+                        getApplicationContext());
+                new Thread(placeBid).start();
                 BidList taskBids;
                 float lowestBidValue;
+                //Go through all bids on task and find the lowest bid and set it to the minbid value
                 try {
                     taskBids = dm.getTaskBids(currentTask.getId());
                     lowestBidValue = taskBids.get(0).getValue();
@@ -240,7 +248,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                     lowbid = lowestBidValue;
                     currentTask.setMinBid(lowestBidValue);
                     populateFields();
-                    //dm.putTask(currentTask);
+                    dm.putTask(currentTask);
 
                 } catch (NoInternetException e) {
                     e.printStackTrace();
@@ -256,6 +264,12 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
         viewPhotosIntent.putExtra("photos", currentTask.getByteArrays());
         startActivity(viewPhotosIntent);
+    }
+
+    public void onNameClick(View view) {
+        Intent viewUserDetails = new Intent(this, OtherUsersProfileActivity.class);
+        viewUserDetails.putExtra("id", requesterUser.getId());
+        startActivity(viewUserDetails);
     }
 
     class PlaceBidRunnable implements Runnable{
@@ -290,6 +304,8 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 }
                 dm.addBid(bid);
                 dm.putTask(currentTask);
+                NotificationHandler nh = new NotificationHandler(getApplicationContext());
+                nh.newNotification(currentTask.getId(), NotificationType.TASK_REQUESTER_RECEIVED_BID_ON_TASK);
 
             } catch (NoInternetException e) {
                 runOnUiThread(new Runnable() {

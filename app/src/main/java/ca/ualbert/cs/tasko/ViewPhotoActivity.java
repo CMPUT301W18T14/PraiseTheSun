@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +44,7 @@ public class ViewPhotoActivity extends AppCompatActivity {
     private Float initialX;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +55,9 @@ public class ViewPhotoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         imageBytes = (ArrayList<byte[]>) intent.getSerializableExtra("photos");
         photos = new ArrayList<Bitmap>();
-        numImages = imageBytes.size();
 
-        if (numImages > 0) {
+        if (imageBytes != null) {
+            numImages = imageBytes.size();
             for (int i = 0; i < numImages; i++) {
                 Bitmap image = BitmapFactory.decodeByteArray(imageBytes.get(i), 0,
                         imageBytes.get(i).length);
@@ -74,6 +76,7 @@ public class ViewPhotoActivity extends AppCompatActivity {
      * https://developer.android.com/training/gestures/detector.html
      * http://www.androprogrammer.com/2014/02/add-gesture-in-image-switcher-to-swipe.html
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (numImages > 0) {

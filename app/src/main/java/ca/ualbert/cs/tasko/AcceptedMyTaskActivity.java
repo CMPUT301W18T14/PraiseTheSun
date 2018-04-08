@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +44,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     private Task assignedCurrentTask;
     private Button repostButton;
     private Button completedButton;
+    private Button deleteButton;
     private final Context context = this;
     private DataManager dm = DataManager.getInstance();
     private NotificationHandler nh = new NotificationHandler(context);
@@ -59,6 +61,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
         completedButton = (Button) findViewById(R.id.taskCompleteButton);
         repostButton = (Button) findViewById(R.id.taskRepostButton);
+        deleteButton = (Button) findViewById(R.id.taskDeleteButton);
         assignedTaskName = (TextView) findViewById(R.id.assignedTaskName);
         assignedTaskDescription = (TextView) findViewById(R.id.assignedTaskDescription);
         assignedTaskStatus = (TextView) findViewById(R.id.assignedTaskStatusAndProvider);
@@ -83,8 +86,11 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         setupCompleteButton();
 
         setupRepostButton();
+
+        setupDeleteButton();
     }
 
+    @SuppressLint("SetTextI18n")
     private void fillInformation() {
         //Taken From https://stackoverflow.com/questions/2538787/
         //how-to-display-an-output-of-float-data-with-2-decimal-places-in-java
@@ -214,7 +220,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
                                     NotificationHandler nh = new NotificationHandler(context);
                                     try {
-                                        nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
+                                        nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTER_REPOSTED_TASK);
                                     } catch (NoInternetException e) {
                                         e.printStackTrace();
                                     }
@@ -266,6 +272,66 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
                 AlertDialog alert = builder.create();
                 alert.show();
+            }
+        });
+    }
+
+    private void setupDeleteButton() {
+        //Dialog for choosing to make a bid on the task
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Confirm deletion and return to main page
+                AlertDialog.Builder builder = new AlertDialog.Builder(AcceptedMyTaskActivity.this);
+                final View deleteView = getLayoutInflater().inflate(R.layout.delete_my_task_dialog, null);
+
+                //confirmButton.setOnClickListener(new View.OnClickListener() {
+                builder.setView(deleteView).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                        builder1.setMessage("Are you positive you want to delete this task?");
+                        builder1.setCancelable(true);
+
+                        builder1.setPositiveButton(
+                                "Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        try {
+                                            NotificationHandler nh = new NotificationHandler(context);
+                                            nh.newNotification(assignedCurrentTask.getId(), NotificationType
+                                                    .TASK_DELETED);
+                                            dm.deleteTask(assignedCurrentTask);
+
+                                            finish();
+                                            Toast.makeText(getApplicationContext(),"Your task has successfully been deleted.", Toast.LENGTH_SHORT).show();
+                                        }
+                                        catch (NoInternetException e) {
+                                            Log.i("Error", "No internet connection in " +
+                                                    "ViewTaskDetailsActivity");
+                                            Toast.makeText(context, "No Internet Connection!",
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+
+                        builder1.setNegativeButton(
+                                "No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                    }
+                });
+
+                builder.setView(deleteView);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
     }

@@ -43,7 +43,6 @@ import ca.ualbert.cs.tasko.R;
  */
 public class AndroidNotificationCreator extends ContextWrapper {
 
-    private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     private int notificationID;
     private Context context;
@@ -82,13 +81,13 @@ public class AndroidNotificationCreator extends ContextWrapper {
     /**
      * Creates the Android Notification that will go to the Users Device.
      */
-    public void createAndriodNotification(){
+    public void createAndroidNotification(){
         Intent intent = new Intent(this, ViewNotificationActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, 0);
 
-        notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
-        notificationBuilder.setSmallIcon(R.drawable.ic_info_outline_black_24dp)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification_alert)
                 .setContentTitle("Tasko")
                 .setContentText("You have New Notifications in Tasko!")
                 .setContentIntent(pendingIntent)

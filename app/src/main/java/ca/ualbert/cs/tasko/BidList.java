@@ -54,12 +54,6 @@ public class BidList{
     }
 
     /**
-     * Returns the bid placed by the user or null otherwise
-     * @param UserID The UserID is used to search the BidList and find matching bid
-     * @return Returns a Bid that was made by UserID or null if it does not exist
-     */
-
-    /**
      * Get a specific Bid from the BidList that matches with a UserID
      * @param UserID the Users ID used to compare bids in the BidList
      * @return Returns A bid if such a bid is matching, or null if no bid matches with a UserID

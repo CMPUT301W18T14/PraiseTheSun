@@ -19,22 +19,25 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ca.ualbert.cs.tasko.MainActivity;
 import ca.ualbert.cs.tasko.R;
 import ca.ualbert.cs.tasko.RatingActivity;
 import ca.ualbert.cs.tasko.ViewSearchedTaskDetailsActivity;
 import ca.ualbert.cs.tasko.ViewTaskDetailsActivity;
+import ca.ualbert.cs.tasko.ViewTasksAssignedActivity;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * A Notification Adpater.
+ * A Notification Adapter used to displayed and allow for the deletion of notifications in a
+ * recyclerview.
+ * @see Notification
  *
  * @author spack
  */
@@ -50,6 +53,13 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
         notifications = nl;
     }
 
+    /**
+     * Creates the ViewHolder for displaying Notification objects
+     * @param parent parent means the View can contain other views
+     * @param viewType an enumeration that tracks the type of views, in this case since we only have
+     *                one view should be a constant value.
+     * @return The ViewHolder object that will be used.
+     */
     @Override
     public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.notification_cardview, parent, false);
@@ -58,6 +68,10 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
         return holder;
     }
 
+
+    /**
+     * Attaches the appropriate data to the view holder.
+     */
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(NotificationViewHolder holder, int position) {
@@ -67,8 +81,9 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
 
         //Set the Title depending on the type of Notification
         NotificationType type = currentNotification.getType();
+        Log.d("Notification", "" + currentNotification.getType() + " " + currentNotification.getId());
         switch (type){
-            case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
+            case TASK_REQUESTER_RECEIVED_BID_ON_TASK:
                 holder.notificationTitle.setText("New Bid Received!");
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
@@ -83,7 +98,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
             case TASK_DELETED:
                 holder.notificationTitle.setText("A Task you have Bid on has been Deleted!");
                 break;
-            case TASK_REQUESTOR_REPOSTED_TASK:
+            case TASK_REQUESTER_REPOSTED_TASK:
                 holder.notificationTitle.setText("A Task you have Bid on has been Reposted!");
                 break;
 
@@ -95,6 +110,9 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
         return notifications.getSize();
     }
 
+    /**
+     * A view holder that handles click actions and the layout of a notification
+     */
     class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView notificationMessage;
@@ -115,6 +133,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
             setupDelete();
         }
 
+        //Directs the user to different Activities depending on the type of notification clicked
         @Override
         public void onClick(View view) {
             Intent intent = null;
@@ -122,27 +141,28 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
             NotificationType Type = clickedNotificatoin.getType();
 
             switch (Type) {
-                case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
+                case TASK_REQUESTER_RECEIVED_BID_ON_TASK:
                     intent = new Intent(thiscontext, ViewTaskDetailsActivity.class);
                     break;
                 case TASK_PROVIDER_BID_ACCEPTED:
-                    //TODO REDIRECT TO TASKS ASSIGNED ACTIVITY
+                    intent = new Intent(thiscontext, ViewTasksAssignedActivity.class);
                     break;
                 case RATING:
                     intent = new Intent(thiscontext, RatingActivity.class);
                     break;
                 case TASK_PROVIDER_BID_DECLINED:
-                case TASK_REQUESTOR_REPOSTED_TASK:
+                case TASK_REQUESTER_REPOSTED_TASK:
                     intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
                     break;
             }
             if (intent != null) {
                 intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                 thiscontext.startActivity(intent);
-                ((ViewNotificationActivity)thiscontext).finish();
             }
         }
 
+            //Sets Up the delete button which removes the notification form the recyclerview and the
+            //database in one motion.
             private void setupDelete(){
                 Delete.setOnClickListener(new View.OnClickListener() {
                     @Override

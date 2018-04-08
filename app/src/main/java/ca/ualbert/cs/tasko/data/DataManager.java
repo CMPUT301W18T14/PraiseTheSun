@@ -24,6 +24,9 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import ca.ualbert.cs.tasko.Bid;
 import ca.ualbert.cs.tasko.BidList;
 
@@ -35,6 +38,7 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.GetTaskCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetTasksByLatLng;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByIdCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserByUsernameCommand;
+import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserMapCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.GetUserTasksCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutNotificationCommand;
 import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
@@ -85,6 +89,18 @@ public class DataManager {
 
     public void init(Context context){
         appCtx = context.getApplicationContext();
+    }
+
+    public Map<String, User> getUserMap(ArrayList<String> userids) throws NoInternetException{
+        GetUserMapCommand gum = new GetUserMapCommand(userids);
+        if(ConnectivityState.getConnected()){
+            dcm.invokeCommand(gum);
+            Map<String, User> result = gum.getResult();
+            Log.i("UserMap", result.toString());
+            return result;
+        } else {
+            throw new NoInternetException();
+        }
     }
 
     /**

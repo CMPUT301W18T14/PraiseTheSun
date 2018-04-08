@@ -16,9 +16,14 @@
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
 /**
- * Created by spack on 2018-03-27.
+ * A simple enumeration for the different type of notifications. Depending on the status, the
+ * message of the notification, and who it was sent to will change.
+ * @see Notification
+ *
+ * @author spack
  */
 public enum NotificationType {
-    TASK_REQUESTOR_RECIEVED_BID_ON_TASK, TASK_PROVIDER_BID_ACCEPTED, TASK_PROVIDER_BID_DECLINED, RATING, TASK_DELETED, TASK_REQUESTOR_REPOSTED_TASK
+    TASK_REQUESTER_RECEIVED_BID_ON_TASK, TASK_PROVIDER_BID_ACCEPTED, TASK_PROVIDER_BID_DECLINED,
+    RATING, TASK_DELETED, TASK_REQUESTER_REPOSTED_TASK
 }
 
