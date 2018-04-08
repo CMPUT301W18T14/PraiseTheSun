@@ -193,8 +193,8 @@ public class RootActivity extends AppCompatActivity {
                     }
                 }
         );
-
     }
+
     @Override
     public void onStart(){
         super.onStart();
