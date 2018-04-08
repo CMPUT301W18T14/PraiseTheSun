@@ -15,9 +15,11 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.AdapterView;
@@ -62,7 +64,10 @@ public class ViewMyTasksActivity extends RootActivity {
     }
 
     private void adpaterSetup() {
-        setContentView(R.layout.activity_view_my_tasks);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_view_my_tasks, null, false);
+        drawerLayout.addView(contentView, 0);
 
         myTasksRecyclerView = (RecyclerView) findViewById(R.id.my_tasks_recycler_view);
         myTasksLayoutManager = new LinearLayoutManager(activity);

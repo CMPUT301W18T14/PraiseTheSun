@@ -74,6 +74,11 @@ public class RatingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 RatingRecipient.addRating(ratingbar.getRating());
+                try {
+                    dm.putUser(RatingRecipient);
+                } catch (NoInternetException e){
+                    e.printStackTrace();
+                }
                 finish();
             }
         });
