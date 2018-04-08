@@ -63,8 +63,6 @@ public class ViewNotificationActivity extends RootActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        handleAppStart();
-
         super.onCreate(savedInstanceState);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -88,29 +86,6 @@ public class ViewNotificationActivity extends RootActivity {
 
     }
 
-    /**
-     * If the app starts with this activity, we have to make sure the user is logged in and online.
-     * Otherwise we will send the user to the login activity or if they have no connection, to a no
-     * access page.
-     */
-    private void handleAppStart(){
-        if (cu.loggedIn()){
-            return;
-        } else {
-            try {
-                FileInputStream fis = openFileInput(FILENAME);
-                BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-                Gson gson = new Gson();
-                cu.setCurrentUser(gson.fromJson(in, User.class));
-                return;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch(IllegalStateException | JsonSyntaxException e){
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
-            }
-        }
-    }
 }
 
 

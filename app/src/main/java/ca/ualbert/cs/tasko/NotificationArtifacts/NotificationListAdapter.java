@@ -158,7 +158,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     intent = new Intent(thiscontext, ViewSearchedTaskDetailsActivity.class);
                     break;
             }
-            if (intent != null) {
+            if (intent != null && Type != NotificationType.RATING) {
                 intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                 thiscontext.startActivity(intent);
             }
@@ -189,7 +189,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                 notifications.delete(getAdapterPosition());
                 notifyItemRemoved(getAdapterPosition());
                 notifyItemRangeChanged(getAdapterPosition(), notifications.getSize());
-            }
+        }
     }
 }
 

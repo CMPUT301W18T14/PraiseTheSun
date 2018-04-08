@@ -81,9 +81,9 @@ public class AndroidNotificationCreator extends ContextWrapper {
      * Creates the Android Notification that will go to the Users Device.
      */
     public void createAndroidNotification(){
-        Intent intent = new Intent(this, ViewNotificationActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.getActivity(this, 0, intent, 0);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
         notificationBuilder.setSmallIcon(R.drawable.ic_notification_alert)
