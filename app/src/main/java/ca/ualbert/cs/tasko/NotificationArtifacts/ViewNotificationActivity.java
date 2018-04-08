@@ -15,12 +15,13 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -28,19 +29,17 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import ca.ualbert.cs.tasko.CurrentUser;
 import ca.ualbert.cs.tasko.LoginActivity;
 import ca.ualbert.cs.tasko.R;
+import ca.ualbert.cs.tasko.RootActivity;
 import ca.ualbert.cs.tasko.User;
 import ca.ualbert.cs.tasko.data.ConnectivityState;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
-
-import static android.provider.Telephony.Mms.Part.FILENAME;
 
 /**
  * The activity that displays Notifications in a recyclerview. Because the app can start with this
@@ -51,7 +50,7 @@ import static android.provider.Telephony.Mms.Part.FILENAME;
  *
  * @author spack
  */
-public class ViewNotificationActivity extends AppCompatActivity {
+public class ViewNotificationActivity extends RootActivity {
 
     private RecyclerView notificationsRecyclerView;
     private RecyclerView.Adapter notificationsAdapter;
@@ -63,10 +62,14 @@ public class ViewNotificationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_notification);
 
         handleAppStart();
+
+        super.onCreate(savedInstanceState);
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_view_notification, null, false);
+        drawerLayout.addView(contentView, 0);
 
         notificationsRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         notificationsLayoutManager = new LinearLayoutManager(context);
@@ -103,14 +106,11 @@ public class ViewNotificationActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch(IllegalStateException | JsonSyntaxException e){
-                if (!ConnectivityState.getConnected()) {
-                    //TODO no internet + not logged in screen
-                } else {
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
-                }
             }
         }
     }
 }
+
 

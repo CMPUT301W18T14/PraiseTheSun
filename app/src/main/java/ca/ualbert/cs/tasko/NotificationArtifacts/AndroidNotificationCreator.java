@@ -81,7 +81,7 @@ public class AndroidNotificationCreator extends ContextWrapper {
     /**
      * Creates the Android Notification that will go to the Users Device.
      */
-    public void createAndriodNotification(){
+    public void createAndroidNotification(){
         Intent intent = new Intent(this, ViewNotificationActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, 0);
