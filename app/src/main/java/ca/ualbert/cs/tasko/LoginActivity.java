@@ -15,6 +15,7 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.app.Activity;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -131,9 +132,13 @@ public class LoginActivity extends AppCompatActivity {
                         Log.i("Error", "Failed to sync users local tasks on login due to lost " +
                                 "connection");
                     }
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("check", true);
+                    setResult(Activity.RESULT_OK, resultIntent);
 
-                    Intent intent = new Intent(activity, MainActivity.class);
-                    startActivity(intent);
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+
                     finish();
                 } else {
                     usernameText.setError("This is not a valid username");
