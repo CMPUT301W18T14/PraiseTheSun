@@ -122,8 +122,7 @@
                 android:layout_above="@+id/searchTaskPhoto"
                 android:layout_below="@+id/searchTaskTitle"
                 android:layout_toEndOf="@+id/searchedTaskUsername"
-                android:layout_toStartOf="@+id/searchTaskDescription"
-                app:srcCompat="@drawable/ic_star" />
+                android:layout_toStartOf="@+id/searchTaskDescription" />
 
 
         </RelativeLayout>
