@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -46,7 +47,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  *
  * @author tlafranc
  */
-public class AddTaskActivity extends AppCompatActivity {
+public class AddTaskActivity extends RootActivity {
     private EditText taskNameText;
     private EditText descriptionText;
     private String taskName;
@@ -75,7 +76,10 @@ public class AddTaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_task);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_add_task, null, false);
+        drawerLayout.addView(contentView, 0);
 
         Intent editTask = getIntent();
         currentTask = (Task) editTask.getSerializableExtra("task");
