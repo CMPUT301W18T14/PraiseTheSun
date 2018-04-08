@@ -29,7 +29,7 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * This activity allows the user to view all of the tasks they have bidded on, Which will show up
+ * This activity allows the user to view all of the tasks they have been assigned, Which will show up
  * as a RecyclerView of tasks that includes all relevant information include your bid on the task.
  *
  * @author spack
