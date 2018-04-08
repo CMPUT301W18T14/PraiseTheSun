@@ -15,12 +15,14 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import ca.ualbert.cs.tasko.RootActivity;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -28,7 +30,6 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -40,8 +41,6 @@ import ca.ualbert.cs.tasko.data.ConnectivityState;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-import static android.provider.Telephony.Mms.Part.FILENAME;
-
 /**
  * The activity that displays Notifications in a recyclerview. Because the app can start with this
  * activity if a user clicks on an Android notification, we have ti handle starting the app briefly
@@ -51,7 +50,7 @@ import static android.provider.Telephony.Mms.Part.FILENAME;
  *
  * @author spack
  */
-public class ViewNotificationActivity extends AppCompatActivity {
+public class ViewNotificationActivity extends RootActivity{
 
     private RecyclerView notificationsRecyclerView;
     private RecyclerView.Adapter notificationsAdapter;
@@ -64,7 +63,10 @@ public class ViewNotificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_notification);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_view_notification, null, false);
+        drawerLayout.addView(contentView, 0);
 
         handleAppStart();
 
@@ -77,7 +79,8 @@ public class ViewNotificationActivity extends AppCompatActivity {
             myNotifications.addAll(
                     dm.getNotifications(cu.getCurrentUser().getId()).getNotifications());
         } catch (NoInternetException e) {
-            Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT);
+            Toast.makeText(this.getApplicationContext(), "No Internet Connection",
+                    Toast.LENGTH_SHORT).show();
         }
 
         notificationsAdapter = new NotificationListAdapter(context, myNotifications);
@@ -104,7 +107,10 @@ public class ViewNotificationActivity extends AppCompatActivity {
                 e.printStackTrace();
             } catch(IllegalStateException | JsonSyntaxException e){
                 if (!ConnectivityState.getConnected()) {
-                    //TODO no internet + not logged in screen
+                    Toast.makeText(this, "Unable to open Tasko because you have no " +
+                                    "Internet connection and are not signed in. " +
+                                    "Please try again later!", Toast.LENGTH_LONG).show();
+                    this.finishAffinity();
                 } else {
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);

@@ -31,6 +31,6 @@ public class AndroidNotificationCreatorTest extends ActivityInstrumentationTestC
 
     public void testCreate(){
         AndroidNotificationCreator anc = new AndroidNotificationCreator(getActivity().getApplicationContext());
-        anc.createAndriodNotification();
+        anc.createAndroidNotification();
     }
 }
