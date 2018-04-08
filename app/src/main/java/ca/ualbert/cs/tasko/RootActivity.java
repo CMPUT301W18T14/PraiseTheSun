@@ -259,10 +259,6 @@ public class RootActivity extends AppCompatActivity {
 
         if(loggedInUser == null){
             Log.d("LOGIN", "Current logged is NULL COnnectivity: " + ConnectivityState.getConnected());
-            if(!ConnectivityState.getConnected()){
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-            }
             int result = 10;
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, result);
@@ -279,8 +275,6 @@ public class RootActivity extends AppCompatActivity {
             mJobScheduler.schedule(infoBuilder.build());
             //End notification alarm
 
-            //Intent intent = new Intent(this, MainActivity.class);
-            //startActivity(intent);
             return true;
 
         }

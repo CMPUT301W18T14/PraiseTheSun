@@ -106,15 +106,11 @@ public class ViewNotificationActivity extends RootActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch(IllegalStateException | JsonSyntaxException e){
-                if (!ConnectivityState.getConnected()) {
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
-                } else {
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
-                }
             }
         }
     }
 }
+
 
