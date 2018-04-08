@@ -86,7 +86,7 @@ public class SearchResultsActivity extends RootActivity {
     protected void onResume() {
         super.onResume();
         searchForTasks();
-        searchAdapter = new TaskListAdapter(context, foundtasks);
+        searchAdapter = new TaskListAdapter(context, foundtasks, getTaskUsers());
         searchRecyclerView.setAdapter(searchAdapter);
     }
 

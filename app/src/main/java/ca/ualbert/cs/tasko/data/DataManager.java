@@ -95,7 +95,9 @@ public class DataManager {
         GetUserMapCommand gum = new GetUserMapCommand(userids);
         if(ConnectivityState.getConnected()){
             dcm.invokeCommand(gum);
-            return gum.getResult();
+            Map<String, User> result = gum.getResult();
+            Log.i("UserMap", result.toString());
+            return result;
         } else {
             throw new NoInternetException();
         }

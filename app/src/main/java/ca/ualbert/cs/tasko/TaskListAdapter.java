@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         thiscontext = context;
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
+        Log.i("Adapter", "COntructor 1");
+
     }
 
     /**
@@ -70,6 +73,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
         myBids = dmMyBids;
+        Log.i("Adapter", "COntructor 2");
+
     }
 
     /**

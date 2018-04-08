@@ -54,12 +54,12 @@ public class GetUserMapCommand extends GetCommand<Map<String, User>, ArrayList<S
         for(int i = 1; i < ids.size(); i++){
             query += ", \"" + ids.get(i) + "\"";
         }
-        query +=
-        "] " +
+        query += "] " +
         "    }" +
         "  }" +
         "}";
 
+        Log.i("QUERY", query);
         GetUserMapTask task = new GetUserMapTask();
         task.execute(query);
         try {
