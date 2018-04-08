@@ -32,7 +32,7 @@ import io.searchbox.core.Delete;
  * @see DeleteCommand
  * @author tlafranc
  */
-public class DeleteNotificationCommand extends DeleteCommand {
+public class DeleteNotificationCommand extends DeleteCommand<String> {
     private String notificationId;
 
     /**
@@ -41,6 +41,7 @@ public class DeleteNotificationCommand extends DeleteCommand {
      * @param notificationId The notificationId of the notification to be deleted
      */
     public DeleteNotificationCommand(String notificationId) {
+        super(notificationId, "DeleteNotificationCommand");
         this.notificationId = notificationId;
     }
 

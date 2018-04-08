@@ -45,7 +45,8 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/notificationBody"
@@ -55,7 +56,8 @@
                 android:layout_marginTop="8dp"
                 android:text="TextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notificationTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/notificationTitle"
+                tools:ignore="HardcodedText" />
 
             <ImageView
                 android:id="@+id/notificationDeleteOption"

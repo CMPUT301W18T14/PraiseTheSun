@@ -18,7 +18,9 @@ package ca.ualbert.cs.tasko;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.Map;
 
 /**
  * The class represents a Adapter that is specifically designed to display search results in an
@@ -41,6 +44,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private TaskList tasks;
     private Context thiscontext;
     private BidList myBids;
+    private Map<String, User> userMap;
 
     /**
      * Constructor for the Adapter, Takes in the context which designates the activity that will use
@@ -52,6 +56,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         thiscontext = context;
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
+        Log.i("Adapter", "COntructor 1");
+
     }
 
     /**
@@ -68,6 +74,24 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
         myBids = dmMyBids;
+        Log.i("Adapter", "COntructor 2");
+
+    }
+
+    /**
+     * Alternate Constructor for the Adapter, Takes in the context which designates the activity
+     * that will use the adpater and a TaskList which represents the Tasks that will be displayed.
+     * This alternate Adapter includes a bidlist which represents a users bids, will be included
+     * when the ViewTasksBiddedOnActivity is called, It also includes a map that allows to check
+     * if a user is preferred and if so display a star by their name.
+     * @param context The context for the activity using the adapter.
+     * @param dmTasks The TaskList representing all Tasks a user has bid on, from the DataManager.
+     */
+    public TaskListAdapter(Context context, TaskList dmTasks, Map<String, User> dmMap){
+        thiscontext = context;
+        inflater = LayoutInflater.from(context);
+        tasks = dmTasks;
+        userMap = dmMap;
     }
 
     /**
@@ -99,7 +123,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
         holder.taskTitle.setText(currentTask.getTaskName());
         holder.taskDescription.setText(currentTask.getDescription());
-        holder.taskRequestorUsername.setText(currentTask.getTaskRequesterUsername());
+        holder.taskRequesterUsername.setText(currentTask.getTaskRequesterUsername());
 
         //Taken From https://stackoverflow.com/questions/2538787/
         //how-to-display-an-output-of-float-data-with-2-decimal-places-in-java
@@ -108,8 +132,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         df.setMinimumFractionDigits(2);
         df.setMaximumFractionDigits(2);
 
+        // Alden's addition: checks if in my activity
+        if (thiscontext instanceof ViewTasksAssignedActivity) {
+            holder.taskLowestBid.setText("My Bid: " + df.format(myBids.get(position).getValue()));
+        }
         // Tries to get the minimum bid on each task if it exists
-        if (currentTask.getMinBid() != null){
+        else if (currentTask.getMinBid() != null){
             String lowbidValue = df.format(currentTask.getMinBid());
             holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
         }else{
@@ -117,7 +145,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
 
         // Checks see if to get the users bid on the Task if it exists
-        if (myBids != null){
+        if (thiscontext instanceof ViewTasksAssignedActivity) {
+            holder.taskMyBid.setText("");
+        }
+        else if (myBids != null){
             holder.taskMyBid.setText("My Bid: " + df.format(myBids.get(position).getValue()));
         } else{
             holder.taskMyBid.setText("");
@@ -140,8 +171,23 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 break;
         }
 
-        holder.taskPhoto.setImageBitmap(currentTask.getCoverPhoto());
+        Bitmap taskImage = currentTask.getCoverPhoto();
+        if (taskImage == null) {
+            holder.taskPhoto.setImageResource(R.drawable.ic_menu_gallery);
+        }
+        else {
+            holder.taskPhoto.setImageBitmap(taskImage);
+        }        
+     
+        if(userMap != null){
+            if(userMap.get(currentTask.getTaskRequesterID()) == null){
 
+            } else {
+                if (userMap.get(currentTask.getTaskRequesterID()).isPrefered()) {
+                    holder.userPreferred.setImageResource(R.drawable.ic_star);
+                }
+            }
+        }
     }
 
     /**
@@ -167,8 +213,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         TextView taskDescription;
         TextView taskLowestBid;
         TextView taskMyBid;
-        TextView taskRequestorUsername;
+        TextView taskRequesterUsername;
         ImageView taskPhoto;
+        ImageView userPreferred;
 
         public TaskViewHolder(View itemView) {
             super(itemView);
@@ -176,12 +223,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             itemView.setOnClickListener(this);
 
             taskTitle = (TextView) itemView.findViewById(R.id.searchTaskTitle);
-            taskRequestorUsername = (TextView) itemView.findViewById(R.id.searchedTaskUsername);
+            taskRequesterUsername = (TextView) itemView.findViewById(R.id.searchedTaskUsername);
             taskStatusIcon = (ImageView) itemView.findViewById(R.id.searchedTaskStatusIcon);
             taskDescription = (TextView) itemView.findViewById(R.id.searchTaskDescription);
             taskLowestBid = (TextView) itemView.findViewById(R.id.searchTaskLowestBid);
             taskMyBid = (TextView) itemView.findViewById(R.id.searchedTasksMyBidOnTask);
             taskPhoto = (ImageView) itemView.findViewById(R.id.searchTaskPhoto);
+            userPreferred = (ImageView) itemView.findViewById(R.id.taskListAdapterStar);
 
             setupPhotoClick();
             setupUserNameClick();
@@ -193,14 +241,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(thiscontext, ViewPhotoActivity.class);
-                    intent.putExtra("photos", tasks.get(getAdapterPosition()));
+                    intent.putExtra("photos", tasks.get(getAdapterPosition()).getByteArrays());
                     thiscontext.startActivity(intent);
                 }
             });
         }
 
         private void setupUserNameClick(){
-            taskRequestorUsername.setOnClickListener(new View.OnClickListener() {
+            taskRequesterUsername.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(thiscontext, OtherUsersProfileActivity.class);
@@ -213,7 +261,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         @Override
         public void onClick(View view) {
             Intent intent;
-            if (thiscontext instanceof ViewMyTasksActivity) {
+            if (thiscontext instanceof ViewTasksAssignedActivity) {
+                intent = new Intent(thiscontext, AcceptedMyTaskActivity.class);
+            }
+
+            else if (thiscontext instanceof ViewMyTasksActivity) {
                 if (tasks.get(getAdapterPosition()).getStatus() == TaskStatus.ASSIGNED) {
                     intent = new Intent(thiscontext, AcceptedMyTaskActivity.class);
                 }

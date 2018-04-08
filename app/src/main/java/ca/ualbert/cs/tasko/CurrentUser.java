@@ -22,7 +22,6 @@ package ca.ualbert.cs.tasko;
  * OpeningActivity.
  * @see User
  * @see LoginActivity
- * @see OpeningActivity
  *
  * @author spack
  */

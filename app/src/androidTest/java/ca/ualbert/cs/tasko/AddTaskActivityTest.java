@@ -15,7 +15,6 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import android.widget.EditText;
@@ -46,8 +45,8 @@ public class AddTaskActivityTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
         try {
-            User taskRequester = DataManager.getInstance().getUserByUsername("jdoe62",
-                    getActivity().getApplicationContext());
+            User taskRequester = DataManager.getInstance().getUserByUsername("jdoe62"
+            );
             CurrentUser.getInstance().setCurrentUser(taskRequester);
             nameText = (EditText) solo.getView(R.id.addTaskName);
             descriptionText = (EditText) solo.getView(R.id.addTaskDescription);

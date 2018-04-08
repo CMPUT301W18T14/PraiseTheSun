@@ -15,9 +15,11 @@
 
 package ca.ualbert.cs.tasko;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.AdapterView;
@@ -62,7 +64,10 @@ public class ViewMyTasksActivity extends RootActivity {
     }
 
     private void adpaterSetup() {
-        setContentView(R.layout.activity_view_my_tasks);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_view_my_tasks, null, false);
+        drawerLayout.addView(contentView, 0);
 
         myTasksRecyclerView = (RecyclerView) findViewById(R.id.my_tasks_recycler_view);
         myTasksLayoutManager = new LinearLayoutManager(activity);
@@ -92,14 +97,18 @@ public class ViewMyTasksActivity extends RootActivity {
         final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
         emptyListMessage.setLayoutResource(R.layout.empty_task_list);
 
+        /*
+         * When the filter is selected, the recycle view displays only the users tasks that
+         * corresponds to the tasks status
+         */
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 TaskList myTasks = new TaskList();
                 loadingCircle.setVisibility(View.VISIBLE);
                 try {
-                    myTasks = dm.getUserTasks(CurrentUser.getInstance().getCurrentUser().getId(),
-                            activity);
+                    myTasks = dm.getUserTasks(CurrentUser.getInstance().getCurrentUser().getId()
+                    );
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }

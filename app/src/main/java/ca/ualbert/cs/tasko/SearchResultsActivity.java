@@ -17,13 +17,17 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -44,6 +48,7 @@ public class SearchResultsActivity extends RootActivity {
     private ProgressBar loadingCircle;
     private SearchResultsActivity context = this;
     private TaskList foundtasks;
+    private ArrayList<String> foundtasksUsers;
 
     /**
      * Creates the Activity which includes initializing the RecyclerView with the appropriate
@@ -71,7 +76,7 @@ public class SearchResultsActivity extends RootActivity {
         searchForTasks();
 
         //Initialize the Adapter and RecyclerView
-        searchAdapter = new TaskListAdapter(context, foundtasks);
+        searchAdapter = new TaskListAdapter(context, foundtasks, getTaskUsers());
         searchRecyclerView.setAdapter(searchAdapter);
 
         loadingCircle.setVisibility(View.GONE);
@@ -81,7 +86,7 @@ public class SearchResultsActivity extends RootActivity {
     protected void onResume() {
         super.onResume();
         searchForTasks();
-        searchAdapter = new TaskListAdapter(context, foundtasks);
+        searchAdapter = new TaskListAdapter(context, foundtasks, getTaskUsers());
         searchRecyclerView.setAdapter(searchAdapter);
     }
 
@@ -101,11 +106,29 @@ public class SearchResultsActivity extends RootActivity {
 
         //Try to conduct the search
         try {
-            foundtasks = dm.searchTasks(keywords, context);
+            foundtasks = dm.searchTasks(keywords);
         } catch (NoInternetException e) {
             Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private Map<String, User> getTaskUsers(){
+
+        int i;
+
+        foundtasksUsers = new ArrayList<>();
+
+        for(i = 0; i < foundtasks.getSize(); i++){
+            foundtasksUsers.add(foundtasks.get(i).getTaskRequesterID());
+        }
+        try {
+            Map<String, User> results = dm.getUserMap(foundtasksUsers);
+            return results;
+        } catch (NoInternetException e){
+            Log.i("Error", "Could not get preferred users. no internet");
+        }
+        return new HashMap<String, User>();
     }
 }
 

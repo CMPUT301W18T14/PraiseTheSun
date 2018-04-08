@@ -15,30 +15,42 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import ca.ualbert.cs.tasko.CurrentUser;
 import ca.ualbert.cs.tasko.LoginActivity;
 import ca.ualbert.cs.tasko.R;
+import ca.ualbert.cs.tasko.RootActivity;
 import ca.ualbert.cs.tasko.User;
+import ca.ualbert.cs.tasko.data.ConnectivityState;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
-import static android.provider.Telephony.Mms.Part.FILENAME;
-
-public class ViewNotificationActivity extends AppCompatActivity {
+/**
+ * The activity that displays Notifications in a recyclerview. Because the app can start with this
+ * activity if a user clicks on an Android notification, we have ti handle starting the app briefly
+ * before displaying the notifications.
+ * @see Notification
+ * @see NotificationListAdapter
+ *
+ * @author spack
+ */
+public class ViewNotificationActivity extends RootActivity {
 
     private RecyclerView notificationsRecyclerView;
     private RecyclerView.Adapter notificationsAdapter;
@@ -46,23 +58,28 @@ public class ViewNotificationActivity extends AppCompatActivity {
     private ViewNotificationActivity context = this;
     private DataManager dm = DataManager.getInstance();
     private CurrentUser cu = CurrentUser.getInstance();
+    private static final String FILENAME = "nfile.sav";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_notification);
 
         handleAppStart();
 
-        notificationsRecyclerView =  (RecyclerView) findViewById(R.id.generic_recyclerview);
+        super.onCreate(savedInstanceState);
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_view_notification, null, false);
+        drawerLayout.addView(contentView, 0);
+
+        notificationsRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         notificationsLayoutManager = new LinearLayoutManager(context);
         notificationsRecyclerView.setLayoutManager(notificationsLayoutManager);
 
         NotificationList myNotifications = new NotificationList();
         try {
             myNotifications.addAll(
-                    dm.getNotifications(cu.getCurrentUser().getId(), context).getNotifications());
-        } catch (NoInternetException e){
+                    dm.getNotifications(cu.getCurrentUser().getId()).getNotifications());
+        } catch (NoInternetException e) {
             Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT);
         }
 
@@ -71,26 +88,29 @@ public class ViewNotificationActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * If the app starts with this activity, we have to make sure the user is logged in and online.
+     * Otherwise we will send the user to the login activity or if they have no connection, to a no
+     * access page.
+     */
     private void handleAppStart(){
-        if (cu.loggedIn())
+        if (cu.loggedIn()){
             return;
-        else{
-            FileInputStream fis = null;
+        } else {
             try {
-                fis = openFileInput(FILENAME);
+                FileInputStream fis = openFileInput(FILENAME);
                 BufferedReader in = new BufferedReader(new InputStreamReader(fis));
                 Gson gson = new Gson();
                 cu.setCurrentUser(gson.fromJson(in, User.class));
-            } catch (FileNotFoundException | NullPointerException e){
-//                if(/*I dont have internet*/){
-//                    //TODO no internet + not logged in screen
-//                }else {
-//                    Intent intent = new Intent(this, LoginActivity.class);
-//                    startActivity(intent);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch(IllegalStateException | JsonSyntaxException e){
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
             }
         }
-
     }
-
 }
+
 

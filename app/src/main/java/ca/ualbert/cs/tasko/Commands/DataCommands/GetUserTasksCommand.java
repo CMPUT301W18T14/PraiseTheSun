@@ -34,7 +34,7 @@ import io.searchbox.core.SearchResult;
  * @author Chase Buhler
  * @see GetCommand
  */
-public class GetUserTasksCommand extends GetCommand<TaskList> {
+public class GetUserTasksCommand extends GetCommand<TaskList, String> {
     private String userID;
 
     /**
@@ -43,6 +43,7 @@ public class GetUserTasksCommand extends GetCommand<TaskList> {
      * @param userID userid of the user who's tasks should be retrieved.
      */
     public GetUserTasksCommand(String userID){
+        super(userID, "GetUserTasksCommand");
         this.userID = userID;
     }
 

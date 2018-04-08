@@ -15,20 +15,15 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.regex.Pattern;
 
@@ -106,13 +101,12 @@ public class CreateAccountActivity extends AppCompatActivity {
         boolean valid = checkFieldsForEmptyValues();
         if (valid) {
             try {
-                User retrievedUser = DataManager.getInstance().getUserByUsername(username, this
-                        .getApplicationContext());
+                User retrievedUser = DataManager.getInstance().getUserByUsername(username);
                 if (retrievedUser.getUsername() == null) {
                     User newUser = new User(username, name, phone, email);
                     Log.i("NotError", "ERROR IS HERE");
                     try {
-                        DataManager.getInstance().putUser(newUser, this.getApplicationContext());
+                        DataManager.getInstance().putUser(newUser);
                         finish();
                     } catch (NoInternetException e) {
                         Log.i("Error", "No internet connection in CreateAccountActivity");

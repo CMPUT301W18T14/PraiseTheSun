@@ -24,8 +24,9 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * Handles the creation of all notifications by using a switch block to create unique messages and
- * send the notifications to specific users via the DataManager
+ * Handles the creation of most notifications by using a switch block to create unique messages and
+ * send the notifications to specific users via the DataManager. The switch block is base upon
+ * the type of notification passed in when createNotification is called.
  * @see Notification
  *
  * @author spack
@@ -33,69 +34,68 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class NotificationFactory {
 
-    DataManager dm = DataManager.getInstance();
-    Context context;
+    private DataManager dm = DataManager.getInstance();
+    private Context context;
 
     public void setContext(Context context){
         this.context = context;
     }
 
-    public void createNotification(String taskID, NotificationType Type) throws NoInternetException{
+    public void createNotification(String taskID, NotificationType type) throws NoInternetException{
 
 
-        Notification notification = null;
-        Task task = dm.getTask(taskID, context);
+        Notification notification;
+        Task task = dm.getTask(taskID);
         String message;
         String taskname = task.getTaskName();
         String recipientID;
 
-        NotificationType notificationType = Type;
 
-        switch (notificationType){
-            case TASK_REQUESTOR_RECIEVED_BID_ON_TASK:
+        switch (type){
+            case TASK_REQUESTER_RECEIVED_BID_ON_TASK:
                 recipientID = task.getTaskRequesterID();
                 message = "You have received a new bid on your task: " + taskname + "!";
                 notification = new Notification(message, recipientID, null, taskID
-                        , NotificationType.TASK_REQUESTOR_RECIEVED_BID_ON_TASK);
-                dm.putNotification(notification, context);
+                        , NotificationType.TASK_REQUESTER_RECEIVED_BID_ON_TASK);
+                dm.putNotification(notification);
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
                 recipientID = task.getTaskProviderID();
                 message = "You have been assigned to complete " + taskname + "!";
                 notification = new Notification(message, recipientID, null, taskID,
                         NotificationType.TASK_PROVIDER_BID_ACCEPTED);
-               dm.putNotification(notification, context);
-                 break;
+                dm.putNotification(notification);
+                break;
             case RATING:
-                User taskprovider = dm.getUserById(task.getTaskProviderID(), context);
-                User taskrequestor = dm.getUserById(task.getTaskRequesterID(), context);
+                User taskprovider = dm.getUserById(task.getTaskProviderID());
+                User taskrequestor = dm.getUserById(task.getTaskRequesterID());
 
                 message = taskprovider.getUsername() + " has completed " + taskname
                         + ". Please rate their services";
                 notification = new Notification(message, taskrequestor.getId(), taskprovider.getId(), taskID, NotificationType.RATING);
-                dm.putNotification(notification, context);
+                dm.putNotification(notification);
 
                 message = "You have completed " + taskname + ". Please rate your experience with "
                         + taskrequestor.getUsername();
                 notification = new Notification(message, taskprovider.getId(), taskrequestor.getId(), taskID, NotificationType.RATING);
-                dm.putNotification(notification, context);
+                dm.putNotification(notification);
                 break;
-            case TASK_REQUESTOR_REPOSTED_TASK:
-                BidList reOpenedBids = dm.getTaskBids(taskID, context);
+            case TASK_REQUESTER_REPOSTED_TASK:
+                BidList reOpenedBids = dm.getTaskBids(taskID);
                 for(int i = 0; i < reOpenedBids.getSize(); i++){
                     message = taskname + "Has been ReRequested by the poster!";
                     notification = new Notification(message, reOpenedBids.get(i).getUserID(), null, taskID,
-                            NotificationType.TASK_REQUESTOR_REPOSTED_TASK);
-                    dm.putNotification(notification, context);
+                            NotificationType.TASK_REQUESTER_REPOSTED_TASK);
+                    dm.putNotification(notification);
                 }
                 break;
             case TASK_DELETED:
-                BidList deletedBids = dm.getTaskBids(taskID, context);
+                BidList deletedBids = dm.getTaskBids(taskID);
                 for(int i = 0; i < deletedBids.getSize(); i++){
                     message = taskname + "Has been deleted by the poster. Sorry for the inconvience.";
                     notification = new Notification(message, deletedBids.get(i).getUserID(), null, taskID,
                             NotificationType.TASK_DELETED);
-                    dm.putNotification(notification, context);
+                    dm.putNotification(notification);
                 }
                 break;
         }

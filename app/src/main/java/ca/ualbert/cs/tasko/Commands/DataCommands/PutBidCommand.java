@@ -21,8 +21,10 @@ import android.util.Log;
 import java.io.IOException;
 
 import ca.ualbert.cs.tasko.Bid;
-import ca.ualbert.cs.tasko.User;
+import ca.ualbert.cs.tasko.Task;
+import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.JestWrapper;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 
@@ -33,7 +35,7 @@ import io.searchbox.core.Index;
  * @see PutCommand
  * @author tlafranc
  */
-public class PutBidCommand implements PutCommand {
+public class PutBidCommand extends PutCommand<Bid> {
     private Bid bid;
 
     /**
@@ -43,6 +45,7 @@ public class PutBidCommand implements PutCommand {
      * @param bid the bid object to be stored in the database
      */
     public PutBidCommand(Bid bid) {
+        super(bid, "PutBidCommand");
         this.bid = bid;
     }
 
@@ -52,6 +55,22 @@ public class PutBidCommand implements PutCommand {
      */
     @Override
     public void execute(){
+        try {
+            DataManager dm = DataManager.getInstance();
+            Task task = dm.getTask(bid.getTaskID());
+            if (task.getMinBid() != null) {
+                if (task.getMinBid() > bid.getValue()) {
+                    task.setMinBid(bid.getValue());
+                    dm.putTask(task);
+                }
+            } else {
+                task.setMinBid(bid.getValue());
+                dm.putTask(task);
+            }
+        } catch (NoInternetException e){
+            Log.i("Add Bid Command", "Failed to update min Bid in the task due to lost " +
+                    "connection");
+        }
         AddBidTask addBidTask = new AddBidTask();
         addBidTask.execute(bid);
         try{

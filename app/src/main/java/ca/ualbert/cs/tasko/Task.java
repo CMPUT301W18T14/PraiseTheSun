@@ -17,12 +17,14 @@ package ca.ualbert.cs.tasko;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import io.searchbox.annotations.JestId;
 
@@ -96,6 +98,7 @@ public class Task implements Serializable {
         this.taskProviderID = null;
         this.status = TaskStatus.REQUESTED;
         this.minBid = null;
+        this.id = UUID.randomUUID().toString();
     }
 
     /**
@@ -116,6 +119,7 @@ public class Task implements Serializable {
         this.description = description;
         this.photos = photos;
         this.taskProviderID = null;
+        this.id = UUID.randomUUID().toString();
         this.lat = location.latitude;
         this.lng = location.longitude;
         this.status = TaskStatus.REQUESTED;
@@ -232,6 +236,26 @@ public class Task implements Serializable {
      */
     public ArrayList<String> getPhotoStrings(){
         return this.photos;
+    }
+
+    public ArrayList<byte[]> getByteArrays() {
+        if (hasPhoto()) {
+            ArrayList<byte[]> imageBytes = new ArrayList<byte[]>();
+            for (int i = 0; i < photos.size(); i++) {
+                byte[] byteArray = Base64.decode(photos.get(i), Base64.DEFAULT);
+                imageBytes.add(byteArray);
+            }
+            return imageBytes;
+        }
+        else {
+            return null;
+        }
+    }
+
+    // Not implemented yet
+    // Todo Part 5
+    public void addLocation(Location location){
+
     }
 
     /**

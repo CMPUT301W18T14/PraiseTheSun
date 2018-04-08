@@ -17,28 +17,20 @@ package ca.ualbert.cs.tasko;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.media.Image;
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -56,12 +48,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualbert.cs.tasko.data.DataManager;
-import ca.ualbert.cs.tasko.data.NoInternetException;
 
 public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -160,7 +150,7 @@ public class NearbyTasksActivity extends FragmentActivity implements OnMapReadyC
         try {
             TaskList tasks = new TaskList();
             ArrayList<Task> listOfTasks = new ArrayList();
-            tasks = DataManager.getInstance().getTasksByLatLng(currentLocation.getLatitude(), currentLocation.getLongitude(), NearbyTasksActivity.this);
+            tasks = DataManager.getInstance().getTasksByLatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             
             listOfTasks = tasks.getTasks();
 
