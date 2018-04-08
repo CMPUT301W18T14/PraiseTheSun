@@ -52,25 +52,24 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  */
 public class ViewNotificationActivity extends RootActivity {
 
-    private RecyclerView notificationsRecyclerView;
-    private RecyclerView.Adapter notificationsAdapter;
-    private RecyclerView.LayoutManager notificationsLayoutManager;
     private ViewNotificationActivity context = this;
     private DataManager dm = DataManager.getInstance();
     private CurrentUser cu = CurrentUser.getInstance();
-    private static final String FILENAME = "nfile.sav";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity_view_notification, null, false);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate
+                (R.layout.activity_view_notification, null, false);
         drawerLayout.addView(contentView, 0);
 
-        notificationsRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
-        notificationsLayoutManager = new LinearLayoutManager(context);
+        RecyclerView notificationsRecyclerView = (RecyclerView)
+                findViewById(R.id.generic_recyclerview);
+        RecyclerView.LayoutManager notificationsLayoutManager = new LinearLayoutManager(context);
         notificationsRecyclerView.setLayoutManager(notificationsLayoutManager);
 
         NotificationList myNotifications = new NotificationList();
@@ -78,10 +77,12 @@ public class ViewNotificationActivity extends RootActivity {
             myNotifications.addAll(
                     dm.getNotifications(cu.getCurrentUser().getId()).getNotifications());
         } catch (NoInternetException e) {
-            Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT);
+            Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT)
+                    .show();
         }
 
-        notificationsAdapter = new NotificationListAdapter(context, myNotifications);
+        RecyclerView.Adapter notificationsAdapter = new
+                NotificationListAdapter(context, myNotifications);
         notificationsRecyclerView.setAdapter(notificationsAdapter);
 
     }
