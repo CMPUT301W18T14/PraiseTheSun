@@ -15,14 +15,12 @@
 
 package ca.ualbert.cs.tasko.NotificationArtifacts;
 
-import ca.ualbert.cs.tasko.RootActivity;
-import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -41,6 +39,8 @@ import ca.ualbert.cs.tasko.data.ConnectivityState;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
+import static android.provider.Telephony.Mms.Part.FILENAME;
+
 /**
  * The activity that displays Notifications in a recyclerview. Because the app can start with this
  * activity if a user clicks on an Android notification, we have ti handle starting the app briefly
@@ -50,7 +50,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  *
  * @author spack
  */
-public class ViewNotificationActivity extends RootActivity{
+public class ViewNotificationActivity extends AppCompatActivity{
 
     private RecyclerView notificationsRecyclerView;
     private RecyclerView.Adapter notificationsAdapter;
@@ -63,10 +63,7 @@ public class ViewNotificationActivity extends RootActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //inflate your activity layout here!
-        View contentView = inflater.inflate(R.layout.activity_view_notification, null, false);
-        drawerLayout.addView(contentView, 0);
+        setContentView(R.layout.activity_view_notification);
 
         handleAppStart();
 

@@ -49,7 +49,7 @@ import ca.ualbert.cs.tasko.NotificationArtifacts.ViewNotificationActivity;
  */
 public class RootActivity extends AppCompatActivity {
 
-    public DrawerLayout drawerLayout;
+    DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
     TextView username;

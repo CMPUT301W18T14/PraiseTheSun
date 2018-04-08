@@ -84,7 +84,7 @@ public class AndroidNotificationCreator extends ContextWrapper {
     public void createAndroidNotification(){
         Intent intent = new Intent(this, ViewNotificationActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(this, 0, intent, 0);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
         notificationBuilder.setSmallIcon(R.drawable.ic_notification_alert)

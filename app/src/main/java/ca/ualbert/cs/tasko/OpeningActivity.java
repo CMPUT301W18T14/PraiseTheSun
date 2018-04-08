@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -38,8 +39,6 @@ import ca.ualbert.cs.tasko.data.ConnectivityReceiver;
 import ca.ualbert.cs.tasko.data.ConnectivityState;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
-
-
 
 /**
  * OpeningActivity is the first activity our app will open too, it checks in a local file if a
@@ -81,10 +80,12 @@ public class OpeningActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (!cu.loggedIn())
+        if (!cu.getInApp())
             checkForUser();
-        else
+        else {
+            cu.setInApp(false);
             this.finishAffinity();
+        }
 
     }
 
@@ -96,6 +97,9 @@ public class OpeningActivity extends AppCompatActivity {
      * @throws NoInternetException Throws an exception if no Internet Connection is found.
      */
     private void checkForUser(){
+
+        cu.setInApp(true);
+
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -109,7 +113,9 @@ public class OpeningActivity extends AppCompatActivity {
 
         if(loggedInUser == null){
             if(!ConnectivityState.getConnected()){
-                //TODO: SEND TO NO INTERNET PLEASE TRY AGAIN THING
+                Toast.makeText(this, "Unable to open Tasko because you have no " +
+                        "Internet connection and are not signed in. " +
+                        "Please try again later!", Toast.LENGTH_LONG).show();
             }
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);

@@ -38,6 +38,16 @@ public class CurrentUser {
      */
     private User currentUser;
 
+    private boolean inApp = false;
+
+    public void setInApp(boolean inApp) {
+        this.inApp = inApp;
+    }
+
+    public boolean getInApp(){
+        return inApp;
+    }
+
     /**
      * By calling this method, any java class can get an instance of the CurrentUser singleton.
      * @return Instance, which is an instance of a CurrentUser singleton
