@@ -65,6 +65,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
     private final Context context = this;
     private User requesterUser;
     private LatLng latLng;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +80,6 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         lowestBid = (TextView) findViewById(R.id.lowestBid);
         status = (TextView) findViewById(R.id.ViewSearchedDetailsStatus);
         taskAddress = (TextView) findViewById(R.id.taskLocationText);
-        //Dialog for choosing to make a bid on the task
-
 
         Bundle extras = getIntent().getExtras();
         Bid bid;
@@ -100,9 +99,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                 Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
             }
             populateFields();
-        }catch(NullPointerException e){
-            Log.i("Error", "TaskID from TaskListAdapter not properly passed");
-        } catch (NoInternetException e) {
+        }catch (NoInternetException e) {
             e.printStackTrace();
         }
 
