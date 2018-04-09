@@ -16,10 +16,12 @@
 package ca.ualbert.cs.tasko;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.Display;
 
 import com.robotium.solo.Solo;
 
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.MockDataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 
@@ -38,15 +40,14 @@ public class ViewTaskDetailsTest extends ActivityInstrumentationTestCase2 {
     private User dmUser;
 
     public ViewTaskDetailsTest(){
-        super(ViewTaskDetailsActivity.class);
+        super(MainActivity.class);
     }
 
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
-        newUser = new User("rye-guy", "Ryan", "780-780-7800", "rye-guy@hotmail.com");
-        //dm.putUser(newUser, getActivity().getApplicationContext());
-        dmUser = dm.getUserByUsername("rye-guy");
+        dm.init(getActivity().getApplicationContext());
+        dmUser = MockDataManager.getInstance().getUser();
         CurrentUser.getInstance().setCurrentUser(dmUser);
         task = new Task(dmUser.getId(), "Test Task", "Help me test this project");
         dm.putTask(task);
@@ -59,9 +60,26 @@ public class ViewTaskDetailsTest extends ActivityInstrumentationTestCase2 {
      * @throws NoInternetException
      */
     public void testViewBids() throws NoInternetException {
+        solo.assertCurrentActivity("wrong activity", MainActivity.class);
+        swipeToRight();
+        solo.setNavigationDrawer(Solo.OPENED);
+        solo.clickOnText("My tasks");
+        solo.assertCurrentActivity("wrong activity", ViewMyTasksActivity.class);
+        solo.clickInRecyclerView(1);
         solo.assertCurrentActivity("Wrong Activity", ViewTaskDetailsActivity.class);
         solo.clickOnButton("View Bids");
         solo.assertCurrentActivity("Wrong Activity", ViewBidsOnTaskActivity.class);
+    }
+
+    private void swipeToRight() {
+        // Refer: https://stackoverflow.com/questions/26118480/how-to-open-navigation-drawer-menu-in-robotium-automation-script-in-android/29645959
+        // Viewed on: March 18, 2018
+        Display display = solo.getCurrentActivity().getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        int height = display.getHeight();
+        float xStart = 0 ;
+        float xEnd = width / 2;
+        solo.drag(xStart, xEnd, height / 2, height / 2, 1);
     }
 
     /*TODO: Test Case after editTask is implemented*/
