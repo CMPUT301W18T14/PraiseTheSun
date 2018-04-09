@@ -194,23 +194,15 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                     try {
                         //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID());
-                        if (thisTask.getStatus() == TaskStatus.ASSIGNED) {
-                            //tell the user that task is already assigned
-                            CharSequence toasttext = "Task already Assigned";
-                            Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
-                            toast.show();
 
-                        } else {
-                            //Reject a bid
-                            Bid currentbid = bids.get(getAdapterPosition());
-                            bids.removeBid(currentbid);
-                            dm.deleteBid(currentbid);
-                            notifyDataSetChanged();
+                        //Reject a bid
+                        Bid currentbid = bids.get(getAdapterPosition());
+                        bids.removeBid(currentbid);
+                        dm.deleteBid(currentbid);
+                        notifyDataSetChanged();
                          
-                            nh.newBidDeletedNotification(thisTask.getId(), bids.get(getAdapterPosition()).getUserID());
-
-
-                        }
+                        nh.newBidDeletedNotification(thisTask.getId(), bids.get(getAdapterPosition()).getUserID());
+                        
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");
                     } catch (NoInternetException e) {
