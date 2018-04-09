@@ -86,17 +86,18 @@ public class TaskTest extends ActivityInstrumentationTestCase2 {
     }
 
     public void testAddLocation(){
-        LatLng location = new LatLng(0.0d, 0.0d);
+        LatLng location = new LatLng(1.0d, 1.0d);
         Task task = new Task("bobismyID", "atask", "test");
         task.addLocation(location);
         assertEquals(location, task.getGeolocation());
     }
 
     public void testRemoveLocation(){
-        LatLng location = new LatLng(0.0d, 0.0d);
+        LatLng location = new LatLng(1.0d, 1.0d);
         Task task = new Task("bobismyID", "atask", "test", location);
         task.removeLocation();
-        assertNull(task.getGeolocation());
+        assertEquals(0.0d, task.getGeolocation().latitude);
+        assertEquals(0.0d, task.getGeolocation().longitude);
     }
 
 
