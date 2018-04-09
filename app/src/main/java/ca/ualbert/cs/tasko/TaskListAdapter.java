@@ -56,7 +56,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         thiscontext = context;
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
-        Log.i("Adapter", "COntructor 1");
 
     }
 
@@ -74,7 +73,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
         myBids = dmMyBids;
-        Log.i("Adapter", "COntructor 2");
 
     }
 
