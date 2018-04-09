@@ -52,6 +52,7 @@ import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.Task;
 import ca.ualbert.cs.tasko.TaskList;
+import ca.ualbert.cs.tasko.TaskStatus;
 import ca.ualbert.cs.tasko.User;
 
 /**
@@ -87,6 +88,11 @@ public class DataManager {
         return instance;
     }
 
+    /**
+     * Called as one of the first things in creating the. Initializes
+     * the DataManager and provides its context for network actions.
+     * @param context Application Context
+     */
     public void init(Context context){
         appCtx = context.getApplicationContext();
     }
@@ -157,11 +163,6 @@ public class DataManager {
         } else {
             throw new NoInternetException();
         }
-    }
-
-    //TODO part 5
-    public void deleteUser(String userId){
-
     }
 
     /**
@@ -258,8 +259,10 @@ public class DataManager {
             TaskList toRemove = new TaskList();
             for(Task t: tl.getTasks()){
                 if(CurrentUser.getInstance().getCurrentUser().getId()
-                        .equals(t.getTaskRequesterID())){
-                    //toRemove.addTask(t);
+                        .equals(t.getTaskRequesterID()) ||
+                        t.getStatus() == TaskStatus.ASSIGNED ||
+                        t.getStatus() == TaskStatus.DONE){
+                    toRemove.addTask(t);
                 }
             }
             tl.getTasks().removeAll(toRemove.getTasks());
@@ -269,6 +272,15 @@ public class DataManager {
         }
     }
 
+    /**
+     * Given two doubles representing latitude and longitude. The method
+     * queries elastic search and returns all tasks within one lat/lon degree
+     * of the given coordinates.
+     * @param lat Latitude
+     * @param lng Longitude
+     * @return All tasks within one degree of lat, lon
+     * @throws NoInternetException When the device is not connected.
+     */
     public TaskList getTasksByLatLng(Double lat, Double lng) throws
             NoInternetException {
         GetTasksByLatLng command = new GetTasksByLatLng(new LatLng(lat, lng));
@@ -278,8 +290,10 @@ public class DataManager {
             TaskList toRemove = new TaskList();
             for (Task t: nearbyTasks.getTasks()) {
                 if (CurrentUser.getInstance().getCurrentUser().getId().equals(t
-                        .getTaskRequesterID())) {
-                    //toRemove.addTask(t);
+                        .getTaskRequesterID()) ||
+                        t.getStatus() == TaskStatus.ASSIGNED ||
+                        t.getStatus() == TaskStatus.DONE) {
+                    toRemove.addTask(t);
                 }
             }
             nearbyTasks.getTasks().removeAll(toRemove.getTasks());
@@ -373,7 +387,11 @@ public class DataManager {
         }
     }
 
-    //TODO Part 5
+    /**
+     * Deletes the requested bid from the server if it exists
+     * @param bid Bid to be deleted
+     * @throws NoInternetException WHen the device is not connected.
+     */
     public void deleteBid(Bid bid) throws NoInternetException{
         DeleteBidCommand dbc = new DeleteBidCommand(bid);
         if(ConnectivityState.getConnected()){
@@ -383,6 +401,11 @@ public class DataManager {
         }
     }
 
+    /**
+     * Adds the desired notification to the elastic search database
+     * @param notification notification to be added
+     * @throws NoInternetException When the device is not connected
+     */
     public void putNotification(Notification notification)
             throws NoInternetException{
         if(ConnectivityState.getConnected()){
@@ -393,6 +416,12 @@ public class DataManager {
         }
     }
 
+    /**
+     * Retrieved all notifications from elastic search for a given user
+     * @param userId ID of the user whos notifications are requested.
+     * @return All notifications for userId
+     * @throws NoInternetException WHen the device is not connected.
+     */
     public NotificationList getNotifications(String userId)
             throws NoInternetException{
         if(ConnectivityState.getConnected()){
@@ -404,7 +433,11 @@ public class DataManager {
         }
     }
 
-    //TODO
+    /**
+     * Delete the requested Notificaiton from elastic search
+     * @param notificationId ID of the notification to delete
+     * @throws NoInternetException when device is not conntected.
+     */
     public void deleteNotification(String notificationId) throws
             NoInternetException {
         DeleteNotificationCommand deleteNotificationCommand = new DeleteNotificationCommand(notificationId);
@@ -415,31 +448,4 @@ public class DataManager {
             throw new NoInternetException();
         }
     }
-
-    /**
-     * isOnline will check the network info and verify that we are connected
-     *
-     * @param context Application Context
-     * @return true when connected to wifi, false otherwise.
-     *
-    private boolean isOnline(Context context){
-        /*
-        Retrieved on 04-03-2018
-        https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#DetermineType
-         *
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(
-                        Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null
-                && activeNetwork.isConnectedOrConnecting();
-        if(isConnected){
-            return activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET
-                    || activeNetwork.getType() == ConnectivityManager.TYPE_WIFI
-                    || activeNetwork.getType() == ConnectivityManager
-                    .TYPE_MOBILE;
-        }
-        return false;
-    }*/
 }

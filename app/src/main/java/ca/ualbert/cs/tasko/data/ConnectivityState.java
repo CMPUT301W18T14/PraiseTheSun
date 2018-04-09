@@ -18,9 +18,9 @@ package ca.ualbert.cs.tasko.data;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Created by Chase on 4/3/2018.
+ * Simple wrapper class to keep track of connectivity issues.
+ * @author Chase Buhler
  */
-
 public class ConnectivityState {
     private static AtomicBoolean isConnected = new AtomicBoolean(false);
 
