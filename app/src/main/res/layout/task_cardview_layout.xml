@@ -130,12 +130,12 @@
 
             <ImageView
                 android:id="@+id/taskListAdapterStar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_alignTop="@id/searchedTaskUsername"
                 android:layout_toEndOf="@+id/searchedTaskUsername"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"/>
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"/>
 
         </RelativeLayout>
 

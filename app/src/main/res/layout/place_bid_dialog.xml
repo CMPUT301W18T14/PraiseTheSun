@@ -27,11 +27,10 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Place Your Bid"
+        android:text="Place your bid"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textSize="30sp"
-        android:textStyle="bold"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/bidAmount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -60,20 +59,5 @@
         app:layout_constraintTop_toBottomOf="@+id/title"
         tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="41dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:text="LOWEST BID SHOWN HERE"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bidAmount"
-        tools:ignore="HardcodedText" />
 
 </android.support.constraint.ConstraintLayout>

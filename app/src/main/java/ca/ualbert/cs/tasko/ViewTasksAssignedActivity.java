@@ -22,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class ViewTasksAssignedActivity extends RootActivity {
     private DataManager dm = DataManager.getInstance();
     private ViewTasksAssignedActivity context = this;
     private ProgressBar loadingCircle;
+    private ViewStub emptyMessageList;
     private User User;
     private BidList userBids;
     private TaskList assignedTasks;
@@ -62,19 +64,22 @@ public class ViewTasksAssignedActivity extends RootActivity {
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         searchLayoutManager = new LinearLayoutManager(context);
-        loadingCircle = (ProgressBar) findViewById(R.id.taskAssignedProgressBar);
-
-        loadingCircle.setVisibility(View.VISIBLE);
+        final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
+        emptyListMessage.setLayoutResource(R.layout.empty_task_list);
 
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
-
         getTasks();
+
+        if (assignedTasks.getSize() == 0) {
+            emptyListMessage.setVisibility(View.VISIBLE);
+        }
+        else {
+            emptyListMessage.setVisibility(View.GONE);
+        }
 
         tasksAssignedAdapter = new TaskListAdapter(context, assignedTasks, userBids);
         searchRecyclerView.setAdapter(tasksAssignedAdapter);
-
-        loadingCircle.setVisibility(View.GONE);
 
     }
 

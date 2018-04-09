@@ -21,6 +21,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -62,6 +63,8 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         searchLayoutManager = new LinearLayoutManager(context);
         loadingCircle = (ProgressBar) findViewById(R.id.taskIBiddedOnProgressBar);
+        final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
+        emptyListMessage.setLayoutResource(R.layout.empty_task_list);
 
         loadingCircle.setVisibility(View.VISIBLE);
 
@@ -69,6 +72,13 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
 
 
         getTasks();
+
+        if (userBids.getSize() == 0) {
+            emptyListMessage.setVisibility(View.VISIBLE);
+        }
+        else {
+            emptyListMessage.setVisibility(View.GONE);
+        }
 
         tasksBiddedAdapter = new TaskListAdapter(context, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
@@ -90,7 +100,7 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
      * Not include Tasks in which your Bid has been
      */
     private void getTasks(){
-        userBids = new BidList();
+
         try {
             userBids = dm.getUserBids(User.getId());
             biddedTasks = new TaskList();

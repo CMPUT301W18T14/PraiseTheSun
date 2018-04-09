@@ -17,6 +17,7 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -68,7 +69,7 @@ public class ViewMyTasksActivity extends RootActivity {
     }
 
     private void adpaterSetup() {
-
+        //setContentView(R.layout.activity_view_my_tasks);
         myTasksRecyclerView = (RecyclerView) findViewById(R.id.my_tasks_recycler_view);
         myTasksLayoutManager = new LinearLayoutManager(activity);
         myTasksRecyclerView.setLayoutManager(myTasksLayoutManager);
@@ -150,8 +151,8 @@ public class ViewMyTasksActivity extends RootActivity {
                     emptyListMessage.setVisibility(View.GONE);
                 }
 
-                myTasksAdapter = new TaskListAdapter(activity, myTasks);
                 loadingCircle.setVisibility(View.GONE);
+                myTasksAdapter = new TaskListAdapter(activity, myTasks);
                 myTasksRecyclerView.setAdapter(myTasksAdapter);
             }
 

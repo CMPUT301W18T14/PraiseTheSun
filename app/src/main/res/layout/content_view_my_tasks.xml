@@ -67,7 +67,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_tasks_recycler_view"
         android:layout_width="0dp"
