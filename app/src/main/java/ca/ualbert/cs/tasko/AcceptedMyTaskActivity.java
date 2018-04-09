@@ -24,6 +24,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +46,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     private Button repostButton;
     private Button completedButton;
     private Button deleteButton;
+    private CardView buttonCardView;
     private final Context context = this;
     private DataManager dm = DataManager.getInstance();
     private NotificationHandler nh = new NotificationHandler(context);
@@ -65,6 +67,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         assignedTaskName = (TextView) findViewById(R.id.assignedTaskName);
         assignedTaskDescription = (TextView) findViewById(R.id.assignedTaskDescription);
         assignedTaskStatus = (TextView) findViewById(R.id.assignedTaskStatusAndProvider);
+        buttonCardView = (CardView) findViewById(R.id.myAssignedTaskButtonsCard);
 
         Bundle extras = getIntent().getExtras();
 
@@ -83,11 +86,15 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
             imageView.setImageBitmap(assignedCurrentTask.getCoverPhoto());
         }
 
-        setupCompleteButton();
-
-        setupRepostButton();
-
-        setupDeleteButton();
+        if(assignedCurrentTask.getTaskRequesterID().equals(CurrentUser.getInstance().getCurrentUser().getId())) {
+            buttonCardView.setVisibility(View.VISIBLE);
+            setupCompleteButton();
+            setupRepostButton();
+            setupDeleteButton();
+        }
+        else {
+            buttonCardView.setVisibility(View.GONE);
+        }
     }
 
     @SuppressLint("SetTextI18n")

@@ -24,6 +24,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -93,9 +94,17 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
             imageView.setImageBitmap(currentTask.getCoverPhoto());
         }
 
-        setupDeleteButton();
-        setUpEditButton();
-        setupViewBidsButton();
+        if(currentTask.getStatus() == TaskStatus.DONE) {
+            editButton.setVisibility(View.GONE);
+            viewBidsButton.setVisibility(View.GONE);
+        }
+        else {
+            editButton.setVisibility(View.VISIBLE);
+            viewBidsButton.setVisibility(View.VISIBLE);
+            setupDeleteButton();
+            setUpEditButton();
+            setupViewBidsButton();
+        }
     }
 
     private void setupDeleteButton() {
