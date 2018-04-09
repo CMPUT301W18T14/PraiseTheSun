@@ -42,9 +42,10 @@ import ca.ualbert.cs.tasko.Commands.DataCommands.PutTaskCommand;
 import ca.ualbert.cs.tasko.TaskList;
 
 /**
- * Created by Chase on 4/4/2018.
+ * LocalDataManager provides an abstraction and various useful methods to manage
+ * Local Data and pending offline Data Commands.
+ * @author Chase Buhler
  */
-
 public class LocalDataManager {
 
     private static final String TASK_FILE = "userTasks.sav";

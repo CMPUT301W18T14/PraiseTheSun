@@ -22,9 +22,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- * Created by Chase on 4/3/2018.
+ * Receives Broadcasts for CONNECTIVITY_STATE and will set ConnectivityState and
+ * execute any pending commands if there are any from the offline state.
+ * @author Chase Buhler
  */
-
 public class ConnectivityReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {

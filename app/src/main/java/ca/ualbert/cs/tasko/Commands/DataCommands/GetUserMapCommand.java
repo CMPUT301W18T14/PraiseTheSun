@@ -32,9 +32,13 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by Chase on 2018-04-07.
+ * GetUserMapCommand takes in a list of userIDs and queries elastic search to get a List
+ * of user Objects based on those IDS. Then a Map is created from userID to the User object
+ * that has that ID.
+ *
+ * @author Chase Buhler
+ * @see GetCommand;
  */
-
 public class GetUserMapCommand extends GetCommand<Map<String, User>, ArrayList<String>> {
     ArrayList<String> ids;
     public GetUserMapCommand(ArrayList<String> ids){
