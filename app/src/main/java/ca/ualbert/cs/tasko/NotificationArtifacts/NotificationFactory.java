@@ -92,7 +92,7 @@ public class NotificationFactory {
             case TASK_DELETED:
                 BidList deletedBids = dm.getTaskBids(taskID);
                 for(int i = 0; i < deletedBids.getSize(); i++){
-                    message = taskname + "Has been deleted by the poster. Sorry for the inconvience.";
+                    message = taskname + " has been deleted by the poster. Sorry for the inconvience.";
                     notification = new Notification(message, deletedBids.get(i).getUserID(), null, taskID,
                             NotificationType.TASK_DELETED);
                     dm.putNotification(notification);
