@@ -62,11 +62,8 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         searchLayoutManager = new LinearLayoutManager(context);
-        loadingCircle = (ProgressBar) findViewById(R.id.taskIBiddedOnProgressBar);
         final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
-        emptyListMessage.setLayoutResource(R.layout.empty_task_list);
-
-        loadingCircle.setVisibility(View.VISIBLE);
+        emptyListMessage.setLayoutResource(R.layout.empty_bids_i_placed);
 
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
@@ -82,8 +79,6 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
 
         tasksBiddedAdapter = new TaskListAdapter(context, biddedTasks, userBids);
         searchRecyclerView.setAdapter(tasksBiddedAdapter);
-
-        loadingCircle.setVisibility(View.GONE);
 
     }
 

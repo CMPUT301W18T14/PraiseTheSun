@@ -59,7 +59,6 @@ public class SearchResultsActivity extends RootActivity {
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_search_results, null, false);
-        //setContentView(R.layout.activity_search_results);
         drawerLayout.addView(contentView, 0);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);

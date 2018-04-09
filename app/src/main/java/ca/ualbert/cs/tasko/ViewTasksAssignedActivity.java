@@ -65,7 +65,7 @@ public class ViewTasksAssignedActivity extends RootActivity {
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
         searchLayoutManager = new LinearLayoutManager(context);
         final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
-        emptyListMessage.setLayoutResource(R.layout.empty_task_list);
+        emptyListMessage.setLayoutResource(R.layout.empty_assigned_tasks);
 
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
