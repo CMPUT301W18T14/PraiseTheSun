@@ -181,15 +181,32 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                         //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID());
 
-                        //Reject a bid
+                        //Get the current bid
                         Bid currentbid = bids.get(getAdapterPosition());
+
                         bids.removeBid(currentbid);
                         dm.deleteBid(currentbid);
                         notifyDataSetChanged();
+                        if(bids.getSize() == 0) {
+                            thisTask.setStatus(TaskStatus.REQUESTED);
+                            thisTask.setMinBidNull();
+                        }
+                        else {
+                            for (int i = 0; i < bids.getSize(); i++) {
+                                float lowestCheck = bids.get(0).getValue();
+                                if (bids.get(i).getValue() < lowestCheck) {
+                                    //thisTask.setMinBid(bids.get(i).getValue());
+                                    lowestCheck = bids.get(i).getValue();
+                                    thisTask.setMinBid(lowestCheck);
+                                }
+                            }
+                        }
 
+                        //Put
                         dm.putTask(thisTask);
-                         
                         nh.newBidDeletedNotification(thisTask.getId(), currentbid.getUserID());
+
+                        ((ViewBidsOnTaskActivity)thiscontext).finish();
 
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");
