@@ -98,7 +98,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    private void fillInformation() {
+    private void fillInformation() throws NoInternetException{
         //Taken From https://stackoverflow.com/questions/2538787/
         //how-to-display-an-output-of-float-data-with-2-decimal-places-in-java
         //2018-03-26
@@ -117,7 +117,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         for (int i = 0; i < taskBids.getSize(); i++) {
             if (taskBids.get(i).getStatus() == BidStatus.ACCEPTED) {
                 String acceptedBidAmount = df.format(taskBids.get(i).getValue());
-                String minBidUser = taskBids.get(i).getUserID();
+                String minBidUser = dm.getUserById(taskBids.get(i).getUserID()).getUsername();
                 assignedTaskStatus.setText(assignedCurrentTask.getStatus().toString() + ": bid of $" +
                         acceptedBidAmount + " by " + minBidUser);
             }
@@ -126,7 +126,7 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
 
     public void onPhotoClick(View view) {
         Intent viewPhotosIntent = new Intent(this, ViewPhotoActivity.class);
-        viewPhotosIntent.putExtra("photos", assignedCurrentTask);
+        viewPhotosIntent.putExtra("photos", assignedCurrentTask.getByteArrays());
         startActivity(viewPhotosIntent);
     }
 
@@ -135,7 +135,11 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 19) {
             assignedCurrentTask = (Task) data.getSerializableExtra("task");
-            fillInformation();
+            try {
+                fillInformation();
+            } catch (NoInternetException e){
+                e.printStackTrace();
+            }
             ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
             if (assignedCurrentTask.hasPhoto()) {
                 imageView.setImageBitmap(assignedCurrentTask.getCoverPhoto());
