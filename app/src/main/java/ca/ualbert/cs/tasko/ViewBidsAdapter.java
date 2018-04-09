@@ -140,45 +140,31 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                     try {
                         //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID());
-                        if (thisTask.getStatus() == TaskStatus.ASSIGNED) {
-                            //tell the user that task is already assigned
-                            CharSequence toasttext = "Task already Assigned";
-                            Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
-                            toast.show();
 
-                        } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.REJECTED) {
-
-                            //tell the user that the bid is already rejected
-                            CharSequence toasttext = "Bid already Rejected";
-                            Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
-                            toast.show();
-
-                        } else {
-                            //Make all other bids rejected
-                            for(int i = 0; i < bids.getSize(); i++){
-                                bids.get(i).setStatus(BidStatus.REJECTED);
-                            }
-                            //Make accepted bid status accepted
-                            (bids.get(getAdapterPosition())).setStatus(BidStatus.ACCEPTED);
-                            if (bids.get(getAdapterPosition()).getStatus() == BidStatus.ACCEPTED) {
-                                Log.d("Msg", "Bid is accepted");
-                            }
-
-                            //assigns it to the appropriate provider
-                            thisTask.assign((bids.get(getAdapterPosition())).getUserID());
-
-                            //updates the task
-                            dm.putTask(thisTask);
-                            dm.addBid(bids.get(getAdapterPosition()));
-
-                            //send the notification
-                            nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);
-
-                            //task assigned and bid accepted.
-                            //brings the user back to view my task details
-                            ((ViewBidsOnTaskActivity)thiscontext).finish();
-
+                        //Make all other bids rejected
+                        for(int i = 0; i < bids.getSize(); i++){
+                            bids.get(i).setStatus(BidStatus.REJECTED);
                         }
+                        //Make accepted bid status accepted
+                        (bids.get(getAdapterPosition())).setStatus(BidStatus.ACCEPTED);
+                        if (bids.get(getAdapterPosition()).getStatus() == BidStatus.ACCEPTED) {
+                            Log.d("Msg", "Bid is accepted");
+                        }
+
+                        //assigns it to the appropriate provider
+                        thisTask.assign((bids.get(getAdapterPosition())).getUserID());
+
+                        //updates the task
+                        dm.putTask(thisTask);
+                        dm.addBid(bids.get(getAdapterPosition()));
+
+                        //send the notification
+                        nh.newNotification(thisTask.getId(), NotificationType.TASK_PROVIDER_BID_ACCEPTED);
+
+                        //task assigned and bid accepted.
+                        //brings the user back to view my task details
+                        ((ViewBidsOnTaskActivity)thiscontext).finish();
+
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");
                     } catch (NoInternetException e) {
@@ -202,7 +188,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                         notifyDataSetChanged();
                          
                         nh.newBidDeletedNotification(thisTask.getId(), bids.get(getAdapterPosition()).getUserID());
-                        
+
                     } catch (NullPointerException e) {
                         Log.i("Error", "TaskID not properly passed");
                     } catch (NoInternetException e) {
