@@ -97,6 +97,7 @@ public class ViewTaskDetailsActivity extends AppCompatActivity {
         if(currentTask.getStatus() == TaskStatus.DONE) {
             editButton.setVisibility(View.GONE);
             viewBidsButton.setVisibility(View.GONE);
+            setupDeleteButton();
         }
         else {
             editButton.setVisibility(View.VISIBLE);
