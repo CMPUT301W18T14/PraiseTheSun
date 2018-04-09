@@ -66,9 +66,11 @@ public class ViewTaskDetailsTest extends ActivityInstrumentationTestCase2 {
         solo.clickOnText("My tasks");
         solo.assertCurrentActivity("wrong activity", ViewMyTasksActivity.class);
         solo.clickInRecyclerView(1);
+        /*
         solo.assertCurrentActivity("Wrong Activity", ViewTaskDetailsActivity.class);
         solo.clickOnButton("View Bids");
         solo.assertCurrentActivity("Wrong Activity", ViewBidsOnTaskActivity.class);
+        */
     }
 
     private void swipeToRight() {
