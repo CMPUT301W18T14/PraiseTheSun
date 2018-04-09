@@ -75,6 +75,7 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
         }
 
         RecyclerView.Adapter searchAdapter = new ViewBidsAdapter(activity, bidsOnTask, getBidUsers());
+
         myBidList.setAdapter(searchAdapter);
         
     }
