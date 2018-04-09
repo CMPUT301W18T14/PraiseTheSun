@@ -21,6 +21,7 @@ import ca.ualbert.cs.tasko.NotificationArtifacts.Notification;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.MockDataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 
@@ -48,14 +49,9 @@ public class NotificationTest extends ActivityInstrumentationTestCase2 {
         User provider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
 
-        if (dm.getUserByUsername("StevieP") == null) {
-            dm.putUser(requestor);
-            dm.putUser(provider);
-        }
+        requestorID = MockDataManager.getInstance().getTaskRequester().getId();
 
-        requestorID = dm.getUserByUsername("StevieP").getId();
-
-        providerID = dm.getUserByUsername("Stevoo").getId();
+        providerID = MockDataManager.getInstance().getTaskProvider().getId();
 
         task = new Task(requestorID, "TestTask for Notifications", "Notifications");
         task.setId("TestTaskID");

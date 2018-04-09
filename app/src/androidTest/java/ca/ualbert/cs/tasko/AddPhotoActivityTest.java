@@ -22,6 +22,8 @@ import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
+import ca.ualbert.cs.tasko.data.MockDataManager;
+
 /**
  * Testing class for the activity AddPhotoActivity
  *
@@ -39,6 +41,7 @@ public class AddPhotoActivityTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+        CurrentUser.getInstance().setCurrentUser(MockDataManager.getInstance().getUser());
     }
 
     public void testUploadPhotoButton() {

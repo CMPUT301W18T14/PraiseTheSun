@@ -180,7 +180,7 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
 
     private void sleep(){
         try{
-            Thread.sleep(2000);
+            Thread.sleep(4000);
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
