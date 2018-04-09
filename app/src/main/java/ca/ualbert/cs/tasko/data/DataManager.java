@@ -261,7 +261,7 @@ public class DataManager {
                 if(CurrentUser.getInstance().getCurrentUser().getId()
                         .equals(t.getTaskRequesterID()) ||
                         t.getStatus() == TaskStatus.ASSIGNED ||
-                        t.getStatus() == TaskStatus.BIDDED){
+                        t.getStatus() == TaskStatus.DONE){
                     toRemove.addTask(t);
                 }
             }
@@ -290,7 +290,9 @@ public class DataManager {
             TaskList toRemove = new TaskList();
             for (Task t: nearbyTasks.getTasks()) {
                 if (CurrentUser.getInstance().getCurrentUser().getId().equals(t
-                        .getTaskRequesterID())) {
+                        .getTaskRequesterID()) ||
+                        t.getStatus() == TaskStatus.ASSIGNED ||
+                        t.getStatus() == TaskStatus.DONE) {
                     toRemove.addTask(t);
                 }
             }
