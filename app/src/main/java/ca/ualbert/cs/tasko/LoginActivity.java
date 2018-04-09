@@ -21,7 +21,6 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,8 +53,8 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String FILENAME = "nfile.sav";
-    private DataManager DM = DataManager.getInstance();
-    private CurrentUser CU = CurrentUser.getInstance();
+    private DataManager dm = DataManager.getInstance();
+    private CurrentUser cu = CurrentUser.getInstance();
 
     private LoginActivity activity = this;
     private EditText usernameText;
@@ -94,14 +93,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 User retrievedUser = null;
                 try {
-                    retrievedUser = DM.getUserByUsername(usernameText.getText().toString()
+                    retrievedUser = dm.getUserByUsername(usernameText.getText().toString()
                     );
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }
 
                 if (retrievedUser.getUsername() != null){
-                    CU.setCurrentUser(retrievedUser);
+                    cu.setCurrentUser(retrievedUser);
                     try {
                         FileOutputStream fos = openFileOutput(FILENAME,
                                 Context.MODE_PRIVATE);

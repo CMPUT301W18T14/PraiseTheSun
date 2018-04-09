@@ -105,7 +105,7 @@ public class ViewTasksIBiddedOnActivity extends RootActivity {
             userBids = dm.getUserBids(User.getId());
             biddedTasks = new TaskList();
             for (int i = 0; i < userBids.getSize(); i++)
-                if (userBids.get(i).getStatus()!= BidStatus.REJECTED) {
+                if (userBids.get(i).getStatus()== BidStatus.PENDING) {
                     Task task = dm.getTask(userBids.get(i).getTaskID());
                     if(task == null)
                         continue;

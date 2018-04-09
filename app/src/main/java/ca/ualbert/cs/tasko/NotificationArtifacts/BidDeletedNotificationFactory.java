@@ -35,11 +35,6 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 public class BidDeletedNotificationFactory {
 
     DataManager dm = DataManager.getInstance();
-    Context context;
-
-    public void setContext(Context context){
-        this.context = context;
-    }
 
     public void createNotification(String taskID, String recipientID) throws NoInternetException {
 

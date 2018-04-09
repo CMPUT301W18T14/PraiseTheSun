@@ -1,10 +1,6 @@
 package ca.ualbert.cs.tasko;
 
-
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -20,16 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import ca.ualbert.cs.tasko.data.ConnectivityReceiver;
-import ca.ualbert.cs.tasko.data.ConnectivityState;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -37,7 +24,6 @@ public class MainActivity extends RootActivity {
 
     private MainActivity activity = this;
     private DataManager dm = DataManager.getInstance();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,27 +39,16 @@ public class MainActivity extends RootActivity {
         * http://shockingandroid.blogspot.ca/2017/04/navigation-drawer-in-every-activity.html
         * accessed 2018-03-11
         * */
-
-        //FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        //NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        //navigationView.getMenu().getItem(0).setChecked(true);
-        //Referenced: https://www.c-sharpcorner.com/article/navigation-drawer-activity-in-android/
-        //on 03-17-2018
-
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_main, null, false);
         drawerLayout.addView(contentView, 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-
-
         setSupportActionBar(toolbar);
         Button postTaskButton = (Button)findViewById(R.id.postTaskButton);
         Button searchTaskButton = (Button)findViewById(R.id.SearchButton);
         final EditText searchQuery = (EditText)findViewById(R.id.searchQuery);
-
 
         // Go to the AddTaskActivity to create a new task
         postTaskButton.setOnClickListener(new View.OnClickListener() {

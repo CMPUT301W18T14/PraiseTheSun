@@ -15,8 +15,6 @@
 
 package ca.ualbert.cs.tasko;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
