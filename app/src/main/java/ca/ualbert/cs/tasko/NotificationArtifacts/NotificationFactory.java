@@ -49,6 +49,8 @@ public class NotificationFactory {
         String message;
         String taskname = task.getTaskName();
         String recipientID;
+        User taskprovider = dm.getUserById(task.getTaskProviderID());
+        User taskrequestor = dm.getUserById(task.getTaskRequesterID());
 
 
         switch (type){
@@ -67,9 +69,6 @@ public class NotificationFactory {
                 dm.putNotification(notification);
                 break;
             case RATING:
-                User taskprovider = dm.getUserById(task.getTaskProviderID());
-                User taskrequestor = dm.getUserById(task.getTaskRequesterID());
-
                 message = taskprovider.getUsername() + " has completed " + taskname
                         + ". Please rate their services";
                 notification = new Notification(message, taskrequestor.getId(), taskprovider.getId(), taskID, NotificationType.RATING);
@@ -78,6 +77,12 @@ public class NotificationFactory {
                 message = "You have completed " + taskname + ". Please rate your experience with "
                         + taskrequestor.getUsername();
                 notification = new Notification(message, taskprovider.getId(), taskrequestor.getId(), taskID, NotificationType.RATING);
+                dm.putNotification(notification);
+                break;
+            case INCOMPLETE_TASK_RATING:
+                message = "You reposted" + taskname + " assigned to" + taskprovider.getUsername() +
+                        ". Would you like to provide a rating";
+                notification = new Notification(message, taskrequestor.getId(), taskprovider.getId(), taskID, NotificationType.RATING);
                 dm.putNotification(notification);
                 break;
             case TASK_REQUESTER_REPOSTED_TASK:
