@@ -185,6 +185,7 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                         Bid currentbid = bids.get(getAdapterPosition());
                         bids.removeBid(currentbid);
                         dm.deleteBid(currentbid);
+                        dm.putTask(thisTask);
                         notifyDataSetChanged();
                          
                         nh.newBidDeletedNotification(thisTask.getId(), bids.get(getAdapterPosition()).getUserID());
