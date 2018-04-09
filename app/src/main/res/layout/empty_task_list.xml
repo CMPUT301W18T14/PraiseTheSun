@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="You have no tasks that have this status."
+        android:textColor="@color/colorPrimary"
         android:textAlignment="center"
         android:textSize="50sp"
         tools:ignore="HardcodedText" />

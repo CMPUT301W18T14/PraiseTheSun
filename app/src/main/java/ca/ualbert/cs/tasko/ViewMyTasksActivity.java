@@ -50,6 +50,7 @@ public class ViewMyTasksActivity extends RootActivity {
     private ProgressBar loadingCircle;
     private DataManager dm = DataManager.getInstance();
     private ViewMyTasksActivity activity = this;
+    private ViewStub emptyListMessage;
 
     /**
      * Called when the activity is created, fills the recyclerview  with the user's tasks they
@@ -64,6 +65,10 @@ public class ViewMyTasksActivity extends RootActivity {
         //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_view_my_tasks, null, false);
         drawerLayout.addView(contentView, 0);
+
+        emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
+        emptyListMessage.setLayoutResource(R.layout.empty_task_list);
+
         adpaterSetup();
     }
 
@@ -120,9 +125,6 @@ public class ViewMyTasksActivity extends RootActivity {
                 R.array.filter_options_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filterSpinner.setAdapter(adapter);
-
-        final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
-        emptyListMessage.setLayoutResource(R.layout.empty_task_list);
 
         /*
          * When the filter is selected, the recycle view displays only the users tasks that

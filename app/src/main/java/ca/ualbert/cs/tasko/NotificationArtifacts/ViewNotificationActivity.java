@@ -22,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -66,6 +67,8 @@ public class ViewNotificationActivity extends RootActivity {
         View contentView = inflater.inflate
                 (R.layout.activity_view_notification, null, false);
         drawerLayout.addView(contentView, 0);
+        final ViewStub emptyListMessage = (ViewStub) findViewById(R.id.emptyListMessage);
+        emptyListMessage.setLayoutResource(R.layout.empty_notifications);
 
         RecyclerView notificationsRecyclerView = (RecyclerView)
                 findViewById(R.id.generic_recyclerview);
@@ -87,12 +90,24 @@ public class ViewNotificationActivity extends RootActivity {
                             }
                         }
                     }
+
+            Thread.sleep(2000);
+
             newNotifications.addAll(
                     dm.getNotifications(cu.getCurrentUser().getId()).getNotifications());
 
         } catch (NoInternetException e) {
             Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT)
                     .show();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (newNotifications.getSize() == 0) {
+            emptyListMessage.setVisibility(View.VISIBLE);
+        }
+        else {
+            emptyListMessage.setVisibility(View.GONE);
         }
 
         RecyclerView.Adapter notificationsAdapter = new
