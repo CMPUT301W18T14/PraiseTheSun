@@ -44,7 +44,6 @@ public class SearchResultsActivity extends RootActivity {
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter searchAdapter;
     private DataManager dm = DataManager.getInstance();
-    private ProgressBar loadingCircle;
     private SearchResultsActivity context = this;
     private TaskList foundtasks;
 
@@ -59,7 +58,8 @@ public class SearchResultsActivity extends RootActivity {
         super.onCreate(savedInstanceState);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity_view_tasks_bidded_on, null, false);
+        View contentView = inflater.inflate(R.layout.activity_search_results, null, false);
+        //setContentView(R.layout.activity_search_results);
         drawerLayout.addView(contentView, 0);
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
@@ -67,16 +67,11 @@ public class SearchResultsActivity extends RootActivity {
         RecyclerView.LayoutManager searchLayoutManager = new LinearLayoutManager(context);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
-        loadingCircle = (ProgressBar) findViewById(R.id.taskIBiddedOnProgressBar);
-
-        loadingCircle.setVisibility(View.VISIBLE);
-
         searchForTasks();
 
         //Initialize the Adapter and RecyclerView
         searchAdapter = new TaskListAdapter(context, foundtasks, getTaskUsers());
         searchRecyclerView.setAdapter(searchAdapter);
-
     }
 
     @Override
@@ -86,7 +81,6 @@ public class SearchResultsActivity extends RootActivity {
         searchAdapter = new TaskListAdapter(context, foundtasks, getTaskUsers());
         searchRecyclerView.setAdapter(searchAdapter);
 
-        loadingCircle.setVisibility(View.GONE);
     }
 
     private void searchForTasks() {

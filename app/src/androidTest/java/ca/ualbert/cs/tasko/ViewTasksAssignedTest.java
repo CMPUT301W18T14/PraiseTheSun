@@ -33,6 +33,8 @@ public class ViewTasksAssignedTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
     private DataManager dm = DataManager.getInstance();
+    private Task task1;
+    private Bid bid;
     private User dmuser;
 
     public ViewTasksAssignedTest() {
@@ -43,8 +45,28 @@ public class ViewTasksAssignedTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
 
-        dmuser = dm.getUserByUsername("123456789");
+        User user1 = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+        User user2 = new User("aet", "Alden", "111-222-4444", "aet@ualberta.ca");
+
+        try {
+            dm.putUser(user1);
+            dm.putUser(user2);
+        }catch(IllegalArgumentException e){
+        }
+
+        dmuser = dm.getUserByUsername("rromano");
         CurrentUser.getInstance().setCurrentUser(dmuser);
+
+        task1 = new Task(user2.getId(), "TestTask", "Help me test code");
+        dm.putTask(task1);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        bid = new Bid(dmuser.getId(), 11, task1.getId());
+        bid.setStatus(BidStatus.ACCEPTED);
+        dm.addBid(bid);
     }
 
         /**

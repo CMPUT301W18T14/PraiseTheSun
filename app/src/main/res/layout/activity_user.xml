@@ -24,6 +24,10 @@
         android:id="@+id/UserProfileUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:cardCornerRadius="7dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
         android:layout_marginTop="72dp"
         android:elevation="@dimen/cardview_default_elevation"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,6 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:orientation="vertical">
 
             <ImageView
@@ -46,9 +52,9 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/UserActivityUsername"
                 app:layout_constraintStart_toEndOf="@+id/UserActivityUsername"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/UserActivityUsername" />
 
             <TextView
                 android:id="@+id/UserActivityUsername"
@@ -61,9 +67,9 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/full_name"
                 android:textAlignment="center"
+                android:textColor="@color/colorTextWhite"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="@color/whiteAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.496"
@@ -80,6 +86,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
         android:elevation="@dimen/cardview_default_elevation"
+        app:cardCornerRadius="7dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

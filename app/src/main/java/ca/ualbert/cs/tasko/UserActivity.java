@@ -22,13 +22,24 @@ import android.provider.DocumentsContract;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.w3c.dom.Text;
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
  * UserActivity shows the user's information. Accessed from the menu
@@ -45,6 +56,8 @@ public class UserActivity extends RootActivity {
     private Button myAssignments;
     private Button editProfile;
     private UserActivity activity = this;
+    private static final String FILENAME = "nfile.sav";
+    User cUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,28 +67,61 @@ public class UserActivity extends RootActivity {
         View contentView = inflater.inflate(R.layout.activity_user, null, false);
         drawerLayout.addView(contentView, 0);
 
-        User currentUser = CurrentUser.getInstance().getCurrentUser();
+        try {
+            User temp = CurrentUser.getInstance().getCurrentUser();
+            cUser = DataManager.getInstance().getUserById(temp.getId());
+            CurrentUser.getInstance().setCurrentUser(cUser);
+            try {
+                FileOutputStream fos = openFileOutput(FILENAME,
+                        Context.MODE_PRIVATE);
+                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+                Gson gson = new Gson();
+                gson.toJson(cUser, out);
+                out.flush();
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (NoInternetException e) {
+            e.printStackTrace();
+        }
+
+
 
         username = (TextView)findViewById(R.id.UserActivityUsername);
         email = (TextView) findViewById(R.id.UserActivityUserEmail);
         phone = (TextView) findViewById(R.id.UserActivityPhone);
         star = (ImageView) findViewById(R.id.userActivityStar);
 
-        username.setText(currentUser.getName());
-        email.setText(currentUser.getEmail());
-        phone.setText(currentUser.getPhoneNumber());
+        username.setText(cUser.getName());
+        email.setText(cUser.getEmail());
+        phone.setText(cUser.getPhoneNumber());
 
-        if(currentUser.isPrefered()){
-            star.setImageResource(R.drawable.ic_star);
-        }
+
 
         myTasks = (Button) findViewById(R.id.UserActivityMyTasksButton);
         myAssignments = (Button) findViewById(R.id.UserActivityMyAssignmentButton);
         editProfile = (Button) findViewById(R.id.UserActivityEditProfileButton);
-
+        if(cUser.isPrefered()){
+            star.setImageResource(R.drawable.ic_star);
+            Log.i("here ", "is a star " + cUser.isPrefered());
+        }
+        Log.i("here ", "is a star " + cUser.isPrefered());
         myTasksButton();
         myAssignmentsButton();
         editProfileButton();
+    }
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+
+        if(cUser.isPrefered()){
+            star.setImageResource(R.drawable.ic_star);
+            Log.i("here ", "is a star " + cUser.isPrefered());
+        }
+        Log.i("here ", "is a star " + cUser.isPrefered());
     }
 
     public void myTasksButton(){
