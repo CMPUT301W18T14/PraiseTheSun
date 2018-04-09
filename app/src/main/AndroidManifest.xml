@@ -40,7 +40,7 @@
         <activity android:name=".CreateAccountActivity" />
         <activity
             android:name=".AddTaskActivity"
-            android:label="Add task"
+            android:label="Add Task"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".NavigatorActivity"
@@ -51,21 +51,21 @@
             android:label="@string/title_activity_root"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UserActivity"
-                        android:label="My profile"/>
+                        android:label="Profile"/>
         <activity android:name=".UserProfileActivity"
-                  android:label="Edit profile"/>
+                  android:label="Edit Profile"/>
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".ViewMyTasksActivity"
-            android:label="My tasks"
+            android:label="Tasks"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ViewTaskDetailsActivity"
-            android:label="Task details"
+            android:label="Task Details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ViewSearchedTaskDetailsActivity"
-            android:label="Task details"
+            android:label="Task Details"
             android:parentActivityName=".SearchResultsActivity"
             android:theme="@style/AppTheme" />
         <activity
@@ -73,20 +73,20 @@
             android:parentActivityName=".AddTaskActivity" />
         <activity
             android:name=".SearchResultsActivity"
-            android:label="Search results"
+            android:label="Search Results"
             android:theme="@style/AppTheme" />
         <!--<activity android:name=".MainActivity" /> -->
 
         <activity android:name=".ViewBidsOnTaskActivity"
-                  android:label="Accepted tasks"/>
+                  android:label="Accepted Tasks"/>
         <activity android:name=".NotificationArtifacts.ViewNotificationActivity"
-            android:label="My notifications"
+            android:label="Notifications"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".LogOutActivity" />
         <activity android:name=".ViewPhotoActivity"
-            android:label="View photos"/>
+            android:label="View Photos"/>
         <activity android:name=".ViewTasksIBiddedOnActivity"
-            android:label="Tasks I'm watching"/>
+            android:label="Bids"/>
         <service android:name=".NotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity android:name=".ViewTasksAssignedActivity"
@@ -98,7 +98,7 @@
 
         <activity
             android:name=".AcceptedMyTaskActivity"
-            android:label="Accepted tasks"
+            android:label="Accepted Tasks"
             android:theme="@style/AppTheme" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -122,7 +122,7 @@
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity android:name=".RatingActivity"/>
         <activity android:name=".OtherUsersProfileActivity"
-                  android:label="User profile"/>
+                  android:label="User Profile"/>
 
     </application>
 
