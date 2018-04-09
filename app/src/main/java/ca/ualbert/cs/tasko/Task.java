@@ -17,7 +17,6 @@ package ca.ualbert.cs.tasko;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -335,16 +334,7 @@ public class Task implements Serializable {
         LatLng geolocation = new LatLng(lat, lng);
         return geolocation;
     }
-/*
-    /**
-     * Method which sets the geolocation of this task
-     *
-     * @param geolocation the location of this task
-     */
-/*    public void setGeolocation(Location geolocation) {
-        this.geolocation = geolocation;
-    }
-*/
+
     /**
      * Method which returns the userID of the task requester
      *
