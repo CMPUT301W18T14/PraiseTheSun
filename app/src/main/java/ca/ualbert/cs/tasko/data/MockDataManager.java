@@ -125,28 +125,4 @@ public class MockDataManager {
     public Task getTask() {
         return task1;
     }
-
-    public Task getBiddedTask() {
-        return task1;
-    }
-
-    public Task getAssignedTask() {
-        return task2;
-    }
-
-    public Task getRequestedTask() {
-        return task3;
-    }
-
-    public Task getDoneTask() {
-        return task4;
-    }
-
-    public TaskList getTaskList() {
-        return taskList;
-    }
-
-    public BidList getBidList() {
-        return bidList;
-    }
 }
