@@ -38,6 +38,14 @@ import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
+/**
+ * AcceptedMyTaskActivity takes the task information from the task selected from the recyclerview
+ * in ViewMyTasksActivity and displays that information and gives: the Task Requester the option
+ * to complete the task, repost the task, or delete the task; the Task Provider a view of the
+ * task details.
+ *
+ * @author ryandromano
+ */
 public class AcceptedMyTaskActivity extends AppCompatActivity {
     private TextView assignedTaskDescription;
     private TextView assignedTaskName;
