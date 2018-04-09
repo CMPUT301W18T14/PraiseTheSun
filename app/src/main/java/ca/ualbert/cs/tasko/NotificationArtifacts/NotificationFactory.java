@@ -35,11 +35,6 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
 public class NotificationFactory {
 
     private DataManager dm = DataManager.getInstance();
-    private Context context;
-
-    public void setContext(Context context){
-        this.context = context;
-    }
 
     public void createNotification(String taskID, NotificationType type) throws NoInternetException{
 

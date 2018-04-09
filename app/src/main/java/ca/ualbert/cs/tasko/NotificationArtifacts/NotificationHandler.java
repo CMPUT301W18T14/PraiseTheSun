@@ -41,10 +41,8 @@ public class NotificationHandler{
      */
     public NotificationHandler(Context context) {
         this.NotificationFactory = new NotificationFactory();
-        NotificationFactory.setContext(context);
 
         this.BidDeletedFactory = new BidDeletedNotificationFactory();
-        BidDeletedFactory.setContext(context);
     }
 
 

@@ -34,7 +34,6 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  * @author imtihan
  * @see DataManager
  *
- *
  */
 public class OtherUsersProfileActivity extends RootActivity {
 
@@ -48,7 +47,6 @@ public class OtherUsersProfileActivity extends RootActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_other_users_profile, null, false);
         drawerLayout.addView(contentView, 0);
 

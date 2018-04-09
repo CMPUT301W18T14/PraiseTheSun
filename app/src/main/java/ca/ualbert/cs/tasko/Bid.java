@@ -31,7 +31,6 @@ public class Bid implements Comparable<Bid>{
     private String TaskID;
     private String UserID;
     private float value;
-    //Alden's addition
     private BidStatus status;
 
     @JestId
@@ -47,11 +46,9 @@ public class Bid implements Comparable<Bid>{
         this.UserID = UserID;
         this.TaskID = TaskID;
         this.value = value;
-        //Alden's addition
         this.status = BidStatus.PENDING;
     }
 
-    //Alden's addition
     /**
      * Method which sets the status for this Bid.
      *
@@ -61,7 +58,6 @@ public class Bid implements Comparable<Bid>{
         this.status = status;
     }
 
-    //Alden's addition
     /**
      * Method which returns the status of this bid.
      *
