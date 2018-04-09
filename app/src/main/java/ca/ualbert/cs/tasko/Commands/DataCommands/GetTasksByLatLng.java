@@ -30,19 +30,36 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by Thomas on 2018-04-03.
+ * An extension of the GetCommand class. When a GetTasksByLatLng is executed,
+ * it will attempt to query our database using Elasticsearch in order to
+ * retrieve all tasks who's location are within 1 degree of both the latitude
+ * and longitude of a given latitude and longitude.
+ *
+ * @see GetCommand
+ * @author tlafranc
  */
 
 public class GetTasksByLatLng extends GetCommand<TaskList, LatLng> {
     private Double lat;
     private Double lng;
 
+    /**
+     * Constructor for the GetTasksByLatLng. Requires the parameter lat and lng
+     * in order to be initialized.
+     *
+     * @param latLng A LatLng representing the latitude and longitude of a task
+     */
     public GetTasksByLatLng(LatLng latLng) {
         super(latLng, "GetTasksByLatLng");
         this.lat = latLng.latitude;
         this.lng = latLng.longitude;
     }
 
+    /**
+     * execute is a function that once called, will try to query our
+     * database using Elasticsearch in order to retrieve all tasks within 1 degree
+     * of both the latitude and longitude of a given latitude and longitude.
+     */
     @Override
     public void execute() {
         /*
@@ -82,8 +99,23 @@ public class GetTasksByLatLng extends GetCommand<TaskList, LatLng> {
         }
     }
 
+    /**
+     * An extension of the AsyncTask class. This class is utilized to
+     * perform the searching and retrieval of a database using Elasticsearch.
+     */
     private static class GetTaskListTask extends AsyncTask<String, Void, TaskList> {
 
+        /**
+         * doInBackground is the main part of the AsyncTask running on the
+         * separate thread. It will build a query, execute the query and get
+         * the results.
+         *
+         * @param searchTerms the query to be executed
+         * @return A TaskList with all tasks within 1 degree
+         * of both the latitude and longitude of the latitude and
+         * longitude of a given task. Or an empty TaskList if there
+         * are no such tasks
+         */
         @Override
         protected TaskList doInBackground(String... searchTerms) {
             TaskList tasks = new TaskList();

@@ -22,6 +22,7 @@ import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationList;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.MockDataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
@@ -51,6 +52,9 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
     public void setUp() throws NoInternetException {
 
         context = getActivity().getApplicationContext();
+        dm.init(context);
+        User loggedUser = MockDataManager.getInstance().getUser();
+        CurrentUser.getInstance().setCurrentUser(loggedUser);
 
         nlp = new NotificationList();
         nlr = new NotificationList();
@@ -62,14 +66,15 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
         User testprovider = new User("Stevoo", "Stephen", "780-454-1054",
                 "stevooo@ualberta.ca");
 
-        dm.putUser(requestor);
-        dm.putUser(provider);
+        dm.putUser(testrequestor);
+        dm.putUser(testprovider);
 
         requestor = dm.getUserByUsername("StevieP");
 
         provider = dm.getUserByUsername("Stevoo");
 
         task = new Task(requestor.getId(), "TestTask for Notifications", "Notifications");
+        task.setTaskRequesterUsername(requestor.getUsername());
         dm.putTask(task);
 
         taskID = task.getId();
@@ -175,7 +180,7 @@ public class NotificationsTests extends ActivityInstrumentationTestCase2 {
 
     private void sleep(){
         try{
-            Thread.sleep(2000);
+            Thread.sleep(5000);
         }catch (InterruptedException e) {
             e.printStackTrace();
         }

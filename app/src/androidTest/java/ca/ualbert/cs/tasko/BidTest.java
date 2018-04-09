@@ -18,7 +18,9 @@ package ca.ualbert.cs.tasko;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
- * Created by Chase on 2/23/2018.
+ * Testing class for the entity class Bid
+ *
+ * @see Bid
  */
 public class BidTest extends ActivityInstrumentationTestCase2 {
     public BidTest(){

@@ -20,9 +20,10 @@ import android.test.ActivityInstrumentationTestCase2;
 import java.util.ArrayList;
 
 /**
- * Created by chase on 2/23/2018.
+ * Testing class for the Entity class BidList
+ *
+ * @see BidList
  */
-
 public class BidListTest extends ActivityInstrumentationTestCase2 {
 
     public BidListTest(){

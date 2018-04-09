@@ -20,8 +20,11 @@ import android.test.ActivityInstrumentationTestCase2;
 /**
  * Created by ryan on 2018-02-24.
  * Edited by chase on 2018-03-05
+ *
+ * Testing class for the entity class User
+ *
+ * @see User
  */
-
 public class UserTest extends ActivityInstrumentationTestCase2 {
     public UserTest(){
         super(MainActivity.class);

@@ -74,7 +74,7 @@ public class RootActivityTest extends ActivityInstrumentationTestCase2 {
         //solo.clickOnActionBarItem(R.id.my_bids);
         solo.clickOnText("My bids");
         try {
-            Thread.sleep(60000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -87,7 +87,7 @@ public class RootActivityTest extends ActivityInstrumentationTestCase2 {
         solo.setNavigationDrawer(Solo.OPENED);
         //solo.clickOnActionBarItem(R.id.view_profile);
         solo.clickOnText("View profile");
-        solo.assertCurrentActivity("wrong activity", UserProfileActivity.class);
+        solo.assertCurrentActivity("wrong activity", UserActivity.class);
     }
 
     public void tearDown() throws Exception{

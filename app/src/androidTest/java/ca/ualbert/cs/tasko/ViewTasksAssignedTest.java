@@ -57,7 +57,7 @@ public class ViewTasksAssignedTest extends ActivityInstrumentationTestCase2 {
         dmuser = dm.getUserByUsername("rromano");
         CurrentUser.getInstance().setCurrentUser(dmuser);
 
-        task1= new Task(user2.getId(), "TestTask", "Help me test code");
+        task1 = new Task(user2.getId(), "TestTask", "Help me test code");
         dm.putTask(task1);
         try {
             Thread.sleep(2000);
