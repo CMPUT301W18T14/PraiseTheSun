@@ -38,7 +38,7 @@ import ca.ualbert.cs.tasko.data.NoInternetException;
  *
  * @author ryandromano
  */
-public class ViewMyTasksActivity extends AppCompatActivity {
+public class ViewMyTasksActivity extends RootActivity {
     private RecyclerView myTasksRecyclerView;
     private RecyclerView.Adapter myTasksAdapter;
     private RecyclerView.LayoutManager myTasksLayoutManager;
@@ -55,6 +55,10 @@ public class ViewMyTasksActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_view_my_tasks, null, false);
+        drawerLayout.addView(contentView, 0);
         adpaterSetup();
     }
 
@@ -65,11 +69,7 @@ public class ViewMyTasksActivity extends AppCompatActivity {
     }
 
     private void adpaterSetup() {
-        //LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //inflate your activity layout here!
-        //View contentView = inflater.inflate(R.layout.activity_view_my_tasks, null, false);
-        //drawerLayout.addView(contentView, 0);
-
+        //setContentView(R.layout.activity_view_my_tasks);
         myTasksRecyclerView = (RecyclerView) findViewById(R.id.my_tasks_recycler_view);
         myTasksLayoutManager = new LinearLayoutManager(activity);
         myTasksRecyclerView.setLayoutManager(myTasksLayoutManager);
@@ -151,8 +151,8 @@ public class ViewMyTasksActivity extends AppCompatActivity {
                     emptyListMessage.setVisibility(View.GONE);
                 }
 
-                myTasksAdapter = new TaskListAdapter(activity, myTasks);
                 loadingCircle.setVisibility(View.GONE);
+                myTasksAdapter = new TaskListAdapter(activity, myTasks);
                 myTasksRecyclerView.setAdapter(myTasksAdapter);
             }
 

@@ -39,6 +39,8 @@ import android.text.method.DigitsKeyListener;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -62,6 +64,7 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
 
     private DataManager dm = DataManager.getInstance();
     private Task currentTask;
+    private BidList currentBidList;
     private final Context context = this;
     private User requesterUser;
     private LatLng latLng;
@@ -87,17 +90,12 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
         try {
             String taskID = extras.getString("TaskID");
             currentTask = dm.getTask(taskID);
+            currentBidList = dm.getTaskBids(currentTask.getId());
             requesterUser = dm.getUserById(currentTask.getTaskRequesterID()
             );
-            try{
-                BidList bids = dm.getTaskBids(currentTask.getId());
-                bid = bids.getMinBid();
-                if(bid != null){
-                    lowbid = bid.getValue();
-
-                }
-            } catch (NoInternetException e){
-                Toast.makeText(getApplicationContext(),"No connection", Toast.LENGTH_SHORT).show();
+            bid = currentBidList.getMinBid();
+            if(bid != null){
+                lowbid = bid.getValue();
             }
             populateFields();
         }catch(NullPointerException e){
@@ -229,11 +227,12 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                         getApplicationContext());
                 new Thread(placeBid).start();
             }
-            else {
+            else if (currentBidList.getBid(CurrentUser.getInstance().getCurrentUser().getId()) != null) {
                 //Place/Replace previous bid
                 PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
                         getApplicationContext());
-                new Thread(placeBid).start();
+                //new Thread(placeBid).start();
+                placeBid.run();
                 BidList taskBids;
                 float lowestBidValue;
                 //Go through all bids on task and find the lowest bid and set it to the minbid value
@@ -247,12 +246,16 @@ public class ViewSearchedTaskDetailsActivity extends RootActivity {
                     }
                     lowbid = lowestBidValue;
                     currentTask.setMinBid(lowestBidValue);
-                    populateFields();
                     dm.putTask(currentTask);
-
+                    populateFields();
                 } catch (NoInternetException e) {
                     e.printStackTrace();
                 }
+            }
+            else {
+                PlaceBidRunnable placeBid = new PlaceBidRunnable(value, currentTask,
+                        getApplicationContext());
+                new Thread(placeBid).start();
             }
 
         } else {
