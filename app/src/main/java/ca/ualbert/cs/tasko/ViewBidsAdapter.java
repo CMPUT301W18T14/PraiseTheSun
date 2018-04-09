@@ -23,8 +23,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Map;
 
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationHandler;
 import ca.ualbert.cs.tasko.NotificationArtifacts.NotificationType;
@@ -42,21 +45,25 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     private LayoutInflater inflater;
     private BidList bids;
     private Context thiscontext;
+    private Map<String, User> userMap;
     private NotificationHandler nh;
 
     private DataManager dm = DataManager.getInstance();
 
     /**
      * Constructor for the Adapter, Takes in the context which designates the activity that will use
-     * the adapter and a BidList which represents the Bids on a Tasks that will be displayed.
+     * the adapter and a BidList which represents the Bids on a Tasks that will be displayed as well
+     * as a Map that is used to match Users with their Ids in order to get preferred users.
      * @param context The context for the activity using the adapter.
      * @param dmbids The BidList represnting the Bids on a Tasks to be displayed, from the DataManager.
+     * @param dmMap A map that gets users form their Id, can be used to quickly get preferred users.
      */
-    public ViewBidsAdapter(Context context, BidList dmbids){
+    public ViewBidsAdapter(Context context, BidList dmbids, Map dmMap){
         thiscontext = context;
         nh = new NotificationHandler(thiscontext);
         inflater = LayoutInflater.from(context);
         bids = dmbids;
+        userMap = dmMap;
     }
 
     /**
@@ -83,19 +90,15 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(BidViewHolder holder, int position) {
-        Bid currentTask = bids.get(position);
-        DataManager dm = DataManager.getInstance();
-        User biduser = new User();
-        
-        try {
-            biduser = dm.getUserById(currentTask.getUserID());
-        } catch (NoInternetException e) {
-            e.printStackTrace();
+        Bid currentBid = bids.get(position);
+
+        holder.bidTitle.setText("Posted by: " + userMap.get(currentBid.getUserID()).getUsername());
+
+        if(userMap.get(currentBid.getUserID()).isPrefered()){
+            holder.star.setImageResource(R.drawable.ic_star);
         }
 
-        holder.bidTitle.setText("Posted by: " + biduser.getUsername());
-
-        String myBid = Float.toString(currentTask.getValue());
+        String myBid = Float.toString(currentBid.getValue());
         holder.Bid.setText("Bid: " + myBid);
     }
 
@@ -116,22 +119,21 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
 
         TextView bidTitle;
         TextView Bid;
+        ImageView star;
 
         public BidViewHolder(View itemView) {
             super(itemView);
 
-            //itemView.setOnClickListener(this);
-
             bidTitle = (TextView) itemView.findViewById(R.id.bidTitle);
             Bid = (TextView) itemView.findViewById(R.id.LowBid);
+            star = (ImageView) itemView.findViewById(R.id.taskBidsStar);
+
             Button acceptButton = (Button) itemView.findViewById(R.id.acceptButton);
             Button rejectButton = (Button) itemView.findViewById(R.id.rejectButton);
 
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //prints to debug
-                    Log.d("ButtonClick", "Accept Button Clicked");
                     try {
                         //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID());
@@ -141,16 +143,6 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
                             toast.show();
 
-                            Log.d("Error", "Task already assigned");
-
-                            //testing stuff
-                            if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.ACCEPTED ) {
-                                Log.d("Message", "Bid status is ACCEPTED!");
-                            } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.REJECTED ) {
-                                Log.d("Message", "Bid status is REJECTED!");
-                            } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.PENDING) {
-                                Log.d("Message", "Bid status is PENDING!");
-                            }
                         } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.REJECTED) {
 
                             //tell the user that the bid is already rejected
@@ -196,9 +188,6 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
             rejectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //prints to debug
-                    Log.d("ButtonClick", "Reject Button Clicked");
-
                     try {
                         //gets the current task
                         Task thisTask = dm.getTask((bids.get(getAdapterPosition())).getTaskID());
@@ -208,16 +197,6 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                             Toast toast = Toast.makeText(thiscontext, toasttext, Toast.LENGTH_SHORT);
                             toast.show();
 
-                            Log.d("Error", "Task already assigned");
-
-                            //testing stuff
-                            if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.ACCEPTED ) {
-                                Log.d("Message", "Bid status is ACCEPTED!");
-                            } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.REJECTED ) {
-                                Log.d("Message", "Bid status is REJECTED!");
-                            } else if ((bids.get(getAdapterPosition())).getStatus() == BidStatus.PENDING) {
-                                Log.d("Message", "Bid status is PENDING!");
-                            }
                         } else {
                             //Reject a bid
                             Bid currentbid = bids.get(getAdapterPosition());

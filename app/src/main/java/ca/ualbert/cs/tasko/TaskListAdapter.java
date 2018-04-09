@@ -86,6 +86,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
      * if a user is preferred and if so display a star by their name.
      * @param context The context for the activity using the adapter.
      * @param dmTasks The TaskList representing all Tasks a user has bid on, from the DataManager.
+     * @param dmMap A map that gets users form their Id, can be used to quickly get preferred users.
      */
     public TaskListAdapter(Context context, TaskList dmTasks, Map<String, User> dmMap){
         thiscontext = context;

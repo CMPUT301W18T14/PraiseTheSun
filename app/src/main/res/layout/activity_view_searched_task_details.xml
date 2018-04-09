@@ -15,203 +15,227 @@
     With examples from
     https://code.tutsplus.com/tutorials/getting-started-with-recyclerview-and-cardview-on-android- -cms-23465
     Retrieved March 18, 2018 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/TaskSearchDetails"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/taskPhotosCard"
+    <LinearLayout
+        android:id="@+id/TaskSearchDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:elevation="@dimen/cardview_default_elevation">
+        android:orientation="vertical">
 
-        <LinearLayout
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/taskPhotosCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:onClick="onPhotoClick">
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardCornerRadius="7dp"
+            android:elevation="@dimen/cardview_default_elevation">
 
-            <ImageView
-                android:id="@+id/searchedTaskImageView"
-                android:layout_width="0dp"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/ic_menu_gallery" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onPhotoClick"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-    </android.support.v7.widget.CardView>
+                <ImageView
+                    android:id="@+id/searchedTaskImageView"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_menu_gallery" />
+            </LinearLayout>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/taskNameAndDescriptionCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:elevation="@dimen/cardview_default_elevation">
+        </android.support.v7.widget.CardView>
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/taskNameAndDescriptionCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardCornerRadius="7dp"
+            android:layout_marginTop="8dp"
+            android:elevation="@dimen/cardview_default_elevation">
 
-            <TextView
-                android:id="@+id/taskName"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:textSize="24sp" />
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/taskDescriptionView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/taskName"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/taskName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="24sp" />
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/taskDescriptionView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/taskName"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="16sp" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/taskRequesterCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="onNameClick"
-        android:elevation="@dimen/cardview_default_elevation">
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/taskRequesterCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardCornerRadius="7dp"
+            android:layout_marginTop="8dp"
+            android:elevation="@dimen/cardview_default_elevation"
+            android:onClick="onNameClick">
 
-            <TextView
-                android:id="@+id/requesteByTextView"
-                android:text="@string/task_details_requested_by"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"/>
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/taskRequesterName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/requesteByTextView"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:text="BLANK NAME"
-                android:textSize="18sp"
-                tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/requesteByTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="16sp"
+                    android:text="@string/task_details_requested_by" />
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/taskRequesterName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/requesteByTextView"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/colorTextWhite"
+                    android:text="BLANK NAME"
+                    android:textSize="24sp"
+                    tools:ignore="HardcodedText" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/taskLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:elevation="@dimen/cardview_default_elevation">
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/taskLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            tools:ignore="ExtraText">
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardCornerRadius="7dp"
+            android:elevation="@dimen/cardview_default_elevation">
 
-            <TextView
-                android:id="@+id/taskLocationText"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:textSize="24sp"
-                tools:ignore="HardcodedText" />
+                android:padding="16dp"
+                tools:ignore="ExtraText">
+
+                <TextView
+                    android:id="@+id/taskLocationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
                 android:text="LOCATION"
                 android:textSize="24sp" />
 
-            <Button
-                android:id="@+id/getDirectionsButton"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="74dp"
-                android:text="Get Directions" />
+                <Button
+                    android:id="@+id/getDirectionsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/taskLocationText"
+                    android:layout_marginTop="16dp"
+                    android:text="Get Directions" />
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/taskBidCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:elevation="@dimen/cardview_default_elevation">
-
-        <RelativeLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/taskBidCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardCornerRadius="7dp"
+            android:elevation="@dimen/cardview_default_elevation">
 
-            <TextView
-                android:id="@+id/lowestBid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/ViewSearchedDetailsStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:textSize="14sp"/>
-
-            <Button
-                android:id="@+id/placeBidButton"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="74dp"
-                android:text="Place Bid"
-                tools:ignore="HardcodedText" />
+                android:layout_height="wrap_content"
+                android:padding="16dp">
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/lowestBid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="16sp" />
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/ViewSearchedDetailsStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/placeBidButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/ViewSearchedDetailsStatus"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/colorTextWhite"
+                    android:text="Place Bid"
+                    tools:ignore="HardcodedText" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>
 
 

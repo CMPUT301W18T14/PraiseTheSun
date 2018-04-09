@@ -22,6 +22,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
@@ -38,8 +42,6 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
     public RecyclerView myBidList;
     private BidList bidsOnTask;
     private DataManager dm = DataManager.getInstance();
-    private RecyclerView.Adapter searchAdapter;
-    private RecyclerView.LayoutManager searchLayoutManager;
     private ViewBidsOnTaskActivity activity = this;
 
     /**
@@ -55,7 +57,7 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
 
         myBidList = (RecyclerView) findViewById(R.id.bidListRecyclerView);
 
-        searchLayoutManager = new LinearLayoutManager(activity);
+        RecyclerView.LayoutManager searchLayoutManager = new LinearLayoutManager(activity);
         myBidList.setLayoutManager(searchLayoutManager);
 
         Bundle extras = getIntent().getExtras();
@@ -72,9 +74,27 @@ public class ViewBidsOnTaskActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        searchAdapter = new ViewBidsAdapter(activity, bidsOnTask);
+        RecyclerView.Adapter searchAdapter = new ViewBidsAdapter(activity, bidsOnTask, getBidUsers());
+
         myBidList.setAdapter(searchAdapter);
         
+    }
+
+    private Map<String, User> getBidUsers(){
+
+        int i;
+
+        ArrayList<String> foundtasksUsers = new ArrayList<>();
+
+        for(i = 0; i < bidsOnTask.getSize(); i++){
+            foundtasksUsers.add(bidsOnTask.get(i).getUserID());
+        }
+        try {
+            return dm.getUserMap(foundtasksUsers);
+        } catch (NoInternetException e){
+            Log.i("Error", "Could not get preferred users. no internet");
+        }
+        return new HashMap<>();
     }
 
 }
