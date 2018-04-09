@@ -59,33 +59,38 @@ public class SearchTasksCommand extends GetCommand<TaskList, String> {
      */
     @Override
     public void execute() {
-        String query = "{\"size\": 1000," +
-                "\"query\" : { " +
-                "      \"bool\": { " +
-                "           \"must_not\" : [" +
-                "               {\"match\": {\"status\":\"DONE\" }}," +
-                "               {\"match\": {\"status\":\"ASSIGNED\"}}" +
-                "           ],"+
-                "           \"should\" :[ " +
-                "               {\"match\": {" +
-                "                   \"description\": { " +
-                "                       \"query\" : \"" + searchTerm + "\"," +
-                "                       \"operator\" : \"and\" " +
-                "                       }" +
-                "                   }" +
-                "               }," +
-                "               {\"match\": {" +
-                "                   \"taskName\": {" +
-                "                       \"query\" : \"" + searchTerm + "\"," +
-                "                       \"operator\" : \"and\" " +
-                "                       }" +
-                "                   }" +
-                "               }" +
-                "           ]," +
-                "           \"minimum_should_match\" : 1" +
-                "       }" +
-                "   }" +
-                "}";
+        String query = "";
+        if(searchTerm.length() > 0) {
+            query = "{\"size\": 1000," +
+                    "\"query\" : { " +
+                    "      \"bool\": { " +
+                    "           \"must_not\" : [" +
+                    "               {\"match\": {\"status\":\"DONE\" }}," +
+                    "               {\"match\": {\"status\":\"ASSIGNED\"}}" +
+                    "           ]," +
+                    "           \"should\" :[ " +
+                    "               {\"match\": {" +
+                    "                   \"description\": { " +
+                    "                       \"query\" : \"" + searchTerm + "\"," +
+                    "                       \"operator\" : \"and\" " +
+                    "                       }" +
+                    "                   }" +
+                    "               }," +
+                    "               {\"match\": {" +
+                    "                   \"taskName\": {" +
+                    "                       \"query\" : \"" + searchTerm + "\"," +
+                    "                       \"operator\" : \"and\" " +
+                    "                       }" +
+                    "                   }" +
+                    "               }" +
+                    "           ]," +
+                    "           \"minimum_should_match\" : 1" +
+                    "       }" +
+                    "   }" +
+                    "}";
+        } else {
+            query = "{ \"size\": 1000, \"query\": { \"match_all\" : {} } }";
+        }
         SearchTasks searchTask = new SearchTasks();
         searchTask.execute(query);
         try{
