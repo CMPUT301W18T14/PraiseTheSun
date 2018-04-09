@@ -135,7 +135,11 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 19) {
             assignedCurrentTask = (Task) data.getSerializableExtra("task");
-            fillInformation();
+            try {
+                fillInformation();
+            } catch (NoInternetException e){
+                e.printStackTrace();
+            }
             ImageView imageView = (ImageView) findViewById(R.id.myTasksImageView);
             if (assignedCurrentTask.hasPhoto()) {
                 imageView.setImageBitmap(assignedCurrentTask.getCoverPhoto());
