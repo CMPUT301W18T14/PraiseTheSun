@@ -43,6 +43,7 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+        dm.init(getActivity().getApplicationContext());
 
         dmuser = MockDataManager.getInstance().getUser();
 
