@@ -73,16 +73,30 @@ public class ViewNotificationActivity extends RootActivity {
         notificationsRecyclerView.setLayoutManager(notificationsLayoutManager);
 
         NotificationList myNotifications = new NotificationList();
+        NotificationList newNotifications = new NotificationList();
         try {
             myNotifications.addAll(
                     dm.getNotifications(cu.getCurrentUser().getId()).getNotifications());
+
+                    //Used to delete null pointer errors that occur when a notification exists
+                    //on a task that has been deleted.
+                    for(int i = 0; i < myNotifications.getSize(); i++){
+                        if(myNotifications.getNotification(i).getType() != NotificationType.TASK_DELETED){
+                            if (dm.getTask(myNotifications.getNotification(i).getTaskID()) == null) {
+                                dm.deleteNotification(myNotifications.getNotification(i).getId());
+                            }
+                        }
+                    }
+            newNotifications.addAll(
+                    dm.getNotifications(cu.getCurrentUser().getId()).getNotifications());
+
         } catch (NoInternetException e) {
             Toast.makeText(this.getApplicationContext(), "No Connection", Toast.LENGTH_SHORT)
                     .show();
         }
 
         RecyclerView.Adapter notificationsAdapter = new
-                NotificationListAdapter(context, myNotifications);
+                NotificationListAdapter(context, newNotifications);
         notificationsRecyclerView.setAdapter(notificationsAdapter);
 
     }
