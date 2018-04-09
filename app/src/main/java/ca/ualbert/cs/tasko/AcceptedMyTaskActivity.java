@@ -110,14 +110,9 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
         for (int i = 0; i < taskBids.getSize(); i++) {
             if (taskBids.get(i).getStatus() == BidStatus.ACCEPTED) {
                 String acceptedBidAmount = df.format(taskBids.get(i).getValue());
-                try {
-                    String acceptedBidUser = dm.getUserById(taskBids.get(i).getUserID()).getUsername();
-                    assignedTaskStatus.setText(assignedCurrentTask.getStatus().toString() + ": bid of $" +
-                            acceptedBidAmount + " by " + acceptedBidUser);
-                }
-                catch (NoInternetException e) {
-                    e.printStackTrace();
-                }
+                String minBidUser = taskBids.get(i).getUserID();
+                assignedTaskStatus.setText(assignedCurrentTask.getStatus().toString() + ": bid of $" +
+                        acceptedBidAmount + " by " + minBidUser);
             }
         }
     }
@@ -221,7 +216,11 @@ public class AcceptedMyTaskActivity extends AppCompatActivity {
                                     NotificationHandler nh = new NotificationHandler(context);
                                     try {
                                         nh.newNotification(assignedCurrentTask.getId(), NotificationType.TASK_REQUESTER_REPOSTED_TASK);
+                                        Thread.sleep(2000);
+                                        nh.newNotification(assignedCurrentTask.getId(), NotificationType.INCOMPLETE_TASK_RATING);
                                     } catch (NoInternetException e) {
+                                        e.printStackTrace();
+                                    } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
 

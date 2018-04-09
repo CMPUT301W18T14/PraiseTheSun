@@ -17,9 +17,11 @@ package ca.ualbert.cs.tasko;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ca.ualbert.cs.tasko.data.DataManager;
@@ -39,6 +41,7 @@ public class OtherUsersProfileActivity extends RootActivity {
     TextView name;
     TextView email;
     TextView phone;
+    ImageView star;
     User user;
 
     @Override
@@ -52,6 +55,8 @@ public class OtherUsersProfileActivity extends RootActivity {
         name = (TextView) findViewById(R.id.OtherUserProfileName);
         email = (TextView) findViewById(R.id.OtherUsersProfileEmail);
         phone = (TextView) findViewById(R.id.OtherUsersProfilePhone);
+        star = (ImageView) findViewById(R.id.OtherUserStar);
+
 
         Intent intent = getIntent();
         try {
@@ -62,5 +67,9 @@ public class OtherUsersProfileActivity extends RootActivity {
         name.setText(user.getName());
         email.setText(user.getEmail());
         phone.setText(user.getPhoneNumber());
+
+        if (user.isPrefered()) {
+            star.setImageResource(R.drawable.ic_star);
+        }
     }
 }

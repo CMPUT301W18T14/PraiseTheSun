@@ -84,24 +84,25 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
         Log.d("Notification", "" + currentNotification.getType() + " " + currentNotification.getId());
         switch (type){
             case TASK_REQUESTER_RECEIVED_BID_ON_TASK:
-                holder.notificationTitle.setText("New Bid Received!");
+                holder.notificationTitle.setText("New Bid Received");
                 break;
             case TASK_PROVIDER_BID_ACCEPTED:
-                holder.notificationTitle.setText("You Have been Assigned a New Task!");
+                holder.notificationTitle.setText("You have been Assigned a new Task");
                 break;
             case RATING:
-                holder.notificationTitle.setText("Please Provide a Rating!");
+                holder.notificationTitle.setText("Please provide a Rating");
                 break;
             case TASK_PROVIDER_BID_DECLINED:
-                holder.notificationTitle.setText("One of your Bids has been Declined!");
+                holder.notificationTitle.setText("One of your Bids has been Declined");
                 break;
             case TASK_DELETED:
-                holder.notificationTitle.setText("A Task you have Bid on has been Deleted!");
+                holder.notificationTitle.setText("A Task you have Bid on has been Deleted");
                 break;
             case TASK_REQUESTER_REPOSTED_TASK:
-                holder.notificationTitle.setText("A Task you have Bid on has been Reposted!");
+                holder.notificationTitle.setText("A Task you have Bid on has been Reposted");
+            case INCOMPLETE_TASK_RATING:
+                holder.notificationTitle.setText("Rate your incomplete Task's provider");
                 break;
-
         }
     }
 
@@ -148,6 +149,7 @@ class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapt
                     intent = new Intent(thiscontext, ViewTasksAssignedActivity.class);
                     break;
                 case RATING:
+                case INCOMPLETE_TASK_RATING:
                     intent = new Intent(thiscontext, RatingActivity.class);
                     intent.putExtra("TaskID", clickedNotificatoin.getTaskID());
                     thiscontext.startActivity(intent);
