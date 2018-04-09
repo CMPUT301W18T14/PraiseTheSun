@@ -137,7 +137,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
         // Tries to get the minimum bid on each task if it exists
         else if (currentTask.getMinBid() != null){
-            Log.i("Low Bid", currentTask.getMinBid().toString());
             String lowbidValue = df.format(currentTask.getMinBid());
             holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
         }else{
