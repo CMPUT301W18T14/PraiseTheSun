@@ -160,7 +160,6 @@ public class Task implements Serializable {
      * @param value The value we compare to minBid
      */
     public void setMinBid(Float value) {
-        if (minBid == null || value < minBid)
             this.minBid = value;
     }
 

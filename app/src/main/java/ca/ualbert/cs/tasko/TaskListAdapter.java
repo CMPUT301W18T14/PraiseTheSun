@@ -56,7 +56,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         thiscontext = context;
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
-        Log.i("Adapter", "COntructor 1");
 
     }
 
@@ -74,7 +73,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         inflater = LayoutInflater.from(context);
         tasks = dmTasks;
         myBids = dmMyBids;
-        Log.i("Adapter", "COntructor 2");
 
     }
 
@@ -139,6 +137,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
         // Tries to get the minimum bid on each task if it exists
         else if (currentTask.getMinBid() != null){
+            Log.i("Low Bid", currentTask.getMinBid().toString());
             String lowbidValue = df.format(currentTask.getMinBid());
             holder.taskLowestBid.setText("Lowest Bid: " + lowbidValue);
         }else{
