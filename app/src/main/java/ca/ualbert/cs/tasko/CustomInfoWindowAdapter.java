@@ -26,6 +26,8 @@ import ca.ualbert.cs.tasko.R;
 
 /**
  * Created by imtih on 2018-04-04.
+ *
+ * Custom info window adapter, inflated when you click on a marker on the map
  */
 
 public class CustomInfoWindowAdapter implements InfoWindowAdapter {
