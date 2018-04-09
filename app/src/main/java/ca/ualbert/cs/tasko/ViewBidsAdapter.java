@@ -17,6 +17,7 @@ package ca.ualbert.cs.tasko;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -131,6 +132,8 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
             Button acceptButton = (Button) itemView.findViewById(R.id.acceptButton);
             Button rejectButton = (Button) itemView.findViewById(R.id.rejectButton);
 
+            setupUserNameClick();
+
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -216,8 +219,19 @@ public class ViewBidsAdapter extends RecyclerView.Adapter<ViewBidsAdapter.BidVie
                     }
                 }
             });
+
+        }
+
+        private void setupUserNameClick(){
+            bidTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(thiscontext, OtherUsersProfileActivity.class);
+                    intent.putExtra("id", bids.get(getAdapterPosition()).getUserID());
+                    thiscontext.startActivity(intent);
+                }
+            });
+
         }
     }
-
-
 }
