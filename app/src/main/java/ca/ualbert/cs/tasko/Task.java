@@ -259,12 +259,6 @@ public class Task implements Serializable {
         }
     }
 
-    // Not implemented yet
-    // Todo Part 5
-    public void addLocation(Location location){
-
-    }
-
     /**
      * Removes the location of the task
      * @see NearbyTasksActivity
