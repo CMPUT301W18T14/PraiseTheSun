@@ -103,7 +103,7 @@ public class ViewPhotoActivity extends AppCompatActivity {
                                     (numImages));
                         } else {
                             Toast.makeText(getApplicationContext(), "No More Images To Swipe",
-                                    Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                     else if (initialX < finalX) {
@@ -117,7 +117,7 @@ public class ViewPhotoActivity extends AppCompatActivity {
                                     (numImages));
                         } else {
                             Toast.makeText(getApplicationContext(), "No More Images To Swipe",
-                                    Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                     break;

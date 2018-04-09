@@ -43,12 +43,10 @@ public class SearchResultsActivity extends RootActivity {
 
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter searchAdapter;
-    private RecyclerView.LayoutManager searchLayoutManager;
     private DataManager dm = DataManager.getInstance();
     private ProgressBar loadingCircle;
     private SearchResultsActivity context = this;
     private TaskList foundtasks;
-    private ArrayList<String> foundtasksUsers;
 
     /**
      * Creates the Activity which includes initializing the RecyclerView with the appropriate
@@ -66,7 +64,7 @@ public class SearchResultsActivity extends RootActivity {
 
         searchRecyclerView = (RecyclerView) findViewById(R.id.generic_recyclerview);
 
-        searchLayoutManager = new LinearLayoutManager(context);
+        RecyclerView.LayoutManager searchLayoutManager = new LinearLayoutManager(context);
         searchRecyclerView.setLayoutManager(searchLayoutManager);
 
         searchForTasks();
@@ -82,6 +80,8 @@ public class SearchResultsActivity extends RootActivity {
         searchForTasks();
         searchAdapter = new TaskListAdapter(context, foundtasks, getTaskUsers());
         searchRecyclerView.setAdapter(searchAdapter);
+
+        loadingCircle.setVisibility(View.GONE);
     }
 
     private void searchForTasks() {
@@ -111,18 +111,17 @@ public class SearchResultsActivity extends RootActivity {
 
         int i;
 
-        foundtasksUsers = new ArrayList<>();
+        ArrayList<String> foundtasksUsers = new ArrayList<>();
 
         for(i = 0; i < foundtasks.getSize(); i++){
             foundtasksUsers.add(foundtasks.get(i).getTaskRequesterID());
         }
         try {
-            Map<String, User> results = dm.getUserMap(foundtasksUsers);
-            return results;
+            return dm.getUserMap(foundtasksUsers);
         } catch (NoInternetException e){
             Log.i("Error", "Could not get preferred users. no internet");
         }
-        return new HashMap<String, User>();
+        return new HashMap<>();
     }
 }
 

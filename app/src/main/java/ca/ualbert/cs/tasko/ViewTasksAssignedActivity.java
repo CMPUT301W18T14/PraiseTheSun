@@ -30,10 +30,10 @@ import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
 
 /**
- * This activity allows the user to view all of the tasks they have bidded on, Which will show up
- * as a RecyclerView of tasks that includes all relevant information include your bid on the task.
+ * This activity allows the user to view all of the tasks they have been assigned, Which will show up
+ * as a RecyclerView of tasks that includes all relevant information.
  *
- * @author spack
+ * @author Alden Tan
  */
 public class ViewTasksAssignedActivity extends RootActivity {
 
@@ -83,6 +83,9 @@ public class ViewTasksAssignedActivity extends RootActivity {
 
     }
 
+    /**
+     * Happens when the activity is resumed.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -92,8 +95,7 @@ public class ViewTasksAssignedActivity extends RootActivity {
     }
 
     /**
-     * Gets all tasks a user has bidded on, which will be displayed in the RecyclerView. Does
-     * Not include Tasks in which your Bid has been
+     * Gets all tasks a user has been assigned, which will be displayed in the RecyclerView.
      */
     private void getTasks(){
         userBids = new BidList();

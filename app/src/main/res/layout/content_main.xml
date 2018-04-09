@@ -12,9 +12,9 @@
         android:id="@+id/searchQuery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="150dp"
         android:ems="10"
         android:hint="@string/search_for_a_task"
         android:inputType="textPersonName"
@@ -26,29 +26,27 @@
     <Button
         android:id="@+id/postTaskButton"
         android:layout_width="0dp"
-        android:layout_height="58dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="144dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
         android:text="@string/post_a_task"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchQuery" />
+        app:layout_constraintTop_toBottomOf="@+id/SearchButton" />
 
     <Button
         android:id="@+id/SearchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:text="Search"
-        app:layout_constraintBottom_toTopOf="@+id/postTaskButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchQuery"
-        app:layout_constraintVertical_bias="0.1"
         tools:ignore="HardcodedText" />
 
 </android.support.constraint.ConstraintLayout>
