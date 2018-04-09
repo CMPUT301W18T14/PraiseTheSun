@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
@@ -27,6 +28,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ca.ualbert.cs.tasko.data.DataManager;
 import ca.ualbert.cs.tasko.data.NoInternetException;
@@ -82,6 +87,27 @@ public class ViewMyTasksActivity extends RootActivity {
             Thread.currentThread().interrupt();
         }
         filterOptions();
+    }
+
+    private Map<String, User> getTaskUsers() throws NoInternetException {
+
+        int i;
+
+        ArrayList<String> foundtasksUsers = new ArrayList<>();
+
+        TaskList myTasks;
+
+        myTasks = dm.getUserTasks(CurrentUser.getInstance().getCurrentUser().getId());
+
+        for(i = 0; i < myTasks.getSize(); i++){
+            foundtasksUsers.add(myTasks.get(i).getTaskRequesterID());
+        }
+        try {
+            return dm.getUserMap(foundtasksUsers);
+        } catch (NoInternetException e){
+            Log.i("Error", "Could not get preferred users. no internet");
+        }
+        return new HashMap<>();
     }
 
     /**
@@ -152,7 +178,11 @@ public class ViewMyTasksActivity extends RootActivity {
                 }
 
                 loadingCircle.setVisibility(View.GONE);
-                myTasksAdapter = new TaskListAdapter(activity, myTasks);
+                try {
+                    myTasksAdapter = new TaskListAdapter(activity, myTasks, getTaskUsers());
+                } catch (NoInternetException e){
+                    e.printStackTrace();
+                }
                 myTasksRecyclerView.setAdapter(myTasksAdapter);
             }
 
@@ -161,5 +191,8 @@ public class ViewMyTasksActivity extends RootActivity {
 
             }
         });
+
+
+
     }
 }
