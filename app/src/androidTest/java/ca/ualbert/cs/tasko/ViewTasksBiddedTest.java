@@ -19,6 +19,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.view.Display;
 import com.robotium.solo.Solo;
 import ca.ualbert.cs.tasko.data.DataManager;
+import ca.ualbert.cs.tasko.data.MockDataManager;
 
 /**
  * Tests the functionality of the View My Tasks I have bidded on activity
@@ -43,14 +44,21 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
 
-        User user = new User("rromano", "Ryan", "111-222-3333", "rromano@ualberta.ca");
+        dmuser = MockDataManager.getInstance().getUser();
 
         try {
-            dm.putUser(user);
-        }catch(IllegalArgumentException e){
+            dm.putUser(dmuser);
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
         }
 
-        dmuser = dm.getUserByUsername("rromano");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        dmuser = dm.getUserByUsername(dmuser.getUsername());
         CurrentUser.getInstance().setCurrentUser(dmuser);
 
         task1= new Task(dmuser.getId(), "TestTask", "Help me test code");
@@ -64,7 +72,7 @@ public class ViewTasksBiddedTest extends ActivityInstrumentationTestCase2 {
         dm.addBid(bid);
     }
 
-        /**
+    /**
      * Ensures the onClick in viewholder is accurate, directs the user to the proper activity which
      * in this case is ViewSerchedTaskDetails.
      */
