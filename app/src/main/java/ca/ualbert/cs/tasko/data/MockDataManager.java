@@ -27,9 +27,11 @@ import ca.ualbert.cs.tasko.TaskStatus;
 import ca.ualbert.cs.tasko.User;
 
 /**
- * Created by Thomas on 2018-04-07.
+ * MockDataManager class that serves as a mock DataManager class and returns
+ * fake information to the test classes for testing purposes
+ *
+ * @author tlafranc
  */
-
 public class MockDataManager {
     private static MockDataManager instance = new MockDataManager();
     private User user1;
