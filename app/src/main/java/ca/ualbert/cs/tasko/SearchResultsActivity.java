@@ -44,7 +44,6 @@ public class SearchResultsActivity extends RootActivity {
     private RecyclerView searchRecyclerView;
     private RecyclerView.Adapter searchAdapter;
     private DataManager dm = DataManager.getInstance();
-    private ProgressBar loadingCircle;
     private SearchResultsActivity context = this;
     private TaskList foundtasks;
 
@@ -82,7 +81,6 @@ public class SearchResultsActivity extends RootActivity {
         searchAdapter = new TaskListAdapter(context, foundtasks, getTaskUsers());
         searchRecyclerView.setAdapter(searchAdapter);
 
-        loadingCircle.setVisibility(View.GONE);
     }
 
     private void searchForTasks() {
